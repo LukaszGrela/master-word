@@ -8,6 +8,7 @@ import { ResultPanel } from './panel';
 import { TClickAction } from './panel/types';
 
 import './MasterWord.css';
+import { noop } from '../utils/noop';
 
 const validateWord = async (word: string): Promise<boolean> => {
   return new Promise((resolve) => {
@@ -41,32 +42,37 @@ const MasterWord: FC<IMasterWord> = ({
   const [attempt, setAttempt] = useState(0);
 
   const handleWordCommit = useCallback(
-    async (word: string) => {
+    (word: string) => {
       setGameState('pending');
-      const isValid = await validateWord(word);
-      if (isValid) {
-        // store word attempt in game
-        setGame((list) => {
-          list[attempt] = word;
-          return list;
-        });
+      validateWord(word)
+        .then((isValid) => {
+          if (isValid) {
+            // store word attempt in game
+            setGame((list) => {
+              list[attempt] = word;
+              return list;
+            });
 
-        if (word === wordToGuess) {
-          setAttempt(attempt + 1);
-          setGameState('win');
-        } else {
-          if (attempt + 1 < attempts) {
-            setAttempt(attempt + 1);
-            setGameState('running');
+            if (word === wordToGuess) {
+              setAttempt(attempt + 1);
+              setGameState('win');
+            } else {
+              if (attempt + 1 < attempts) {
+                setAttempt(attempt + 1);
+                setGameState('running');
+              } else {
+                // game over
+                setAttempt(attempts);
+                setGameState('lose');
+              }
+            }
           } else {
-            // game over
-            setAttempt(attempts);
-            setGameState('lose');
+            setGameState('running');
           }
-        }
-      } else {
-        setGameState('running');
-      }
+        })
+        .catch(() => {
+          setGameState('running');
+        });
     },
     [attempt, attempts, wordToGuess]
   );
@@ -85,13 +91,13 @@ const MasterWord: FC<IMasterWord> = ({
       await startGame();
     };
     if (gameState === 'init') {
-      asyncInit();
+      asyncInit().catch(noop);
     }
   }, [gameState, startGame]);
 
-  async function handlePanelAction(action: TClickAction) {
+  function handlePanelAction(action: TClickAction) {
     if (action === 'start') {
-      await startGame();
+      startGame().catch(noop);
     }
   }
 
