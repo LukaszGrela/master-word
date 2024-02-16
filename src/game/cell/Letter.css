@@ -1,0 +1,35 @@
+.letter {
+  height: 4rem;
+  box-sizing: border-box;
+  background-color: seashell;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.letter .container {
+  font-weight: 500;
+  font-size: 1.5rem;
+  user-select: none;
+}
+
+.letter.inactive {
+  background-color: hsl(25 40% 90% / 1);
+}
+
+.letter.active {
+  background-color: hsl(25 100% 91% / 1);
+}
+
+.letter.inactive.correct {
+  background-color: green;
+  color: rgba(255, 255, 255, 0.87);
+}
+
+.letter.inactive.misplaced {
+  background-color: orange;
+}
+
+.letter.incorrect.inactive {
+  background-color: grey;
+}
