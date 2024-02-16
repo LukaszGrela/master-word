@@ -11,7 +11,8 @@ const Word: FC<{
   commit: (word: string) => void;
   compare?: string;
   className?: string;
-}> = ({ active, wordLength, word, id, commit, compare, className }) => {
+  mobile?: boolean;
+}> = ({ active, wordLength, word, id, commit, compare, className, mobile }) => {
   const [index, setIndex] = useState(0);
   const [guessing, setGuessing] = useState(' '.repeat(wordLength));
 
@@ -121,7 +122,11 @@ const Word: FC<{
               <Letter
                 letter={letter || '&nbsp;'}
                 key={`letter-${id}-${i}`}
-                className={classNames(active && 'active', className)}
+                className={classNames(
+                  active && 'active',
+                  className,
+                  mobile && active && i === 0 && 'show-icon'
+                )}
               />
             ))
         : staticLetters}

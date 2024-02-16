@@ -9,6 +9,7 @@ import { TClickAction } from './panel/types';
 
 import './MasterWord.css';
 import { noop } from '../utils/noop';
+import { getBowserDetails } from '../utils/bowser';
 
 const validateWord = async (word: string): Promise<boolean> => {
   return new Promise((resolve) => {
@@ -33,6 +34,8 @@ const MasterWord: FC<IMasterWord> = ({
   wordLength = WORD_LENGTH,
   attempts = ATTEMPTS,
 }) => {
+  const bowser = getBowserDetails();
+
   const [wordToGuess, setWordToGuess] = useState('');
 
   const attemptsList = Array.from(Array(attempts)).map(() => '');
@@ -111,6 +114,7 @@ const MasterWord: FC<IMasterWord> = ({
           {game.map((word, index) => {
             return (
               <Word
+                mobile={bowser.platform.type === 'mobile'}
                 commit={handleWordCommit}
                 active={index === attempt && gameState === 'running'}
                 wordLength={wordLength}
@@ -131,7 +135,10 @@ const MasterWord: FC<IMasterWord> = ({
         />
       </div>
       <p className='read-the-docs'>
-        Start typing your guess, press Enter to confirm.
+        {bowser.platform.type !== 'mobile' &&
+          'Start typing your guess, press Enter to confirm.'}
+        {bowser.platform.type === 'mobile' &&
+          'Touch edit icon to enter your guess.'}
       </p>{' '}
       <p className='read-the-docs'>
         GrelaDesign (c) 2024 [v{import.meta.env.VITE_VERSION}]
