@@ -14,7 +14,7 @@ const validateWord = async (word: string): Promise<boolean> => {
   return new Promise((resolve) => {
     setTimeout(() => {
       resolve(word !== 'LOSER');
-    }, 1000);
+    }, 10);
   });
 };
 
@@ -25,7 +25,7 @@ const getRandomWord = async (): Promise<string> => {
   return new Promise((resolve) => {
     setTimeout(() => {
       resolve(word);
-    }, 1000);
+    }, 10);
   });
 };
 
