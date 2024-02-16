@@ -132,6 +132,9 @@ const MasterWord: FC<IMasterWord> = ({
       </div>
       <p className='read-the-docs'>
         Start typing your guess, press Enter to confirm.
+      </p>{' '}
+      <p className='read-the-docs'>
+        GrelaDesign (c) 2024 [v{import.meta.env.VITE_VERSION}]
       </p>
     </div>
   );
