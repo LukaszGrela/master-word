@@ -20,21 +20,21 @@ const Result: FC<IProps> = ({
   return (
     <div className={classNames('result', 'panel', hiddenResult)}>
       <h2 className={classNames(hiddenFinalResult)}>
-        {gameState === 'win' && `You have won in ${attempt} attempts`}
+        {gameState === 'win' && `Wygrałeś w ${attempt} próbach`}
         {gameState === 'lose' &&
-          `You have lost, word to guess was ${wordToGuess}`}
+          `Przegrałeś, słowo do odgadnięcia to ${wordToGuess}`}
 
-        {gameState === 'running' && 'Game is running'}
+        {gameState === 'running' && 'Gra w toku'}
         {showLoading && <>&nbsp;</>}
       </h2>
 
       <button onClick={handleAction} className={classNames(hiddenFinalResult)}>
-        Guess another word
+        Odgadnij następne słowo
       </button>
 
       {showLoading && (
         <h2 className='loading'>
-          <span>Loading...</span>
+          <span>Wczytuję...</span>
         </h2>
       )}
     </div>

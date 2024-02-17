@@ -140,6 +140,12 @@ const MasterWord: FC<IMasterWord> = ({
       <div className='title'>
         <h1>Master Word</h1>
       </div>
+      <p className='read-the-docs'>
+        {bowser.platform.type !== 'mobile' &&
+          'Zacznij wpisywać słowo, naciśnij Enter żeby potwierdzić.'}
+        {bowser.platform.type === 'mobile' &&
+          'Naciśnij linię z ikonką edycji by wprowadzić słowo.'}
+      </p>
       <div className='game-board'>
         <Board columns={wordLength} rows={attempts}>
           {game.map((word, index) => {
@@ -172,12 +178,6 @@ const MasterWord: FC<IMasterWord> = ({
           />
         )}
       </div>
-      <p className='read-the-docs'>
-        {bowser.platform.type !== 'mobile' &&
-          'Start typing your guess, press Enter to confirm.'}
-        {bowser.platform.type === 'mobile' &&
-          'Touch edit icon to enter your guess.'}
-      </p>{' '}
       <p className='read-the-docs'>
         GrelaDesign (c) 2024 [v{import.meta.env.VITE_VERSION}]
       </p>
