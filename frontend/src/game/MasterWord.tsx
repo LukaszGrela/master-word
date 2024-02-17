@@ -38,7 +38,7 @@ const MasterWord: FC<IMasterWord> = ({
 
       setGameState('pending');
 
-      validateWord(word, wordToGuess)
+      validateWord(word, wordToGuess, attempt + 1 >= attempts)
         .then((response) => {
           console.log(response);
           const { guessed, result, valid, error } = response;

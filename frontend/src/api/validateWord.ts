@@ -22,7 +22,7 @@ const validateWord = async (
   );
 
   const from = guess.split('');
-  const to = compare;
+  const to = compare.concat();
   if (!guessed) {
     // green pass
     for (let i = 0; i < from.length; i++) {
@@ -47,13 +47,13 @@ const validateWord = async (
       }
     }
   }
-
+  const finished = guessed || !!noAttempts;
   return Promise.resolve({
     valid: guess !== 'LOSER' && guess.length === 5,
     result: validated,
     guessed,
-    finished: guessed || !!noAttempts,
-    wordToGuess,
+    finished,
+    wordToGuess: finished ? wordToGuess : undefined,
     error:
       guess === 'LOSER'
         ? 'Test error'
