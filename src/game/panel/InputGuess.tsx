@@ -23,7 +23,7 @@ const InputGuess: FC<{
   const disableButton = guess.length < maxLength;
   const handleEnter: React.KeyboardEventHandler<HTMLInputElement> = useCallback(
     (e) => {
-      if (e.code === 'Enter' && !disableButton) {
+      if (e.key === 'Enter' && !disableButton) {
         // commit
         onClose('guess', guess);
       }
@@ -44,6 +44,7 @@ const InputGuess: FC<{
         onPaste={(e) => e.preventDefault()}
         onKeyUp={handleEnter}
         autoComplete='off'
+        enterKeyHint='done'
       ></input>
       {!disableButton && (
         <div className='read-the-docs'>Tap Confirm or Enter to commit</div>
