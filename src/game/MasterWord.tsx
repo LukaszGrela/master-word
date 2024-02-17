@@ -139,6 +139,7 @@ const MasterWord: FC<IMasterWord> = ({
     <div className={classNames('master-word', 'game', gameState)}>
       <div className='title'>
         <h1>Master Word</h1>
+        <h4>Odgadnij słowo które mam na myśli...</h4>
       </div>
       <p className='read-the-docs'>
         {bowser.platform.type !== 'mobile' &&
