@@ -1,0 +1,25 @@
+{
+  "name": "master-word-api",
+  "version": "0.0.1",
+  "description": "NodeJS backend for the Master Word app",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/LukaszGrela/master-word.git"
+  },
+  "keywords": [
+    "nodejs",
+    "master-word",
+    "game",
+    "backend"
+  ],
+  "author": "Lukasz 'Severiaan' Grela",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/LukaszGrela/master-word/issues"
+  },
+  "homepage": "https://github.com/LukaszGrela/master-word#readme"
+}
