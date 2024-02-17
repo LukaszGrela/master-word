@@ -4,13 +4,20 @@ import { classNames } from '../../utils/classNames';
 import { isLetter } from '../../utils/isLetter';
 
 const Word: FC<{
+  // is the word active - user enters word
   active?: boolean;
+  // current word length
   wordLength: number;
+  // when not active this holds the word to display
   word?: string;
   id: string;
+  // when not mobile this provides user guessed word to check
   commit: (word: string) => void;
+  // correct word to compare against
   compare?: string;
+
   className?: string;
+  // is it a mobile and this component is static
   mobile?: boolean;
 }> = ({ active, wordLength, word, id, commit, compare, className, mobile }) => {
   const [index, setIndex] = useState(0);
@@ -22,7 +29,11 @@ const Word: FC<{
       setIndex(0);
       setGuessing(' '.repeat(wordLength));
     }
-  }, [word, wordLength]);
+    if (mobile && word && word !== '') {
+      setIndex(word.length - 1);
+      setGuessing(word);
+    }
+  }, [mobile, word, wordLength]);
 
   useEffect(() => {
     const preventDefault = (e: KeyboardEvent): void => {
@@ -55,7 +66,7 @@ const Word: FC<{
     };
 
     // listen to key up event
-    if (active) {
+    if (active && !mobile) {
       document.addEventListener('keydown', preventDefault);
       document.addEventListener('keyup', handleKeyUp);
     }
@@ -64,7 +75,7 @@ const Word: FC<{
       document.removeEventListener('keyup', handleKeyUp);
       document.removeEventListener('keydown', preventDefault);
     };
-  }, [active, commit, guessing, index, wordLength]);
+  }, [active, commit, guessing, index, mobile, wordLength]);
 
   const staticLetters = useMemo(() => {
     const classes = Array.from(Array(wordLength)).map(() => 'incorrect');
