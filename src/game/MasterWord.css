@@ -17,12 +17,14 @@
   visibility: hidden;
 }
 
+/*
 .master-word.game.win {
 }
 .master-word.game.lose {
 }
+*/
 
-.master-word .result {
+.master-word .panel {
   margin-bottom: 0.5rem;
   position: absolute;
   top: 50%;

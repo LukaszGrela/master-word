@@ -18,7 +18,7 @@ const Result: FC<IProps> = ({
   const showLoading = gameState === 'pending' || gameState === 'init';
 
   return (
-    <div className={classNames('result', hiddenResult)}>
+    <div className={classNames('result', 'panel', hiddenResult)}>
       <h2 className={classNames(hiddenFinalResult)}>
         {gameState === 'win' && `You have won in ${attempt} attempts`}
         {gameState === 'lose' &&

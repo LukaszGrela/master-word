@@ -4,17 +4,21 @@ import { IMasterWord, TGameState } from './types';
 import { classNames } from '../utils/classNames';
 import Word from './word/Word';
 import words from '../assets/5/dictionary.json';
-import { ResultPanel } from './panel';
+import { InputGuessPanel, ResultPanel } from './panel';
 import { TClickAction } from './panel/types';
-
-import './MasterWord.css';
 import { noop } from '../utils/noop';
 import { getBowserDetails } from '../utils/bowser';
+
+import './MasterWord.css';
 
 const validateWord = async (word: string): Promise<boolean> => {
   return new Promise((resolve) => {
     setTimeout(() => {
-      resolve(word !== 'LOSER');
+      if (word && word.length === 5) {
+        resolve(word !== 'LOSER');
+      } else {
+        resolve(false);
+      }
     }, 10);
   });
 };
@@ -45,8 +49,11 @@ const MasterWord: FC<IMasterWord> = ({
   const [attempt, setAttempt] = useState(0);
 
   const handleWordCommit = useCallback(
-    (word: string) => {
+    (guess: string) => {
+      const word = guess.toLocaleUpperCase();
+
       setGameState('pending');
+
       validateWord(word)
         .then((isValid) => {
           if (isValid) {
@@ -98,11 +105,35 @@ const MasterWord: FC<IMasterWord> = ({
     }
   }, [gameState, startGame]);
 
-  function handlePanelAction(action: TClickAction) {
-    if (action === 'start') {
-      startGame().catch(noop);
+  const handlePanelAction = useCallback(
+    (action: TClickAction, ...rest: unknown[]) => {
+      if (action === 'start') {
+        startGame().catch(noop);
+      }
+      if (action === 'guess') {
+        const [guess] = rest;
+
+        setShowInputModal(false);
+        handleWordCommit(guess as string);
+      }
+    },
+    [handleWordCommit, startGame]
+  );
+
+  const [showInputModal, setShowInputModal] = useState(false);
+  useEffect(() => {
+    const tapHandler = () => {
+      setShowInputModal(true);
+    };
+
+    if (bowser.platform.type === 'mobile' && gameState === 'running') {
+      document.addEventListener('click', tapHandler);
     }
-  }
+
+    return () => {
+      document.removeEventListener('click', tapHandler);
+    };
+  }, [bowser.platform.type, gameState]);
 
   return (
     <div className={classNames('master-word', 'game', gameState)}>
@@ -133,6 +164,13 @@ const MasterWord: FC<IMasterWord> = ({
           wordToGuess={wordToGuess}
           onClick={handlePanelAction}
         />
+        {showInputModal && (
+          <InputGuessPanel
+            initWord={game[attempt]}
+            maxLength={wordLength}
+            onClose={handlePanelAction}
+          />
+        )}
       </div>
       <p className='read-the-docs'>
         {bowser.platform.type !== 'mobile' &&
