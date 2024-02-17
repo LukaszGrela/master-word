@@ -3,7 +3,7 @@ import { ATTEMPTS, Board, WORD_LENGTH } from './index';
 import { IMasterWord, TGameState } from './types';
 import { classNames } from '../utils/classNames';
 import Word from './word/Word';
-import words from '../assets/5/dictionary.json';
+import words from '../assets/5/pl/dictionary.json';
 import { InputGuessPanel, ResultPanel } from './panel';
 import { TClickAction } from './panel/types';
 import { noop } from '../utils/noop';

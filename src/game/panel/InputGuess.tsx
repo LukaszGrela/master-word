@@ -33,7 +33,7 @@ const InputGuess: FC<{
 
   return (
     <div className='panel input-modal'>
-      <label htmlFor='guess'>Enter word to guess</label>
+      <label htmlFor='guess'>Podaj słowo do odgadnięcia</label>
       <input
         type='text'
         name='guess'
@@ -47,13 +47,13 @@ const InputGuess: FC<{
         enterKeyHint='done'
       ></input>
       {!disableButton && (
-        <div className='read-the-docs'>Tap Confirm or Enter to commit</div>
+        <div className='read-the-docs'>Naciśnij Gotowe by sprawdzić</div>
       )}
       {disableButton && (
-        <div className='read-the-docs'>Enter 5 letter word to guess</div>
+        <div className='read-the-docs'>Wpisz {maxLength} literowe słowo</div>
       )}
       <button onClick={handleCommit} disabled={disableButton}>
-        Confirm
+        Gotowe
       </button>
     </div>
   );
