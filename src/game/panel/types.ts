@@ -1,6 +1,6 @@
 import { TGameState } from '../types';
 
-export type TClickAction = 'start';
+export type TClickAction = 'start' | 'guess';
 
 export interface IProps {
   gameState: TGameState;
@@ -8,5 +8,5 @@ export interface IProps {
   attempt: number;
   wordToGuess: string;
 
-  onClick: (action: TClickAction) => void;
+  onClick: (action: TClickAction, ...rest: unknown[]) => void;
 }

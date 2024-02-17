@@ -1,0 +1,39 @@
+.input-modal {
+}
+
+.input-modal input[type='text'] {
+  border-radius: 8px;
+  border: 1px solid transparent;
+
+  font-size: 1rem;
+  font-weight: 500;
+  font-family: inherit;
+  background-color: #1a1a1a;
+
+  transition: border-color 0.25s;
+
+  padding: 0.25rem;
+  margin-bottom: 0.5rem;
+
+  max-width: 12rem;
+}
+.input-modal input[type='text']:hover {
+  border-color: #646cff;
+}
+.input-modal input[type='text']:focus,
+.input-modal input[type='text']:focus-visible {
+  outline: 4px auto -webkit-focus-ring-color;
+}
+
+.input-modal label {
+  font-weight: 500;
+  font-size: large;
+  margin: 0.5rem 0;
+  display: block;
+}
+
+@media (prefers-color-scheme: light) {
+  .input-modal input[type='text'] {
+    background-color: #f9f9f9;
+  }
+}
