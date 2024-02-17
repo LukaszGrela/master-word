@@ -16,3 +16,6 @@ export interface IMasterWord {
 }
 
 export type TGameState = 'init' | 'pending' | 'running' | 'lose' | 'win';
+
+// Wrong - X, Misplaced - M, Correct - C
+export type TValidationChar = 'X' | 'M' | 'C';
