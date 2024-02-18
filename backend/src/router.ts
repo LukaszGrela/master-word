@@ -2,6 +2,7 @@ import { Router, Request, Response } from 'express';
 import { StatusCodes } from 'http-status-codes';
 import fs from 'fs/promises';
 import { v4 as uuid } from 'uuid';
+import { ErrorCodes } from './enums';
 
 const router = Router();
 
@@ -34,6 +35,7 @@ async function getRandomWord(
       } catch (error) {
         console.log(error);
         return Promise.reject({
+          code: ErrorCodes.RANDOM_WORD_ERROR,
           error: "Can't retrieve polish word.",
           language: 'pl',
         });
@@ -64,6 +66,7 @@ async function getRandomWord(
     } catch (error) {
       console.log(error);
       return Promise.reject({
+        code: ErrorCodes.RANDOM_WORD_ERROR,
         language: 'en',
         error: "Can't retrieve english word.",
       });
@@ -149,7 +152,10 @@ router.get('/init', async (req: Request, res: Response) => {
       response = gameSessions.get(session);
     } else {
       // session doesnt exist
-      res.status(StatusCodes.BAD_REQUEST).json({ error: 'Invalid session id' });
+      res.status(StatusCodes.BAD_REQUEST).json({
+        code: ErrorCodes.SESSION_ERROR,
+        error: 'Invalid session id',
+      });
       return;
     }
   } else {
@@ -173,17 +179,19 @@ router.get('/init', async (req: Request, res: Response) => {
       };
       gameSessions.set(id, response);
     } catch (error) {
-      res
-        .status(StatusCodes.INTERNAL_SERVER_ERROR)
-        .json({ error: 'Can not start new game.' });
+      res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({
+        code: ErrorCodes.GENERAL_ERROR,
+        error: 'Can not start new game.',
+      });
       return;
     }
   }
   if (!response) {
     // session doesnt exist
-    res
-      .status(StatusCodes.INTERNAL_SERVER_ERROR)
-      .json({ error: 'Can not start new game.' });
+    res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({
+      code: ErrorCodes.GENERAL_ERROR,
+      error: 'Can not start new game.',
+    });
     return;
   } else {
     // all good - send game response
@@ -243,20 +251,25 @@ router.get('/next-attempt', async (req: Request, res: Response) => {
   const { session, guess } = req.query as TNextAttemptQuery;
   if (!session) {
     // shows over
-    res.status(StatusCodes.BAD_REQUEST).json({ error: 'Invalid session id' });
+    res.status(StatusCodes.BAD_REQUEST).json({
+      code: ErrorCodes.SESSION_ERROR,
+      error: 'Invalid session id',
+    });
     return;
   }
   if (!guess) {
     // shows over
-    res
-      .status(StatusCodes.BAD_REQUEST)
-      .json({ error: 'Missing "guess" parameter' });
+    res.status(StatusCodes.BAD_REQUEST).json({
+      code: ErrorCodes.PARAMS_ERROR,
+      error: 'Missing "guess" parameter',
+    });
     return;
   }
   if (guess.length !== WORD_LENGTH) {
     // shows over
     res.status(StatusCodes.BAD_REQUEST).json({
-      error: `Param "geuss" has invalid length, allowed is ${WORD_LENGTH}`,
+      code: ErrorCodes.PARAMS_ERROR,
+      error: `Param "guess" has invalid length, allowed is ${WORD_LENGTH}`,
     });
     return;
   }
@@ -265,14 +278,16 @@ router.get('/next-attempt', async (req: Request, res: Response) => {
   const gameSession = gameSessions.get(session);
 
   if (!gameSession) {
-    res
-      .status(StatusCodes.INTERNAL_SERVER_ERROR)
-      .json({ error: 'Game for that session does not exist.' });
+    res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({
+      code: ErrorCodes.GENERAL_ERROR,
+      error: 'Game for that session does not exist.',
+    });
     return;
   } else if (gameSession.game.finished) {
-    res
-      .status(StatusCodes.INTERNAL_SERVER_ERROR)
-      .json({ error: 'Game for that session is already finished.' });
+    res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({
+      code: ErrorCodes.GENERAL_ERROR,
+      error: 'Game for that session is already finished.',
+    });
   }
 
   // validate guess attempt
@@ -316,16 +331,20 @@ router.get('/game-session', async (req: Request, res: Response) => {
   const { session } = req.query as TSessionQuery;
   if (!session) {
     // shows over
-    res.status(StatusCodes.BAD_REQUEST).json({ error: 'Invalid session id' });
+    res.status(StatusCodes.BAD_REQUEST).json({
+      code: ErrorCodes.SESSION_ERROR,
+      error: 'Invalid session id',
+    });
     return;
   }
 
   const gameSession = gameSessions.get(session);
 
   if (!gameSession) {
-    res
-      .status(StatusCodes.INTERNAL_SERVER_ERROR)
-      .json({ error: 'Game for that session does not exist.' });
+    res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({
+      code: ErrorCodes.GENERAL_ERROR,
+      error: 'Game for that session does not exist.',
+    });
     return;
   }
 
