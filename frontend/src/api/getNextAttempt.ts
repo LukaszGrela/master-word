@@ -14,16 +14,17 @@ export const getNextAttempt = async (params: {
 
   const data = JSON.parse(await response.text()) as TGameSessionRecord;
 
-  // inflate the game state
-  const attempts = data.game.max_attempts;
-  const emptyGameState = createGameState(attempts, data.game.word_length);
-  const state = (data.game.state as TPartialGameState)
-    .concat(emptyGameState)
-    .slice(0, attempts);
+  if (response.ok) {
+    // inflate the game state
+    const attempts = data.game.max_attempts;
+    const emptyGameState = createGameState(attempts, data.game.word_length);
+    const state = (data.game.state as TPartialGameState)
+      .concat(emptyGameState)
+      .slice(0, attempts);
 
-  console.log('state', state);
+    data.game.state = state as TGameState[];
+    return Promise.resolve(data);
+  }
 
-  data.game.state = state as TGameState[];
-
-  return data;
+  return Promise.reject(data);
 };

@@ -7,7 +7,11 @@ import { InputGuessPanel, ResultPanel } from './panel';
 import { TClickAction } from './panel/types';
 import { getBowserDetails } from '../utils/bowser';
 import { getInit } from '../api/getInit';
-import { TGameSessionRecord } from '../api/types';
+import {
+  TErrorResponse,
+  TGameSessionRecord,
+  guardTErrorResponse,
+} from '../api/types';
 import { createGameState } from '../api/utils';
 import { getNextAttempt } from '../api/getNextAttempt';
 
@@ -18,16 +22,18 @@ const emptyGameState = createGameState(ATTEMPTS, WORD_LENGTH);
 const MasterWord: FC<IMasterWord> = () => {
   const bowser = getBowserDetails();
 
+  const [, setError] = useState<TErrorResponse | null>(null);
   const [gameState, setGameState] = useState<TGameState>('init');
-  const [gameSession, setGameSession] = useState<TGameSessionRecord | null>(
-    null
-  );
+  const [gameSession, setGameSession] = useState<TGameSessionRecord | null>({
+    session: 'invalid',
+  } as TGameSessionRecord);
 
-  const wordLength = gameSession?.game.word_length ?? WORD_LENGTH;
-  const attempts = gameSession?.game.max_attempts ?? ATTEMPTS;
-  const game = gameSession?.game.state ?? emptyGameState;
-  const attempt = gameSession?.game.attempt ?? 0;
-  const wordToGuess = gameSession?.game.word ?? '';
+  const session = gameSession?.session;
+  const wordLength = gameSession?.game?.word_length ?? WORD_LENGTH;
+  const attempts = gameSession?.game?.max_attempts ?? ATTEMPTS;
+  const game = gameSession?.game?.state ?? emptyGameState.concat();
+  const attempt = gameSession?.game?.attempt ?? 0;
+  const wordToGuess = gameSession?.game?.word ?? '';
 
   const startGame = useCallback(() => {
     setGameState('init');
@@ -37,16 +43,33 @@ const MasterWord: FC<IMasterWord> = () => {
     const controller = new AbortController();
 
     const getInitSync = () => {
+      console.log('getInitSync', session);
       getInit({
         language: 'pl',
         signal: controller.signal,
+        session /* continue the same session game if exists */,
       })
         .then((sessionRecord) => {
           setGameSession(sessionRecord);
           setGameState('running');
         })
-        .catch((error) => {
-          console.error(error);
+        .catch((error): void => {
+          // handle custom error
+          if (guardTErrorResponse(error)) {
+            // if provided session is invalid, discard it and try again
+            if (error.code === 2 /* ErrorCodes.SESSION_ERROR */) {
+              setGameSession(null); // clear session
+              return;
+            } else {
+              setError(error);
+            }
+          } else if (error instanceof DOMException) {
+            // abort error is OK
+            return;
+          } else {
+            setError({ code: -1, error: (error as Error).message });
+          }
+          setGameState('error');
         });
     };
 
@@ -57,7 +80,7 @@ const MasterWord: FC<IMasterWord> = () => {
     return () => {
       controller.abort();
     };
-  }, [gameState]);
+  }, [gameState, session]);
 
   const handleWordCommit = useCallback(
     (guess: string) => {
@@ -81,6 +104,22 @@ const MasterWord: FC<IMasterWord> = () => {
         })
         .catch((error) => {
           console.log(error);
+          // session error is a showstopper here
+          if (guardTErrorResponse(error)) {
+            // if provided session is invalid, discard it and try again
+            if (
+              error.code === 2 /* ErrorCodes.SESSION_ERROR */ ||
+              error.code === 3 /* ErrorCodes.GENERAL_ERROR */
+            ) {
+              setGameSession(null); // clear session
+              setGameState('init');
+              return;
+            }
+          } else if (error instanceof DOMException) {
+            // abort error is OK (abort is never ok)
+            return;
+          }
+          // no action forr other errors
           setGameState('running');
         });
     },
@@ -132,7 +171,11 @@ const MasterWord: FC<IMasterWord> = () => {
         </p>
       )}
       <div className='game-board'>
-        <Board columns={wordLength} rows={attempts}>
+        <Board
+          columns={wordLength}
+          rows={attempts}
+          key={gameState === 'init' ? gameState : 'running'}
+        >
           {game.map((gameAttempt, index) => {
             return (
               <Word

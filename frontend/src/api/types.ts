@@ -1,3 +1,5 @@
+import { hasOwn } from '../utils/object/hasOwn';
+
 // Wrong - X, Misplaced - M, Correct - C
 export type TValidationChar = 'X' | 'M' | 'C';
 export type TGameState = {
@@ -34,3 +36,12 @@ export type PartialPick<T, K extends keyof T> = Partial<Omit<T, K>> &
   Pick<T, K>;
 
 export type TPartialGameState = PartialPick<TGameState, 'word'>[];
+
+export type TErrorResponse = {
+  error: string;
+  code: number /* ErrorCodes*/;
+};
+
+export const guardTErrorResponse = (test: unknown): test is TErrorResponse => {
+  return !!test && hasOwn(test, 'error') && hasOwn(test, 'code');
+};
