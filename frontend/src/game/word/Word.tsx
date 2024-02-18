@@ -7,6 +7,7 @@ import { TValidationChar } from '../types';
 
 const Word: FC<IProps> = ({
   active,
+
   wordLength,
   word,
   id,

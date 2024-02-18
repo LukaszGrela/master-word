@@ -1,109 +1,102 @@
 import { FC, useCallback, useEffect, useState } from 'react';
 import { ATTEMPTS, Board, WORD_LENGTH } from './index';
-import { IMasterWord, TGameState, TValidationChar } from './types';
+import { IMasterWord, TGameState } from './types';
 import { classNames } from '../utils/classNames';
 import Word from './word/Word';
 import { InputGuessPanel, ResultPanel } from './panel';
 import { TClickAction } from './panel/types';
-import { noop } from '../utils/noop';
 import { getBowserDetails } from '../utils/bowser';
-import { getRandomWord, validateWord } from '../api';
+import { getInit } from '../api/getInit';
+import { TGameSessionRecord } from '../api/types';
+import { createGameState } from '../api/utils';
+import { getNextAttempt } from '../api/getNextAttempt';
 
 import './MasterWord.css';
 
-type TAttempt = { word: string; validated?: TValidationChar[] };
-const createGameState = (attempts: number): TAttempt[] =>
-  Array.from(Array(attempts)).map(() => ({
-    word: '',
-  }));
+const emptyGameState = createGameState(ATTEMPTS, WORD_LENGTH);
 
-const MasterWord: FC<IMasterWord> = ({
-  wordLength = WORD_LENGTH,
-  attempts = ATTEMPTS,
-}) => {
+const MasterWord: FC<IMasterWord> = () => {
   const bowser = getBowserDetails();
 
-  const [wordToGuess, setWordToGuess] = useState(['']);
-
   const [gameState, setGameState] = useState<TGameState>('init');
-  const [game, setGame] = useState<
-    { word: string; validated?: TValidationChar[] }[]
-  >(createGameState(attempts));
+  const [gameSession, setGameSession] = useState<TGameSessionRecord | null>(
+    null
+  );
 
-  const [attempt, setAttempt] = useState(0);
+  const wordLength = gameSession?.game.word_length ?? WORD_LENGTH;
+  const attempts = gameSession?.game.max_attempts ?? ATTEMPTS;
+  const game = gameSession?.game.state ?? emptyGameState;
+  const attempt = gameSession?.game.attempt ?? 0;
+  const wordToGuess = gameSession?.game.word ?? '';
+
+  const startGame = useCallback(() => {
+    setGameState('init');
+  }, []);
+
+  useEffect(() => {
+    const controller = new AbortController();
+
+    const getInitSync = () => {
+      getInit({
+        language: 'pl',
+        signal: controller.signal,
+      })
+        .then((sessionRecord) => {
+          setGameSession(sessionRecord);
+          setGameState('running');
+        })
+        .catch((error) => {
+          console.error(error);
+        });
+    };
+
+    if (gameState === 'init') {
+      getInitSync();
+    }
+
+    return () => {
+      controller.abort();
+    };
+  }, [gameState]);
 
   const handleWordCommit = useCallback(
     (guess: string) => {
       const word = guess.toLocaleUpperCase();
 
+      if (!gameSession) return;
+
       setGameState('pending');
 
-      validateWord(word, wordToGuess, attempt + 1 >= attempts)
+      getNextAttempt({
+        guess: word,
+        session: gameSession.session,
+      })
         .then((response) => {
-          console.log(response);
-          const { guessed, result, valid, error } = response;
-          if (valid) {
-            // store word attempt in game
-            setGame((list) => {
-              list[attempt].word = word;
-              list[attempt].validated = result;
-
-              return list;
-            });
-
-            if (guessed) {
-              setAttempt(attempt + 1);
-              setGameState('win');
-            } else {
-              if (attempt + 1 < attempts) {
-                setAttempt(attempt + 1);
-                setGameState('running');
-              } else {
-                // game over
-                setAttempt(attempts);
-                setGameState('lose');
-              }
-            }
-          } else {
-            console.log(error);
+          setGameSession(response);
+          if (!response.game.finished) {
             setGameState('running');
+          } else {
+            setGameState(response.game.guessed ? 'win' : 'lose');
           }
         })
-        .catch(() => {
+        .catch((error) => {
+          console.log(error);
           setGameState('running');
         });
     },
-    [attempt, attempts, wordToGuess]
+    [gameSession]
   );
-
-  const startGame = useCallback(async () => {
-    setGameState('pending');
-    const randomWordResponse = await getRandomWord();
-    setGame(createGameState(attempts));
-    setWordToGuess(randomWordResponse.word);
-    setAttempt(0);
-    setGameState('running');
-  }, [attempts]);
-
-  useEffect(() => {
-    const asyncInit = async () => {
-      await startGame();
-    };
-    if (gameState === 'init') {
-      asyncInit().catch(noop);
-    }
-  }, [gameState, startGame]);
 
   const handlePanelAction = useCallback(
     (action: TClickAction, ...rest: unknown[]) => {
       if (action === 'start') {
-        startGame().catch(noop);
+        startGame();
       }
       if (action === 'guess') {
-        const [guess] = rest;
+        const [guess] = rest as string[];
 
         setShowInputModal(false);
-        handleWordCommit(guess as string);
+        handleWordCommit(guess);
       }
     },
     [handleWordCommit, startGame]
@@ -130,12 +123,14 @@ const MasterWord: FC<IMasterWord> = ({
         <h1>Master Word</h1>
         <h4>Odgadnij słowo które mam na myśli...</h4>
       </div>
-      <p className='read-the-docs'>
-        {bowser.platform.type !== 'mobile' &&
-          'Zacznij wpisywać słowo, naciśnij Enter żeby potwierdzić.'}
-        {bowser.platform.type === 'mobile' &&
-          'Naciśnij linię z ikonką edycji by wprowadzić słowo.'}
-      </p>
+      {gameState !== 'init' && (
+        <p className='read-the-docs'>
+          {bowser.platform.type !== 'mobile' &&
+            'Zacznij wpisywać słowo, naciśnij Enter żeby potwierdzić.'}
+          {bowser.platform.type === 'mobile' &&
+            'Naciśnij linię z ikonką edycji by wprowadzić słowo.'}
+        </p>
+      )}
       <div className='game-board'>
         <Board columns={wordLength} rows={attempts}>
           {game.map((gameAttempt, index) => {
@@ -145,7 +140,7 @@ const MasterWord: FC<IMasterWord> = ({
                 commit={handleWordCommit}
                 active={index === attempt && gameState === 'running'}
                 wordLength={wordLength}
-                word={gameAttempt.word}
+                word={gameAttempt.word.join('')}
                 id={`${index}`}
                 key={`${index}`}
                 validated={gameAttempt.validated}
@@ -154,15 +149,17 @@ const MasterWord: FC<IMasterWord> = ({
             );
           })}
         </Board>
+
         <ResultPanel
           attempt={attempt}
           gameState={gameState}
-          wordToGuess={wordToGuess.join('')}
+          wordToGuess={wordToGuess}
           onClick={handlePanelAction}
         />
+
         {showInputModal && (
           <InputGuessPanel
-            initWord={game[attempt].word}
+            initWord={game[attempt].word.join('')}
             maxLength={wordLength}
             onClose={handlePanelAction}
           />
