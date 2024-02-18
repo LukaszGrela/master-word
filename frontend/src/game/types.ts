@@ -23,5 +23,3 @@ export type TGameState =
   | 'win'
   | 'error';
 
-// Wrong - X, Misplaced - M, Correct - C
-export type TValidationChar = 'X' | 'M' | 'C';
