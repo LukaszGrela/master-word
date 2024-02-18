@@ -125,6 +125,7 @@ type TGameSession = {
   max_attempts: number;
   attempt: number;
   word: string;
+  word_length: number;
   state: TGameState[];
   guessed: boolean;
 } & (TGameSessionFinished | TGameSessionIncomplete);
@@ -163,6 +164,7 @@ router.get('/init', async (req: Request, res: Response) => {
           max_attempts: MAX_ATTEMTPS,
           attempt: 0,
           word: word.word.toLocaleUpperCase(),
+          word_length: word.word.length,
           state: [],
           finished: false,
           guessed: false,
