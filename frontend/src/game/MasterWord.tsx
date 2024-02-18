@@ -119,7 +119,7 @@ const MasterWord: FC<IMasterWord> = () => {
             // abort error is OK (abort is never ok)
             return;
           }
-          // no action forr other errors
+          // no action for other errors
           setGameState('running');
         });
     },
