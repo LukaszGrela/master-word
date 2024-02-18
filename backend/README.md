@@ -1,1 +1,9 @@
-for local server define PORT in `.env.local` to point to your desired local port e.g. `3001`
+# Node JS backend
+
+Game server for Master Word App
+
+## Endpoints
+
+- `GET` - `api/init`
+- `GET` - `api/next-attempt`
+
