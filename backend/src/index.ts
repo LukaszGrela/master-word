@@ -8,7 +8,12 @@ const masterWordApp = express();
 
 masterWordApp.use(express.json());
 
-masterWordApp.use(cors({}));
+masterWordApp.use(
+  cors({
+    methods: ['GET' /*,'HEAD','PUT','PATCH','POST','DELETE'*/],
+    origin: ['https://master-word.greladesign.co', 'http://localhost:5173'],
+  })
+);
 
 masterWordApp.use(
   express.urlencoded({
