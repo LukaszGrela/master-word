@@ -18,20 +18,39 @@ type TRandomWordQuery = {
   wordLength: number;
 };
 
+async function getLocalDictionary(
+  language = 'pl',
+  wordLength = 5
+): Promise<string[]> {
+  const file = `dictionaries/${wordLength}/${language}.json`;
+  // load file then pick
+  try {
+    const data = await fs.readFile(file, {
+      encoding: 'utf-8',
+    });
+    return JSON.parse(data) as string[];
+  } catch (error) {
+    console.log(error);
+    return Promise.reject({
+      code: ErrorCodes.LOCAL_DICTIONARY_ERROR,
+      error: `Can't retrieve dictionary: ${file}.`,
+      language,
+    });
+  }
+  //
+}
+
 async function getRandomWord(
   language = 'pl',
   wordLength = 5
 ): Promise<TRandomWordResponse> {
-  const file = `dictionaries/${wordLength}/${language}.json`;
   if (language === 'pl') {
     // localDictionary
     if (!(localDictionary && localDictionary.length > 0)) {
       // load file then pick
       try {
-        const data = await fs.readFile(file, {
-          encoding: 'utf-8',
-        });
-        localDictionary = JSON.parse(data);
+        const data = await getLocalDictionary(language, wordLength);
+        localDictionary = data;
       } catch (error) {
         console.log(error);
         return Promise.reject({
@@ -89,16 +108,83 @@ router.get('/random-word', async (req: Request, res: Response) => {
   }
 });
 
+type TIsCorrectWordResponse = {
+  word: string;
+  validWord: boolean;
+  language: 'pl' | 'en';
+
+  error?: string;
+};
 const isCorrectWord = async (word: string, language: 'pl' | 'en') => {
   if (language === 'en') {
-    const response = await fetch('https://words.dev-apis.com/validate-word', {
-      headers: {
-        'content-type': 'application/json',
-      },
-      method: 'POST',
-      body: JSON.stringify({ word }),
-    });
+    try {
+      const response = await fetch('https://words.dev-apis.com/validate-word', {
+        headers: {
+          'content-type': 'application/json',
+        },
+        method: 'POST',
+        body: JSON.stringify({ word }),
+      });
+      const data = JSON.parse(await response.text()) as TIsCorrectWordResponse;
+      if (response.ok) {
+        return { ...data, language };
+      } else {
+        // endpoint returned error
+        console.log(data);
+        return {
+          ...data,
+          word,
+          validWord: true,
+          error: 'Validation endpoint error',
+          language,
+        };
+      }
+    } catch (error) {
+      console.log(error);
+      // something is broken, accept word for game play
+      return {
+        word,
+        validWord: true,
+        error: (error as Error).message,
+        language,
+      };
+    }
   } else {
+    if (!(localDictionary && localDictionary.length > 0)) {
+      // load file then pick
+      try {
+        const data = await getLocalDictionary(language, 5);
+        localDictionary = data;
+      } catch (error) {
+        console.log(error);
+        // something is broken, accept word for game play
+        return {
+          word,
+          validWord: true,
+          error: (error as Error).message || (error as any).error,
+          language,
+        };
+      }
+      //
+    }
+    // search for the word
+    // dictionary contains lower case words
+    if (localDictionary.indexOf(word.toLocaleLowerCase()) !== -1) {
+      // correct
+      return {
+        word,
+        language,
+        validWord: true,
+      };
+    } else {
+      // incorrect
+      return {
+        word,
+        language,
+        validWord: false,
+        error: 'Word not found',
+      };
+    }
   }
 };
 
@@ -142,6 +228,23 @@ const MAX_ATTEMTPS = 8 as const;
 const WORD_LENGTH = 5 as const;
 const gameSessions = new Map<string, TGameSessionRecord>();
 
+const resetGameSession = (
+  language: 'pl' | 'en',
+  word: string
+): TGameSession => {
+  return {
+    language,
+    max_attempts: MAX_ATTEMTPS,
+    attempt: 0,
+    word: word.toLocaleUpperCase(),
+    word_length: word.length,
+    state: [],
+    finished: false,
+    guessed: false,
+    timestamp_start: `${new Date().getTime()}`,
+  };
+};
+
 router.get('/init', async (req: Request, res: Response) => {
   const { session, language = 'pl' } = req.query as TInitQuery;
 
@@ -165,17 +268,7 @@ router.get('/init', async (req: Request, res: Response) => {
       const id = uuid();
       response = {
         session: id,
-        game: {
-          language,
-          max_attempts: MAX_ATTEMTPS,
-          attempt: 0,
-          word: word.word.toLocaleUpperCase(),
-          word_length: word.word.length,
-          state: [],
-          finished: false,
-          guessed: false,
-          timestamp_start: `${new Date().getTime()}`,
-        },
+        game: resetGameSession(language, word.word),
       };
       gameSessions.set(id, response);
     } catch (error) {
@@ -195,7 +288,27 @@ router.get('/init', async (req: Request, res: Response) => {
     return;
   } else {
     // all good - send game response
+
+    if (response.game.finished) {
+      try {
+        const word = await getRandomWord(language, WORD_LENGTH);
+        response = {
+          ...response,
+          game: resetGameSession(response.game.language, word.word),
+        };
+        // store/update
+        gameSessions.set(response.session, response);
+      } catch (error) {
+        res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({
+          code: ErrorCodes.GENERAL_ERROR,
+          error: 'Can not start new game.',
+        });
+        return;
+      }
+    }
+
     const { word, ...game } = response.game;
+    // deliver in progress session
     res.status(StatusCodes.OK).json({
       session: response.session,
       game,
@@ -288,6 +401,24 @@ router.get('/next-attempt', async (req: Request, res: Response) => {
       code: ErrorCodes.GENERAL_ERROR,
       error: 'Game for that session is already finished.',
     });
+  }
+  // isCorrectWord
+  const isCorrect = await isCorrectWord(guess, gameSession.game.language);
+  if (!isCorrect.validWord) {
+    // reject the word
+    if (gameSession.game.language === 'pl') {
+      // TODO implement for polish when dictionary will contain > 1000 words
+      // log the word, it is possible that it is correct but missing from dictionary
+      console.log('LOG NEW WORD:', isCorrect);
+    } else {
+      // english has external validation
+      // shows over
+      res.status(StatusCodes.BAD_REQUEST).json({
+        code: ErrorCodes.INVALID_WORD,
+        error: isCorrect.error,
+      });
+      return;
+    }
   }
 
   // validate guess attempt
