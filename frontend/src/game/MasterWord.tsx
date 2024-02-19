@@ -14,6 +14,7 @@ import {
   guardTErrorResponse,
 } from '../api';
 import { createGameState } from '../api/utils';
+import { getUrlSearch } from '../utils/getUrlSearch';
 
 import './MasterWord.css';
 
@@ -21,14 +22,15 @@ const emptyGameState = createGameState(ATTEMPTS, WORD_LENGTH);
 
 const MasterWord: FC<IMasterWord> = () => {
   const bowser = getBowserDetails();
+  const urlSession = getUrlSearch().get('session');
 
   const [, setError] = useState<TErrorResponse | null>(null);
   const [gameState, setGameState] = useState<TGameState>('init');
-  const [gameSession, setGameSession] = useState<TGameSessionRecord | null>({
-    session: 'invalid',
-  } as TGameSessionRecord);
+  const [gameSession, setGameSession] = useState<TGameSessionRecord | null>(
+    null
+  );
 
-  const session = gameSession?.session;
+  const session = gameSession?.session ?? urlSession ?? undefined;
   const wordLength = gameSession?.game?.word_length ?? WORD_LENGTH;
   const attempts = gameSession?.game?.max_attempts ?? ATTEMPTS;
   const game = gameSession?.game?.state ?? emptyGameState.concat();

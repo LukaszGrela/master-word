@@ -35,11 +35,15 @@ export type TGameSessionRecord = {
 export type PartialPick<T, K extends keyof T> = Partial<Omit<T, K>> &
   Pick<T, K>;
 
+export type TStrictRequired<T, E = null | undefined> = {
+  [P in keyof T]-?: Exclude<T[P], E>;
+};
+
 export type TPartialGameState = PartialPick<TGameState, 'word'>[];
 
 export type TErrorResponse = {
   error: string;
-  code: number /* ErrorCodes*/;
+  code: number /* ErrorCodes */;
 };
 
 export const guardTErrorResponse = (test: unknown): test is TErrorResponse => {
