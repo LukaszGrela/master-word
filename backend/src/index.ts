@@ -1,6 +1,6 @@
 import express from 'express';
 import cors from 'cors';
-import router from './router';
+import { gameRoutes } from './router';
 
 const PORT = process.env.PORT || 3001;
 
@@ -21,7 +21,7 @@ masterWordApp.use(
   })
 );
 
-masterWordApp.use('/api', router);
+masterWordApp.use('/api', gameRoutes);
 
 masterWordApp.listen(PORT, () => {
   console.log(`Master Word server started, listening on port ${PORT}`);

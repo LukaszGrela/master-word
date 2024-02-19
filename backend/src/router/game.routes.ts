@@ -1,44 +1,22 @@
 import { Router, Request, Response } from 'express';
 import { StatusCodes } from 'http-status-codes';
-import fs from 'fs/promises';
 import { v4 as uuid } from 'uuid';
-import { ErrorCodes } from './enums';
+import { ErrorCodes } from '../enums';
+import type { TGameSessionRecord } from '../types';
+import type {
+  TRandomWordResponse,
+  TRandomWordQuery,
+  TIsCorrectWordResponse,
+  TInitQuery,
+  TNextAttemptQuery,
+  TSessionQuery,
+} from './types';
+import { getLocalDictionary, resetGameSession, validateWord } from './helpers';
+import { WORD_LENGTH } from '../constants';
 
 const router = Router();
 
 let localDictionary: string[] = [];
-
-type TRandomWordResponse = {
-  language: 'pl' | 'en';
-  word: string;
-  error?: string;
-};
-type TRandomWordQuery = {
-  language: 'pl' | 'en';
-  wordLength: number;
-};
-
-async function getLocalDictionary(
-  language = 'pl',
-  wordLength = 5
-): Promise<string[]> {
-  const file = `dictionaries/${wordLength}/${language}.json`;
-  // load file then pick
-  try {
-    const data = await fs.readFile(file, {
-      encoding: 'utf-8',
-    });
-    return JSON.parse(data) as string[];
-  } catch (error) {
-    console.log(error);
-    return Promise.reject({
-      code: ErrorCodes.LOCAL_DICTIONARY_ERROR,
-      error: `Can't retrieve dictionary: ${file}.`,
-      language,
-    });
-  }
-  //
-}
 
 async function getRandomWord(
   language = 'pl',
@@ -108,13 +86,6 @@ router.get('/random-word', async (req: Request, res: Response) => {
   }
 });
 
-type TIsCorrectWordResponse = {
-  word: string;
-  validWord: boolean;
-  language: 'pl' | 'en';
-
-  error?: string;
-};
 const isCorrectWord = async (word: string, language: 'pl' | 'en') => {
   if (language === 'en') {
     try {
@@ -188,62 +159,7 @@ const isCorrectWord = async (word: string, language: 'pl' | 'en') => {
   }
 };
 
-// the game
-type TSessionQuery = { session?: string };
-type TInitQuery = TSessionQuery & { language?: 'pl' | 'en' };
-
-// Wrong - X, Misplaced - M, Correct - C
-type TValidationChar = 'X' | 'M' | 'C';
-type TGameState = {
-  word: string[];
-  validated: TValidationChar[];
-};
-
-type TGameSessionFinished = {
-  finished: true;
-  timestamp_finish: string;
-};
-type TGameSessionIncomplete = {
-  finished: false;
-};
-
-type TGameSession = {
-  language: 'pl' | 'en';
-
-  timestamp_start: string;
-  max_attempts: number;
-  attempt: number;
-  word: string;
-  word_length: number;
-  state: TGameState[];
-  guessed: boolean;
-} & (TGameSessionFinished | TGameSessionIncomplete);
-
-type TGameSessionRecord = {
-  session: string;
-  game: TGameSession;
-};
-
-const MAX_ATTEMTPS = 8 as const;
-const WORD_LENGTH = 5 as const;
 const gameSessions = new Map<string, TGameSessionRecord>();
-
-const resetGameSession = (
-  language: 'pl' | 'en',
-  word: string
-): TGameSession => {
-  return {
-    language,
-    max_attempts: MAX_ATTEMTPS,
-    attempt: 0,
-    word: word.toLocaleUpperCase(),
-    word_length: word.length,
-    state: [],
-    finished: false,
-    guessed: false,
-    timestamp_start: `${new Date().getTime()}`,
-  };
-};
 
 router.get('/init', async (req: Request, res: Response) => {
   const { session, language = 'pl' } = req.query as TInitQuery;
@@ -315,50 +231,6 @@ router.get('/init', async (req: Request, res: Response) => {
     });
   }
 });
-
-const validateWord = (
-  guess: string[],
-  compare: string[],
-  isGuessed: boolean
-): { guessed: boolean; validated: TValidationChar[] } => {
-  const validated: TValidationChar[] = Array.from(Array(compare.length)).map(
-    () => (isGuessed ? 'C' : 'X')
-  );
-
-  if (!isGuessed) {
-    const from = guess.concat();
-    const to = compare.concat();
-    // green pass
-    for (let i = 0; i < from.length; i++) {
-      const letter = from[i];
-
-      if (letter === to[i]) {
-        validated[i] = 'C';
-        from[i] = '';
-        to[i] = '';
-      }
-    }
-
-    // orange pass
-    for (let i = 0; i < from.length; i++) {
-      const letter = from[i];
-
-      if (letter && to.includes(letter)) {
-        validated[i] = 'M';
-        from[i] = '';
-        const toIndex = to.findIndex((char) => char === letter);
-        to[toIndex] = '';
-      }
-    }
-  }
-
-  return {
-    guessed: isGuessed,
-    validated,
-  };
-};
-
-type TNextAttemptQuery = TSessionQuery & { guess: string };
 
 router.get('/next-attempt', async (req: Request, res: Response) => {
   const { session, guess } = req.query as TNextAttemptQuery;
