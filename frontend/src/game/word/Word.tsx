@@ -3,7 +3,7 @@ import { Letter } from '../cell';
 import { classNames } from '../../utils/classNames';
 import { isLetter } from '../../utils/isLetter';
 import { IProps } from './types';
-import { TValidationChar } from '../types';
+import { TValidationChar } from '../../api';
 
 const Word: FC<IProps> = ({
   active,

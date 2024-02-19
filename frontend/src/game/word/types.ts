@@ -1,4 +1,4 @@
-import { TValidationChar } from '../types';
+import { TValidationChar } from '../../api';
 
 export interface IProps {
   // row identifier

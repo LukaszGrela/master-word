@@ -1,8 +1,4 @@
-import { default as validateWord, TValidationResponse } from './validateWord';
-import {
-  default as getRandomWord,
-  TGetRandomWordResponse,
-} from './getRandomWord';
+export * from './types';
 
-export { validateWord, getRandomWord };
-export type { TValidationResponse, TGetRandomWordResponse };
+export * from './getInit';
+export * from './getNextAttempt';

@@ -6,14 +6,14 @@ import Word from './word/Word';
 import { InputGuessPanel, ResultPanel } from './panel';
 import { TClickAction } from './panel/types';
 import { getBowserDetails } from '../utils/bowser';
-import { getInit } from '../api/getInit';
 import {
+  getInit,
+  getNextAttempt,
   TErrorResponse,
   TGameSessionRecord,
   guardTErrorResponse,
-} from '../api/types';
+} from '../api';
 import { createGameState } from '../api/utils';
-import { getNextAttempt } from '../api/getNextAttempt';
 
 import './MasterWord.css';
 
