@@ -35,7 +35,6 @@ const MasterWord: FC<IMasterWord> = () => {
   const attempts = gameSession?.game?.max_attempts ?? ATTEMPTS;
   const game = gameSession?.game?.state ?? emptyGameState.concat();
   const attempt = gameSession?.game?.attempt ?? 0;
-  const wordToGuess = gameSession?.game?.word ?? '';
 
   const startGame = useCallback(() => {
     setGameState('init');
@@ -202,9 +201,8 @@ const MasterWord: FC<IMasterWord> = () => {
         </Board>
 
         <ResultPanel
-          attempt={attempt}
           gameState={gameState}
-          wordToGuess={wordToGuess}
+          gameSession={gameSession?.game}
           onClick={handlePanelAction}
         />
 
