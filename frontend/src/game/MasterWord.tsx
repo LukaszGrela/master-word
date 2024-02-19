@@ -61,6 +61,12 @@ const MasterWord: FC<IMasterWord> = () => {
             // if provided session is invalid, discard it and try again
             if (error.code === 2 /* ErrorCodes.SESSION_ERROR */) {
               setGameSession(null); // clear session
+              if (session === urlSession) {
+                // session in the url, reload with new url
+                const url = new URL(window.location.href);
+                url.searchParams.delete('session');
+                window.location.assign(url);
+              }
               return;
             } else {
               setError(error);
