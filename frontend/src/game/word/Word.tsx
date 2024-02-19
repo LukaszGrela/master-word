@@ -2,24 +2,20 @@ import { FC, useState, useEffect, Fragment, useMemo } from 'react';
 import { Letter } from '../cell';
 import { classNames } from '../../utils/classNames';
 import { isLetter } from '../../utils/isLetter';
+import { IProps } from './types';
+import { TValidationChar } from '../../api';
 
-const Word: FC<{
-  // is the word active - user enters word
-  active?: boolean;
-  // current word length
-  wordLength: number;
-  // when not active this holds the word to display
-  word?: string;
-  id: string;
-  // when not mobile this provides user guessed word to check
-  commit: (word: string) => void;
-  // correct word to compare against
-  compare?: string;
+const Word: FC<IProps> = ({
+  active,
 
-  className?: string;
-  // is it a mobile and this component is static
-  mobile?: boolean;
-}> = ({ active, wordLength, word, id, commit, compare, className, mobile }) => {
+  wordLength,
+  word,
+  id,
+  commit,
+  className,
+  mobile,
+  validated,
+}) => {
   const [index, setIndex] = useState(0);
   const [guessing, setGuessing] = useState(' '.repeat(wordLength));
 
@@ -78,35 +74,18 @@ const Word: FC<{
   }, [active, commit, guessing, index, mobile, wordLength]);
 
   const staticLetters = useMemo(() => {
-    const classes = Array.from(Array(wordLength)).map(() => 'incorrect');
-    // if !active && compare
-    // do green pass
-    // do orange pass
-    if (!active && compare) {
-      const from = guessing.split('');
-      const to = compare.split('');
-      // green pass
-      for (let i = 0; i < from.length; i++) {
-        const letter = from[i];
+    let classes = Array.from(Array(wordLength)).map(() => 'incorrect');
 
-        if (letter === to[i]) {
-          classes[i] = 'correct';
-          from[i] = '';
-          to[i] = '';
+    if (!active && validated) {
+      classes = validated.map((char: TValidationChar) => {
+        if (char === 'M') {
+          return 'misplaced';
         }
-      }
-
-      // orange pass
-      for (let i = 0; i < from.length; i++) {
-        const letter = from[i];
-
-        if (letter && to.includes(letter)) {
-          classes[i] = 'misplaced';
-          from[i] = '';
-          const toIndex = to.findIndex((char) => char === letter);
-          to[toIndex] = '';
+        if (char === 'C') {
+          return 'correct';
         }
-      }
+        return 'incorrect';
+      });
     }
 
     if (word) {
@@ -114,7 +93,7 @@ const Word: FC<{
         .split('')
         .map((letter, i) => (
           <Letter
-            className={classNames(classes[i] || undefined, className)}
+            className={classNames(classes[i] || 'incorrect', className)}
             letter={letter}
             key={`letter-${id}-${i}`}
           />
@@ -122,7 +101,7 @@ const Word: FC<{
     }
 
     return null;
-  }, [active, className, compare, guessing, id, word, wordLength]);
+  }, [active, className, id, validated, word, wordLength]);
 
   return (
     <Fragment>

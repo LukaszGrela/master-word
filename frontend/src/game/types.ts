@@ -15,4 +15,11 @@ export interface IMasterWord {
   wordLength?: number;
 }
 
-export type TGameState = 'init' | 'pending' | 'running' | 'lose' | 'win';
+export type TGameState =
+  | 'init'
+  | 'pending'
+  | 'running'
+  | 'lose'
+  | 'win'
+  | 'error';
+
