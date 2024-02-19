@@ -88,7 +88,7 @@ const MasterWord: FC<IMasterWord> = () => {
     return () => {
       controller.abort();
     };
-  }, [gameState, session]);
+  }, [gameState, session, urlSession]);
 
   const handleWordCommit = useCallback(
     (guess: string) => {
