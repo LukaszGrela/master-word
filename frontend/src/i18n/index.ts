@@ -41,6 +41,7 @@ export const replaceSubstituteMap = (
 };
 
 let uiTexts: IDictionary<string> = {};
+let loadedLang: TSupportedLanguages | undefined;
 
 export const loadTranslation = async (
   language: TSupportedLanguages,
@@ -57,6 +58,7 @@ export const loadTranslation = async (
       const dict = (await response.json()) as IDictionary<string>;
 
       uiTexts = dict;
+      loadedLang = language;
 
       return dict;
     }
@@ -65,6 +67,10 @@ export const loadTranslation = async (
     // throw error
     return new Error(`Failed to load translation for ${language} language.`);
   }
+};
+
+export const getLoadedLanguage = (): TSupportedLanguages | undefined => {
+  return loadedLang;
 };
 
 const getUIText = (
