@@ -11,10 +11,6 @@ export const toHMS = (ms: number): { h?: number; m?: number; s: number } => {
   const secReminder = sec % 60;
   sec -= secReminder;
 
-  if (sec === 60) {
-    // one minute
-    return { m: 1, s: secReminder };
-  }
 
   let min = sec / 60;
 
