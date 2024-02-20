@@ -15,5 +15,8 @@
   "main-mobile-info": "Tap the line with edit icon to enter the word.",
   "translation-info-sr": "Choose the language of UI",
   "translation-button-english": "English",
-  "translation-button-polish": "Polish"
+  "translation-button-polish": "Polish",
+  "result-start-the-game": "Start the game",
+  "result-language-info": "Select language of the word to guess.",
+  "result-start-button": "Start"
 }
