@@ -75,8 +75,12 @@ const Result: FC<IProps> = ({
         {gameState === 'init' && t('result-start-the-game')}
         {showLoading && <>&nbsp;</>}
       </h2>
-      {gameSession?.finished && <p>{t('result-playtime', { playTime })}</p>}
-      {!hiddenFinalResult && <p>{t('result-language-info')}</p>}
+      {gameSession?.finished && (
+        <p className='playtime'>{t('result-playtime', { playTime })}</p>
+      )}
+      {!hiddenFinalResult && (
+        <p className='language-info'>{t('result-language-info')}</p>
+      )}
       {!hiddenFinalResult && (
         <LanguageSelector
           className='game-language'

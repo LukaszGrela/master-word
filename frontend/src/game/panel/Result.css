@@ -6,3 +6,7 @@
 
   padding-bottom: 0.25rem;
 }
+
+.result.panel .language-info {
+  font-size: 0.75rem;
+}
