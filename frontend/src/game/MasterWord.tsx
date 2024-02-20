@@ -20,6 +20,7 @@ import t, { getLoadedLanguage, loadTranslation } from '../i18n';
 import { noop } from '../utils/noop';
 
 import './MasterWord.css';
+import { AppStorage } from '../utils/localStorage';
 
 const emptyGameState = createGameState(ATTEMPTS, WORD_LENGTH);
 
@@ -177,6 +178,7 @@ const MasterWord: FC<IMasterWord> = () => {
     if (language !== used) {
       loadTranslation(language)
         .then(() => {
+          AppStorage.getInstance().setItem('ui-language', language);
           setTranslation(language);
         })
         .catch(noop);
