@@ -12,9 +12,9 @@
 
 .language-selector.translation button.selected {
   background-color: hsl(25 40% 90% / 1);
-  border-color: hsl(27, 27%, 80%);
+  border-color: hsl(27, 27%, 50%);
 }
 
 .language-selector.translation button:hover {
-  border-color: hsl(27, 27%, 80%);
+  border-color: hsl(27, 27%, 50%);
 }
