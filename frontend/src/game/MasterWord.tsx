@@ -153,8 +153,10 @@ const MasterWord: FC<IMasterWord> = () => {
 
   const [showInputModal, setShowInputModal] = useState(false);
   useEffect(() => {
-    const tapHandler = () => {
-      setShowInputModal(true);
+    const tapHandler = (e: MouseEvent) => {
+      if ((e.target as HTMLElement).classList.contains('board')) {
+        setShowInputModal(true);
+      }
     };
 
     if (bowser.platform.type === 'mobile' && gameState === 'running') {
