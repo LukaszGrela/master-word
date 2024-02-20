@@ -1,0 +1,16 @@
+{
+  "result-win": "You've won in {attempt} attempts",
+  "result-lose": "You've lost, word to guess was {wordToGuess}",
+  "result-running": "Game in progress",
+  "result-playtime": "Game time: {playTime}",
+  "result-again-button": "Next word",
+  "loading": "Loading...",
+  "input-modal-label": "Insert word to guess",
+  "input-modal-info-done": "Tap Done to check",
+  "input-modal-info-start": "Enter {maxLength} letter word",
+  "input-modal-ok-button": "Done",
+  "main-title": "Master Word",
+  "main-subtitle": "Guess the word I'm thinking...",
+  "main-desktop-info": "Start typing, press Enter to confirm.",
+  "main-mobile-info": "Tap the line with edit icon to enter the word."
+}
