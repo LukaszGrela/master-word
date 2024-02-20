@@ -1,4 +1,5 @@
 import { hasOwn } from '../utils/object/hasOwn';
+export type TSupportedLanguages = 'pl' | 'en';
 
 // Wrong - X, Misplaced - M, Correct - C
 export type TValidationChar = 'X' | 'M' | 'C';

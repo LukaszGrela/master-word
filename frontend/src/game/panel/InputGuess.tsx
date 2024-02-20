@@ -1,5 +1,6 @@
 import { FC, useCallback, useState } from 'react';
 import './InputGuess.css';
+import t from '../../i18n';
 
 // const reg = /^[\p{Letter}\p{Mark}]+$/iu;
 
@@ -33,7 +34,7 @@ const InputGuess: FC<{
 
   return (
     <div className='panel input-modal'>
-      <label htmlFor='guess'>Podaj słowo do odgadnięcia</label>
+      <label htmlFor='guess'>{t('input-modal-label')}</label>
       <input
         type='text'
         name='guess'
@@ -47,13 +48,15 @@ const InputGuess: FC<{
         enterKeyHint='done'
       ></input>
       {!disableButton && (
-        <div className='read-the-docs'>Naciśnij Gotowe by sprawdzić</div>
+        <div className='read-the-docs'>{t('input-modal-info-done')}</div>
       )}
       {disableButton && (
-        <div className='read-the-docs'>Wpisz {maxLength} literowe słowo</div>
+        <div className='read-the-docs'>
+          {t('input-modal-info-start', { maxLength })}
+        </div>
       )}
       <button onClick={handleCommit} disabled={disableButton}>
-        Gotowe
+        {t('input-modal-ok-button')}
       </button>
     </div>
   );

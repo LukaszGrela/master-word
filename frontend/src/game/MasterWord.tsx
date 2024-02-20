@@ -12,11 +12,15 @@ import {
   TErrorResponse,
   TGameSessionRecord,
   guardTErrorResponse,
+  TSupportedLanguages,
 } from '../api';
 import { createGameState } from '../api/utils';
 import { getUrlSearch } from '../utils/getUrlSearch';
+import t, { getLoadedLanguage, loadTranslation } from '../i18n';
+import { noop } from '../utils/noop';
 
 import './MasterWord.css';
+import { AppStorage } from '../utils/localStorage';
 
 const emptyGameState = createGameState(ATTEMPTS, WORD_LENGTH);
 
@@ -150,8 +154,10 @@ const MasterWord: FC<IMasterWord> = () => {
 
   const [showInputModal, setShowInputModal] = useState(false);
   useEffect(() => {
-    const tapHandler = () => {
-      setShowInputModal(true);
+    const tapHandler = (e: MouseEvent) => {
+      if ((e.target as HTMLElement).classList.contains('board')) {
+        setShowInputModal(true);
+      }
     };
 
     if (bowser.platform.type === 'mobile' && gameState === 'running') {
@@ -163,18 +169,32 @@ const MasterWord: FC<IMasterWord> = () => {
     };
   }, [bowser.platform.type, gameState]);
 
+  const [selectedTranslation, setTranslation] = useState<
+    TSupportedLanguages | undefined
+  >(getLoadedLanguage());
+
+  const handleTranslationChange = (language: TSupportedLanguages): void => {
+    const used = getLoadedLanguage();
+    if (language !== used) {
+      loadTranslation(language)
+        .then(() => {
+          AppStorage.getInstance().setItem('ui-language', language);
+          setTranslation(language);
+        })
+        .catch(noop);
+    }
+  };
+
   return (
     <div className={classNames('master-word', 'game', gameState)}>
       <div className='title'>
-        <h1>Master Word</h1>
-        <h4>Odgadnij słowo które mam na myśli...</h4>
+        <h1>{t('main-title')}</h1>
+        <h4>{t('main-subtitle')}</h4>
       </div>
       {gameState !== 'init' && (
         <p className='read-the-docs'>
-          {bowser.platform.type !== 'mobile' &&
-            'Zacznij wpisywać słowo, naciśnij Enter żeby potwierdzić.'}
-          {bowser.platform.type === 'mobile' &&
-            'Naciśnij linię z ikonką edycji by wprowadzić słowo.'}
+          {bowser.platform.type !== 'mobile' && t('main-desktop-info')}
+          {bowser.platform.type === 'mobile' && t('main-mobile-info')}
         </p>
       )}
       <div className='game-board'>
@@ -217,6 +237,33 @@ const MasterWord: FC<IMasterWord> = () => {
       <p className='read-the-docs'>
         GrelaDesign (c) 2024 [v{import.meta.env.VITE_VERSION}]
       </p>
+      <div className='translation'>
+        <span className='hidden'>{t('translation-info-sr')}</span>
+        <button
+          title={t('translation-button-polish')}
+          className={classNames(
+            'translation-btn',
+            selectedTranslation === 'pl' && 'selected'
+          )}
+          onClick={() => {
+            handleTranslationChange('pl');
+          }}
+        >
+          🇵🇱
+        </button>
+        <button
+          title={t('translation-button-english')}
+          className={classNames(
+            'translation-btn',
+            selectedTranslation === 'en' && 'selected'
+          )}
+          onClick={() => {
+            handleTranslationChange('en');
+          }}
+        >
+          🇺🇸
+        </button>
+      </div>
     </div>
   );
 };
