@@ -1,0 +1,8 @@
+.result.panel .game-language {
+  position: relative;
+  justify-content: center;
+  top: initial;
+  right: initial;
+
+  padding-bottom: 0.25rem;
+}
