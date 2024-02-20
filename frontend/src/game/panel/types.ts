@@ -1,12 +1,11 @@
+import { TGameSession } from '../../api';
 import { TGameState } from '../types';
 
 export type TClickAction = 'start' | 'guess';
 
 export interface IProps {
   gameState: TGameState;
-
-  attempt: number;
-  wordToGuess: string;
+  gameSession?: TGameSession;
 
   onClick: (action: TClickAction, ...rest: unknown[]) => void;
 }
