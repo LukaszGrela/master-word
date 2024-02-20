@@ -62,13 +62,9 @@ const Result: FC<IProps> = ({
 
   const hiddenResult = gameState === 'running' && 'hidden';
   const hiddenFinalResult =
-    !(
-      gameState === 'win' ||
-      gameState === 'lose' ||
-      gameState === 'init' ||
-      gameState === 'start'
-    ) && 'hidden';
-  const showLoading = gameState === 'pending';
+    !(gameState === 'win' || gameState === 'lose' || gameState === 'init') &&
+    'hidden';
+  const showLoading = gameState === 'pending' || gameState === 'start';
 
   return (
     <div className={classNames('result', 'panel', hiddenResult)}>
