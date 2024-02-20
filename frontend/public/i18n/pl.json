@@ -12,5 +12,8 @@
   "main-title": "Master Word",
   "main-subtitle": "Odgadnij słowo które mam na myśli...",
   "main-desktop-info": "Zacznij wpisywać słowo, naciśnij Enter żeby potwierdzić.",
-  "main-mobile-info": "Naciśnij linię z ikonką edycji by wprowadzić słowo."
+  "main-mobile-info": "Naciśnij linię z ikonką edycji by wprowadzić słowo.",
+  "translation-info-sr": "Wybierz język interfejsu",
+  "translation-button-english": "Angielski",
+  "translation-button-polish": "Polski"
 }

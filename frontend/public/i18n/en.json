@@ -12,5 +12,8 @@
   "main-title": "Master Word",
   "main-subtitle": "Guess the word I'm thinking...",
   "main-desktop-info": "Start typing, press Enter to confirm.",
-  "main-mobile-info": "Tap the line with edit icon to enter the word."
+  "main-mobile-info": "Tap the line with edit icon to enter the word.",
+  "translation-info-sr": "Choose the language of UI",
+  "translation-button-english": "English",
+  "translation-button-polish": "Polish"
 }
