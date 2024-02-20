@@ -2,6 +2,7 @@ import { FC, useCallback } from 'react';
 import { IProps } from './types';
 import { classNames } from '../../utils/classNames';
 import { toHMS } from '../../utils/datetime/toHMS';
+import t from '../../i18n';
 
 const displayTime = (ms: number): string => {
   const hms = toHMS(ms);
@@ -49,21 +50,19 @@ const Result: FC<IProps> = ({
   return (
     <div className={classNames('result', 'panel', hiddenResult)}>
       <h2 className={classNames(hiddenFinalResult)}>
-        {gameState === 'win' && `Wygrałeś w ${attempt} próbach`}
-        {gameState === 'lose' &&
-          `Przegrałeś, słowo do odgadnięcia to ${wordToGuess}`}
-
-        {gameState === 'running' && 'Gra w toku'}
+        {gameState === 'win' && t('result-win', { attempt })}
+        {gameState === 'lose' && t('result-lose', { wordToGuess })}
+        {gameState === 'running' && t('result-running')}
         {showLoading && <>&nbsp;</>}
       </h2>
-      {gameSession?.finished && <p>Czas rozgrywki: {playTime}</p>}
+      {gameSession?.finished && <p>{t('result-playtime', { playTime })}</p>}
       <button onClick={handleAction} className={classNames(hiddenFinalResult)}>
-        Odgadnij następne słowo
+        {t('result-again-button')}
       </button>
 
       {showLoading && (
         <h2 className='loading'>
-          <span>Wczytuję...</span>
+          <span>{t('loading')}</span>
         </h2>
       )}
     </div>

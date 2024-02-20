@@ -15,6 +15,7 @@ import {
 } from '../api';
 import { createGameState } from '../api/utils';
 import { getUrlSearch } from '../utils/getUrlSearch';
+import t from '../i18n';
 
 import './MasterWord.css';
 
@@ -166,15 +167,13 @@ const MasterWord: FC<IMasterWord> = () => {
   return (
     <div className={classNames('master-word', 'game', gameState)}>
       <div className='title'>
-        <h1>Master Word</h1>
-        <h4>Odgadnij słowo które mam na myśli...</h4>
+        <h1>{t('main-title')}</h1>
+        <h4>{t('main-subtitle')}</h4>
       </div>
       {gameState !== 'init' && (
         <p className='read-the-docs'>
-          {bowser.platform.type !== 'mobile' &&
-            'Zacznij wpisywać słowo, naciśnij Enter żeby potwierdzić.'}
-          {bowser.platform.type === 'mobile' &&
-            'Naciśnij linię z ikonką edycji by wprowadzić słowo.'}
+          {bowser.platform.type !== 'mobile' && t('main-desktop-info')}
+          {bowser.platform.type === 'mobile' && t('main-mobile-info')}
         </p>
       )}
       <div className='game-board'>
