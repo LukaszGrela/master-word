@@ -12,10 +12,12 @@ import {
   TErrorResponse,
   TGameSessionRecord,
   guardTErrorResponse,
+  TSupportedLanguages,
 } from '../api';
 import { createGameState } from '../api/utils';
 import { getUrlSearch } from '../utils/getUrlSearch';
-import t from '../i18n';
+import t, { getLoadedLanguage, loadTranslation } from '../i18n';
+import { noop } from '../utils/noop';
 
 import './MasterWord.css';
 
@@ -164,6 +166,21 @@ const MasterWord: FC<IMasterWord> = () => {
     };
   }, [bowser.platform.type, gameState]);
 
+  const [selectedTranslation, setTranslation] = useState<
+    TSupportedLanguages | undefined
+  >(getLoadedLanguage());
+
+  const handleTranslationChange = (language: TSupportedLanguages): void => {
+    const used = getLoadedLanguage();
+    if (language !== used) {
+      loadTranslation(language)
+        .then(() => {
+          setTranslation(language);
+        })
+        .catch(noop);
+    }
+  };
+
   return (
     <div className={classNames('master-word', 'game', gameState)}>
       <div className='title'>
@@ -216,6 +233,33 @@ const MasterWord: FC<IMasterWord> = () => {
       <p className='read-the-docs'>
         GrelaDesign (c) 2024 [v{import.meta.env.VITE_VERSION}]
       </p>
+      <div className='translation'>
+        <span className='hidden'>{t('translation-info-sr')}</span>
+        <button
+          title={t('translation-button-polish')}
+          className={classNames(
+            'translation-btn',
+            selectedTranslation === 'pl' && 'selected'
+          )}
+          onClick={() => {
+            handleTranslationChange('pl');
+          }}
+        >
+          🇵🇱
+        </button>
+        <button
+          title={t('translation-button-english')}
+          className={classNames(
+            'translation-btn',
+            selectedTranslation === 'en' && 'selected'
+          )}
+          onClick={() => {
+            handleTranslationChange('en');
+          }}
+        >
+          🇺🇸
+        </button>
+      </div>
     </div>
   );
 };
