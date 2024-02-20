@@ -18,9 +18,10 @@ import { createGameState } from '../api/utils';
 import { getUrlSearch } from '../utils/getUrlSearch';
 import t, { getLoadedLanguage, loadTranslation } from '../i18n';
 import { noop } from '../utils/noop';
+import { AppStorage } from '../utils/localStorage';
+import { LanguageSelector } from './language';
 
 import './MasterWord.css';
-import { AppStorage } from '../utils/localStorage';
 
 const emptyGameState = createGameState(ATTEMPTS, WORD_LENGTH);
 
@@ -41,18 +42,22 @@ const MasterWord: FC<IMasterWord> = () => {
   const attempt = gameSession?.game?.attempt ?? 0;
 
   const startGame = useCallback(() => {
-    setGameState('init');
+    setGameState('start');
   }, []);
 
   useEffect(() => {
     const controller = new AbortController();
-
+    const storage = AppStorage.getInstance();
+    const language = (storage.getItem('word-language') ||
+      storage.getItem('ui-language') ||
+      'pl') as TSupportedLanguages;
     const getInitSync = () => {
-      console.log('getInitSync', session);
+      console.log('getInitSync', session, language);
+
       getInit({
-        language: 'pl',
+        language,
         signal: controller.signal,
-        session /* continue the same session game if exists */,
+        session,
       })
         .then((sessionRecord) => {
           setGameSession(sessionRecord);
@@ -62,7 +67,7 @@ const MasterWord: FC<IMasterWord> = () => {
           // handle custom error
           if (guardTErrorResponse(error)) {
             // if provided session is invalid, discard it and try again
-            if (error.code === 2 /* ErrorCodes.SESSION_ERROR */) {
+            if (error.code === 2) {
               setGameSession(null); // clear session
               if (session === urlSession) {
                 // session in the url, reload with new url
@@ -84,7 +89,7 @@ const MasterWord: FC<IMasterWord> = () => {
         });
     };
 
-    if (gameState === 'init') {
+    if (gameState === 'start') {
       getInitSync();
     }
 
@@ -140,9 +145,11 @@ const MasterWord: FC<IMasterWord> = () => {
   const handlePanelAction = useCallback(
     (action: TClickAction, ...rest: unknown[]) => {
       if (action === 'start') {
+        // from result panel
         startGame();
       }
       if (action === 'guess') {
+        // from input panel
         const [guess] = rest as string[];
 
         setShowInputModal(false);
@@ -237,33 +244,10 @@ const MasterWord: FC<IMasterWord> = () => {
       <p className='read-the-docs'>
         GrelaDesign (c) 2024 [v{import.meta.env.VITE_VERSION}]
       </p>
-      <div className='translation'>
-        <span className='hidden'>{t('translation-info-sr')}</span>
-        <button
-          title={t('translation-button-polish')}
-          className={classNames(
-            'translation-btn',
-            selectedTranslation === 'pl' && 'selected'
-          )}
-          onClick={() => {
-            handleTranslationChange('pl');
-          }}
-        >
-          🇵🇱
-        </button>
-        <button
-          title={t('translation-button-english')}
-          className={classNames(
-            'translation-btn',
-            selectedTranslation === 'en' && 'selected'
-          )}
-          onClick={() => {
-            handleTranslationChange('en');
-          }}
-        >
-          🇺🇸
-        </button>
-      </div>
+      <LanguageSelector
+        language={selectedTranslation}
+        onClick={handleTranslationChange}
+      />
     </div>
   );
 };

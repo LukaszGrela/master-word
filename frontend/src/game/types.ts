@@ -17,9 +17,9 @@ export interface IMasterWord {
 
 export type TGameState =
   | 'init'
+  | 'start'
   | 'pending'
   | 'running'
   | 'lose'
   | 'win'
   | 'error';
-

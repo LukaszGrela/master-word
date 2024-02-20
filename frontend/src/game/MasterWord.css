@@ -17,6 +17,11 @@
   visibility: hidden;
 }
 
+.sr {
+  width: 1px;
+  height: 1px;
+}
+
 /*
 .master-word.game.win {
 }
@@ -53,25 +58,4 @@
   left: 50%;
   margin: 0;
   transform: translate(-50%, -50%);
-}
-
-.translation {
-  position: absolute;
-  top: 0.25rem;
-  right: 0.25rem;
-  display: flex;
-  flex-direction: row;
-}
-
-.translation button {
-  padding: 0.25rem;
-}
-
-.translation button.selected {
-  background-color: hsl(25 40% 90% / 1);
-  border-color: hsl(27, 27%, 80%);
-}
-
-.translation button:hover {
-  border-color: hsl(27, 27%, 80%);
 }
