@@ -76,7 +76,7 @@ const Result: FC<IProps> = ({
         {gameState === 'init' && t('result-start-the-game')}
         {showLoading && <>&nbsp;</>}
       </h2>
-      {gameSession?.finished && (
+      {gameSession?.finished && !showLoading && (
         <p className='playtime'>{t('result-playtime', { playTime })}</p>
       )}
       {!hiddenFinalResult && (
