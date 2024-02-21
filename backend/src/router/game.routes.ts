@@ -1,4 +1,4 @@
-import { Router, Request, Response } from 'express';
+import { Router, Request, Response, NextFunction } from 'express';
 import { StatusCodes } from 'http-status-codes';
 import { v4 as uuid } from 'uuid';
 import { ErrorCodes } from '../enums';
@@ -232,7 +232,11 @@ router.get('/init', async (req: Request, res: Response) => {
   }
 });
 
-router.get('/next-attempt', async (req: Request, res: Response) => {
+const assureNextAttemptAllowed = (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
   const { session, guess } = req.query as TNextAttemptQuery;
   if (!session) {
     // shows over
@@ -273,62 +277,86 @@ router.get('/next-attempt', async (req: Request, res: Response) => {
       code: ErrorCodes.GENERAL_ERROR,
       error: 'Game for that session is already finished.',
     });
+    return;
   }
-  // isCorrectWord
-  const isCorrect = await isCorrectWord(guess, gameSession.game.language);
-  if (!isCorrect.validWord) {
-    // reject the word
-    if (gameSession.game.language === 'pl') {
-      // TODO implement for polish when dictionary will contain > 1000 words
-      // log the word, it is possible that it is correct but missing from dictionary
-      console.log('LOG NEW WORD:', isCorrect);
+
+  // good
+  next();
+};
+
+router.get(
+  '/next-attempt',
+  assureNextAttemptAllowed,
+  async (req: Request, res: Response) => {
+    const { session, guess } = req.query as Required<TNextAttemptQuery>;
+
+    // grab game data
+    const gameSession = gameSessions.get(session)!;
+
+    if (gameSession.game.attempt === 0) {
+      // start time from the first word guess
+      gameSession.game.timestamp_start = `${new Date().getTime()}`;
+    }
+
+    // isCorrectWord
+    const isCorrect = await isCorrectWord(guess, gameSession.game.language);
+    if (!isCorrect.validWord) {
+      // reject the word
+      if (gameSession.game.language === 'pl') {
+        // TODO implement for polish when dictionary will contain > 1000 words
+        // log the word, it is possible that it is correct but missing from dictionary
+        console.log('LOG NEW WORD:', isCorrect);
+      } else {
+        // english has external validation
+        // shows over
+        res.status(StatusCodes.BAD_REQUEST).json({
+          code: ErrorCodes.INVALID_WORD,
+          error: isCorrect.error,
+        });
+        return;
+      }
+    }
+
+    // validate guess attempt
+    const guessUpr = guess.toLocaleUpperCase();
+    const guessed = guessUpr === gameSession.game.word;
+    const validationResult = validateWord(
+      guessUpr.split(''),
+      gameSession.game.word.split(''),
+      guessed
+    );
+
+    // process game params
+    gameSession.game.attempt += 1;
+    gameSession.game.guessed = guessed;
+
+    gameSession.game.finished =
+      guessed || gameSession.game.attempt === gameSession.game.max_attempts;
+
+    gameSession.game.state.push({
+      validated: validationResult.validated,
+      word: guessUpr.split(''),
+    });
+
+    if (gameSession.game.finished) {
+      gameSession.game.timestamp_finish = `${new Date().getTime()}`;
+    }
+
+    // update local state
+    gameSessions.set(session, gameSession);
+
+    // send response
+    if (gameSession.game.finished) {
+      res.status(StatusCodes.OK).json(gameSession);
     } else {
-      // english has external validation
-      // shows over
-      res.status(StatusCodes.BAD_REQUEST).json({
-        code: ErrorCodes.INVALID_WORD,
-        error: isCorrect.error,
+      const { word, ...game } = gameSession.game;
+      res.status(StatusCodes.OK).json({
+        session: gameSession.session,
+        game,
       });
-      return;
     }
   }
-
-  // validate guess attempt
-  const guessUpr = guess.toLocaleUpperCase();
-  const guessed = guessUpr === gameSession.game.word;
-  const validationResult = validateWord(
-    guessUpr.split(''),
-    gameSession.game.word.split(''),
-    guessed
-  );
-
-  // process game params
-  gameSession.game.attempt += 1;
-  gameSession.game.guessed = guessed;
-  gameSession.game.finished =
-    guessed || gameSession.game.attempt === gameSession.game.max_attempts;
-  gameSession.game.state.push({
-    validated: validationResult.validated,
-    word: guessUpr.split(''),
-  });
-  if (gameSession.game.finished) {
-    gameSession.game.timestamp_finish = `${new Date().getTime()}`;
-  }
-
-  // update local state
-  gameSessions.set(session, gameSession);
-
-  // send response
-  if (gameSession.game.finished) {
-    res.status(StatusCodes.OK).json(gameSession);
-  } else {
-    const { word, ...game } = gameSession.game;
-    res.status(StatusCodes.OK).json({
-      session: gameSession.session,
-      game,
-    });
-  }
-});
+);
 
 router.get('/game-session', async (req: Request, res: Response) => {
   const { session } = req.query as TSessionQuery;
