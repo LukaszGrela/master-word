@@ -87,7 +87,13 @@ const Result: FC<IProps> = ({
           className='game-language'
           language={wordLanguage}
           onClick={handleWordLanguageChange}
-          screenReaderInfo={t('result-language-selector-sr')}
+          translationOverride={{
+            screenReaderInfo: t('result-language-selector-sr'),
+            buttonTitles: {
+              en: t('result-language-selector-btn-title-en'),
+              pl: t('result-language-selector-btn-title-pl'),
+            },
+          }}
         />
       )}
       {gameState === 'init' && (

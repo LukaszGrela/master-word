@@ -8,8 +8,8 @@ import './LanguageSelector.css';
 const LanguageSelector: FC<IProps> = ({
   language,
   onClick,
-  screenReaderInfo,
   className,
+  translationOverride,
 }): JSX.Element => {
   const handleLanguageChange = useCallback(
     (selected: TSupportedLanguages): void => {
@@ -22,10 +22,13 @@ const LanguageSelector: FC<IProps> = ({
   return (
     <div className={classNames('language-selector', 'translation', className)}>
       <span className='hidden sr'>
-        {screenReaderInfo || t('translation-info-sr')}
+        {translationOverride?.screenReaderInfo || t('translation-info-sr')}
       </span>
       <button
-        title={t('translation-button-polish')}
+        title={
+          translationOverride?.buttonTitles?.pl ||
+          t('translation-button-polish')
+        }
         className={classNames(
           'translation-btn',
           language === 'pl' && 'selected'
@@ -37,7 +40,10 @@ const LanguageSelector: FC<IProps> = ({
         🇵🇱
       </button>
       <button
-        title={t('translation-button-english')}
+        title={
+          translationOverride?.buttonTitles?.en ||
+          t('translation-button-english')
+        }
         className={classNames(
           'translation-btn',
           language === 'en' && 'selected'

@@ -22,5 +22,7 @@
   "main-error-invalid-word": "Niepoprawne słowo",
   "main-legend-incorrect": "Zła litera",
   "main-legend-misplaced": "Złe miejsce",
-  "main-legend-correct": "Dobra litera"
+  "main-legend-correct": "Dobra litera",
+  "result-language-selector-btn-title-pl": "Słowo polskie",
+  "result-language-selector-btn-title-en": "Słowo angielskie"
 }

@@ -22,5 +22,7 @@
   "main-error-invalid-word": "Incorrect word",
   "main-legend-incorrect": "Wrong letter",
   "main-legend-misplaced": "Misplaced letter",
-  "main-legend-correct": "Correct letter"
+  "main-legend-correct": "Correct letter",
+  "result-language-selector-btn-title-pl": "Polish word",
+  "result-language-selector-btn-title-en": "English word"
 }
