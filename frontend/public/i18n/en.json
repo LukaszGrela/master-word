@@ -18,5 +18,6 @@
   "translation-button-polish": "Polish",
   "result-start-the-game": "Start the game",
   "result-language-info": "Select language of the word to guess.",
-  "result-start-button": "Start"
+  "result-start-button": "Start",
+  "main-error-invalid-word": "Incorrect word"
 }

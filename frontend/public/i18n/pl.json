@@ -18,5 +18,6 @@
   "translation-button-polish": "Polski",
   "result-start-the-game": "Rozpocznij grę",
   "result-language-info": "Wybierz język słowa do odgadnięcia",
-  "result-start-button": "Start"
+  "result-start-button": "Start",
+  "main-error-invalid-word": "Niepoprawne słowo"
 }
