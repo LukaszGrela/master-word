@@ -4,6 +4,7 @@ export interface IBoard {
   rows: number;
   columns: number;
   children?: ReactNode;
+  className?: string;
 }
 
 export interface ICell {
