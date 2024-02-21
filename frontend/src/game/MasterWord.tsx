@@ -224,10 +224,17 @@ const MasterWord: FC<IMasterWord> = () => {
         <h4>{t('main-subtitle')}</h4>
       </div>
       {gameState !== 'init' && (
-        <p className='read-the-docs'>
-          {bowser.platform.type !== 'mobile' && t('main-desktop-info')}
-          {bowser.platform.type === 'mobile' && t('main-mobile-info')}
-        </p>
+        <>
+          <p className='read-the-docs'>
+            {bowser.platform.type !== 'mobile' && t('main-desktop-info')}
+            {bowser.platform.type === 'mobile' && t('main-mobile-info')}
+          </p>
+          <div className='legend'>
+            <span className='incorrect'>{t('main-legend-incorrect')}</span>
+            <span className='misplaced'>{t('main-legend-misplaced')}</span>
+            <span className='correct'>{t('main-legend-correct')}</span>
+          </div>
+        </>
       )}
       <div className='game-board'>
         <Board

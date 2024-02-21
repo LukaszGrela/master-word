@@ -19,5 +19,8 @@
   "result-start-the-game": "Rozpocznij grę",
   "result-language-info": "Wybierz język słowa do odgadnięcia",
   "result-start-button": "Start",
-  "main-error-invalid-word": "Niepoprawne słowo"
+  "main-error-invalid-word": "Niepoprawne słowo",
+  "main-legend-incorrect": "Zła litera",
+  "main-legend-misplaced": "Złe miejsce",
+  "main-legend-correct": "Dobra litera"
 }

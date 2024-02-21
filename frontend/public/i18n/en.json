@@ -19,5 +19,8 @@
   "result-start-the-game": "Start the game",
   "result-language-info": "Select language of the word to guess.",
   "result-start-button": "Start",
-  "main-error-invalid-word": "Incorrect word"
+  "main-error-invalid-word": "Incorrect word",
+  "main-legend-incorrect": "Wrong letter",
+  "main-legend-misplaced": "Misplaced letter",
+  "main-legend-correct": "Correct letter"
 }
