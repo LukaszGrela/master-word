@@ -1,6 +1,6 @@
 {
   "name": "master-word-api",
-  "version": "0.3.3",
+  "version": "0.3.4",
   "description": "NodeJS backend for the Master Word app",
   "main": "index.js",
   "scripts": {

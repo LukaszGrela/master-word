@@ -98,6 +98,9 @@ const isCorrectWord = async (word: string, language: 'pl' | 'en') => {
       });
       const data = JSON.parse(await response.text()) as TIsCorrectWordResponse;
       if (response.ok) {
+        if (!data.validWord) {
+          return { ...data, language, error: 'Invalid word' };
+        }
         return { ...data, language };
       } else {
         // endpoint returned error
