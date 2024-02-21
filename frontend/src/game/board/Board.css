@@ -2,5 +2,11 @@
   display: grid;
   gap: 0.25rem;
   padding: 0.25rem;
-  background-color: silver;
+  background-color: #c0c0c0;
+}
+
+@media (prefers-color-scheme: dark) {
+  .board {
+    background-color: transparent;
+  }
 }

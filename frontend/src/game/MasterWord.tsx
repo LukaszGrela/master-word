@@ -18,9 +18,10 @@ import { createGameState } from '../api/utils';
 import { getUrlSearch } from '../utils/getUrlSearch';
 import t, { getLoadedLanguage, loadTranslation } from '../i18n';
 import { noop } from '../utils/noop';
+import { AppStorage } from '../utils/localStorage';
+import { LanguageSelector } from './language';
 
 import './MasterWord.css';
-import { AppStorage } from '../utils/localStorage';
 
 const emptyGameState = createGameState(ATTEMPTS, WORD_LENGTH);
 
@@ -28,7 +29,9 @@ const MasterWord: FC<IMasterWord> = () => {
   const bowser = getBowserDetails();
   const urlSession = getUrlSearch().get('session');
 
-  const [, setError] = useState<TErrorResponse | null>(null);
+  const [error, setError] = useState<
+    (TErrorResponse & { details?: string }) | null
+  >(null);
   const [gameState, setGameState] = useState<TGameState>('init');
   const [gameSession, setGameSession] = useState<TGameSessionRecord | null>(
     null
@@ -41,18 +44,22 @@ const MasterWord: FC<IMasterWord> = () => {
   const attempt = gameSession?.game?.attempt ?? 0;
 
   const startGame = useCallback(() => {
-    setGameState('init');
+    setGameState('start');
   }, []);
 
   useEffect(() => {
     const controller = new AbortController();
-
+    const storage = AppStorage.getInstance();
+    const language = (storage.getItem('word-language') ||
+      storage.getItem('ui-language') ||
+      'pl') as TSupportedLanguages;
     const getInitSync = () => {
-      console.log('getInitSync', session);
+      console.log('getInitSync', session, language);
+
       getInit({
-        language: 'pl',
+        language,
         signal: controller.signal,
-        session /* continue the same session game if exists */,
+        session,
       })
         .then((sessionRecord) => {
           setGameSession(sessionRecord);
@@ -62,7 +69,7 @@ const MasterWord: FC<IMasterWord> = () => {
           // handle custom error
           if (guardTErrorResponse(error)) {
             // if provided session is invalid, discard it and try again
-            if (error.code === 2 /* ErrorCodes.SESSION_ERROR */) {
+            if (error.code === 2) {
               setGameSession(null); // clear session
               if (session === urlSession) {
                 // session in the url, reload with new url
@@ -84,7 +91,7 @@ const MasterWord: FC<IMasterWord> = () => {
         });
     };
 
-    if (gameState === 'init') {
+    if (gameState === 'start') {
       getInitSync();
     }
 
@@ -96,6 +103,9 @@ const MasterWord: FC<IMasterWord> = () => {
   const handleWordCommit = useCallback(
     (guess: string) => {
       const word = guess.toLocaleUpperCase();
+
+      // reset error
+      setError(null);
 
       if (!gameSession) return;
 
@@ -125,6 +135,12 @@ const MasterWord: FC<IMasterWord> = () => {
               setGameSession(null); // clear session
               setGameState('init');
               return;
+            } else if (error.code === 6 /* INVALID_WORD */) {
+              setError({
+                code: error.code,
+                error: t('main-error-invalid-word'),
+                details: guess,
+              });
             }
           } else if (error instanceof DOMException) {
             // abort error is OK (abort is never ok)
@@ -140,9 +156,11 @@ const MasterWord: FC<IMasterWord> = () => {
   const handlePanelAction = useCallback(
     (action: TClickAction, ...rest: unknown[]) => {
       if (action === 'start') {
+        // from result panel
         startGame();
       }
       if (action === 'guess') {
+        // from input panel
         const [guess] = rest as string[];
 
         setShowInputModal(false);
@@ -204,11 +222,14 @@ const MasterWord: FC<IMasterWord> = () => {
           key={gameState === 'init' ? gameState : 'running'}
         >
           {game.map((gameAttempt, index) => {
+            const active = index === attempt && gameState === 'running';
+            if (active) console.log(error);
             return (
               <Word
                 mobile={bowser.platform.type === 'mobile'}
                 commit={handleWordCommit}
-                active={index === attempt && gameState === 'running'}
+                active={active}
+                invalid={!!error && error.code === 6 && active}
                 wordLength={wordLength}
                 word={gameAttempt.word.join('')}
                 id={`${index}`}
@@ -237,33 +258,10 @@ const MasterWord: FC<IMasterWord> = () => {
       <p className='read-the-docs'>
         GrelaDesign (c) 2024 [v{import.meta.env.VITE_VERSION}]
       </p>
-      <div className='translation'>
-        <span className='hidden'>{t('translation-info-sr')}</span>
-        <button
-          title={t('translation-button-polish')}
-          className={classNames(
-            'translation-btn',
-            selectedTranslation === 'pl' && 'selected'
-          )}
-          onClick={() => {
-            handleTranslationChange('pl');
-          }}
-        >
-          🇵🇱
-        </button>
-        <button
-          title={t('translation-button-english')}
-          className={classNames(
-            'translation-btn',
-            selectedTranslation === 'en' && 'selected'
-          )}
-          onClick={() => {
-            handleTranslationChange('en');
-          }}
-        >
-          🇺🇸
-        </button>
-      </div>
+      <LanguageSelector
+        language={selectedTranslation}
+        onClick={handleTranslationChange}
+      />
     </div>
   );
 };

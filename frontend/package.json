@@ -2,7 +2,7 @@
   "name": "master-word",
   "description": "Simple word game where you need to guess a 5 letter word.",
   "private": true,
-  "version": "0.5.1",
+  "version": "0.5.3",
   "type": "module",
   "scripts": {
     "dev": "vite",

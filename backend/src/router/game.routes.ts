@@ -1,4 +1,4 @@
-import { Router, Request, Response } from 'express';
+import { Router, Request, Response, NextFunction } from 'express';
 import { StatusCodes } from 'http-status-codes';
 import { v4 as uuid } from 'uuid';
 import { ErrorCodes } from '../enums';
@@ -10,6 +10,7 @@ import type {
   TInitQuery,
   TNextAttemptQuery,
   TSessionQuery,
+  TValidateWordBody,
 } from './types';
 import { getLocalDictionary, resetGameSession, validateWord } from './helpers';
 import { WORD_LENGTH } from '../constants';
@@ -82,6 +83,7 @@ router.get('/random-word', async (req: Request, res: Response) => {
 
     res.status(StatusCodes.OK).json(randomWordResponse);
   } catch (error) {
+    console.log(error);
     res.status(StatusCodes.BAD_REQUEST).json(error);
   }
 });
@@ -98,6 +100,9 @@ const isCorrectWord = async (word: string, language: 'pl' | 'en') => {
       });
       const data = JSON.parse(await response.text()) as TIsCorrectWordResponse;
       if (response.ok) {
+        if (!data.validWord) {
+          return { ...data, language, error: 'Invalid word' };
+        }
         return { ...data, language };
       } else {
         // endpoint returned error
@@ -116,7 +121,7 @@ const isCorrectWord = async (word: string, language: 'pl' | 'en') => {
       return {
         word,
         validWord: true,
-        error: (error as Error).message,
+        error: (error as Error).message || 'Validation endpoint error',
         language,
       };
     }
@@ -188,6 +193,7 @@ router.get('/init', async (req: Request, res: Response) => {
       };
       gameSessions.set(id, response);
     } catch (error) {
+      console.log(error);
       res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({
         code: ErrorCodes.GENERAL_ERROR,
         error: 'Can not start new game.',
@@ -204,7 +210,6 @@ router.get('/init', async (req: Request, res: Response) => {
     return;
   } else {
     // all good - send game response
-
     if (response.game.finished) {
       try {
         const word = await getRandomWord(language, WORD_LENGTH);
@@ -215,6 +220,7 @@ router.get('/init', async (req: Request, res: Response) => {
         // store/update
         gameSessions.set(response.session, response);
       } catch (error) {
+        console.log(error);
         res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({
           code: ErrorCodes.GENERAL_ERROR,
           error: 'Can not start new game.',
@@ -222,6 +228,9 @@ router.get('/init', async (req: Request, res: Response) => {
         return;
       }
     }
+
+    console.log('Game started', response.session);
+    console.log('details', response.game.language, response.game.word);
 
     const { word, ...game } = response.game;
     // deliver in progress session
@@ -232,7 +241,11 @@ router.get('/init', async (req: Request, res: Response) => {
   }
 });
 
-router.get('/next-attempt', async (req: Request, res: Response) => {
+const assureNextAttemptAllowed = (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
   const { session, guess } = req.query as TNextAttemptQuery;
   if (!session) {
     // shows over
@@ -273,62 +286,86 @@ router.get('/next-attempt', async (req: Request, res: Response) => {
       code: ErrorCodes.GENERAL_ERROR,
       error: 'Game for that session is already finished.',
     });
+    return;
   }
-  // isCorrectWord
-  const isCorrect = await isCorrectWord(guess, gameSession.game.language);
-  if (!isCorrect.validWord) {
-    // reject the word
-    if (gameSession.game.language === 'pl') {
-      // TODO implement for polish when dictionary will contain > 1000 words
-      // log the word, it is possible that it is correct but missing from dictionary
-      console.log('LOG NEW WORD:', isCorrect);
+
+  // good
+  next();
+};
+
+router.get(
+  '/next-attempt',
+  assureNextAttemptAllowed,
+  async (req: Request, res: Response) => {
+    const { session, guess } = req.query as Required<TNextAttemptQuery>;
+
+    // grab game data
+    const gameSession = gameSessions.get(session)!;
+
+    if (gameSession.game.attempt === 0) {
+      // start time from the first word guess
+      gameSession.game.timestamp_start = `${new Date().getTime()}`;
+    }
+
+    // isCorrectWord
+    const isCorrect = await isCorrectWord(guess, gameSession.game.language);
+    if (!isCorrect.validWord) {
+      // reject the word
+      if (gameSession.game.language === 'pl') {
+        // TODO implement for polish when dictionary will contain > 1000 words
+        // log the word, it is possible that it is correct but missing from dictionary
+        console.log('LOG NEW WORD:', isCorrect);
+      } else {
+        // english has external validation
+        // shows over
+        res.status(StatusCodes.BAD_REQUEST).json({
+          code: ErrorCodes.INVALID_WORD,
+          error: isCorrect.error,
+        });
+        return;
+      }
+    }
+
+    // validate guess attempt
+    const guessUpr = guess.toLocaleUpperCase();
+    const guessed = guessUpr === gameSession.game.word;
+    const validationResult = validateWord(
+      guessUpr.split(''),
+      gameSession.game.word.split(''),
+      guessed
+    );
+
+    // process game params
+    gameSession.game.attempt += 1;
+    gameSession.game.guessed = guessed;
+
+    gameSession.game.finished =
+      guessed || gameSession.game.attempt === gameSession.game.max_attempts;
+
+    gameSession.game.state.push({
+      validated: validationResult.validated,
+      word: guessUpr.split(''),
+    });
+
+    if (gameSession.game.finished) {
+      gameSession.game.timestamp_finish = `${new Date().getTime()}`;
+    }
+
+    // update local state
+    gameSessions.set(session, gameSession);
+
+    // send response
+    if (gameSession.game.finished) {
+      res.status(StatusCodes.OK).json(gameSession);
     } else {
-      // english has external validation
-      // shows over
-      res.status(StatusCodes.BAD_REQUEST).json({
-        code: ErrorCodes.INVALID_WORD,
-        error: isCorrect.error,
+      const { word, ...game } = gameSession.game;
+      res.status(StatusCodes.OK).json({
+        session: gameSession.session,
+        game,
       });
-      return;
     }
   }
-
-  // validate guess attempt
-  const guessUpr = guess.toLocaleUpperCase();
-  const guessed = guessUpr === gameSession.game.word;
-  const validationResult = validateWord(
-    guessUpr.split(''),
-    gameSession.game.word.split(''),
-    guessed
-  );
-
-  // process game params
-  gameSession.game.attempt += 1;
-  gameSession.game.guessed = guessed;
-  gameSession.game.finished =
-    guessed || gameSession.game.attempt === gameSession.game.max_attempts;
-  gameSession.game.state.push({
-    validated: validationResult.validated,
-    word: guessUpr.split(''),
-  });
-  if (gameSession.game.finished) {
-    gameSession.game.timestamp_finish = `${new Date().getTime()}`;
-  }
-
-  // update local state
-  gameSessions.set(session, gameSession);
-
-  // send response
-  if (gameSession.game.finished) {
-    res.status(StatusCodes.OK).json(gameSession);
-  } else {
-    const { word, ...game } = gameSession.game;
-    res.status(StatusCodes.OK).json({
-      session: gameSession.session,
-      game,
-    });
-  }
-});
+);
 
 router.get('/game-session', async (req: Request, res: Response) => {
   const { session } = req.query as TSessionQuery;
@@ -363,6 +400,28 @@ router.get('/game-session', async (req: Request, res: Response) => {
   }
 });
 
-router.post('/validate-word', async (req: Request, res: Response) => {});
+router.post('/validate-word', async (req: Request, res: Response) => {
+  const { word, language = 'pl' } = req.body as TValidateWordBody;
+  if (!word) {
+    // shows over
+    res.status(StatusCodes.BAD_REQUEST).json({
+      code: ErrorCodes.PARAMS_ERROR,
+      error: 'Missing "word" field in body',
+    });
+    return;
+  }
+  if (word.length !== WORD_LENGTH) {
+    // shows over
+    res.status(StatusCodes.BAD_REQUEST).json({
+      code: ErrorCodes.PARAMS_ERROR,
+      error: `Field "word" has invalid length, allowed is ${WORD_LENGTH}`,
+    });
+    return;
+  }
+
+  const result = await isCorrectWord(word, language);
+
+  res.status(StatusCodes.OK).json(result);
+});
 
 export default router;

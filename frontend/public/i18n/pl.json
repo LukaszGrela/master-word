@@ -15,5 +15,9 @@
   "main-mobile-info": "Naciśnij linię z ikonką edycji by wprowadzić słowo.",
   "translation-info-sr": "Wybierz język interfejsu",
   "translation-button-english": "Angielski",
-  "translation-button-polish": "Polski"
+  "translation-button-polish": "Polski",
+  "result-start-the-game": "Rozpocznij grę",
+  "result-language-info": "Wybierz język słowa do odgadnięcia",
+  "result-start-button": "Start",
+  "main-error-invalid-word": "Niepoprawne słowo"
 }

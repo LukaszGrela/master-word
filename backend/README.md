@@ -2,6 +2,8 @@
 
 Game server for Master Word App.
 
+**Note** English dictionary is handled by the Frontend Masters API https://words.dev-apis.com/ (the `/word-of-the-day` and `/validate-word` endpoints).
+
 ## Gameplay Endpoints
 
 - `GET` - `api/init` - Starts new game
@@ -16,3 +18,11 @@ Game server for Master Word App.
 
 - `GET` - `api/random-word` - get random word from available dictionary.
   - URL Query `language` - defaults to `pl`, supported values `pl`,`en`. For which language to pick a word.
+- `POST` - `api/validate-word` - check if given word will be accepted (is correct).
+  - JSON Body:
+    - `word` - required, word to check.
+    - `language` - optional, defaults to `pl` - for which language check the word against.
+  - Response JSON Body:
+    - `word` - word that was validated
+    - `langauge` - language of the word
+    - `validWord` - boolean - flag if the word is correct or not

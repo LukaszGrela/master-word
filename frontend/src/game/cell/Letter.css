@@ -53,3 +53,46 @@
 .letter.incorrect.inactive {
   background-color: grey;
 }
+
+.letter.active.wrong {
+  border-color: red;
+  border-top: 1px solid red;
+  border-bottom: 2px solid red;
+
+  animation: blink 0.75s;
+  animation-iteration-count: 3;
+}
+.letter.active.wrong.first {
+  border-left: 1px solid red;
+}
+.letter.active.wrong.last {
+  border-right: 1px solid red;
+}
+
+@keyframes blink {
+  50% {
+    border-color: transparent;
+  }
+}
+
+@media (prefers-color-scheme: dark) {
+  .letter {
+    background-color: #09263580;
+  }
+  .letter.inactive {
+    background-color: #092635;
+  }
+  .letter.inactive.misplaced {
+    background-color: hsl(27, 100%, 40%);
+  }
+  .letter.active {
+    background-color: #1b4242;
+  }
+}
+
+/*
+092635
+1B4242
+5C8374
+9EC8B9
+*/
