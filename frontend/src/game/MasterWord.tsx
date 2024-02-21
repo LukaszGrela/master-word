@@ -20,13 +20,16 @@ import t, { getLoadedLanguage, loadTranslation } from '../i18n';
 import { noop } from '../utils/noop';
 import { AppStorage } from '../utils/localStorage';
 import { LanguageSelector } from './language';
+import { EStorageKeys } from '../utils/localStorage/enums';
 
 import './MasterWord.css';
 
 const emptyGameState = createGameState(ATTEMPTS, WORD_LENGTH);
 
 const MasterWord: FC<IMasterWord> = () => {
+  const storage = AppStorage.getInstance();
   const bowser = getBowserDetails();
+
   const urlSession = getUrlSearch().get('session');
 
   const [error, setError] = useState<
@@ -42,6 +45,10 @@ const MasterWord: FC<IMasterWord> = () => {
   const attempts = gameSession?.game?.max_attempts ?? ATTEMPTS;
   const game = gameSession?.game?.state ?? emptyGameState.concat();
   const attempt = gameSession?.game?.attempt ?? 0;
+  // game word language
+  const language = (storage.getItem('word-language') ||
+    storage.getItem('ui-language') ||
+    'pl') as TSupportedLanguages;
 
   const startGame = useCallback(() => {
     setGameState('start');
@@ -49,10 +56,6 @@ const MasterWord: FC<IMasterWord> = () => {
 
   useEffect(() => {
     const controller = new AbortController();
-    const storage = AppStorage.getInstance();
-    const language = (storage.getItem('word-language') ||
-      storage.getItem('ui-language') ||
-      'pl') as TSupportedLanguages;
     const getInitSync = () => {
       console.log('getInitSync', session, language);
 
@@ -98,7 +101,7 @@ const MasterWord: FC<IMasterWord> = () => {
     return () => {
       controller.abort();
     };
-  }, [gameState, session, urlSession]);
+  }, [gameState, language, session, urlSession]);
 
   const handleWordCommit = useCallback(
     (guess: string) => {
@@ -117,6 +120,12 @@ const MasterWord: FC<IMasterWord> = () => {
       })
         .then((response) => {
           setGameSession(response);
+          // make sure language is not changed
+          AppStorage.getInstance().setItem(
+            EStorageKeys.GAME_LANGUAGE,
+            response.game.language
+          );
+          //
           if (!response.game.finished) {
             setGameState('running');
           } else {
@@ -196,7 +205,7 @@ const MasterWord: FC<IMasterWord> = () => {
     if (language !== used) {
       loadTranslation(language)
         .then(() => {
-          AppStorage.getInstance().setItem('ui-language', language);
+          AppStorage.getInstance().setItem(EStorageKeys.UI_LANGUAGE, language);
           setTranslation(language);
         })
         .catch(noop);
