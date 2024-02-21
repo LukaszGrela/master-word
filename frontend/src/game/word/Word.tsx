@@ -7,6 +7,7 @@ import { TValidationChar } from '../../api';
 
 const Word: FC<IProps> = ({
   active,
+  invalid,
 
   wordLength,
   word,
@@ -18,6 +19,11 @@ const Word: FC<IProps> = ({
 }) => {
   const [index, setIndex] = useState(0);
   const [guessing, setGuessing] = useState(' '.repeat(wordLength));
+  const [isIncorrect, setIncorrect] = useState(invalid);
+
+  useEffect(() => {
+    setIncorrect(invalid);
+  }, [invalid]);
 
   useEffect(() => {
     // word changed - reset
@@ -41,6 +47,7 @@ const Word: FC<IProps> = ({
       const action = e.key;
       if (action === 'Enter' && index === wordLength) {
         // submit word
+        setIncorrect(false);
         commit(guessing);
       } else if (action === 'Backspace' && index > 0) {
         // remove letters
@@ -49,6 +56,11 @@ const Word: FC<IProps> = ({
           guessing.substring(0, i) + ' ' + guessing.substring(i + 1);
         setIndex(i);
         setGuessing(newGuess);
+        setIncorrect(false);
+      } else if (action === 'Delete') {
+        setIndex(0);
+        setGuessing(' '.repeat(wordLength));
+        setIncorrect(false);
       } else if (isLetter(action) && index <= wordLength) {
         // add letters
         const i = index < wordLength ? index : wordLength - 1;
@@ -58,6 +70,7 @@ const Word: FC<IProps> = ({
           guessing.substring(i + 1);
         setIndex(i + 1);
         setGuessing(newGuess);
+        setIncorrect(false);
       }
     };
 
@@ -93,7 +106,12 @@ const Word: FC<IProps> = ({
         .split('')
         .map((letter, i) => (
           <Letter
-            className={classNames(classes[i] || 'incorrect', className)}
+            className={classNames(
+              classes[i] || 'incorrect',
+              className,
+              i === 0 && 'first',
+              i === wordLength - 1 && 'last'
+            )}
             letter={letter}
             key={`letter-${id}-${i}`}
           />
@@ -115,7 +133,10 @@ const Word: FC<IProps> = ({
                 className={classNames(
                   active && 'active',
                   className,
-                  mobile && active && i === 0 && 'show-icon'
+                  isIncorrect && 'wrong',
+                  mobile && active && i === 0 && 'show-icon',
+                  i === 0 && 'first',
+                  i === wordLength - 1 && 'last'
                 )}
               />
             ))

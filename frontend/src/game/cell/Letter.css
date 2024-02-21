@@ -53,3 +53,24 @@
 .letter.incorrect.inactive {
   background-color: grey;
 }
+
+.letter.active.wrong {
+  border-color: red;
+  border-top: 1px solid red;
+  border-bottom: 2px solid red;
+
+  animation: blink 0.75s;
+  animation-iteration-count: 3;
+}
+.letter.active.wrong.first {
+  border-left: 1px solid red;
+}
+.letter.active.wrong.last {
+  border-right: 1px solid red;
+}
+
+@keyframes blink {
+  50% {
+    border-color: transparent;
+  }
+}
