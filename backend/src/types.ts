@@ -30,5 +30,6 @@ export type TGameSession = {
 
 export type TGameSessionRecord = {
   session: string;
+
   game: TGameSession;
 };

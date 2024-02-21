@@ -10,6 +10,7 @@ import type {
   TInitQuery,
   TNextAttemptQuery,
   TSessionQuery,
+  TValidateWordBody,
 } from './types';
 import { getLocalDictionary, resetGameSession, validateWord } from './helpers';
 import { WORD_LENGTH } from '../constants';
@@ -399,6 +400,28 @@ router.get('/game-session', async (req: Request, res: Response) => {
   }
 });
 
-router.post('/validate-word', async (req: Request, res: Response) => {});
+router.post('/validate-word', async (req: Request, res: Response) => {
+  const { word, language = 'pl' } = req.body as TValidateWordBody;
+  if (!word) {
+    // shows over
+    res.status(StatusCodes.BAD_REQUEST).json({
+      code: ErrorCodes.PARAMS_ERROR,
+      error: 'Missing "word" field in body',
+    });
+    return;
+  }
+  if (word.length !== WORD_LENGTH) {
+    // shows over
+    res.status(StatusCodes.BAD_REQUEST).json({
+      code: ErrorCodes.PARAMS_ERROR,
+      error: `Field "word" has invalid length, allowed is ${WORD_LENGTH}`,
+    });
+    return;
+  }
+
+  const result = await isCorrectWord(word, language);
+
+  res.status(StatusCodes.OK).json(result);
+});
 
 export default router;

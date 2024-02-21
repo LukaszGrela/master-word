@@ -20,6 +20,9 @@ export type TIsCorrectWordResponse = {
 };
 
 export type TSessionQuery = { session?: string };
-export type TInitQuery = TSessionQuery & { language?: TSupportedLanguages };
+export type TLanguageQuery = { language?: TSupportedLanguages };
+export type TInitQuery = TSessionQuery & TLanguageQuery;
 
 export type TNextAttemptQuery = TSessionQuery & { guess: string };
+
+export type TValidateWordBody = { word: string } & TLanguageQuery;
