@@ -29,8 +29,8 @@
   position: absolute;
   left: 0;
   top: 0;
-  width: 2rem;
-  height: 2rem;
+  width: 1.75rem;
+  height: 1.75rem;
 }
 
 .letter.inactive {
@@ -67,6 +67,26 @@
 }
 .letter.active.wrong.last {
   border-right: 1px solid red;
+}
+
+.letter.active.first:before {
+  top: 1rem;
+  left: -0.75rem;
+  position: absolute;
+  background-color: inherit;
+  padding: 0.125rem 0.25rem;
+  border-radius: 1rem;
+}
+
+.mobile .pl .letter.active.first:before {
+  top: 1.75rem;
+}
+
+.pl .letter.active.first:before {
+  content: '🇵🇱';
+}
+.en .letter.active.first:before {
+  content: '🇺🇸';
 }
 
 @keyframes blink {

@@ -6,6 +6,7 @@ import t from '../../i18n';
 import { LanguageSelector } from '../language';
 import { AppStorage } from '../../utils/localStorage';
 import { TSupportedLanguages } from '../../api';
+import { EStorageKeys } from '../../utils/localStorage/enums';
 import './Result.css';
 
 const displayTime = (ms: number): string => {
@@ -50,13 +51,13 @@ const Result: FC<IProps> = ({
   const [wordLanguage, setWordLanguage] = useState<
     TSupportedLanguages | undefined
   >(
-    (storage.getItem('word-language') ||
-      storage.getItem('ui-language') ||
+    (storage.getItem(EStorageKeys.GAME_LANGUAGE) ||
+      storage.getItem(EStorageKeys.UI_LANGUAGE) ||
       'pl') as TSupportedLanguages
   );
 
   const handleWordLanguageChange = (language: TSupportedLanguages): void => {
-    AppStorage.getInstance().setItem('word-language', language);
+    AppStorage.getInstance().setItem(EStorageKeys.GAME_LANGUAGE, language);
     setWordLanguage(language);
   };
 
@@ -75,7 +76,7 @@ const Result: FC<IProps> = ({
         {gameState === 'init' && t('result-start-the-game')}
         {showLoading && <>&nbsp;</>}
       </h2>
-      {gameSession?.finished && (
+      {gameSession?.finished && !showLoading && (
         <p className='playtime'>{t('result-playtime', { playTime })}</p>
       )}
       {!hiddenFinalResult && (

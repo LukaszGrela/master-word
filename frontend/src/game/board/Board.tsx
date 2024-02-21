@@ -1,9 +1,15 @@
 import React from 'react';
 import { IBoard } from '../types';
 import './Board.css';
+import { classNames } from '../../utils/classNames';
 
 /* Grid Board */
-const Board: React.FC<IBoard> = ({ children, columns, rows }): JSX.Element => {
+const Board: React.FC<IBoard> = ({
+  children,
+  columns,
+  rows,
+  className,
+}): JSX.Element => {
   const style = {
     gridTemplateColumns: `repeat(${columns}, 1fr)`,
     gridTemplateRows: `repeat(${rows}, 1fr)`,
@@ -11,7 +17,7 @@ const Board: React.FC<IBoard> = ({ children, columns, rows }): JSX.Element => {
   };
 
   return (
-    <div className='board' style={style}>
+    <div className={classNames('board', className)} style={style}>
       {children}
     </div>
   );

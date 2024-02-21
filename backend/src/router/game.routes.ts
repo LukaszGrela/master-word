@@ -215,7 +215,7 @@ router.get('/init', async (req: Request, res: Response) => {
         const word = await getRandomWord(language, WORD_LENGTH);
         response = {
           ...response,
-          game: resetGameSession(response.game.language, word.word),
+          game: resetGameSession(language, word.word),
         };
         // store/update
         gameSessions.set(response.session, response);
@@ -314,7 +314,7 @@ router.get(
       if (gameSession.game.language === 'pl') {
         // TODO implement for polish when dictionary will contain > 1000 words
         // log the word, it is possible that it is correct but missing from dictionary
-        console.log('LOG NEW WORD:', isCorrect);
+        console.log('LOG NEW WORD:', gameSession.session, isCorrect);
       } else {
         // english has external validation
         // shows over
