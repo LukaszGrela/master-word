@@ -6,6 +6,7 @@ export interface IProps {
 
   // is the word active - user enters word
   active?: boolean;
+  invalid?: boolean;
 
   // current word length
   wordLength: number;

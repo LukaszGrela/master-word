@@ -29,7 +29,9 @@ const MasterWord: FC<IMasterWord> = () => {
   const bowser = getBowserDetails();
   const urlSession = getUrlSearch().get('session');
 
-  const [, setError] = useState<TErrorResponse | null>(null);
+  const [error, setError] = useState<
+    (TErrorResponse & { details?: string }) | null
+  >(null);
   const [gameState, setGameState] = useState<TGameState>('init');
   const [gameSession, setGameSession] = useState<TGameSessionRecord | null>(
     null
@@ -102,6 +104,9 @@ const MasterWord: FC<IMasterWord> = () => {
     (guess: string) => {
       const word = guess.toLocaleUpperCase();
 
+      // reset error
+      setError(null);
+
       if (!gameSession) return;
 
       setGameState('pending');
@@ -130,6 +135,12 @@ const MasterWord: FC<IMasterWord> = () => {
               setGameSession(null); // clear session
               setGameState('init');
               return;
+            } else if (error.code === 6 /* INVALID_WORD */) {
+              setError({
+                code: error.code,
+                error: t('main-error-invalid-word'),
+                details: guess,
+              });
             }
           } else if (error instanceof DOMException) {
             // abort error is OK (abort is never ok)
@@ -211,11 +222,14 @@ const MasterWord: FC<IMasterWord> = () => {
           key={gameState === 'init' ? gameState : 'running'}
         >
           {game.map((gameAttempt, index) => {
+            const active = index === attempt && gameState === 'running';
+            if (active) console.log(error);
             return (
               <Word
                 mobile={bowser.platform.type === 'mobile'}
                 commit={handleWordCommit}
-                active={index === attempt && gameState === 'running'}
+                active={active}
+                invalid={!!error && error.code === 6 && active}
                 wordLength={wordLength}
                 word={gameAttempt.word.join('')}
                 id={`${index}`}
