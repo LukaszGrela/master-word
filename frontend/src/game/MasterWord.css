@@ -41,7 +41,7 @@
   background-color: #f0f8ffd6;
   border-radius: 1rem;
 
-  box-shadow: 1px 1px 16px 2px;
+  box-shadow: black 1px 1px 16px 2px;
 }
 
 .master-word .game-board {
@@ -58,4 +58,14 @@
   left: 50%;
   margin: 0;
   transform: translate(-50%, -50%);
+}
+
+@media (prefers-color-scheme: dark) {
+  .master-word .panel {
+    background-color: #1a1a1ad6;
+  }
+
+  .read-the-docs {
+    color: #bfbdbdab;
+  }
 }

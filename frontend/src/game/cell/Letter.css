@@ -74,3 +74,25 @@
     border-color: transparent;
   }
 }
+
+@media (prefers-color-scheme: dark) {
+  .letter {
+    background-color: #09263580;
+  }
+  .letter.inactive {
+    background-color: #092635;
+  }
+  .letter.inactive.misplaced {
+    background-color: hsl(27, 100%, 40%);
+  }
+  .letter.active {
+    background-color: #1b4242;
+  }
+}
+
+/*
+092635
+1B4242
+5C8374
+9EC8B9
+*/
