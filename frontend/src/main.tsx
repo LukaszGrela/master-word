@@ -18,6 +18,12 @@ if (import.meta.env.PROD) {
 if (!AppStorage.getInstance().has('ui-language')) {
   AppStorage.getInstance().setItem('ui-language', 'pl');
 }
+if (!AppStorage.getInstance().has('word-language')) {
+  AppStorage.getInstance().setItem(
+    'word-language',
+    AppStorage.getInstance().getItem('ui-language') || 'pl'
+  );
+}
 loadTranslation(
   (AppStorage.getInstance().getItem('ui-language') as TSupportedLanguages) ||
     'pl'
