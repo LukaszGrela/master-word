@@ -82,6 +82,7 @@ router.get('/random-word', async (req: Request, res: Response) => {
 
     res.status(StatusCodes.OK).json(randomWordResponse);
   } catch (error) {
+    console.log(error);
     res.status(StatusCodes.BAD_REQUEST).json(error);
   }
 });
@@ -191,6 +192,7 @@ router.get('/init', async (req: Request, res: Response) => {
       };
       gameSessions.set(id, response);
     } catch (error) {
+      console.log(error);
       res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({
         code: ErrorCodes.GENERAL_ERROR,
         error: 'Can not start new game.',
@@ -207,7 +209,6 @@ router.get('/init', async (req: Request, res: Response) => {
     return;
   } else {
     // all good - send game response
-
     if (response.game.finished) {
       try {
         const word = await getRandomWord(language, WORD_LENGTH);
@@ -218,6 +219,7 @@ router.get('/init', async (req: Request, res: Response) => {
         // store/update
         gameSessions.set(response.session, response);
       } catch (error) {
+        console.log(error);
         res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({
           code: ErrorCodes.GENERAL_ERROR,
           error: 'Can not start new game.',
@@ -225,6 +227,9 @@ router.get('/init', async (req: Request, res: Response) => {
         return;
       }
     }
+
+    console.log('Game started', response.session);
+    console.log('details', response.game.language, response.game.word);
 
     const { word, ...game } = response.game;
     // deliver in progress session
