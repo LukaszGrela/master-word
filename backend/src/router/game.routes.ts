@@ -116,7 +116,7 @@ const isCorrectWord = async (word: string, language: 'pl' | 'en') => {
       return {
         word,
         validWord: true,
-        error: (error as Error).message,
+        error: (error as Error).message || 'Validation endpoint error',
         language,
       };
     }
