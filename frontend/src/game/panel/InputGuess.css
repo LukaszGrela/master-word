@@ -22,6 +22,10 @@
   outline: 4px auto -webkit-focus-ring-color;
 }
 
+.input-modal input[type='text']:invalid {
+  border-color: red;
+}
+
 .input-modal label {
   font-weight: 500;
   font-size: large;

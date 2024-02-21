@@ -150,6 +150,11 @@ const MasterWord: FC<IMasterWord> = () => {
                 error: t('main-error-invalid-word'),
                 details: guess,
               });
+
+              // if it is a mobile open the input modal
+              if (bowser.platform.type === 'mobile') {
+                setShowInputModal(true);
+              }
             }
           } else if (error instanceof DOMException) {
             // abort error is OK (abort is never ok)
@@ -159,7 +164,7 @@ const MasterWord: FC<IMasterWord> = () => {
           setGameState('running');
         });
     },
-    [gameSession]
+    [gameSession, bowser.platform.type]
   );
 
   const handlePanelAction = useCallback(
@@ -226,13 +231,13 @@ const MasterWord: FC<IMasterWord> = () => {
       )}
       <div className='game-board'>
         <Board
+          className={language}
           columns={wordLength}
           rows={attempts}
           key={gameState === 'init' ? gameState : 'running'}
         >
           {game.map((gameAttempt, index) => {
             const active = index === attempt && gameState === 'running';
-            if (active) console.log(error);
             return (
               <Word
                 mobile={bowser.platform.type === 'mobile'}
@@ -261,6 +266,7 @@ const MasterWord: FC<IMasterWord> = () => {
             initWord={game[attempt].word.join('')}
             maxLength={wordLength}
             onClose={handlePanelAction}
+            error={error}
           />
         )}
       </div>
