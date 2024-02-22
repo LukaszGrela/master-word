@@ -1,6 +1,7 @@
 import { FC, useCallback, useEffect, useState } from 'react';
 import t from '../../i18n';
 import { TErrorResponse } from '../../api';
+import { isCorrectWord } from '../../utils/isLetter';
 import './InputGuess.css';
 
 // const reg = /^[\p{Letter}\p{Mark}]+$/iu;
@@ -25,8 +26,9 @@ const InputGuess: FC<{
   const handleChangeText: React.ChangeEventHandler<HTMLInputElement> =
     useCallback((e) => {
       const value = e.target.value;
-
-      setGuess(value.toLocaleUpperCase());
+      if (value === '' || isCorrectWord(value)) {
+        setGuess(value.toLocaleUpperCase());
+      }
     }, []);
 
   const disableButton = guess.length < maxLength;
