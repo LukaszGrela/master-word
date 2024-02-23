@@ -24,5 +24,6 @@
   "main-legend-misplaced": "Złe miejsce",
   "main-legend-correct": "Dobra litera",
   "result-language-selector-btn-title-pl": "Słowo polskie",
-  "result-language-selector-btn-title-en": "Słowo angielskie"
+  "result-language-selector-btn-title-en": "Słowo angielskie",
+  "input-modal-close-button": "Ukryj"
 }

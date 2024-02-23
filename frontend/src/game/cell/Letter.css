@@ -78,7 +78,8 @@
   border-radius: 1rem;
 }
 
-.mobile .pl .letter.active.first:before {
+.mobile .pl .letter.active.first:before,
+.mobile .en .letter.active.first:before {
   top: 1.75rem;
 }
 

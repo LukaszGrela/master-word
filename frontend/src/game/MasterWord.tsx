@@ -268,8 +268,9 @@ const MasterWord: FC<IMasterWord> = () => {
           onClick={handlePanelAction}
         />
 
-        {showInputModal && (
+        {!gameSession?.game.finished && (
           <InputGuessPanel
+            show={showInputModal}
             initWord={game[attempt].word.join('')}
             maxLength={wordLength}
             onClose={handlePanelAction}
