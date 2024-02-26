@@ -4,6 +4,8 @@ import { TErrorResponse } from '../../api';
 import { isCorrectWord } from '../../utils/isLetter';
 import { EditIcon } from '../icons/EditIcon';
 import { createPortal } from 'react-dom';
+import { useRunAfterUpdate } from '../../utils/hooks/useRunAfterUpdate';
+import { noop } from '../../utils/noop';
 import './InputGuess.css';
 
 type TOnCloseGuess = (action: 'guess', word: string) => void;
@@ -41,13 +43,30 @@ const InputGuess: FC<{
     onClose('guess', guess);
   }, [guess, onClose]);
 
+  const runAfterUpdate = useRunAfterUpdate();
   const handleChangeText: React.ChangeEventHandler<HTMLInputElement> =
-    useCallback((e) => {
-      const value = e.target.value;
-      if (value === '' || isCorrectWord(value)) {
-        setGuess(value.toLocaleUpperCase());
-      }
-    }, []);
+    useCallback(
+      (e) => {
+        const input = e.target;
+        const value = input.value;
+        const { selectionDirection, selectionEnd, selectionStart } = input;
+        console.log({ selectionDirection, selectionEnd, selectionStart });
+        if (value === '' || isCorrectWord(value)) {
+          const newValue = value.toLocaleUpperCase();
+          let setCursor = noop;
+
+          if (guess !== newValue && value !== '') {
+            setCursor = () => {
+              input.selectionStart = selectionEnd;
+              input.selectionEnd = selectionEnd;
+            };
+          }
+          setGuess(newValue);
+          runAfterUpdate(setCursor);
+        }
+      },
+      [guess, runAfterUpdate]
+    );
 
   const disableButton = guess.length < maxLength;
   const handleEnter: React.KeyboardEventHandler<HTMLInputElement> = useCallback(
