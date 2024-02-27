@@ -18,12 +18,13 @@
   "translation-button-polish": "Polish",
   "result-start-the-game": "Start the game",
   "result-language-info": "Select language of the word to guess.",
-  "result-start-button": "Start",
+  "start-button": "Start",
   "main-error-invalid-word": "Incorrect word",
   "main-legend-incorrect": "Wrong letter",
   "main-legend-misplaced": "Misplaced letter",
   "main-legend-correct": "Correct letter",
   "result-language-selector-btn-title-pl": "Polish word",
   "result-language-selector-btn-title-en": "English word",
-  "input-modal-close-button": "Hide"
+  "input-modal-close-button": "Hide",
+  "home-game-description": "You have 8 attempts to guess a 5-letter word, do this in the least number of attempts and shortest time. Time is measured from sending first word proposition. Before you start, you can select the language of word to guess."
 }

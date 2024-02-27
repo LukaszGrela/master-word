@@ -18,12 +18,13 @@
   "translation-button-polish": "Polski",
   "result-start-the-game": "Rozpocznij grę",
   "result-language-info": "Wybierz język słowa do odgadnięcia",
-  "result-start-button": "Start",
+  "start-button": "Start",
   "main-error-invalid-word": "Niepoprawne słowo",
   "main-legend-incorrect": "Zła litera",
   "main-legend-misplaced": "Złe miejsce",
   "main-legend-correct": "Dobra litera",
   "result-language-selector-btn-title-pl": "Słowo polskie",
   "result-language-selector-btn-title-en": "Słowo angielskie",
-  "input-modal-close-button": "Ukryj"
+  "input-modal-close-button": "Ukryj",
+  "home-game-description": "Masz 8 prób aby odgadnąć 5-literowe słowo, zrób to w jak najmniejszej ilości prób i w jak najkrótszym czasie. Czas odliczany jest od wysłania pierwszej propozycji słowa. Przed rozpoczęciem gry możesz zmienić język odgadywanego słowa."
 }
