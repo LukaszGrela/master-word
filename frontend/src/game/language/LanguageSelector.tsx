@@ -1,8 +1,9 @@
 import { FC, useCallback } from 'react';
 import { IProps } from './types';
-import t from '../../i18n';
 import { classNames } from '../../utils/classNames';
 import { TSupportedLanguages } from '../../api';
+import { useLanguage } from '../../i18n';
+
 import './LanguageSelector.css';
 
 const LanguageSelector: FC<IProps> = ({
@@ -11,6 +12,8 @@ const LanguageSelector: FC<IProps> = ({
   className,
   translationOverride,
 }): JSX.Element => {
+  const { getUIText: t } = useLanguage();
+
   const handleLanguageChange = useCallback(
     (selected: TSupportedLanguages): void => {
       if (language !== selected) {
