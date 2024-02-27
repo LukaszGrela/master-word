@@ -1,0 +1,26 @@
+.home {
+  .title {
+    margin-bottom: 2rem;
+  }
+  .description {
+    margin: 0 0 2rem 0;
+  }
+  .button-row {
+    margin-bottom: 4rem;
+  }
+  .game-language {
+    margin-bottom: 2rem;
+    .language-info {
+      margin: 0 0 0.5rem 0;
+    }
+
+    .language-selector {
+      position: relative;
+      justify-content: center;
+      top: initial;
+      right: initial;
+
+      padding-bottom: 0.25rem;
+    }
+  }
+}
