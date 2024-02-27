@@ -1,0 +1,112 @@
+@import '../../styles/variables';
+
+.letter {
+  height: 4rem;
+  box-sizing: border-box;
+  background-color: $letter;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+
+  position: relative;
+  pointer-events: none;
+  & .container {
+    font-weight: 500;
+    font-size: 1.5rem;
+    user-select: none;
+  }
+
+  & .icon {
+    display: none;
+  }
+
+  &.inactive {
+    background-color: $letter-inactive;
+    &.correct {
+      background-color: $letter-correct;
+      color: $tintedWhite;
+    }
+
+    &.misplaced {
+      background-color: $letter-misplaced;
+    }
+
+    &.incorrect {
+      background-color: $letter-incorrect;
+    }
+  }
+
+  &.active {
+    background-color: $letter-active;
+    color: $letter-active-color;
+    &.wrong {
+      border-color: $letter-wrong;
+      border-top: 1px solid $letter-wrong;
+      border-bottom: 2px solid $letter-wrong;
+
+      animation: blink 0.75s;
+      animation-iteration-count: 3;
+    }
+    &.wrong.first {
+      border-left: 1px solid $letter-wrong;
+    }
+    &.wrong.last {
+      border-right: 1px solid $letter-wrong;
+    }
+
+    &.first:before {
+      top: 1rem;
+      left: -0.75rem;
+      position: absolute;
+      background-color: inherit;
+      padding: 0.125rem 0.25rem;
+      border-radius: 1rem;
+
+      .pl & {
+        content: '🇵🇱';
+      }
+      .en & {
+        content: '🇺🇸';
+      }
+
+      .mobile .pl &,
+      .mobile .en & {
+        top: 1.75rem;
+      }
+    }
+
+    .mobile &.show-icon .icon {
+      display: block;
+    }
+  }
+  .mobile & .icon svg {
+    fill: #00000057;
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 1.75rem;
+    height: 1.75rem;
+  }
+}
+
+@keyframes blink {
+  50% {
+    border-color: transparent;
+  }
+}
+
+@media (prefers-color-scheme: dark) {
+  .letter {
+    background-color: $letter-dark;
+  }
+  .letter.inactive {
+    background-color: $letter-inactive-dark;
+  }
+  .letter.inactive.misplaced {
+    background-color: $letter-misplaced-dark;
+  }
+  .letter.active {
+    background-color: $letter-active-dark;
+    color: $letter-active-color-dark;
+  }
+}
