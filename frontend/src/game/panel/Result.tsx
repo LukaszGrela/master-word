@@ -1,37 +1,21 @@
 import { FC, useCallback, useState } from 'react';
 import { IProps } from './types';
 import { classNames } from '../../utils/classNames';
-import { toHMS } from '../../utils/datetime/toHMS';
-import t from '../../i18n';
 import { LanguageSelector } from '../language';
 import { AppStorage } from '../../utils/localStorage';
 import { TSupportedLanguages } from '../../api';
 import { EStorageKeys } from '../../utils/localStorage/enums';
+import { useLanguage } from '../../i18n';
+import { displayTime } from '../../utils/displayTime';
 import './Result.css';
-
-const displayTime = (ms: number): string => {
-  const hms = toHMS(ms);
-
-  if (!hms.h && !hms.m) {
-    return `${hms.s.toFixed(3)}s`;
-  }
-
-  if (!hms.h && hms.m !== undefined) {
-    return `${hms.m}m ${hms.s}s`;
-  }
-
-  if (hms.h !== undefined && hms.m !== undefined) {
-    return `${hms.h}h ${hms.m}m ${hms.s}s`;
-  }
-
-  return '';
-};
 
 const Result: FC<IProps> = ({
   gameState,
   gameSession,
   onClick,
 }): JSX.Element => {
+  const { getUIText: t } = useLanguage();
+
   const storage = AppStorage.getInstance();
   const wordToGuess = gameSession?.word || '';
   const attempt = gameSession?.attempt || 0;
