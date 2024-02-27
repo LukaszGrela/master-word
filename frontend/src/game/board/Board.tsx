@@ -1,7 +1,7 @@
 import React from 'react';
 import { IBoard } from '../types';
-import './Board.css';
 import { classNames } from '../../utils/classNames';
+import './Board.scss';
 
 /* Grid Board */
 const Board: React.FC<IBoard> = ({
