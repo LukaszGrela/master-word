@@ -16,17 +16,19 @@ import {
 } from '../api';
 import { createGameState } from '../api/utils';
 import { getUrlSearch } from '../utils/getUrlSearch';
-import t, { getLoadedLanguage, loadTranslation } from '../i18n';
 import { noop } from '../utils/noop';
 import { AppStorage } from '../utils/localStorage';
 import { LanguageSelector } from './language';
 import { EStorageKeys } from '../utils/localStorage/enums';
+import { useLanguage } from '../i18n';
 
 import './MasterWord.css';
 
 const emptyGameState = createGameState(ATTEMPTS, WORD_LENGTH);
 
 const MasterWord: FC<IMasterWord> = () => {
+  const { getUIText: t, loadedLanguage, loadTranslation } = useLanguage();
+
   const storage = AppStorage.getInstance();
   const bowser = getBowserDetails();
 
@@ -164,7 +166,7 @@ const MasterWord: FC<IMasterWord> = () => {
           setGameState('running');
         });
     },
-    [gameSession, bowser.platform.type]
+    [gameSession, t, bowser.platform.type]
   );
 
   const handlePanelAction = useCallback(
@@ -203,10 +205,10 @@ const MasterWord: FC<IMasterWord> = () => {
 
   const [selectedTranslation, setTranslation] = useState<
     TSupportedLanguages | undefined
-  >(getLoadedLanguage());
+  >(loadedLanguage);
 
   const handleTranslationChange = (language: TSupportedLanguages): void => {
-    const used = getLoadedLanguage();
+    const used = loadedLanguage;
     if (language !== used) {
       loadTranslation(language)
         .then(() => {
