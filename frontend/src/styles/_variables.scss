@@ -1,0 +1,50 @@
+// palette light
+$platinum: #d9dcd6;
+$lapisLazuli: #2f6690;
+$cerulean: #3a7ca5;
+$indigoDye: #16425b;
+$skyBlue: #81c3d7;
+
+// dark pallette
+$darkInk: #03001c;
+$tintedWhite: rgba(255, 255, 255, 0.87);
+/*
+092635
+1B4242
+5C8374
+9EC8B9
+*/
+
+// theme
+$background: $platinum;
+$foreground: #213547;
+
+$foreground-dark: $tintedWhite;
+$background-dark: $darkInk;
+
+$button-primary: $indigoDye;
+$button-primary-color: $tintedWhite;
+$button-primary-hover: $lapisLazuli;
+
+$button-secondary: $lapisLazuli;
+$button-secondary-color: $tintedWhite;
+$button-secondary-hover: $skyBlue;
+
+$spinner-background: $skyBlue;
+$spinner-foreground: $indigoDye;
+
+$letter: $skyBlue;
+$letter-dark: #09263580;
+$letter-active-color: #020304;
+$letter-active-color-dark: inherit;
+$letter-inactive: hsl(25 40% 90% / 1);
+$letter-inactive-dark: #092635;
+
+$letter-active: $cerulean;
+$letter-active-dark: #1b4242;
+
+$letter-correct: green;
+$letter-misplaced: orange;
+$letter-misplaced-dark: hsl(27, 100%, 40%);
+$letter-wrong: red;
+$letter-incorrect: grey;

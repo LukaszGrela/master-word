@@ -1,0 +1,142 @@
+@import './variables';
+
+:root {
+  font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
+  line-height: 1.5;
+  font-weight: 400;
+
+  color-scheme: light dark;
+
+  color: $foreground;
+  background-color: $background;
+
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+body {
+  margin: 0;
+  display: flex;
+  place-items: center;
+  min-width: 320px;
+  min-height: 100vh;
+}
+
+#root {
+  max-width: 1024px;
+  margin: 0 auto;
+  padding: 0 0.25rem;
+  text-align: center;
+}
+
+h1 {
+  font-size: 3.2em;
+  line-height: 1.1;
+  margin-bottom: 0.5rem;
+}
+h4 {
+  font-size: 1.2em;
+  line-height: 1.1;
+  margin-top: 0.5rem;
+}
+
+button {
+  border-radius: 8px;
+  border: 1px solid transparent;
+  padding: 0.6em 1.2em;
+  font-size: 1em;
+  font-weight: 500;
+  font-family: inherit;
+
+  cursor: pointer;
+  transition: background-color 0.25s;
+}
+
+button:disabled {
+  cursor: not-allowed;
+}
+
+button.primary {
+  background-color: $button-primary;
+  color: $button-primary-color;
+}
+button.secondary {
+  background-color: $button-secondary;
+  color: $button-secondary-color;
+}
+
+button.primary:hover {
+  background-color: $button-primary-hover;
+}
+
+button.secondary:hover {
+  background-color: $button-secondary-hover;
+}
+
+button:focus,
+button:focus-visible {
+  outline: 4px auto -webkit-focus-ring-color;
+}
+
+.button-row {
+  display: flex;
+  gap: 0.25rem;
+  justify-content: center;
+}
+
+.mobile .button-row {
+  flex-direction: column-reverse;
+}
+
+.hidden {
+  visibility: hidden;
+}
+
+.sr {
+  width: 1px;
+  height: 1px;
+}
+
+.game {
+  margin: 0 1rem;
+}
+
+.read-the-docs {
+  color: #606060;
+}
+
+.panel {
+  margin-bottom: 0.5rem;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+
+  padding: 1rem;
+  min-width: 16rem;
+  background-color: #f0f8ffd6;
+  border-radius: 1rem;
+
+  box-shadow: black 1px 1px 16px 2px;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    color: $foreground-dark;
+    background-color: $background-dark;
+  }
+
+  button {
+    background-color: #f9f9f9;
+  }
+
+  .read-the-docs {
+    color: #bfbdbdab;
+  }
+
+  .panel {
+    background-color: #1a1a1ae6;
+  }
+}
