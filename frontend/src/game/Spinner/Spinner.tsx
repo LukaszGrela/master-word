@@ -1,8 +1,8 @@
 import React from 'react';
 import { classNames } from '../../utils/classNames';
+import { IProps } from './types';
 
 import './style/index.scss';
-import { IProps } from './types';
 
 const Spinner: React.FC<IProps> = ({ className }): JSX.Element => (
   <div className={classNames('Spinner', className)}>
