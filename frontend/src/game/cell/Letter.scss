@@ -1,7 +1,7 @@
 @import '../../styles/variables';
 
 .letter {
-  height: 4rem;
+  height: var(--gd-board-size);
   box-sizing: border-box;
   background-color: $letter;
   display: flex;
@@ -72,6 +72,13 @@
       .mobile .pl &,
       .mobile .en & {
         top: 1.75rem;
+        @media screen and (max-width: 320px) {
+          bottom: 0;
+          border: none;
+          padding: 0;
+          background: transparent;
+          left: 2px;
+        }
       }
     }
 

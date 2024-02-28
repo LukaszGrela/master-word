@@ -1,12 +1,22 @@
-.board {
-  display: grid;
-  gap: 0.25rem;
-  padding: 0.25rem;
-  background-color: transparent;
+:root {
+  --gd-board-size: 4rem;
+  --gd-board-gap: 0.25rem;
+  --gd-board-padding: 0.25rem;
+
+  @media screen and (max-width: 320px) {
+    --gd-board-size: 3rem;
+  }
+  @media screen and (min-width: 321px) and (max-width: 360px) {
+    --gd-board-size: 3.5rem;
+  }
 }
 
-@media (prefers-color-scheme: dark) {
-  .board {
+.board {
+  display: grid;
+  gap: var(--gd-board-gap);
+  padding: var(--gd-board-padding);
+  background-color: transparent;
+  @media (prefers-color-scheme: dark) {
     background-color: transparent;
   }
 }

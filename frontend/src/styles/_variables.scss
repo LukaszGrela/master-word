@@ -69,3 +69,9 @@ $game-language-btn-border-dark: transparent;
 $game-language-btn-border-hover-dark: transparent;
 $game-language-btn-background-hover-dark: $lapisLazuli;
 $game-language-btn-selected-border-dark: transparent;
+
+$language-top: 0.25rem;
+$language-right: 0.75rem;
+$language-height: 29px;
+
+$root-top-margin: calc(#{$language-top} * 2 + #{$language-height});
