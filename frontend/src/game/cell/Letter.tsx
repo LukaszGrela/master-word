@@ -1,8 +1,8 @@
 import React from 'react';
 import { classNames } from '../../utils/classNames';
 import { ILetter } from './types';
-import './Letter.scss';
 import { EditIcon } from '../icons/EditIcon';
+import './Letter.scss';
 
 const Letter: React.FC<ILetter> = ({ className, letter }): JSX.Element => {
   const cn = classNames('letter', className);
