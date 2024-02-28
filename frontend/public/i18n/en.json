@@ -1,9 +1,9 @@
 {
   "result-win": "You've won in {attempt} attempts",
   "result-lose": "You've lost, word to guess was {wordToGuess}",
-  "result-running": "Game in progress",
   "result-playtime": "Game time: {playTime}",
   "result-again-button": "Next word",
+  "result-quit-button": "End game",
   "loading": "Loading...",
   "input-modal-label": "Insert word to guess",
   "input-modal-info-done": "Tap Done to check",
@@ -16,7 +16,6 @@
   "translation-info-sr": "Choose the language of UI",
   "translation-button-english": "English",
   "translation-button-polish": "Polish",
-  "result-start-the-game": "Start the game",
   "result-language-info": "Select language of the word to guess.",
   "start-button": "Start",
   "main-error-invalid-word": "Incorrect word",
@@ -26,5 +25,10 @@
   "result-language-selector-btn-title-pl": "Polish word",
   "result-language-selector-btn-title-en": "English word",
   "input-modal-close-button": "Hide",
-  "home-game-description": "You have 8 attempts to guess a 5-letter word, do this in the least number of attempts and shortest time. Time is measured from sending first word proposition. Before you start, you can select the language of word to guess."
+  "home-game-description": "You have 8 attempts to guess a 5-letter word, do this in the least number of attempts and shortest time. Time is measured from sending first word proposition. Before you start, you can select the language of word to guess.",
+  "word-language-selector-btn-label-pl": "Word",
+  "word-language-selector-btn-label-en": "Word",
+  "general-error-title": "Oops!",
+  "general-error-message": "Sorry, an unexpected error has occured.",
+  "general-error-btn-home": "Home"
 }

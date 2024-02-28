@@ -1,9 +1,9 @@
 {
   "result-win": "Wygrałeś w {attempt} próbach",
   "result-lose": "Przegrałeś, słowo do odgadnięcia to {wordToGuess}",
-  "result-running": "Gra w toku",
   "result-playtime": "Czas rozgrywki: {playTime}",
   "result-again-button": "Odgadnij następne słowo",
+  "result-quit-button": "Zakończ grę",
   "loading": "Wczytuję...",
   "input-modal-label": "Podaj słowo do odgadnięcia",
   "input-modal-info-done": "Naciśnij Gotowe by sprawdzić",
@@ -16,7 +16,6 @@
   "translation-info-sr": "Wybierz język interfejsu",
   "translation-button-english": "Angielski",
   "translation-button-polish": "Polski",
-  "result-start-the-game": "Rozpocznij grę",
   "result-language-info": "Wybierz język słowa do odgadnięcia",
   "start-button": "Start",
   "main-error-invalid-word": "Niepoprawne słowo",
@@ -26,5 +25,10 @@
   "result-language-selector-btn-title-pl": "Słowo polskie",
   "result-language-selector-btn-title-en": "Słowo angielskie",
   "input-modal-close-button": "Ukryj",
-  "home-game-description": "Masz 8 prób aby odgadnąć 5-literowe słowo, zrób to w jak najmniejszej ilości prób i w jak najkrótszym czasie. Czas odliczany jest od wysłania pierwszej propozycji słowa. Przed rozpoczęciem gry możesz zmienić język odgadywanego słowa."
+  "home-game-description": "Masz 8 prób aby odgadnąć 5-literowe słowo, zrób to w jak najmniejszej ilości prób i w jak najkrótszym czasie. Czas odliczany jest od wysłania pierwszej propozycji słowa. Przed rozpoczęciem gry możesz zmienić język odgadywanego słowa.",
+  "word-language-selector-btn-label-pl": "Słowo",
+  "word-language-selector-btn-label-en": "Słowo",
+  "general-error-title": "Ożesz kurczaczki!",
+  "general-error-message": "Przepraszamy, nieoczekiwany błąd jak piorun z nieba spadł i zepsuł zabawę...",
+  "general-error-btn-home": "Zamknij"
 }
