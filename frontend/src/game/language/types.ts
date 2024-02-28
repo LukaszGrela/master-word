@@ -11,5 +11,8 @@ export interface IProps {
     buttonTitles?: {
       [key in TSupportedLanguages]: string | undefined;
     };
+    buttonLabels?: {
+      [key in TSupportedLanguages]: string | undefined;
+    };
   };
 }
