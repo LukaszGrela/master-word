@@ -1,0 +1,30 @@
+@import '../../styles/variables';
+
+.language-selector.translation {
+  position: absolute;
+  top: 0.25rem;
+  right: 0.75rem;
+  display: flex;
+  flex-direction: row;
+  gap: 0.25rem;
+
+  & button {
+    padding: 0.25rem;
+    background-color: $language-btn-background;
+    border-color: $language-btn-border;
+
+    @media (prefers-color-scheme: dark) {
+      background-color: $language-btn-background-dark;
+    }
+    &:hover {
+      border-color: $language-btn-border-hover;
+    }
+    &.selected {
+      background-color: $language-btn-selected-background;
+      border-color: $language-btn-selected-border;
+      @media (prefers-color-scheme: dark) {
+        background-color: $language-btn-selected-background-dark;
+      }
+    }
+  }
+}

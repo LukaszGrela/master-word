@@ -4,7 +4,7 @@ import { classNames } from '../../utils/classNames';
 import { TSupportedLanguages } from '../../api';
 import { useLanguage } from '../../i18n';
 
-import './LanguageSelector.css';
+import './LanguageSelector.scss';
 
 const LanguageSelector: FC<IProps> = ({
   language,
