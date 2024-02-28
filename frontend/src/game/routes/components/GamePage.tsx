@@ -1,58 +1,55 @@
-import { FC, useCallback, useEffect, useState } from 'react';
-import { ATTEMPTS, Board, WORD_LENGTH } from './index';
-import { IMasterWord, TGameState } from './types';
-import { classNames } from '../utils/classNames';
-import Word from './word/Word';
-import { InputGuessPanel, ResultPanel } from './panel';
-import { TClickAction } from './panel/types';
-import { getBowserDetails } from '../utils/bowser';
+import { useCallback, useEffect, useState } from 'react';
+import { Location, useLocation, useNavigate } from 'react-router-dom';
 import {
-  getInit,
-  getNextAttempt,
   TErrorResponse,
   TGameSessionRecord,
-  guardTErrorResponse,
   TSupportedLanguages,
-} from '../api';
-import { createGameState } from '../api/utils';
-import { getUrlSearch } from '../utils/getUrlSearch';
-import t, { getLoadedLanguage, loadTranslation } from '../i18n';
-import { noop } from '../utils/noop';
-import { AppStorage } from '../utils/localStorage';
-import { LanguageSelector } from './language';
-import { EStorageKeys } from '../utils/localStorage/enums';
-
-import './MasterWord.css';
+  getInit,
+  getNextAttempt,
+  guardTErrorResponse,
+} from '../../../api';
+import { useLanguage } from '../../../i18n';
+import { getBowserDetails } from '../../../utils/bowser';
+import { ATTEMPTS, Board, WORD_LENGTH } from '../../index';
+import { InputGuessPanel } from '../../panel';
+import { TGameState } from '../../types';
+import Word from '../../word/Word';
+import { createGameState } from '../../../api/utils';
+import { AppStorage } from '../../../utils/localStorage';
+import { EStorageKeys } from '../../../utils/localStorage/enums';
+import { TClickAction } from '../../panel/types';
+import { getResultsPath } from '../enums';
+import './GamePage.scss';
+import Spinner from '../../Spinner/Spinner';
+import { Timer } from '../../Timer';
 
 const emptyGameState = createGameState(ATTEMPTS, WORD_LENGTH);
 
-const MasterWord: FC<IMasterWord> = () => {
+export const GamePage = () => {
+  const location = useLocation() as Location<string | undefined>;
+  const navigate = useNavigate();
   const storage = AppStorage.getInstance();
   const bowser = getBowserDetails();
-
-  const urlSession = getUrlSearch().get('session');
+  const { getUIText: t } = useLanguage();
 
   const [error, setError] = useState<
     (TErrorResponse & { details?: string }) | null
   >(null);
-  const [gameState, setGameState] = useState<TGameState>('init');
+  const [gameState, setGameState] = useState<TGameState>('start');
   const [gameSession, setGameSession] = useState<TGameSessionRecord | null>(
     null
   );
-
+  const urlSession = location.state;
   const session = gameSession?.session ?? urlSession ?? undefined;
   const wordLength = gameSession?.game?.word_length ?? WORD_LENGTH;
   const attempts = gameSession?.game?.max_attempts ?? ATTEMPTS;
   const game = gameSession?.game?.state ?? emptyGameState.concat();
   const attempt = gameSession?.game?.attempt ?? 0;
+
   // game word language
   const language = (storage.getItem('word-language') ||
     storage.getItem('ui-language') ||
     'pl') as TSupportedLanguages;
-
-  const startGame = useCallback(() => {
-    setGameState('start');
-  }, []);
 
   useEffect(() => {
     const controller = new AbortController();
@@ -129,7 +126,12 @@ const MasterWord: FC<IMasterWord> = () => {
           if (!response.game.finished) {
             setGameState('running');
           } else {
-            setGameState(response.game.guessed ? 'win' : 'lose');
+            // navigate to result page
+            navigate(getResultsPath(response.game.guessed ? 'win' : 'lose'), {
+              // no back to game
+              replace: true,
+              state: response,
+            });
           }
         })
         .catch((error) => {
@@ -164,24 +166,7 @@ const MasterWord: FC<IMasterWord> = () => {
           setGameState('running');
         });
     },
-    [gameSession, bowser.platform.type]
-  );
-
-  const handlePanelAction = useCallback(
-    (action: TClickAction, ...rest: unknown[]) => {
-      if (action === 'start') {
-        // from result panel
-        startGame();
-      }
-      if (action === 'guess') {
-        // from input panel
-        const [guess] = rest as string[];
-
-        setShowInputModal(false);
-        handleWordCommit(guess);
-      }
-    },
-    [handleWordCommit, startGame]
+    [gameSession, navigate, t, bowser.platform.type]
   );
 
   const [showInputModal, setShowInputModal] = useState(false);
@@ -201,41 +186,40 @@ const MasterWord: FC<IMasterWord> = () => {
     };
   }, [bowser.platform.type, gameState]);
 
-  const [selectedTranslation, setTranslation] = useState<
-    TSupportedLanguages | undefined
-  >(getLoadedLanguage());
+  const handlePanelAction = useCallback(
+    (action: TClickAction, ...rest: unknown[]) => {
+      if (action === 'guess') {
+        // from input panel
+        const [guess] = rest as string[];
 
-  const handleTranslationChange = (language: TSupportedLanguages): void => {
-    const used = getLoadedLanguage();
-    if (language !== used) {
-      loadTranslation(language)
-        .then(() => {
-          AppStorage.getInstance().setItem(EStorageKeys.UI_LANGUAGE, language);
-          setTranslation(language);
-        })
-        .catch(noop);
-    }
-  };
+        setShowInputModal(false);
+        handleWordCommit(guess);
+      }
+    },
+    [handleWordCommit]
+  );
 
   return (
-    <div className={classNames('master-word', 'game', gameState)}>
-      <div className='title'>
+    <div className='game-page'>
+      <div className='header'>
         <h1>{t('main-title')}</h1>
-        <h4>{t('main-subtitle')}</h4>
+        <Timer
+          startMs={
+            gameSession && gameSession.game.attempt > 0
+              ? Number(gameSession.game.timestamp_start)
+              : undefined
+          }
+        />
       </div>
-      {gameState !== 'init' && (
-        <>
-          <p className='read-the-docs'>
-            {bowser.platform.type !== 'mobile' && t('main-desktop-info')}
-            {bowser.platform.type === 'mobile' && t('main-mobile-info')}
-          </p>
-          <div className='legend'>
-            <span className='incorrect'>{t('main-legend-incorrect')}</span>
-            <span className='misplaced'>{t('main-legend-misplaced')}</span>
-            <span className='correct'>{t('main-legend-correct')}</span>
-          </div>
-        </>
-      )}
+      <p className='read-the-docs'>
+        {bowser.platform.type !== 'mobile' && t('main-desktop-info')}
+        {bowser.platform.type === 'mobile' && t('main-mobile-info')}
+      </p>
+      <div className='legend'>
+        <span className='incorrect'>{t('main-legend-incorrect')}</span>
+        <span className='misplaced'>{t('main-legend-misplaced')}</span>
+        <span className='correct'>{t('main-legend-correct')}</span>
+      </div>
       <div className='game-board'>
         <Board
           className={language}
@@ -261,13 +245,12 @@ const MasterWord: FC<IMasterWord> = () => {
             );
           })}
         </Board>
-
-        <ResultPanel
-          gameState={gameState}
-          gameSession={gameSession?.game}
-          onClick={handlePanelAction}
-        />
-
+        {(gameState === 'pending' || gameState === 'start') && (
+          <h2 className='loading panel'>
+            <Spinner />
+            <span>{t('loading')}</span>
+          </h2>
+        )}
         {!gameSession?.game.finished && (
           <InputGuessPanel
             show={showInputModal}
@@ -278,15 +261,6 @@ const MasterWord: FC<IMasterWord> = () => {
           />
         )}
       </div>
-      <p className='read-the-docs'>
-        GrelaDesign (c) 2024 [v{import.meta.env.VITE_VERSION}]
-      </p>
-      <LanguageSelector
-        language={selectedTranslation}
-        onClick={handleTranslationChange}
-      />
     </div>
   );
 };
-
-export default MasterWord;

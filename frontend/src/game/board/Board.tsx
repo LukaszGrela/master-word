@@ -1,7 +1,7 @@
 import React from 'react';
 import { IBoard } from '../types';
-import './Board.css';
 import { classNames } from '../../utils/classNames';
+import './Board.scss';
 
 /* Grid Board */
 const Board: React.FC<IBoard> = ({
@@ -13,7 +13,9 @@ const Board: React.FC<IBoard> = ({
   const style = {
     gridTemplateColumns: `repeat(${columns}, 1fr)`,
     gridTemplateRows: `repeat(${rows}, 1fr)`,
-    width: `calc(calc(${columns - 1} * 0.25rem) + calc(${columns} * 4rem))`,
+    width: `calc(calc(${
+      columns - 1
+    } * var(--gd-board-gap)) + calc(${columns} * var(--gd-board-size)))`,
   };
 
   return (

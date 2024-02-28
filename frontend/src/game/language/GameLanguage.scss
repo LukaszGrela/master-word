@@ -1,0 +1,26 @@
+@import '../../styles/variables';
+
+.game-language {
+  button.translation-btn {
+    display: flex;
+    gap: 0.25rem;
+
+    @media (prefers-color-scheme: dark) {
+      background-color: $language-btn-background-dark;
+      border-color: $game-language-btn-border-dark;
+    }
+    &:hover {
+      border-color: $language-btn-border-hover;
+      @media (prefers-color-scheme: dark) {
+        border-color: $game-language-btn-border-hover-dark;
+        background-color: $game-language-btn-background-hover-dark;
+      }
+    }
+    &.selected {
+      @media (prefers-color-scheme: dark) {
+        background-color: $game-language-btn-background-dark;
+        border-color: $game-language-btn-selected-border-dark;
+      }
+    }
+  }
+}

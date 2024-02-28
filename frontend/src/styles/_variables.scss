@@ -1,0 +1,77 @@
+//
+$gd-red: #d15355;
+$gd-red-dark: rgba(255, 255, 255, 0.87);
+
+// palette light
+$platinum: #d9dcd6;
+$lapisLazuli: #2f6690;
+$cerulean: #3a7ca5;
+$indigoDye: #16425b;
+$skyBlue: #81c3d7;
+
+// dark pallette
+$darkInk: #03001c;
+$tintedWhite: rgba(255, 255, 255, 0.87);
+/*
+092635
+1B4242
+5C8374
+9EC8B9
+*/
+
+// theme
+$background: $platinum;
+$foreground: #213547;
+
+$foreground-dark: $tintedWhite;
+$background-dark: $darkInk;
+
+$button-primary: $indigoDye;
+$button-primary-color: $tintedWhite;
+$button-primary-hover: $lapisLazuli;
+
+$button-secondary: $lapisLazuli;
+$button-secondary-color: $tintedWhite;
+$button-secondary-hover: $skyBlue;
+$button-secondary-color-hover: $indigoDye;
+
+$spinner-background: $skyBlue;
+$spinner-foreground: $indigoDye;
+
+$letter: $skyBlue;
+$letter-dark: #09263580;
+$letter-active-color: #020304;
+$letter-active-color-dark: inherit;
+$letter-inactive: hsl(25 40% 90% / 1);
+$letter-inactive-dark: #092635;
+
+$letter-active: $cerulean;
+$letter-active-dark: #1b4242;
+
+$letter-correct: green;
+$letter-misplaced: orange;
+$letter-misplaced-dark: hsl(27, 100%, 40%);
+$letter-wrong: red;
+$letter-incorrect: grey;
+
+$language-btn-background: transparent;
+$language-btn-background-dark: transparent;
+$language-btn-border: transparent;
+
+$language-btn-selected-background: hsl(25 40% 90% / 1);
+$language-btn-selected-background-dark: hsl(27, 27%, 50%);
+$language-btn-selected-border: hsl(27, 27%, 50%);
+
+$language-btn-border-hover: hsl(27, 27%, 50%);
+
+$game-language-btn-background-dark: $indigoDye;
+$game-language-btn-border-dark: transparent;
+$game-language-btn-border-hover-dark: transparent;
+$game-language-btn-background-hover-dark: $lapisLazuli;
+$game-language-btn-selected-border-dark: transparent;
+
+$language-top: 0.25rem;
+$language-right: 0.75rem;
+$language-height: 29px;
+
+$root-top-margin: calc(#{$language-top} * 2 + #{$language-height});

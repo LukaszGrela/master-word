@@ -1,11 +1,11 @@
 import { FC, useCallback, useEffect, useState } from 'react';
-import t from '../../i18n';
 import { TErrorResponse } from '../../api';
 import { isCorrectWord } from '../../utils/isLetter';
 import { EditIcon } from '../icons/EditIcon';
 import { createPortal } from 'react-dom';
 import { useRunAfterUpdate } from '../../utils/hooks/useRunAfterUpdate';
 import { noop } from '../../utils/noop';
+import { useLanguage } from '../../i18n';
 import './InputGuess.css';
 
 type TOnCloseGuess = (action: 'guess', word: string) => void;
@@ -20,6 +20,7 @@ const InputGuess: FC<{
   onClose: TOnClose;
   error?: (TErrorResponse & { details?: string }) | null;
 }> = ({ maxLength, initWord = '', onClose, error, show }) => {
+  const { getUIText: t } = useLanguage();
   const [guess, setGuess] = useState(initWord);
   const [displayed, setDisplayed] = useState(show);
   const [hidden, setHidden] = useState(false);

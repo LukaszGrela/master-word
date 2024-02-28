@@ -1,9 +1,10 @@
 import { FC, useCallback } from 'react';
 import { IProps } from './types';
-import t from '../../i18n';
 import { classNames } from '../../utils/classNames';
 import { TSupportedLanguages } from '../../api';
-import './LanguageSelector.css';
+import { useLanguage } from '../../i18n';
+
+import './LanguageSelector.scss';
 
 const LanguageSelector: FC<IProps> = ({
   language,
@@ -11,6 +12,8 @@ const LanguageSelector: FC<IProps> = ({
   className,
   translationOverride,
 }): JSX.Element => {
+  const { getUIText: t } = useLanguage();
+
   const handleLanguageChange = useCallback(
     (selected: TSupportedLanguages): void => {
       if (language !== selected) {
@@ -22,11 +25,11 @@ const LanguageSelector: FC<IProps> = ({
   return (
     <div className={classNames('language-selector', 'translation', className)}>
       <span className='hidden sr'>
-        {translationOverride?.screenReaderInfo || t('translation-info-sr')}
+        {translationOverride?.screenReaderInfo ?? t('translation-info-sr')}
       </span>
       <button
         title={
-          translationOverride?.buttonTitles?.pl ||
+          translationOverride?.buttonTitles?.pl ??
           t('translation-button-polish')
         }
         className={classNames(
@@ -37,11 +40,14 @@ const LanguageSelector: FC<IProps> = ({
           handleLanguageChange('pl');
         }}
       >
-        🇵🇱
+        {translationOverride?.buttonLabels?.pl && (
+          <span className='label'>{translationOverride?.buttonLabels?.pl}</span>
+        )}
+        <span className='flag'>🇵🇱</span>
       </button>
       <button
         title={
-          translationOverride?.buttonTitles?.en ||
+          translationOverride?.buttonTitles?.en ??
           t('translation-button-english')
         }
         className={classNames(
@@ -52,7 +58,10 @@ const LanguageSelector: FC<IProps> = ({
           handleLanguageChange('en');
         }}
       >
-        🇺🇸
+        {translationOverride?.buttonLabels?.en && (
+          <span className='label'>{translationOverride?.buttonLabels?.en}</span>
+        )}
+        <span className='flag'>🇺🇸</span>
       </button>
     </div>
   );

@@ -1,0 +1,43 @@
+$spinnerSize: 40;
+$spinnerStrokeWidth: 2px;
+
+@keyframes spinner {
+  0% {
+    stroke-dashoffset: (0.66 * $spinnerSize);
+    transform: rotate(0deg);
+  }
+  50% {
+    stroke-dashoffset: (3.14 * $spinnerSize);
+    transform: rotate(720deg);
+  }
+  100% {
+    stroke-dashoffset: (0.66 * $spinnerSize);
+    transform: rotate(1080deg);
+  }
+}
+
+.Spinner {
+  margin: 1rem 0;
+
+  svg.Spinner_svg {
+    width: $spinnerSize + px;
+    height: $spinnerSize + px;
+
+    circle {
+      fill: transparent;
+      stroke-linecap: round;
+    }
+    circle#bg {
+      stroke-width: $spinnerStrokeWidth - 1;
+      stroke: $spinner-background;
+    }
+    circle#fg {
+      stroke-width: $spinnerStrokeWidth;
+      stroke: $spinner-foreground;
+      stroke-dasharray: (3.14 * $spinnerSize);
+
+      transform-origin: (0.5px * $spinnerSize) (0.5px * $spinnerSize) 0;
+      animation: spinner 4s linear infinite;
+    }
+  }
+}
