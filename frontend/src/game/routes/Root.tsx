@@ -1,32 +1,14 @@
 import { Outlet } from 'react-router-dom';
 import { classNames } from '../../utils/classNames';
-import { LanguageSelector } from '../language';
-import { useState } from 'react';
-import { TSupportedLanguages } from '../../api';
-import { AppStorage } from '../../utils/localStorage';
-import { EStorageKeys } from '../../utils/localStorage/enums';
-import { noop } from '../../utils/noop';
 import { useLanguage } from '../../i18n';
 import Spinner from '../Spinner/Spinner';
+import { GrelaDesignIcon } from '../icons/GrelaDesignIcon';
+import UILanguage from '../language/UILanguage';
+
+import './Root.scss';
 
 export const Root = () => {
-  const { loadedLanguage, loadTranslation, loading } = useLanguage();
-
-  const [selectedTranslation, setTranslation] = useState<
-    TSupportedLanguages | undefined
-  >(loadedLanguage);
-
-  const handleTranslationChange = (language: TSupportedLanguages): void => {
-    const used = loadedLanguage;
-    if (language !== used) {
-      loadTranslation(language)
-        .then(() => {
-          AppStorage.getInstance().setItem(EStorageKeys.UI_LANGUAGE, language);
-          setTranslation(language);
-        })
-        .catch(noop);
-    }
-  };
+  const { loadedLanguage, loading } = useLanguage();
 
   const showLoading = loading && !loadedLanguage;
 
@@ -36,13 +18,12 @@ export const Root = () => {
       {!showLoading && (
         <>
           <Outlet />
-          <p className='read-the-docs'>
-            GrelaDesign (c) 2024 [v{import.meta.env.VITE_VERSION}]
+          <p className='footer read-the-docs'>
+            <GrelaDesignIcon />
+            <span>GrelaDesign (c) 2024</span>{' '}
+            <span>[v{import.meta.env.VITE_VERSION}]</span>
           </p>
-          <LanguageSelector
-            language={selectedTranslation}
-            onClick={handleTranslationChange}
-          />
+          <UILanguage />
         </>
       )}
     </div>

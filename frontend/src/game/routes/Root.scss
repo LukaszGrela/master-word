@@ -1,0 +1,14 @@
+@import '../../styles/variables';
+
+.master-word {
+  .footer {
+    .gd-logo {
+      height: 2rem;
+      width: 2.5625rem;
+
+      @media (prefers-color-scheme: dark) {
+        fill: $gd-red-dark;
+      }
+    }
+  }
+}
