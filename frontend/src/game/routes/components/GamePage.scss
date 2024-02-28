@@ -1,3 +1,5 @@
+@import '../../../styles/variables';
+
 .game-page {
   .header {
     height: 3rem;
@@ -15,6 +17,7 @@
 
   .board {
     background-color: transparent;
+    margin: 0 auto;
   }
 
   .legend {
@@ -22,7 +25,7 @@
     justify-content: center;
     gap: 0.25rem;
     font-size: 0.75rem;
-    color: #888;
+    color: #606060;
     margin-bottom: 0.5rem;
     & > span {
       margin-left: 1.25rem;
@@ -31,11 +34,24 @@
       &:before {
         content: ' ';
         display: block;
-        background-color: grey;
+        background-color: $letter-incorrect;
         width: 1rem;
         height: 1.125rem;
         position: absolute;
         left: -1.25rem;
+      }
+      &.misplaced {
+        &:before {
+          background-color: $letter-misplaced;
+          @media (prefers-color-scheme: dark) {
+            background-color: $letter-misplaced-dark;
+          }
+        }
+      }
+      &.correct {
+        &:before {
+          background-color: $letter-correct;
+        }
       }
     }
   }

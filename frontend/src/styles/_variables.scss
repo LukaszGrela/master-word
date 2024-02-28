@@ -33,6 +33,7 @@ $button-primary-hover: $lapisLazuli;
 $button-secondary: $lapisLazuli;
 $button-secondary-color: $tintedWhite;
 $button-secondary-hover: $skyBlue;
+$button-secondary-color-hover: $indigoDye;
 
 $spinner-background: $skyBlue;
 $spinner-foreground: $indigoDye;
@@ -52,3 +53,19 @@ $letter-misplaced: orange;
 $letter-misplaced-dark: hsl(27, 100%, 40%);
 $letter-wrong: red;
 $letter-incorrect: grey;
+
+$language-btn-background: transparent;
+$language-btn-background-dark: transparent;
+$language-btn-border: transparent;
+
+$language-btn-selected-background: hsl(25 40% 90% / 1);
+$language-btn-selected-background-dark: hsl(27, 27%, 50%);
+$language-btn-selected-border: hsl(27, 27%, 50%);
+
+$language-btn-border-hover: hsl(27, 27%, 50%);
+
+$game-language-btn-background-dark: $indigoDye;
+$game-language-btn-border-dark: transparent;
+$game-language-btn-border-hover-dark: transparent;
+$game-language-btn-background-hover-dark: $lapisLazuli;
+$game-language-btn-selected-border-dark: transparent;
