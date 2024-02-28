@@ -4,7 +4,7 @@ import { HomePage } from './components/HomePage';
 import { EPaths } from './enums';
 import { GamePage } from './components/GamePage';
 import GeneralError from './GeneralError';
-import { ResultsPage } from './ResultsPage';
+import { ResultsPage } from './components/ResultsPage';
 
 const router = createBrowserRouter([
   {
