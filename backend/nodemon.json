@@ -4,5 +4,8 @@
     "dictionaries"
   ],
   "ext": "ts",
-  "exec": "concurrently \"npx tsc --watch\" \"ts-node src/index.ts\""
+  "exec": "concurrently \"npx tsc --watch\" \"ts-node src/index.ts\"",
+  "env": {
+    "NODE_ENV": "development"
+  }
 }

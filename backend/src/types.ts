@@ -1,5 +1,9 @@
 export type TSupportedLanguages = 'pl' | 'en';
-
+export const guardSupportedLanguages = (
+  test: unknown
+): test is TSupportedLanguages => {
+  return typeof test === 'string' && (test === 'pl' || test === 'en');
+};
 // the game
 // Wrong - X, Misplaced - M, Correct - C
 export type TValidationChar = 'X' | 'M' | 'C';
