@@ -5,3 +5,10 @@ export type TConfig = {
     db: string;
   };
 };
+
+export interface IDictionaryEntry {
+  language: string;
+  length: number;
+  letter: string;
+  words?: string[];
+}
