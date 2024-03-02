@@ -10,7 +10,6 @@ const config = {
 };
 
 before(async () => {
-  console.log('BEFORE', config);
   await connect(config);
 
   mongoose.connection
@@ -25,23 +24,25 @@ function clearDB() {
   }
   return Promise.allSettled(drops);
 }
+function rebuildIndexes() {
+  const createIndexes: Promise<void>[] = [];
+
+  mongoose.connection.modelNames().map((model) => {
+    createIndexes.push(mongoose.connection.models[model].createIndexes());
+  });
+
+  return Promise.allSettled(createIndexes);
+}
 beforeEach(async () => {
   if (mongoose.connection.readyState === 0) {
     try {
       await connect(config);
-      await clearDB();
-
-      mongoose.connection.modelNames().map(async (model) => {
-        await mongoose.connection.models[model].createIndexes();
-      });
+      await rebuildIndexes();
     } catch (e) {
       throw e;
     }
   } else {
-    await clearDB();
-    mongoose.connection.modelNames().map(async (model) => {
-      await mongoose.connection.models[model].createIndexes();
-    });
+    await rebuildIndexes();
   }
 });
 
