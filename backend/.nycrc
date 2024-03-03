@@ -4,6 +4,9 @@
     "text-summary",
     "html"
   ],
+  "include": [
+    "src/**/*.ts"
+  ],
   "exclude": [
     "**/*.spec.ts",
     "**/types.ts",
