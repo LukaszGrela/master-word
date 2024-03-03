@@ -3,6 +3,7 @@ import assert from 'node:assert';
 import sinon from 'sinon';
 import { Dictionary } from '../models/Dictionary';
 import {
+  addManyWords,
   addWord,
   countWords,
   deleteWord,
@@ -10,7 +11,6 @@ import {
   getRandomWord,
   updateWord,
 } from './Dictionary.crud';
-import { IDictionaryEntry } from '../types';
 import { TSupportedLanguages } from '../../types';
 
 describe('Dictionary CRUD operations', () => {
@@ -129,22 +129,6 @@ describe('Dictionary CRUD operations', () => {
         words: ['baton', 'bigos', 'brama'],
       });
     });
-    it('attempts to add existing word to existing document', async () => {
-      const config = {
-        letter: 'b',
-        length: 5,
-        language: 'pl' as TSupportedLanguages,
-      };
-
-      let error;
-      try {
-        await addWord('baton', config.language, config.length);
-      } catch (e) {
-        error = e;
-      }
-
-      assert.notEqual(error, undefined);
-    });
   });
   describe('countWords', () => {
     it('returns proper word count', async () => {
@@ -258,6 +242,75 @@ describe('Dictionary CRUD operations', () => {
       //
       const wordsAfter = await Dictionary.findOne(config);
       assert.deepEqual(wordsAfter?.words, ['james', 'jerry']);
+    });
+  });
+  describe('addManyWords', async () => {
+    it('fails on invalid length argument', () => {
+      assert.rejects(() => addManyWords(['fail'], 'en', 0), {
+        message: 'addManyWords: the length argument must not be 0.',
+      });
+    });
+    it('fails on invalid words argument - empty', () => {
+      assert.rejects(() => addManyWords([], 'en', 5), {
+        message: 'addManyWords: the words argument must not be empty.',
+      });
+      assert.rejects(() => addManyWords([''], 'en', 5), {
+        message: 'addManyWords: the words argument must not be empty.',
+      });
+    });
+    it('fails on invalid words argument - length', () => {
+      assert.rejects(() => addManyWords(['large', 'long', 'liked'], 'en', 5), {
+        message: `addManyWords: the words must have length as declared by "length" argument ("long" 4 != 5).`,
+      });
+    });
+    it('fails on invalid words argument - different letter', () => {
+      assert.rejects(() => addManyWords(['large', 'words', 'liked'], 'en', 5), {
+        message: `addManyWords: the words must start with the same letter "l". Invalid word: "words".`,
+      });
+    });
+
+    it('adds new words to new document', async () => {
+      const config = {
+        letter: 'x',
+        length: 5,
+        language: 'en' as TSupportedLanguages,
+      };
+      const words = await Dictionary.findOne(config);
+      assert.equal(words, null);
+
+      const doc = await addManyWords(
+        ['xylan', 'xenon', 'xoana'],
+        config.language,
+        config.length
+      );
+
+      // drop id
+      const { __v, _id, ...rest } = doc.toJSON() as any;
+      assert.deepEqual(rest, {
+        ...config,
+        words: ['xenon', 'xoana', 'xylan'],
+      });
+    });
+
+    it('adds new word to existing document', async () => {
+      const config = {
+        letter: 'b',
+        length: 5,
+        language: 'pl' as TSupportedLanguages,
+      };
+
+      const doc = await addManyWords(
+        ['bigos', 'barak', 'bęben'],
+        config.language,
+        config.length
+      );
+
+      // drop id
+      const { __v, _id, ...rest } = doc.toJSON() as any;
+      assert.deepEqual(rest, {
+        ...config,
+        words: ['barak', 'baton', 'bęben', 'bigos', 'brama'],
+      });
     });
   });
 });

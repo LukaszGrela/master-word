@@ -1,6 +1,16 @@
 import { TSupportedLanguages } from '../../types';
 import { Dictionary } from '../models/Dictionary';
 
+const localeSorter =
+  (language: TSupportedLanguages) => (a: string, b: string) => {
+    try {
+      return a.localeCompare(b, language);
+    } catch (e) {
+      /* istanbul ignore next */
+      return 0;
+    }
+  };
+
 export const getAlphabet = async (
   language: TSupportedLanguages = 'pl',
   length = 5
@@ -9,7 +19,7 @@ export const getAlphabet = async (
     await Dictionary.find({ language, length }, { letter: 1 }).exec()
   ).map((d) => d.letter) as string[];
 
-  return alphabet.sort();
+  return alphabet.sort(localeSorter(language));
 };
 
 export const getRandomWord = async (
@@ -26,7 +36,7 @@ export const getRandomWord = async (
       language,
     }).exec();
     if (match && match.words && match.words.length > 0) {
-      const words = match.words.sort();
+      const words = match.words.sort(localeSorter(language));
       const word = words[Math.floor(Math.random() * words.length)];
 
       return word;
@@ -53,9 +63,38 @@ export const addWord = async (
       `addWord: the word value must have length as declared by "length" argument (${word.length} != ${length}).`
     );
   }
+  return addManyWords([word], language, length);
+};
 
-  const wordToAdd = word.toLocaleLowerCase();
-  const letter = word.charAt(0).toLocaleLowerCase();
+export const addManyWords = async (
+  words: string[],
+  language: TSupportedLanguages = 'pl',
+  length = 5
+) => {
+  if (length === 0) {
+    throw new Error('addManyWords: the length argument must not be 0.');
+  }
+  if (words.length === 0 || (words.length === 1 && words[0].length === 0)) {
+    throw new Error('addManyWords: the words argument must not be empty.');
+  }
+
+  const letter = words[0].charAt(0).toLocaleLowerCase();
+  for (let i = 0; i < words.length; i++) {
+    const word = words[i];
+    const nextWord = i < words.length && words[i + 1];
+    // check length of each word
+    if (word.length !== length) {
+      throw new Error(
+        `addManyWords: the words must have length as declared by "length" argument ("${word}" ${word.length} != ${length}).`
+      );
+    }
+    // check all words are for the same letter dictionary
+    if (nextWord && nextWord.charAt(0).toLocaleLowerCase() !== letter) {
+      throw new Error(
+        `addManyWords: the words must start with the same letter "${letter}". Invalid word: "${nextWord}".`
+      );
+    }
+  }
 
   let dictionaryDoc = await Dictionary.findOne({
     letter,
@@ -63,6 +102,7 @@ export const addWord = async (
     length,
   });
 
+  const wordsToAdd = words.map((word) => word.toLocaleLowerCase());
   if (dictionaryDoc === null) {
     dictionaryDoc = await Dictionary.create({
       letter,
@@ -71,8 +111,11 @@ export const addWord = async (
     });
   }
 
-  dictionaryDoc.words?.push(wordToAdd);
-  dictionaryDoc.words?.sort();
+  if (dictionaryDoc.words) {
+    const uniqueWords = new Set(dictionaryDoc.words.concat(wordsToAdd));
+    dictionaryDoc.words = Array.from(uniqueWords);
+    dictionaryDoc.words.sort(localeSorter(language));
+  }
 
   return await dictionaryDoc.save();
 };
