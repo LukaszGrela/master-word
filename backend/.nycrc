@@ -1,0 +1,14 @@
+{
+  "all": true,
+  "reporter": [
+    "text-summary",
+    "html"
+  ],
+  "exclude": [
+    "**/*.spec.ts",
+    "**/types.ts",
+    "**/enums.ts",
+    "**/constants.ts",
+    "src/test/testconfig.ts"
+  ]
+}

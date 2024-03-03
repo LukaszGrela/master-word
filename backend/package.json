@@ -1,10 +1,11 @@
 {
   "name": "master-word-api",
-  "version": "0.4.1",
+  "version": "0.4.2",
   "description": "NodeJS backend for the Master Word app",
   "main": "index.js",
   "scripts": {
     "test": "cross-env NODE_ENV=test mocha",
+    "coverage": "nyc npm run test",
     "dev": "cross-env NODE_ENV=development nodemon src/index.ts",
     "build": "cross-env NODE_ENV=production tsc",
     "prebuild": "rimraf dist"
@@ -44,6 +45,7 @@
     "cross-env": "^7.0.3",
     "mocha": "^10.3.0",
     "nodemon": "^3.0.3",
+    "nyc": "^15.1.0",
     "rimraf": "^5.0.5",
     "sinon": "^17.0.1",
     "ts-node": "^10.9.2",
