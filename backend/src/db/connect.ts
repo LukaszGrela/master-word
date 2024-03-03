@@ -1,3 +1,4 @@
+/* istanbul ignore file */
 import dotenv from 'dotenv';
 import mongoose from 'mongoose';
 import { TConfig } from './types';

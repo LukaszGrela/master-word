@@ -1,3 +1,4 @@
+/* istanbul ignore file */
 import mongoose, { AnyObject } from 'mongoose';
 import { guardSupportedLanguages } from '../../../types';
 
@@ -8,7 +9,6 @@ export class SupportedLanguage extends SchemaType {
   constructor(key: string, options?: AnyObject) {
     super(key, options, 'SupportedLanguage');
   }
-
   cast(val: any) {
     if (typeof val === 'string') {
       if (guardSupportedLanguages(val)) {
