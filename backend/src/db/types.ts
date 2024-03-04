@@ -12,3 +12,8 @@ export interface IDictionaryEntry {
   letter: string;
   words?: string[];
 }
+
+export interface IUnknownWordEntry {
+  date: Date;
+  words: { language: string; word: string }[];
+}
