@@ -1,5 +1,5 @@
 import { describe, it } from 'node:test';
-import { UnknownWord, registerWithConnection } from './UnknownWord';
+import { UnknownWord } from './UnknownWord';
 import sinon from 'sinon';
 import assert from 'node:assert';
 

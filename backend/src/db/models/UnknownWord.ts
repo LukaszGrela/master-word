@@ -7,8 +7,13 @@ const UnknownWord = mongoose.model<IUnknownWordEntry>(
   UnknownWordSchema
 );
 
-const registerWithConnection = (connection: mongoose.Connection) => {
+/**
+ * Retrieve or define Model for given connection.
+ * @param connection Mongoose connection instance for which model needs to be registered
+ * @returns `IUnknownWordEntry` model
+ */
+const getModelForConnection = (connection: mongoose.Connection) => {
   return connection.model<IUnknownWordEntry>('UnknownWord', UnknownWordSchema);
 };
 
-export { UnknownWord, registerWithConnection };
+export { UnknownWord, getModelForConnection };
