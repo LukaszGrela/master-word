@@ -15,5 +15,5 @@ export interface IDictionaryEntry {
 
 export interface IUnknownWordEntry {
   date: Date;
-  words: { language: string; word: string }[];
+  words: { language: string; word: string; length?: number }[];
 }

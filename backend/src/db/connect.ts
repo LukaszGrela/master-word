@@ -1,6 +1,6 @@
 /* istanbul ignore file */
 import dotenv from 'dotenv';
-import mongoose from 'mongoose';
+import mongoose, { ConnectOptions } from 'mongoose';
 import { TConfig } from './types';
 
 dotenv.config({
@@ -17,6 +17,38 @@ export default function connect(
         overrideConfig.pass || process.env.MONGO_PASSWORD || ''
       )}@`
     : '';
+  // Note: EvenNode provides the database name within the hostString
   const mongoUri = 'mongodb://' + mongoUsr + overrideConfig.mongo.hostString;
-  return mongoose.connect(mongoUri);
+
+  const options: ConnectOptions = {
+    maxPoolSize: 10,
+    minPoolSize: 5,
+  };
+
+  return mongoose.connect(mongoUri, options);
 }
+// TODO: game user connection - readonly dictionary, readWrite session
+// TODO: dictionary dev connection - readWrite dictionary
+// TODO: word logger connection - write - unknown words dictionary
+
+async function createDictionaryDevConnection() {
+  const mongoUsr = 'master-word-backend-dev';
+  const usrPass = encodeURIComponent(
+    process.env.MONGO_BACKEND_DEV_PASSWORD || ''
+  );
+
+  const user = process.env.NODE_ENV !== 'test' ? `${mongoUsr}:${usrPass}@` : '';
+
+  const mongoUri = `mongodb://${user}${config.mongo.hostString}/${config.mongo.db}`;
+
+  const connection = await mongoose
+    .createConnection(mongoUri, {
+      maxPoolSize: 10,
+      minPoolSize: 5,
+    })
+    .asPromise();
+
+  return connection;
+}
+
+export { createDictionaryDevConnection };
