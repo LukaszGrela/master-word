@@ -1,5 +1,5 @@
 import { TSupportedLanguages } from '../../types';
-import { Dictionary } from '../models/Dictionary';
+import { Dictionary, getModelForConnection } from '../models/Dictionary';
 
 const localeSorter =
   (language: TSupportedLanguages) => (a: string, b: string) => {
@@ -11,6 +11,14 @@ const localeSorter =
     }
   };
 
+/**
+ * Returns an alphabet made out of existing dictionaries.
+ * Note: This can work with default DB connection.
+ *
+ * @param language The language of the alphabet
+ * @param length length of the words to collect alphabet
+ * @returns sorted alphabet
+ */
 export const getAlphabet = async (
   language: TSupportedLanguages = 'pl',
   length = 5
@@ -27,7 +35,6 @@ export const getRandomWord = async (
   length = 5
 ) => {
   const alphabet = await getAlphabet(language, length);
-
   if (alphabet.length > 0) {
     const randomLetter = alphabet[Math.floor(Math.random() * alphabet.length)];
     const match = await Dictionary.findOne({
@@ -35,6 +42,9 @@ export const getRandomWord = async (
       length,
       language,
     }).exec();
+
+    // if alphabet was collected then match must have result
+    /* istanbul ignore else */
     if (match && match.words && match.words.length > 0) {
       const words = match.words.sort(localeSorter(language));
       const word = words[Math.floor(Math.random() * words.length)];
@@ -45,6 +55,27 @@ export const getRandomWord = async (
   return null;
 };
 
+export const wordExists = async (
+  word: string,
+  language: TSupportedLanguages = 'pl',
+  length = 5
+) => {
+  const doc = await Dictionary.find({
+    words: word,
+    language,
+    length,
+  }).exec();
+
+  return doc.length !== 0;
+};
+
+/**
+ * Note: This will only work with dictionary dev connection
+ * @param word Word to add
+ * @param language language of dictionary to add the word to
+ * @param length length of the word
+ * @returns dictionary Document
+ */
 export const addWord = async (
   word: string,
   language: TSupportedLanguages = 'pl',
@@ -111,6 +142,7 @@ export const addManyWords = async (
     });
   }
 
+  /* istanbul ignore else */
   if (dictionaryDoc.words) {
     const uniqueWords = new Set(dictionaryDoc.words.concat(wordsToAdd));
     dictionaryDoc.words = Array.from(uniqueWords);
@@ -127,7 +159,8 @@ export const countWords = async (
   const words = (
     await Dictionary.find({ language, length }, { words: 1 }).exec()
   ).reduce(
-    (acc, d) => acc.concat(d.words || ([] as string[])),
+    (acc, d) =>
+      acc.concat(d.words || /* istanbul ignore next */ ([] as string[])),
     [] as string[]
   ) as string[];
 
@@ -164,6 +197,7 @@ export const deleteWord = async (
 
   if (dictionaryDoc && dictionaryDoc.words) {
     const index = dictionaryDoc.words.indexOf(wordToRemove);
+
     if (index !== -1) {
       dictionaryDoc.words.splice(index, 1);
 

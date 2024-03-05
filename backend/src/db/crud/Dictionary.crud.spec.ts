@@ -10,6 +10,7 @@ import {
   getAlphabet,
   getRandomWord,
   updateWord,
+  wordExists,
 } from './Dictionary.crud';
 import { TSupportedLanguages } from '../../types';
 
@@ -78,6 +79,14 @@ describe('Dictionary CRUD operations', () => {
       const xxWord = await getRandomWord('pl', 6);
       assert.equal(xxWord, null);
     });
+    it('returns null when no words', async () => {
+      await Dictionary.collection.drop();
+
+      const plWord = await getRandomWord('pl');
+      assert.equal(plWord, null);
+      const enWord = await getRandomWord('en');
+      assert.equal(enWord, null);
+    });
   });
   describe('addWord', async () => {
     it('fails on invalid length argument', () => {
@@ -128,6 +137,12 @@ describe('Dictionary CRUD operations', () => {
         ...config,
         words: ['baton', 'bigos', 'brama'],
       });
+    });
+    it('adds new word with defaults', async () => {
+      const doc = await addWord('bigos');
+      assert.equal(doc.language, 'pl');
+      assert.equal(doc.length, 5);
+      assert.deepEqual(doc.words, ['baton', 'bigos', 'brama']);
     });
   });
   describe('countWords', () => {
@@ -185,6 +200,23 @@ describe('Dictionary CRUD operations', () => {
       const wordsAfter = await Dictionary.findOne(config);
       assert.deepEqual(wordsAfter?.words, ['james', 'jelly']);
     });
+    it('removes word with defaults', async () => {
+      const config = {
+        letter: 'c',
+        length: 5,
+        language: 'pl' as TSupportedLanguages,
+      };
+      const wordsBefore = await Dictionary.findOne(config);
+      assert.deepEqual(wordsBefore?.words, ['czart', 'człek']);
+
+      // remove czart
+      await deleteWord('czart');
+      //
+      const wordsAfter = await Dictionary.findOne(config);
+      assert.equal(wordsAfter?.language, 'pl');
+      assert.equal(wordsAfter?.length, 5);
+      assert.deepEqual(wordsAfter?.words, ['człek']);
+    });
   });
   describe('updateWord', () => {
     it('fails on invalid length argument', () => {
@@ -237,11 +269,30 @@ describe('Dictionary CRUD operations', () => {
       const wordsBefore = await Dictionary.findOne(config);
       assert.deepEqual(wordsBefore?.words, ['james', 'jelly']);
 
-      // remove
+      // update
       await updateWord('jelly', 'jerry', config.language, config.length);
       //
       const wordsAfter = await Dictionary.findOne(config);
       assert.deepEqual(wordsAfter?.words, ['james', 'jerry']);
+    });
+    it('updates the word with defaults', async () => {
+      const config = {
+        letter: 'b',
+        length: 5,
+        language: 'pl' as TSupportedLanguages,
+      };
+      const wordsBefore = await Dictionary.findOne(config);
+      assert.deepEqual(wordsBefore?.words, ['baton', 'brama']);
+
+      // update
+      await updateWord('baton', 'balon');
+      //
+      const wordsAfter = await Dictionary.findOne(config);
+
+      assert.equal(wordsAfter?.language, 'pl');
+      assert.equal(wordsAfter?.length, 5);
+
+      assert.deepEqual(wordsAfter?.words, ['balon', 'brama']);
     });
   });
   describe('addManyWords', async () => {
@@ -311,6 +362,34 @@ describe('Dictionary CRUD operations', () => {
         ...config,
         words: ['barak', 'baton', 'bęben', 'bigos', 'brama'],
       });
+    });
+    it('adds new word to existing document with defaults', async () => {
+      const doc = await addManyWords(['bigos', 'barak', 'bęben']);
+
+      assert.equal(doc.language, 'pl');
+      assert.equal(doc.length, 5);
+      assert.deepEqual(doc.words, [
+        'barak',
+        'baton',
+        'bęben',
+        'bigos',
+        'brama',
+      ]);
+    });
+  });
+  describe('wordExists', () => {
+    it('returns true if word was found', async () => {
+      assert.equal(await wordExists('album'), true);
+      assert.equal(await wordExists('jelly', 'en'), true);
+      assert.equal(await wordExists('człek', 'pl'), true);
+      assert.equal(await wordExists('czart', 'pl', 5), true);
+    });
+    it('returns false if word was not found', async () => {
+      assert.equal(await wordExists('radom'), false);
+      assert.equal(await wordExists('cindy', 'en'), false);
+      assert.equal(await wordExists('nigdy', 'pl'), false);
+      assert.equal(await wordExists('jelly', 'pl'), false);
+      assert.equal(await wordExists('człek', 'en'), false);
     });
   });
 });
