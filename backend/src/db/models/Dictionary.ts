@@ -7,4 +7,13 @@ const Dictionary = mongoose.model<IDictionaryEntry>(
   DictionarySchema
 );
 
-export { Dictionary };
+/**
+ * Retrieve or define Model for given connection.
+ * @param connection Mongoose connection instance for which model needs to be registered
+ * @returns `IDictionaryEntry` model
+ */
+const getModelForConnection = (connection: mongoose.Connection) => {
+  return connection.model<IDictionaryEntry>('Dictionary', DictionarySchema);
+};
+
+export { Dictionary, getModelForConnection };
