@@ -5,8 +5,16 @@ import { resetGameSession } from './helpers';
 describe('router/helpers', () => {
   describe('resetGameSession', () => {
     it('Resets the session', () => {
-      const stub = sinon.useFakeTimers(new Date(1939, 9, 1).getTime());
+      const sandbox = sinon.createSandbox();
+      sandbox.useFakeTimers({
+        now: new Date(1939, 9, 1).getTime(),
+        shouldClearNativeTimers: true,
+        toFake: ['Date'],
+      });
       const session = resetGameSession('pl', 'test');
+
+      sandbox.restore();
+
       assert.deepEqual(session, {
         attempt: 0,
         finished: false,
@@ -18,7 +26,6 @@ describe('router/helpers', () => {
         word: 'TEST',
         word_length: 4,
       });
-      stub.restore();
     });
   });
 });
