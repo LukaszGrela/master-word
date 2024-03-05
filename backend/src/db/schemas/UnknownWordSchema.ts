@@ -10,6 +10,7 @@ const UnknownWordSchema = new Schema({
       new Schema({
         language: { type: SupportedLanguage, required: true },
         word: { type: Types.String, required: true },
+        length: Types.Number,
       }),
     ],
   },
