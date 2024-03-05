@@ -67,3 +67,63 @@ const DictionarySchema = new Schema({
 ```
 
 Each document will be unique per `language`,`length` and `letter` combination. The document will hold words only for specific letter. Then for random picking a word full dictionary dont need to be loaded.
+
+## Import data into database
+
+### MongoSh
+
+With mongo shell you can use the ability to load external script in order to automate importing of data. You may find suggestions to put `use your_database` at the top of that script file, but from my experience it was failing, and script was stopped at this line wiht no log output.
+
+Instead you can add this directive to the `eval` param of `mongosh` CLI command:
+
+```CLI
+mongosh --eval 'use your_database'
+```
+
+To load your script you can either pass the path to it in the `file` param (combined with eval from previous snippet):
+
+```CLI
+mongosh --eval 'use your_database' --file path/to/script.js
+```
+
+or open mongo shell and then use the `load` function (selecting database first)
+
+```JS
+use your_database
+load('path/to/script.js')
+```
+
+If you want to load external data file into script, you may find that suggested `load` will not work for you, as it returns `boolean` for success of loading data, not the data itself. It also expects that loaded file is a script where the data is assigned to a variable which is not what you would normally have. Instead use `fetch` if you have remote data to get or methods from `fs` module e.g. `readFileSync`.
+
+Below is a sample script that loads a list of words from a JSON file:
+
+```JSON
+[
+  "ala",
+  "ola",
+  "ela",
+  "ula"
+]
+```
+
+```JavaScript
+// import.js
+const run = async () => {
+  try {
+    const words = JSON.parse(fs.readFileSync(`list.json`));
+
+    if (!words || words.length === 0) {
+      throw new Error('No words to load');
+    }
+    print(`Loaded ${words.length} words`);
+
+
+    exit(0);
+  } catch (error) {
+    print(error);
+    exit(1);
+  }
+};
+
+run();
+```
