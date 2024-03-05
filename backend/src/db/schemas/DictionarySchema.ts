@@ -11,7 +11,7 @@ const DictionarySchema = new Schema({
     type: [
       {
         type: Types.String,
-        maxlength: 5,
+        maxlength: 5, // TODO: this will be dependent on the length prop
         minlength: 5,
       },
     ],
