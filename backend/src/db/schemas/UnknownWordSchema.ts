@@ -16,4 +16,11 @@ const UnknownWordSchema = new Schema({
   },
 });
 
+UnknownWordSchema.index(
+  {
+    date: 1,
+  },
+  { unique: true }
+);
+
 export { UnknownWordSchema };

@@ -17,6 +17,7 @@ describe('UnknownWord CRUD operations', () => {
   const date1 = new Date(1939, 8, 1, 0, 0, 0, 0);
   const date2 = new Date(1939, 8, 17, 0, 0, 0, 0);
   const date3 = new Date(1942, 8, 1, 0, 0, 0, 0);
+  let ids: mongoose.Types.ObjectId[];
   beforeEach(async () => {
     await UnknownWord.init();
     await UnknownWord.create([
@@ -64,12 +65,105 @@ describe('UnknownWord CRUD operations', () => {
         ],
       },
     ]);
+    ids = (await UnknownWord.find({}).sort('date').exec()).map((d) => d._id);
   });
   describe('getAll', () => {
     it('returns list of entries', async () => {
       const list = await getAll(mongoose.connection);
 
       assert.equal(list.length, 3);
+    });
+  });
+
+  describe('getByDate', () => {
+    it('returns entry for given date', async () => {
+      const result = await getByDate(mongoose.connection, date1);
+
+      assert.notEqual(result, null);
+      assert.deepEqual(
+        result!.words.map(({ word }) => word),
+        ['kiszk', 'tomek']
+      );
+    });
+    it('returns empty result when not matche', async () => {
+      const result = await getByDate(mongoose.connection, new Date());
+
+      assert.equal(result, null);
+    });
+  });
+
+  describe('getById', () => {
+    it('returns entry for given object id', async () => {
+      const result = await getById(mongoose.connection, ids[0]);
+
+      assert.notEqual(result, null);
+      assert.deepEqual(
+        result!.words.map(({ word }) => word),
+        ['kiszk', 'tomek']
+      );
+    });
+    it('returns entry for given string id', async () => {
+      const result = await getById(mongoose.connection, ids[1].toHexString());
+
+      assert.notEqual(result, null);
+      assert.deepEqual(
+        result!.words.map(({ word }) => word),
+        ['maria', 'mosty']
+      );
+    });
+    it('returns empty result when not match', async () => {
+      const result = await getById(
+        mongoose.connection,
+        '75e81e8dc26982deac62cede'
+      );
+
+      assert.equal(result, null);
+    });
+  });
+
+  describe('removeById', () => {
+    it('removes entry for given object id', async () => {
+      const result = await removeById(mongoose.connection, ids[0]);
+      assert.notEqual(result, null);
+      assert.deepEqual(
+        result!.words.map(({ word }) => word),
+        ['kiszk', 'tomek']
+      );
+
+      const remaining = await UnknownWord.find({});
+      assert.equal(remaining.length, 2);
+    });
+    it('removes entry for given string id', async () => {
+      const result = await removeById(
+        mongoose.connection,
+        ids[1].toHexString()
+      );
+
+      assert.notEqual(result, null);
+      assert.deepEqual(
+        result!.words.map(({ word }) => word),
+        ['maria', 'mosty']
+      );
+
+      const remaining = await UnknownWord.find({});
+      assert.equal(remaining.length, 2);
+    });
+    it('removes nothing when not match', async () => {
+      const result = await removeById(
+        mongoose.connection,
+        '75e81e8dc26982deac62cede'
+      );
+
+      assert.equal(result, null);
+      const remaining = await UnknownWord.find({});
+      assert.equal(remaining.length, 3);
+    });
+  });
+
+  describe('purge', () => {
+    it('removes all documents', async () => {
+      const result = await purge(mongoose.connection);
+      assert.equal(result.deletedCount, 3);
     });
   });
 

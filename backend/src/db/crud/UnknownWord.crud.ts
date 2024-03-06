@@ -4,16 +4,6 @@ import { ObjectId } from 'mongoose';
 import { TSupportedLanguages } from '../../types';
 import { getStartOfDay } from '../../utils/datetime';
 
-export const localeSorter =
-  (language: TSupportedLanguages) => (a: string, b: string) => {
-    try {
-      return a.localeCompare(b, language);
-    } catch (e) {
-      /* istanbul ignore next */
-      return 0;
-    }
-  };
-
 const getAll = async (connection: Connection) => {
   const UnknownWordModel = getModelForConnection(connection);
 
@@ -25,25 +15,19 @@ const getAll = async (connection: Connection) => {
 const getByDate = async (connection: Connection, date: Date) => {
   const UnknownWordModel = getModelForConnection(connection);
 
-  const list = await UnknownWordModel.find({
+  const result = await UnknownWordModel.findOne({
     date,
   }).exec();
 
-  return list;
+  return result;
 };
 
 const getById = async (connection: Connection, id: ObjectId | any) => {
   const UnknownWordModel = getModelForConnection(connection);
 
-  const list = await UnknownWordModel.findById(id).exec();
+  const result = await UnknownWordModel.findById(id).exec();
 
-  return list;
-};
-
-const purge = async (connection: Connection, id: ObjectId | any) => {
-  const UnknownWordModel = getModelForConnection(connection);
-
-  await UnknownWordModel.deleteMany({}).exec();
+  return result;
 };
 
 const removeById = async (connection: Connection, id: ObjectId | any) => {
@@ -52,6 +36,12 @@ const removeById = async (connection: Connection, id: ObjectId | any) => {
   const list = await UnknownWordModel.findByIdAndDelete(id).exec();
 
   return list;
+};
+
+const purge = async (connection: Connection) => {
+  const UnknownWordModel = getModelForConnection(connection);
+
+  return await UnknownWordModel.deleteMany({}).exec();
 };
 
 const addUnknownWord = async (

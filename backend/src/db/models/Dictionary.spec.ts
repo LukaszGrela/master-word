@@ -1,6 +1,7 @@
+import mongoose from 'mongoose';
 import { describe, it } from 'node:test';
-import { Dictionary } from './Dictionary';
 import assert from 'node:assert';
+import { Dictionary, getModelForConnection } from './Dictionary';
 
 describe('Dictionary model', () => {
   it('creates dictionary entry with required fields', async () => {
@@ -196,5 +197,23 @@ describe('Dictionary model', () => {
       error = e;
     }
     assert.notEqual(error, undefined);
+  });
+
+  describe('getModelForConnection', () => {
+    it('creates dictionary entry with all fields', async () => {
+      const DictionaryModel = getModelForConnection(mongoose.connection);
+      const a = new DictionaryModel({
+        language: 'pl',
+        length: 5,
+        letter: 'a',
+        word: ['album'],
+      });
+
+      assert.equal(a.isNew, true);
+
+      await a.save();
+
+      assert.equal(a.isNew, false);
+    });
   });
 });
