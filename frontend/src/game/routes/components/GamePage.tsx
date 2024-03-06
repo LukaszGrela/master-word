@@ -225,7 +225,7 @@ export const GamePage = () => {
           className={language}
           columns={wordLength}
           rows={attempts}
-          key={gameState === 'init' ? gameState : 'running'}
+          key={gameState === 'start' ? gameState : 'running'}
         >
           {game.map((gameAttempt, index) => {
             const active = index === attempt && gameState === 'running';
