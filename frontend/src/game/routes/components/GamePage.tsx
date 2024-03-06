@@ -144,7 +144,7 @@ export const GamePage = () => {
               error.code === 3 /* ErrorCodes.GENERAL_ERROR */
             ) {
               setGameSession(null); // clear session
-              setGameState('init');
+              setGameState('start');
               return;
             } else if (error.code === 6 /* INVALID_WORD */) {
               setError({
