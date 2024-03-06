@@ -77,6 +77,7 @@ export const isAuthorised = (req: Request, res: Response): boolean => {
 
 export function ensureLoggedIn(): RequestHandler {
   return function ensureAuthenticatedRequestHandler(req, res, next): void {
+    /* istanbul ignore else */
     if (isAuthorised(req, res)) {
       next();
     } /* else - the failure is handled by isAuthorised itself */
