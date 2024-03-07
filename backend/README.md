@@ -4,6 +4,10 @@ Game server for Master Word App.
 
 **Note** English dictionary is handled by the Frontend Masters API https://words.dev-apis.com/ (the `/word-of-the-day` and `/validate-word` endpoints).
 
+## Run locally
+
+The local dev server is set to use port `3001`
+
 ## Gameplay Endpoints
 
 - `GET` - `api/init` - Starts new game
@@ -37,15 +41,53 @@ To run it locally you need 2 `.env` files first `.env.local` that will contain c
 APP_CONFIG='{"mongo":{"hostString":"localhost:27017/master-word","user":"master-word-user","db":"master-word"}}'
 ```
 
-Important is `hostString` and `db`, `user` can be skipped. Unless you will use it then in your local mongo db create a user with `readWrite` access to the `db`.
+Important is `hostString` and `db`, `user` can be skipped. User is used by hosted mongodb e.g. on EvenNode hosting (which also appends `db` name to the `hostingString`).
 
 Second file called `.env.secret` will contain the password to the mongodb user, it can be skipped if you do not create a user.
 
 Note: Your local mongodb must run for this server to work.
 
-## Schemas
+### Installation of Mongo
 
-### Dictionary
+Described on the [mongodb website](https://www.mongodb.com/docs/v6.0/tutorial/install-mongodb-on-ubuntu/) (here for ubuntu linux, mongo version 6)
+
+#### Scripts
+
+Below are scripts to run mongodb instance locally on linux machine
+
+##### Run mongo instance (locally)
+
+```
+sudo systemctl start mongod
+```
+
+##### Reload service deamon
+
+```
+sudo systemctl daemon-reload
+```
+
+##### Verify mongo is running
+
+```
+sudo systemctl status mongod
+```
+
+##### Stop Mongo
+
+```
+sudo systemctl stop mongod
+```
+
+##### Restart mongo
+
+```
+sudo systemctl restart mongod
+```
+
+### Schemas
+
+#### Dictionary
 
 The `Dictionary` will hold the information about words that the app is using, for now it will be used only for polish words.
 
@@ -68,9 +110,9 @@ const DictionarySchema = new Schema({
 
 Each document will be unique per `language`,`length` and `letter` combination. The document will hold words only for specific letter. Then for random picking a word full dictionary dont need to be loaded.
 
-## Import data into database
+### Import data into database
 
-### MongoSh
+#### MongoSh
 
 With mongo shell you can use the ability to load external script in order to automate importing of data. You may find suggestions to put `use your_database` at the top of that script file, but from my experience it was failing, and script was stopped at this line wiht no log output.
 

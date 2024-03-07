@@ -17,12 +17,12 @@ masterWordApp.use(express.json());
 
 masterWordApp.use(
   cors({
-    methods: ['GET' /*,'HEAD','PUT','PATCH','POST','DELETE'*/],
+    methods: ['GET', 'POST' /*,'HEAD','PUT','PATCH','DELETE'*/],
     origin: [
       'https://master-word.greladesign.co',
       'https://master-word-admin.greladesign.co',
-      'http://localhost:5173',
-      'http://localhost:5174',
+      'http://localhost:5273',
+      'http://localhost:5274',
     ],
   })
 );
