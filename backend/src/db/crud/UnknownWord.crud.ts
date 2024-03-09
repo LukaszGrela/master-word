@@ -44,12 +44,24 @@ const purge = async (connection: Connection) => {
   return await UnknownWordModel.deleteMany({}).exec();
 };
 
+const getDocsByWord = async (connection: Connection, word: string) => {
+  const UnknownWordModel = getModelForConnection(connection);
+  const wordToMatch = word.toLocaleLowerCase();
+  const result = await UnknownWordModel.find({
+    'words.word': wordToMatch,
+  }).exec();
+
+  return result;
+};
+
 const addUnknownWord = async (
   connection: Connection,
   word: string,
   language: TSupportedLanguages,
   length = 5
 ) => {
+  const wordToAdd = word.toLocaleLowerCase();
+
   const UnknownWordModel = getModelForConnection(connection);
   const today = getStartOfDay();
 
@@ -63,17 +75,24 @@ const addUnknownWord = async (
     });
   }
 
-  if (
-    doc.words.findIndex(
-      (needle) => needle.language === language && needle.word === word
-    ) === -1
-  ) {
-    // not found, add it
-    doc.words.push({
-      language,
-      length,
-      word,
-    });
+  // check other days first
+  const other = await getDocsByWord(connection, wordToAdd);
+  if (other && other.length > 0) {
+    // we have a match, no need to store another copy
+  } else {
+    // we dont have other words like that, check todays
+    if (
+      doc.words.findIndex(
+        (needle) => needle.language === language && needle.word === wordToAdd
+      ) === -1
+    ) {
+      // not found, add it
+      doc.words.push({
+        language,
+        length,
+        word: wordToAdd,
+      });
+    }
   }
 
   return doc.save();

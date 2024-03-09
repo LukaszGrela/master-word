@@ -244,5 +244,25 @@ describe('UnknownWord CRUD operations', () => {
       const doc = await UnknownWord.findOne({ date });
       assert.equal(doc!.words.length, 3);
     });
+    it('adds an existing in other days entry word to todays existing entry', async () => {
+      const sandbox = sinon.createSandbox();
+      sandbox.useFakeTimers({
+        now: date3.getTime(),
+        shouldClearNativeTimers: true,
+        toFake: ['Date'],
+      });
+
+      // today
+      const date = new Date();
+      const before = await UnknownWord.findOne({ date });
+      assert.equal(before!.words.length, 3);
+
+      await addUnknownWord(mongoose.connection, 'MOSTY', 'pl');
+
+      sandbox.restore();
+
+      const doc = await UnknownWord.findOne({ date });
+      assert.equal(doc!.words.length, 3);
+    });
   });
 });
