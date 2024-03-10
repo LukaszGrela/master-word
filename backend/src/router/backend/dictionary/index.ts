@@ -308,7 +308,7 @@ router.get(
     try {
       let connection = dictionaryDevConnection();
       if (connection) {
-        const list = await countWords(language, length);
+        const list = await countWords(language, Number(length));
 
         res.status(StatusCodes.OK).json(list);
       } else {
@@ -332,7 +332,7 @@ router.get(
     try {
       let connection = dictionaryDevConnection();
       if (connection) {
-        const list = await getLanguages(length);
+        const list = await getLanguages(Number(length));
 
         res.status(StatusCodes.OK).json(list);
       } else {
