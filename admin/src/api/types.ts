@@ -21,3 +21,8 @@ export type TPostRejectApproveWords = {
   words: TTableData[];
   signal?: AbortSignal | null | undefined;
 };
+
+export type TDictionaryLanguagesResponse = [{ languages: string[] }];
+export type TDictionaryStatsResponse = [
+  { language: string; length: number; alphabet: string[]; wordCount: number }
+];
