@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useMemo, useState } from 'react';
 import { TSupportedLanguages } from '../../api';
 import { IDictionary } from '../../types/common';
 import { loadTranslation, replaceSubstituteMap } from '../helpers';
@@ -66,12 +66,16 @@ export function LanguageProvider({ children }: { children: React.ReactNode }) {
     [translation]
   );
 
-  const value = {
-    loading,
-    loadedLanguage,
-    getUIText,
-    loadTranslation: loadTranslationCtx,
-  } as ILanguageContext;
+  const value = useMemo(
+    () =>
+      ({
+        loading,
+        loadedLanguage,
+        getUIText,
+        loadTranslation: loadTranslationCtx,
+      } as ILanguageContext),
+    [getUIText, loadTranslationCtx, loadedLanguage, loading]
+  );
 
   // initial load
   useEffect(() => {
