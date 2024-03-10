@@ -4,10 +4,16 @@ import {
   TAddManyWordsRequestBody,
   TAddWordRequestBody,
   TApproveRejectRequestBody,
+  TDictionaryStatsQuery,
   TTableData,
 } from './types';
 import { StatusCodes } from 'http-status-codes';
-import { addManyWords, addWord } from '../../../db/crud/Dictionary.crud';
+import {
+  addManyWords,
+  addWord,
+  countWords,
+  getLanguages,
+} from '../../../db/crud/Dictionary.crud';
 import {
   dictionaryDevConnection,
   ensureDictionaryDevConnection,
@@ -286,6 +292,53 @@ router.post(
           return;
         }
       }
+      res
+        .status(StatusCodes.INTERNAL_SERVER_ERROR)
+        .json({ message: 'Unknown error' });
+    }
+  }
+);
+
+router.get(
+  '/dictionary-stats',
+  ensureDictionaryDevConnection(),
+  ensureLoggedIn(),
+  async (req: Request, res: Response) => {
+    const { language = 'pl', length = 5 } = req.query as TDictionaryStatsQuery;
+    try {
+      let connection = dictionaryDevConnection();
+      if (connection) {
+        const list = await countWords(language, length);
+
+        res.status(StatusCodes.OK).json(list);
+      } else {
+        throw new Error('No DB Connection error');
+      }
+    } catch (error) {
+      res
+        .status(StatusCodes.INTERNAL_SERVER_ERROR)
+        .json({ message: 'Unknown error' });
+    }
+  }
+);
+
+router.get(
+  '/dictionary-languages',
+  ensureDictionaryDevConnection(),
+  ensureLoggedIn(),
+  async (req: Request, res: Response) => {
+    const { length = 5 } = req.query as { length?: number };
+
+    try {
+      let connection = dictionaryDevConnection();
+      if (connection) {
+        const list = await getLanguages(length);
+
+        res.status(StatusCodes.OK).json(list);
+      } else {
+        throw new Error('No DB Connection error');
+      }
+    } catch (error) {
       res
         .status(StatusCodes.INTERNAL_SERVER_ERROR)
         .json({ message: 'Unknown error' });

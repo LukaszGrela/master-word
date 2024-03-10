@@ -147,11 +147,25 @@ describe('Dictionary CRUD operations', () => {
   });
   describe('countWords', () => {
     it('returns proper word count', async () => {
-      assert.equal(await countWords(), 6);
-      assert.equal(await countWords('en'), 4);
+      assert.deepEqual(await countWords(), [
+        {
+          language: 'pl',
+          length: 5,
+          alphabet: ['a', 'b', 'c'],
+          wordCount: 6,
+        },
+      ]);
+      assert.deepEqual(await countWords('en'), [
+        {
+          language: 'en',
+          length: 5,
+          alphabet: ['a', 'j'],
+          wordCount: 4,
+        },
+      ]);
     });
     it('returns 0 for non existing document', async () => {
-      assert.equal(await countWords('en', 6), 0);
+      assert.deepEqual(await countWords('en', 6), []);
     });
   });
   describe('deleteWord', () => {

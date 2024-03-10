@@ -24,3 +24,8 @@ export type TTableData = {
 export type TApproveRejectRequestBody = {
   words: TTableData[];
 };
+
+export type TDictionaryStatsQuery = {
+  language?: TSupportedLanguages;
+  length?: number;
+};

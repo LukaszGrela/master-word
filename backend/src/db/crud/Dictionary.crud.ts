@@ -152,19 +152,87 @@ export const addManyWords = async (
   return await dictionaryDoc.save();
 };
 
+type TCountDictionaryResponse = {
+  language: string;
+  length: number;
+  alphabet: string[];
+  wordCount: number;
+};
+
 export const countWords = async (
   language: TSupportedLanguages = 'pl',
   length = 5
-) => {
-  const words = (
-    await Dictionary.find({ language, length }, { words: 1 }).exec()
-  ).reduce(
-    (acc, d) =>
-      acc.concat(d.words || /* istanbul ignore next */ ([] as string[])),
-    [] as string[]
-  ) as string[];
+): Promise<TCountDictionaryResponse[]> => {
+  const result = await Dictionary.aggregate<TCountDictionaryResponse>([
+    {
+      $match: {
+        language,
+        length,
+      },
+    },
+    {
+      $group: {
+        _id: null,
+        language: {
+          $first: '$language',
+        },
+        length: {
+          $first: '$length',
+        },
+        alphabet: {
+          $push: '$letter',
+        },
+        wordCount: {
+          $sum: {
+            $size: '$words',
+          },
+        },
+      },
+    },
+    {
+      $set: {
+        alphabet: {
+          $sortArray: {
+            input: '$alphabet',
+            sortBy: 1,
+          },
+        },
+      },
+    },
+    {
+      $unset: '_id',
+    },
+  ])
+    .collation({
+      locale: language,
+      strength: 1,
+    })
+    .exec();
 
-  return words.length;
+  return result;
+};
+
+export const getLanguages = async (length = 5) => {
+  const result = await Dictionary.aggregate<{ languages: string[] }[]>([
+    {
+      $match: {
+        length,
+      },
+    },
+    {
+      $group: {
+        _id: null,
+        languages: {
+          $addToSet: '$language',
+        },
+      },
+    },
+    {
+      $unset: '_id',
+    },
+  ]);
+
+  return result;
 };
 
 export const deleteWord = async (
