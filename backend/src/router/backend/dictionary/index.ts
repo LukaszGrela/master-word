@@ -77,6 +77,29 @@ router.get(
   }
 );
 
+// approve unknown word
+router.post(
+  '/approve-words',
+  ensureDictionaryDevConnection(),
+  ensureLoggedIn(),
+  async (req: Request, res: Response) => {
+    res
+      .status(StatusCodes.INTERNAL_SERVER_ERROR)
+      .json({ message: 'Not implemented' });
+  }
+);
+// reject unknown word
+router.post(
+  '/reject-words',
+  ensureDictionaryDevConnection(),
+  ensureLoggedIn(),
+  async (req: Request, res: Response) => {
+    res
+      .status(StatusCodes.INTERNAL_SERVER_ERROR)
+      .json({ message: 'Not implemented' });
+  }
+);
+
 // add words in bulk
 router.post(
   '/add-many-words',
