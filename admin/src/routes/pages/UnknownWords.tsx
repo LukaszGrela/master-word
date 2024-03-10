@@ -33,6 +33,15 @@ const Main = styled('main')({
   marginTop: '1rem',
   marginBottom: '2.5rem',
 });
+const StyledTableRow = styled(TableRow)(({ theme }) => ({
+  '&:nth-of-type(odd)': {
+    backgroundColor: theme.palette.action.hover,
+  },
+  // hide last border
+  '&:last-child td, &:last-child th': {
+    border: 0,
+  },
+}));
 
 /*
 const mockedData = [
@@ -332,7 +341,7 @@ const UnknownWords: FC = () => {
                     const id = getIdentifier(data);
                     const isSelected = selection.indexOf(id) !== -1;
                     return (
-                      <TableRow key={id}>
+                      <StyledTableRow key={id}>
                         <TableCell padding='checkbox'>
                           <Checkbox
                             checked={isSelected}
@@ -370,7 +379,7 @@ const UnknownWords: FC = () => {
                             </IconButton>
                           </Tooltip>
                         </TableCell>
-                      </TableRow>
+                      </StyledTableRow>
                     );
                   })}
                   {emptyRows > 0 && (
