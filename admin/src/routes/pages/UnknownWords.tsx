@@ -1,4 +1,7 @@
+import { Link as RouterLink } from 'react-router-dom';
+
 import {
+  Button,
   Checkbox,
   Container,
   IconButton,
@@ -27,6 +30,8 @@ import { getUnknownWords } from '../../api/getUnknownWords';
 import { TTableData, TUnknownWordEntry } from '../../api/types';
 import { postApproveWords } from '../../api/postApproveWords';
 import { useSnackbar } from 'notistack';
+import { postRejectWords } from '../../api/postRejectWords';
+import { EPaths } from '../enums/paths';
 
 const HeaderSpacer = styled('div')(({ theme }) => theme.mixins.toolbar);
 const Main = styled('main')({
@@ -42,39 +47,6 @@ const StyledTableRow = styled(TableRow)(({ theme }) => ({
     border: 0,
   },
 }));
-
-/*
-const mockedData = [
-  {
-    word: 'BRYKA',
-    date: '01/01/2024',
-    language: 'pl',
-    parentId: '1',
-    length: 5,
-  },
-  {
-    word: 'BRAIN',
-    date: '02/01/2024',
-    language: 'en',
-    parentId: '2',
-    length: 5,
-  },
-  {
-    word: 'NIGDY',
-    date: '01/02/2024',
-    language: 'pl',
-    parentId: '3',
-    length: 5,
-  },
-  {
-    word: 'SWIFT',
-    date: '01/02/2024',
-    language: 'en',
-    parentId: '3',
-    length: 5,
-  },
-];
-*/
 
 const rowsPerPageOptions = [5, 10, 25];
 
@@ -200,6 +172,13 @@ const UnknownWords: FC = () => {
   // Avoid a layout jump when reaching the last page with empty rows.
   const emptyRows =
     page > 0 ? Math.max(0, (1 + page) * rowsPerPage - rows.length) : 0;
+  const totalPages = Math.ceil(rows.length / rowsPerPage);
+  useEffect(() => {
+    if (1 + page > totalPages) {
+      // we've got less pages than page we're on
+      setPage(Math.max(0, totalPages - 1));
+    }
+  }, [page, totalPages]);
 
   const visibleRows = React.useMemo(
     () => rows.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage),
@@ -221,13 +200,18 @@ const UnknownWords: FC = () => {
         console.log('action', action, entry);
         if (entry) {
           if (action === 'verify' && entry.language === 'pl') {
-            // open popup with SJP https://sjp.pwn.pl/szukaj/${entry.word}.html
+            // open popup with SJP
+            window.open(
+              `https://sjp.pwn.pl/szukaj/${entry.word.toLocaleUpperCase()}.html`,
+              '_blank',
+              'noopener, noreferrer'
+            );
           }
         }
 
         if (action !== 'verify') {
           if (action === 'approve' || action === 'approve-selected') {
-            // approve word
+            // approve word(s)
             postApproveWords({
               words:
                 action === 'approve' && entry ? [entry] : entriesBySelection(),
@@ -237,12 +221,37 @@ const UnknownWords: FC = () => {
                 enqueueSnackbar(`Word(s) approved`, {
                   variant: 'success',
                 });
-                // refresh after approve/reject
+
+                setSelected([]);
+                // refresh after approve
                 refresh();
               })
               .catch((error) => {
                 console.error(error);
                 enqueueSnackbar(`Failed to approve word(s)`, {
+                  variant: 'error',
+                });
+              });
+          }
+          if (action === 'reject' || action === 'reject-selected') {
+            // reject word(s)
+            postRejectWords({
+              words:
+                action === 'reject' && entry ? [entry] : entriesBySelection(),
+            })
+              .then(() => {
+                // success
+                enqueueSnackbar(`Word(s) rejectd`, {
+                  variant: 'success',
+                });
+
+                setSelected([]);
+                // refresh after reject
+                refresh();
+              })
+              .catch((error) => {
+                console.error(error);
+                enqueueSnackbar(`Failed to reject word(s)`, {
                   variant: 'error',
                 });
               });
@@ -329,6 +338,7 @@ const UnknownWords: FC = () => {
                         inputProps={{
                           'aria-label': 'select all words',
                         }}
+                        disabled={rows.length === 0 || loading}
                       />
                     </TableCell>
                     <TableCell>Word</TableCell>
@@ -356,6 +366,7 @@ const UnknownWords: FC = () => {
                               color='secondary'
                               size='small'
                               onClick={handleReview('verify', data)}
+                              disabled={data.language !== 'pl'}
                             >
                               <PreviewIcon />
                             </IconButton>
@@ -389,6 +400,30 @@ const UnknownWords: FC = () => {
                       }}
                     >
                       <TableCell colSpan={4} />
+                    </TableRow>
+                  )}
+                  {!loading && rows.length === 0 && (
+                    <TableRow
+                      style={{
+                        height: 53 * rowsPerPage,
+                      }}
+                    >
+                      <TableCell
+                        colSpan={4}
+                        sx={{
+                          textAlign: 'center',
+                        }}
+                      >
+                        <Typography variant='h5'>All Words reviewed</Typography>
+                        <Button
+                          component={RouterLink}
+                          to={EPaths.ROOT}
+                          sx={{ mt: 3 }}
+                          variant='contained'
+                        >
+                          Go back to dashboard
+                        </Button>
+                      </TableCell>
                     </TableRow>
                   )}
                 </TableBody>

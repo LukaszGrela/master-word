@@ -47,7 +47,7 @@ const UnknownWords: FC = () => {
       </CardContent>
 
       <CardActions>
-        <Button size='small' onClick={handleReview}>
+        <Button size='small' onClick={handleReview} disabled={total === 0}>
           Review
         </Button>
       </CardActions>

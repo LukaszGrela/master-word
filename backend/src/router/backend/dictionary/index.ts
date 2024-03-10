@@ -1,6 +1,11 @@
 import { Router, Request, Response } from 'express';
 import { ensureLoggedIn } from '../../helpers';
-import { TAddManyWordsRequestBody, TAddWordRequestBody } from './types';
+import {
+  TAddManyWordsRequestBody,
+  TAddWordRequestBody,
+  TApproveRejectRequestBody,
+  TTableData,
+} from './types';
 import { StatusCodes } from 'http-status-codes';
 import { addManyWords, addWord } from '../../../db/crud/Dictionary.crud';
 import {
@@ -8,7 +13,8 @@ import {
   ensureDictionaryDevConnection,
   logUnknownWord,
 } from './helpers';
-import { getAll } from '../../../db/crud/UnknownWord.crud';
+import { getAll, removeWordById } from '../../../db/crud/UnknownWord.crud';
+import { TSupportedLanguages } from '../../../types';
 
 const router = Router();
 
@@ -77,26 +83,186 @@ router.get(
   }
 );
 
+function* processApprovingWords(input: TTableData[]) {
+  const wordsToProcess = input.concat();
+
+  let connection = dictionaryDevConnection();
+
+  while (wordsToProcess.length > 0) {
+    const word = wordsToProcess.pop();
+    if (!word) return;
+
+    yield new Promise<string>(async (resolve, reject) => {
+      try {
+        await addWord(
+          word.word,
+          word.language as TSupportedLanguages,
+          word.length
+        );
+        // remove word from unknown-words
+        await removeWordById(
+          connection!,
+          word.parentId,
+          word.word,
+          word.language as TSupportedLanguages,
+          word.length
+        );
+        resolve(word.word);
+      } catch (error) {
+        console.error(word, error);
+        reject(
+          new Error(`word:${word.word}, error:${(error as Error).message}`)
+        );
+      }
+    });
+  }
+}
+
 // approve unknown word
 router.post(
   '/approve-words',
   ensureDictionaryDevConnection(),
   ensureLoggedIn(),
   async (req: Request, res: Response) => {
-    res
-      .status(StatusCodes.INTERNAL_SERVER_ERROR)
-      .json({ message: 'Not implemented' });
+    const { words } = req.body as TApproveRejectRequestBody;
+
+    let connection = dictionaryDevConnection();
+    if (!connection) {
+      res
+        .status(StatusCodes.INTERNAL_SERVER_ERROR)
+        .json({ message: 'No DB Connection error' });
+      return;
+    }
+    if (!words || words.length === 0) {
+      res.status(StatusCodes.BAD_REQUEST).json({
+        name: 'Error',
+        message: "Body param 'words' must contain at least one entry.",
+      });
+      return;
+    }
+
+    try {
+      const success: string[] = [];
+      const failure: Error[] = [];
+      //
+      const processing = processApprovingWords(words);
+      //
+      for await (const iterator of processing) {
+        console.log(iterator);
+        if (typeof iterator === 'string') {
+          // promise resolved
+          success.push(iterator);
+        } else {
+          // promise rejected
+          failure.push(iterator);
+        }
+      }
+      //
+      console.log('Response sent');
+      //
+      res
+        .status(StatusCodes.OK)
+        .json(
+          `${success.length} words were approved.${
+            failure.length > 0
+              ? `${failure.length} words failed to approve.`
+              : ''
+          }`
+        );
+    } catch (error) {
+      res
+        .status(StatusCodes.INTERNAL_SERVER_ERROR)
+        .json({ message: 'Unknown error' });
+    }
   }
 );
+
+function* processRejectingWords(input: TTableData[]) {
+  const wordsToProcess = input.concat();
+
+  let connection = dictionaryDevConnection();
+
+  while (wordsToProcess.length > 0) {
+    const word = wordsToProcess.pop();
+    if (!word) return;
+
+    yield new Promise<string>(async (resolve, reject) => {
+      try {
+        // remove word from unknown-words
+        await removeWordById(
+          connection!,
+          word.parentId,
+          word.word,
+          word.language as TSupportedLanguages,
+          word.length
+        );
+        resolve(word.word);
+      } catch (error) {
+        console.error(word, error);
+        reject(
+          new Error(`word:${word.word}, error:${(error as Error).message}`)
+        );
+      }
+    });
+  }
+}
+
 // reject unknown word
 router.post(
   '/reject-words',
   ensureDictionaryDevConnection(),
   ensureLoggedIn(),
   async (req: Request, res: Response) => {
-    res
-      .status(StatusCodes.INTERNAL_SERVER_ERROR)
-      .json({ message: 'Not implemented' });
+    const { words } = req.body as TApproveRejectRequestBody;
+
+    let connection = dictionaryDevConnection();
+    if (!connection) {
+      res
+        .status(StatusCodes.INTERNAL_SERVER_ERROR)
+        .json({ message: 'No DB Connection error' });
+      return;
+    }
+    if (!words || words.length === 0) {
+      res.status(StatusCodes.BAD_REQUEST).json({
+        name: 'Error',
+        message: "Body param 'words' must contain at least one entry.",
+      });
+      return;
+    }
+
+    try {
+      const success: string[] = [];
+      const failure: Error[] = [];
+      //
+      const processing = processRejectingWords(words);
+      //
+      for await (const iterator of processing) {
+        console.log(iterator);
+        if (typeof iterator === 'string') {
+          // promise resolved
+          success.push(iterator);
+        } else {
+          // promise rejected
+          failure.push(iterator);
+        }
+      }
+      //
+      console.log('Response sent');
+      //
+      res
+        .status(StatusCodes.OK)
+        .json(
+          `${success.length} words were rejected.${
+            failure.length > 0
+              ? `${failure.length} words failed to reject.`
+              : ''
+          }`
+        );
+    } catch (error) {
+      res
+        .status(StatusCodes.INTERNAL_SERVER_ERROR)
+        .json({ message: 'Unknown error' });
+    }
   }
 );
 
