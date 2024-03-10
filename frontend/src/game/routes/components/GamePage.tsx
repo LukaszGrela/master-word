@@ -51,11 +51,30 @@ export const GamePage = () => {
     storage.getItem('ui-language') ||
     'pl') as TSupportedLanguages;
 
+  const clearSession = useCallback(() => {
+    if (location.state && location.state === session) {
+      // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-unused-vars
+      const { usr, ...rest } = window.history.state;
+      window.history.replaceState(
+        {
+          ...rest,
+        },
+        ''
+      );
+    }
+    if (session === urlSession) {
+      // session in the url, reload with new url
+      const url = new URL(window.location.href);
+      url.searchParams.delete('session');
+      window.location.assign(url);
+    }
+
+    setGameSession(null); // clear session
+  }, [location.state, session, urlSession]);
+
   useEffect(() => {
     const controller = new AbortController();
     const getInitSync = () => {
-      console.log('getInitSync', session, language);
-
       getInit({
         language,
         signal: controller.signal,
@@ -71,13 +90,8 @@ export const GamePage = () => {
           if (guardTErrorResponse(error)) {
             // if provided session is invalid, discard it and try again
             if (error.code === 2) {
-              setGameSession(null); // clear session
-              if (session === urlSession) {
-                // session in the url, reload with new url
-                const url = new URL(window.location.href);
-                url.searchParams.delete('session');
-                window.location.assign(url);
-              }
+              clearSession();
+              setGameState('start');
               return;
             } else {
               setError(error);
@@ -99,7 +113,7 @@ export const GamePage = () => {
     return () => {
       controller.abort();
     };
-  }, [gameState, language, session, urlSession]);
+  }, [clearSession, gameState, language, session]);
 
   const handleWordCommit = useCallback(
     (guess: string) => {
@@ -136,7 +150,6 @@ export const GamePage = () => {
           }
         })
         .catch((error) => {
-          console.log(error);
           // session error is a showstopper here
           if (guardTErrorResponse(error)) {
             // if provided session is invalid, discard it and try again
@@ -144,7 +157,7 @@ export const GamePage = () => {
               error.code === 2 /* ErrorCodes.SESSION_ERROR */ ||
               error.code === 3 /* ErrorCodes.GENERAL_ERROR */
             ) {
-              setGameSession(null); // clear session
+              clearSession();
               setGameState('start');
               return;
             } else if (error.code === 6 /* INVALID_WORD */) {
@@ -167,7 +180,7 @@ export const GamePage = () => {
           setGameState('running');
         });
     },
-    [gameSession, navigate, t, bowser.platform.type]
+    [gameSession, navigate, clearSession, t, bowser.platform.type]
   );
 
   const [showInputModal, setShowInputModal] = useState(false);
