@@ -1,7 +1,11 @@
 import { Container, Grid, styled } from '@mui/material';
 import { Footer } from '../../components/Footer';
 import { Header } from '../../components/Header';
-import { NewWordWidget, UnknownWordsWidget } from '../../widgets';
+import {
+  DictionaryStatsWidget,
+  NewWordWidget,
+  UnknownWordsWidget,
+} from '../../widgets';
 
 const HeaderSpacer = styled('div')(({ theme }) => theme.mixins.toolbar);
 const Main = styled('main')({
@@ -26,12 +30,10 @@ export default function Dashboard() {
             <Grid item xs={12} sm={4}>
               <UnknownWordsWidget />
             </Grid>
-            {/* 
-            <Grid item xs={6} sm={4}>
-              <Paper className='widget' elevation={3}>
-                Total Words
-              </Paper>
+            <Grid item xs={12} sm={4}>
+              <DictionaryStatsWidget />
             </Grid>
+            {/* 
             <Grid item xs={6} sm={4}>
               <Paper className='widget' elevation={3}>
                 Dictionary
