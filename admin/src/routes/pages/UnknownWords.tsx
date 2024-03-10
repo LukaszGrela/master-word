@@ -83,10 +83,14 @@ const useFetchUnknownWords = (): [
         });
         // apply
         setEntries(newState);
-      })
-      .catch(console.error)
-      .finally(() => {
         setLoading(false);
+      })
+      .catch((error) => {
+        if (error instanceof DOMException) {
+          // dont change state on abort
+        } else {
+          setLoading(false);
+        }
       });
 
     return () => {
@@ -222,7 +226,21 @@ const UnknownWords: FC = () => {
                   variant: 'success',
                 });
 
-                setSelected([]);
+                if (action === 'approve') {
+                  // deselect one
+                  setSelected((list) => {
+                    const index = list.indexOf(getIdentifier(entry!));
+                    if (index !== -1) {
+                      // remove from the list
+                      const newState = list.concat();
+                      newState.splice(index, 1);
+                      return newState;
+                    }
+                    return list;
+                  });
+                } else {
+                  setSelected([]);
+                }
                 // refresh after approve
                 refresh();
               })
@@ -244,8 +262,21 @@ const UnknownWords: FC = () => {
                 enqueueSnackbar(`Word(s) rejectd`, {
                   variant: 'success',
                 });
-
-                setSelected([]);
+                if (action === 'reject') {
+                  // deselect one
+                  setSelected((list) => {
+                    const index = list.indexOf(getIdentifier(entry!));
+                    if (index !== -1) {
+                      // remove from the list
+                      const newState = list.concat();
+                      newState.splice(index, 1);
+                      return newState;
+                    }
+                    return list;
+                  });
+                } else {
+                  setSelected([]);
+                }
                 // refresh after reject
                 refresh();
               })
