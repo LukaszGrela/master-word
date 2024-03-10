@@ -4,7 +4,7 @@ import { ObjectId } from 'mongoose';
 import { TSupportedLanguages } from '../../types';
 import { getStartOfDay } from '../../utils/datetime';
 
-const getAll = async (connection: Connection) => {
+export const getAll = async (connection: Connection) => {
   const UnknownWordModel = getModelForConnection(connection);
 
   const list = await UnknownWordModel.find({}).exec();
@@ -12,7 +12,7 @@ const getAll = async (connection: Connection) => {
   return list;
 };
 
-const getByDate = async (connection: Connection, date: Date) => {
+export const getByDate = async (connection: Connection, date: Date) => {
   const UnknownWordModel = getModelForConnection(connection);
 
   const result = await UnknownWordModel.findOne({
@@ -22,7 +22,7 @@ const getByDate = async (connection: Connection, date: Date) => {
   return result;
 };
 
-const getById = async (connection: Connection, id: ObjectId | any) => {
+export const getById = async (connection: Connection, id: ObjectId | any) => {
   const UnknownWordModel = getModelForConnection(connection);
 
   const result = await UnknownWordModel.findById(id).exec();
@@ -30,7 +30,10 @@ const getById = async (connection: Connection, id: ObjectId | any) => {
   return result;
 };
 
-const removeById = async (connection: Connection, id: ObjectId | any) => {
+export const removeById = async (
+  connection: Connection,
+  id: ObjectId | any
+) => {
   const UnknownWordModel = getModelForConnection(connection);
 
   const list = await UnknownWordModel.findByIdAndDelete(id).exec();
@@ -38,13 +41,36 @@ const removeById = async (connection: Connection, id: ObjectId | any) => {
   return list;
 };
 
-const purge = async (connection: Connection) => {
+export const removeWordById = async (
+  connection: Connection,
+  id: ObjectId | any,
+  word: string,
+  language: TSupportedLanguages,
+  length = 5
+) => {
+  const UnknownWordModel = getModelForConnection(connection);
+
+  const doc = await UnknownWordModel.findById(id).exec();
+  if (!doc) return null;
+
+  const index = doc.words.findIndex(
+    (needle) => needle.language === language && needle.word === word
+  );
+  if (index !== -1) {
+    // remove it
+    doc.words.splice(index, 1);
+  }
+
+  return doc.save();
+};
+
+export const purge = async (connection: Connection) => {
   const UnknownWordModel = getModelForConnection(connection);
 
   return await UnknownWordModel.deleteMany({}).exec();
 };
 
-const getDocsByWord = async (connection: Connection, word: string) => {
+export const getDocsByWord = async (connection: Connection, word: string) => {
   const UnknownWordModel = getModelForConnection(connection);
   const wordToMatch = word.toLocaleLowerCase();
   const result = await UnknownWordModel.find({
@@ -54,7 +80,7 @@ const getDocsByWord = async (connection: Connection, word: string) => {
   return result;
 };
 
-const addUnknownWord = async (
+export const addUnknownWord = async (
   connection: Connection,
   word: string,
   language: TSupportedLanguages,
@@ -97,5 +123,3 @@ const addUnknownWord = async (
 
   return doc.save();
 };
-
-export { getAll, getByDate, getById, purge, removeById, addUnknownWord };

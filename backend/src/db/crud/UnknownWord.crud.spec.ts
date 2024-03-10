@@ -9,6 +9,7 @@ import {
   getById,
   purge,
   removeById,
+  removeWordById,
 } from '../crud/UnknownWord.crud';
 import mongoose from 'mongoose';
 import { getStartOfDay } from '../../utils/datetime';
@@ -155,6 +156,58 @@ describe('UnknownWord CRUD operations', () => {
       );
 
       assert.equal(result, null);
+      const remaining = await UnknownWord.find({});
+      assert.equal(remaining.length, 3);
+    });
+  });
+
+  describe('removeWordById', () => {
+    it('returns null when id not found', async () => {
+      const result = await removeWordById(
+        mongoose.connection,
+        '75e81e8dc26982deac62cede',
+        'bubel',
+        'pl',
+        5
+      );
+
+      assert.equal(result, null);
+    });
+    it('removes nothing when no word found', async () => {
+      const result = await removeWordById(
+        mongoose.connection,
+        ids[1].toHexString(),
+        'bubel',
+        'pl',
+        5
+      );
+
+      assert.notEqual(result, null);
+      assert.deepEqual(
+        result!.words.map(({ word }) => word),
+        ['maria', 'mosty']
+      );
+
+      // not changed
+      const remaining = await UnknownWord.find({});
+      assert.equal(remaining.length, 3);
+    });
+    it('removes matched word(s)', async () => {
+      const result = await removeWordById(
+        mongoose.connection,
+        ids[1].toHexString(),
+        'mosty',
+        'pl',
+        5
+      );
+
+      assert.notEqual(result, null);
+      assert.deepEqual(
+        result!.words.map(({ word }) => word),
+        ['maria']
+      );
+
+      // docs length not changed
       const remaining = await UnknownWord.find({});
       assert.equal(remaining.length, 3);
     });
