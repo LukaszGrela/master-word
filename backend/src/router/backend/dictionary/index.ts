@@ -164,8 +164,6 @@ router.post(
         }
       }
       //
-      console.log('Response sent');
-      //
       res
         .status(StatusCodes.OK)
         .json(
