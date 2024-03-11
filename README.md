@@ -6,13 +6,13 @@ Project contains React `frontend` for game, NodeJS game server `backend` and `ad
 
 [Live Example - Master Word](https://master-word.greladesign.co/)
 
-## Frontend
+## Frontend (Game)
 
 Frontend (React+Typescript+Vite) for actual game.
 
 ## Backend
 
-The backend is using MongoDB database to store game information e.g. dictionary.
+The backend is using MongoDB document database to store game information e.g. dictionary.
 
 Polish dictionary is stored in the database, there is a logger endpoint for unknown words that is stored in database, at some intervals those "unknown words" will be reviewed and moved into dictionary (using admin page).
 
@@ -20,11 +20,11 @@ English words are provided via the Frontend Masters API https://words.dev-apis.c
 
 ## Admin
 
-Frontend (React+Typescript+Vite+MUI) for managing backend.
+Frontend (React+Typescript+Vite+MUI+RTK) for managing backend.
 
 ### Roadmap
 
-Few features are still to develop, below is a list divided by the module
+Few features are still to be developed, below is a list divided by the module
 
 - monorepo setup with shared code module
 
