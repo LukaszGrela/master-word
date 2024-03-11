@@ -1,0 +1,12 @@
+@import '../../styles/variables';
+
+.footer {
+  .gd-logo {
+    height: 1rem;
+    width: 1.5625rem;
+
+    @media (prefers-color-scheme: dark) {
+      fill: $gd-red-dark;
+    }
+  }
+}

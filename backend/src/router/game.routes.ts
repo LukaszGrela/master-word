@@ -12,42 +12,35 @@ import type {
   TSessionQuery,
   TValidateWordBody,
 } from './types';
-import { getLocalDictionary, resetGameSession, validateWord } from './helpers';
+import { resetGameSession, validateWord } from './helpers';
 import { WORD_LENGTH } from '../constants';
+import { logUnknownWord } from './backend/dictionary/helpers';
+import {
+  wordExists,
+  getRandomWord as apiGetRandomWord,
+} from '../db/crud/Dictionary.crud';
 
 const router = Router();
-
-let localDictionary: string[] = [];
 
 async function getRandomWord(
   language = 'pl',
   wordLength = 5
 ): Promise<TRandomWordResponse> {
   if (language === 'pl') {
-    // localDictionary
-    if (!(localDictionary && localDictionary.length > 0)) {
-      // load file then pick
-      try {
-        const data = await getLocalDictionary(language, wordLength);
-        localDictionary = data;
-      } catch (error) {
-        console.log(error);
-        return Promise.reject({
-          code: ErrorCodes.RANDOM_WORD_ERROR,
-          error: "Can't retrieve polish word.",
-          language: 'pl',
-        });
-      }
-      //
+    try {
+      const word = await apiGetRandomWord(language, wordLength);
+      return {
+        word,
+        language: 'pl',
+      } as TRandomWordResponse;
+    } catch (error) {
+      console.log(error);
+      return Promise.reject({
+        code: ErrorCodes.RANDOM_WORD_ERROR,
+        error: "Can't retrieve polish word.",
+        language: 'pl',
+      });
     }
-    // pick
-    const word =
-      localDictionary[Math.floor(Math.random() * localDictionary.length)];
-
-    return {
-      word,
-      language: 'pl',
-    } as TRandomWordResponse;
   } else {
     // call external API endpoint
     try {
@@ -126,26 +119,11 @@ const isCorrectWord = async (word: string, language: 'pl' | 'en') => {
       };
     }
   } else {
-    if (!(localDictionary && localDictionary.length > 0)) {
-      // load file then pick
-      try {
-        const data = await getLocalDictionary(language, 5);
-        localDictionary = data;
-      } catch (error) {
-        console.log(error);
-        // something is broken, accept word for game play
-        return {
-          word,
-          validWord: true,
-          error: (error as Error).message || (error as any).error,
-          language,
-        };
-      }
-      //
-    }
+    const needle = word.toLocaleLowerCase();
     // search for the word
-    // dictionary contains lower case words
-    if (localDictionary.indexOf(word.toLocaleLowerCase()) !== -1) {
+    const result = await wordExists(needle, language, WORD_LENGTH);
+
+    if (result) {
       // correct
       return {
         word,
@@ -315,6 +293,15 @@ router.get(
         // TODO implement for polish when dictionary will contain > 1000 words
         // log the word, it is possible that it is correct but missing from dictionary
         console.log('LOG NEW WORD:', gameSession.session, isCorrect);
+        try {
+          await logUnknownWord({
+            word: guess,
+            language: gameSession.game.language,
+            length: gameSession.game.word_length,
+          });
+        } catch (error) {
+          console.error(error);
+        }
       } else {
         // english has external validation
         // shows over

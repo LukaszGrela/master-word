@@ -1,33 +1,10 @@
-import fs from 'fs/promises';
-import { ErrorCodes } from '../enums';
+import { Request, Response, RequestHandler } from 'express';
 import type {
   TGameSession,
   TSupportedLanguages,
   TValidationChar,
 } from '../types';
 import { MAX_ATTEMTPS } from '../constants';
-
-export async function getLocalDictionary(
-  language: TSupportedLanguages = 'pl',
-  wordLength = 5
-): Promise<string[]> {
-  const file = `dictionaries/${wordLength}/${language}.json`;
-  // load file then pick
-  try {
-    const data = await fs.readFile(file, {
-      encoding: 'utf-8',
-    });
-    return JSON.parse(data) as string[];
-  } catch (error) {
-    console.log(error);
-    return Promise.reject({
-      code: ErrorCodes.LOCAL_DICTIONARY_ERROR,
-      error: `Can't retrieve dictionary: ${file}.`,
-      language,
-    });
-  }
-  //
-}
 
 export const resetGameSession = (
   language: TSupportedLanguages,
@@ -87,3 +64,22 @@ export const validateWord = (
     validated,
   };
 };
+
+export const isAuthorised = (req: Request, res: Response): boolean => {
+  /* passport related
+  if(!req.isAuthenticated()) {
+    return false;
+  }
+  */
+  console.warn('TODO: implement authorisation');
+  return true;
+};
+
+export function ensureLoggedIn(): RequestHandler {
+  return function ensureAuthenticatedRequestHandler(req, res, next): void {
+    /* istanbul ignore else */
+    if (isAuthorised(req, res)) {
+      next();
+    } /* else - the failure is handled by isAuthorised itself */
+  };
+}
