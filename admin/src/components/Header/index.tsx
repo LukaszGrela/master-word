@@ -15,7 +15,7 @@ import { Link as RouterLink } from 'react-router-dom';
 import { EPaths } from '../../routes/enums/paths';
 import { IProps } from './types';
 
-export const Header: FC<IProps> = ({ title }) => {
+export const Header: React.FC<IProps> = ({ title }) => {
   const settings = ['Profile', 'Account', 'Dashboard', 'Logout'];
 
   const [anchorElUser, setAnchorElUser] = React.useState<null | HTMLElement>(
