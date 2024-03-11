@@ -39,7 +39,8 @@ async function createDictionaryDevConnection() {
 
   const user = process.env.NODE_ENV !== 'test' ? `${mongoUsr}:${usrPass}@` : '';
 
-  const mongoUri = `mongodb://${user}${config.mongo.hostString}/${config.mongo.db}`;
+  // Note: EvenNode provides the database name within the hostString
+  const mongoUri = `mongodb://${user}${config.mongo.hostString}`;// "/${config.mongo.db}"
 
   const connection = await mongoose
     .createConnection(mongoUri, {
