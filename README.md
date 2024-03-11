@@ -21,3 +21,34 @@ English words are provided via the Frontend Masters API https://words.dev-apis.c
 ## Admin
 
 Frontend (React+Typescript+Vite+MUI) for managing backend.
+
+### Roadmap
+
+Few features are still to develop, below is a list divided by the module
+
+- monorepo setup with shared code module
+
+#### Admin
+
+- Use RTK and QTK for API calls
+- Show Unknown Words Stats widget - rechart driven
+- Config route
+
+#### Backend
+
+- word count attached to the game session
+- store last game elapsed time (for comparison of best times)
+- Unknown Words Stats functionality
+- Game session data in DB
+- Archive game sessions in DB
+- Config functionality
+- measure transaction times and accumulate offset to adjust game time (so longer responses do not affect the game play time)
+
+#### Game
+
+- display dictionary (word count) length
+- show last game time comparison
+- add some animations
+- use config info
+- share game - owner shares a link to the game for preview only
+- save game - owner has access to the session of the game and can continue e.g. on another machine
