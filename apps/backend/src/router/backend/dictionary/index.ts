@@ -98,7 +98,8 @@ function* processApprovingWords(input: TTableData[]) {
     const word = wordsToProcess.pop();
     if (!word) return;
 
-    yield new Promise<string>((resolve, reject) => {
+    // eslint-disable-next-line no-async-promise-executor
+    yield new Promise<string>(async (resolve, reject) => {
       try {
         await addWord(
           word.word,
@@ -190,7 +191,8 @@ function* processRejectingWords(input: TTableData[]) {
     const word = wordsToProcess.pop();
     if (!word) return;
 
-    yield new Promise<string>((resolve, reject) => {
+    // eslint-disable-next-line no-async-promise-executor
+    yield new Promise<string>(async (resolve, reject) => {
       try {
         // remove word from unknown-words
         await removeWordById(
