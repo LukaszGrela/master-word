@@ -210,6 +210,7 @@ router.get('/init', async (req: Request, res: Response) => {
     console.log('Game started', response.session);
     console.log('details', response.game.language, response.game.word);
 
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     const { word, ...game } = response.game;
     // deliver in progress session
     res.status(StatusCodes.OK).json({
@@ -345,6 +346,7 @@ router.get(
     if (gameSession.game.finished) {
       res.status(StatusCodes.OK).json(gameSession);
     } else {
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
       const { word, ...game } = gameSession.game;
       res.status(StatusCodes.OK).json({
         session: gameSession.session,
@@ -379,6 +381,7 @@ router.get('/game-session', async (req: Request, res: Response) => {
   if (gameSession.game.finished) {
     res.status(StatusCodes.OK).json(gameSession);
   } else {
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     const { word, ...game } = gameSession.game;
     res.status(StatusCodes.OK).json({
       session: gameSession.session,

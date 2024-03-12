@@ -65,6 +65,7 @@ export const validateWord = (
   };
 };
 
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 export const isAuthorised = (req: Request, res: Response): boolean => {
   /* passport related
   if(!req.isAuthenticated()) {

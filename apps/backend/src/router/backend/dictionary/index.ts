@@ -73,7 +73,7 @@ router.get(
   ensureLoggedIn(),
   async (req: Request, res: Response) => {
     try {
-      let connection = dictionaryDevConnection();
+      const connection = dictionaryDevConnection();
       if (connection) {
         const list = await getAll(connection);
 
@@ -92,13 +92,13 @@ router.get(
 function* processApprovingWords(input: TTableData[]) {
   const wordsToProcess = input.concat();
 
-  let connection = dictionaryDevConnection();
+  const connection = dictionaryDevConnection();
 
   while (wordsToProcess.length > 0) {
     const word = wordsToProcess.pop();
     if (!word) return;
 
-    yield new Promise<string>(async (resolve, reject) => {
+    yield new Promise<string>((resolve, reject) => {
       try {
         await addWord(
           word.word,
@@ -132,7 +132,7 @@ router.post(
   async (req: Request, res: Response) => {
     const { words } = req.body as TApproveRejectRequestBody;
 
-    let connection = dictionaryDevConnection();
+    const connection = dictionaryDevConnection();
     if (!connection) {
       res
         .status(StatusCodes.INTERNAL_SERVER_ERROR)
@@ -184,13 +184,13 @@ router.post(
 function* processRejectingWords(input: TTableData[]) {
   const wordsToProcess = input.concat();
 
-  let connection = dictionaryDevConnection();
+  const connection = dictionaryDevConnection();
 
   while (wordsToProcess.length > 0) {
     const word = wordsToProcess.pop();
     if (!word) return;
 
-    yield new Promise<string>(async (resolve, reject) => {
+    yield new Promise<string>((resolve, reject) => {
       try {
         // remove word from unknown-words
         await removeWordById(
@@ -219,7 +219,7 @@ router.post(
   async (req: Request, res: Response) => {
     const { words } = req.body as TApproveRejectRequestBody;
 
-    let connection = dictionaryDevConnection();
+    const connection = dictionaryDevConnection();
     if (!connection) {
       res
         .status(StatusCodes.INTERNAL_SERVER_ERROR)
@@ -304,7 +304,7 @@ router.get(
   async (req: Request, res: Response) => {
     const { language = 'pl', length = 5 } = req.query as TDictionaryStatsQuery;
     try {
-      let connection = dictionaryDevConnection();
+      const connection = dictionaryDevConnection();
       if (connection) {
         const list = await countWords(language, Number(length));
 
@@ -328,7 +328,7 @@ router.get(
     const { length = 5 } = req.query as { length?: number };
 
     try {
-      let connection = dictionaryDevConnection();
+      const connection = dictionaryDevConnection();
       if (connection) {
         const list = await getLanguages(Number(length));
 

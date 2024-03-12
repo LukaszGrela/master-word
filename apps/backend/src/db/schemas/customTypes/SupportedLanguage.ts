@@ -9,7 +9,7 @@ export class SupportedLanguage extends SchemaType {
   constructor(key: string, options?: AnyObject) {
     super(key, options, 'SupportedLanguage');
   }
-  cast(val: any) {
+  cast(val: unknown) {
     if (typeof val === 'string') {
       if (guardSupportedLanguages(val)) {
         return val;
@@ -21,4 +21,5 @@ export class SupportedLanguage extends SchemaType {
   }
 }
 
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 (mongoose.Schema.Types as any)['SupportedLanguage'] = SupportedLanguage;

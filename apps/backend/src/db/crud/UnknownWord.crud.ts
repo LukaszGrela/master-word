@@ -4,6 +4,9 @@ import { ObjectId } from 'mongoose';
 import { TSupportedLanguages } from '../../types';
 import { getStartOfDay } from '../../utils/datetime';
 
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+type TObjectId = ObjectId | any;
+
 export const getAll = async (connection: Connection) => {
   const UnknownWordModel = getModelForConnection(connection);
 
@@ -22,7 +25,7 @@ export const getByDate = async (connection: Connection, date: Date) => {
   return result;
 };
 
-export const getById = async (connection: Connection, id: ObjectId | any) => {
+export const getById = async (connection: Connection, id: TObjectId) => {
   const UnknownWordModel = getModelForConnection(connection);
 
   const result = await UnknownWordModel.findById(id).exec();
@@ -30,10 +33,7 @@ export const getById = async (connection: Connection, id: ObjectId | any) => {
   return result;
 };
 
-export const removeById = async (
-  connection: Connection,
-  id: ObjectId | any,
-) => {
+export const removeById = async (connection: Connection, id: TObjectId) => {
   const UnknownWordModel = getModelForConnection(connection);
 
   const list = await UnknownWordModel.findByIdAndDelete(id).exec();
@@ -43,9 +43,11 @@ export const removeById = async (
 
 export const removeWordById = async (
   connection: Connection,
-  id: ObjectId | any,
+  id: TObjectId,
   word: string,
   language: TSupportedLanguages,
+  /* TODO verify the need for this param */
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   length = 5,
 ) => {
   const UnknownWordModel = getModelForConnection(connection);

@@ -23,7 +23,7 @@ DictionarySchema.index(
   { unique: true, sparse: true },
 );
 
-DictionarySchema.pre('save', function (next, opt) {
+DictionarySchema.pre('save', function (next) {
   let err: Error | undefined = undefined;
 
   if (this.words.length > 0) {

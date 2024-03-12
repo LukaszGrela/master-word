@@ -1,6 +1,6 @@
 import { RequestHandler } from 'express';
 import mongoose from 'mongoose';
-import connect, { createDictionaryDevConnection } from '../../../db/connect';
+import connect from '../../../db/connect';
 import { StatusCodes } from 'http-status-codes';
 import { getModelForConnection } from '../../../db/models/Dictionary';
 import { TAddWordRequestBody } from './types';

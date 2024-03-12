@@ -1,5 +1,5 @@
 import { TSupportedLanguages } from '../../types';
-import { Dictionary, getModelForConnection } from '../models/Dictionary';
+import { Dictionary } from '../models/Dictionary';
 
 const localeSorter =
   (language: TSupportedLanguages) => (a: string, b: string) => {
@@ -257,7 +257,7 @@ export const deleteWord = async (
   const wordToRemove = word.toLocaleLowerCase();
   const letter = word.charAt(0).toLocaleLowerCase();
 
-  let dictionaryDoc = await Dictionary.findOne({
+  const dictionaryDoc = await Dictionary.findOne({
     letter,
     language,
     length,
