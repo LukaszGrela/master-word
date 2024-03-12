@@ -13,6 +13,7 @@
     "./disableReactDevTools": "./src/disableReactDevTools.ts",
     "./getUrlSearch": "./src/getUrlSearch.ts",
     "./toHMS": "./src/datetime/toHMS.ts",
+    "./getStartOfDay": "./src/datetime/getStartOfDay.ts",
     "./useRunAfterUpdate": "./src/hooks/useRunAfterUpdate.ts",
     "./useUrlObserver": "./src/hooks/useUrlObserver.ts",
     "./AppStorage": "./src/localStorage/AppStorage.ts",
