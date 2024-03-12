@@ -6,6 +6,8 @@ node_modules
 
 # Testing
 coverage
+.nyc_coverage
+.nyc_output
 
 # Build Outputs
 .next/

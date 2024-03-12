@@ -1,0 +1,9 @@
+{
+  "extends": [
+    "//"
+  ],
+  "globalEnv": [
+    "VITE_VERSION",
+    "VITE_API_ENDPOINT"
+  ]
+}
