@@ -1,0 +1,11 @@
+{
+  "extends": "@repo/config-typescript/tsconfig.base.json",
+  "include": [
+    "src/**/*"
+  ],
+  "exclude": [
+    "nod_modules",
+    "src/test/**/*",
+    "src/**/*.spec.ts"
+  ]
+}
