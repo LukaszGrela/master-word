@@ -36,7 +36,7 @@ export const ResultsPage = () => {
         });
       }
     },
-    [gameSession.session, navigate]
+    [gameSession.session, navigate],
   );
 
   let score = 0; // out of 3 max
@@ -72,7 +72,7 @@ export const ResultsPage = () => {
   }
 
   return (
-    <div className='results'>
+    <div className="results">
       <h2>
         {win && t('result-win', { attempt: gameSession.game.attempt })}
         {!win && t('result-lose', { wordToGuess: gameSession.game.word })}
@@ -81,12 +81,12 @@ export const ResultsPage = () => {
       <Stars score={score} />
 
       {playTimeMs > 0 && (
-        <p className='playtime'>{t('result-playtime', { playTime })}</p>
+        <p className="playtime">{t('result-playtime', { playTime })}</p>
       )}
 
       <GameLanguage />
 
-      <div className='button-row'>
+      <div className="button-row">
         <button onClick={handleAction('quit')} className={'secondary'}>
           {t('result-quit-button')}
         </button>

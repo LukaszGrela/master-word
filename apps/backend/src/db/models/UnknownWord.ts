@@ -4,7 +4,7 @@ import { IUnknownWordEntry } from '../types';
 
 const UnknownWord = mongoose.model<IUnknownWordEntry>(
   'UnknownWord',
-  UnknownWordSchema
+  UnknownWordSchema,
 );
 
 /**

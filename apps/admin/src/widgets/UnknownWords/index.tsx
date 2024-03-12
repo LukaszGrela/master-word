@@ -32,22 +32,22 @@ const UnknownWords: FC = () => {
 
   return (
     <Card
-      className='widget unknown-words'
+      className="widget unknown-words"
       elevation={3}
       sx={{
         height: '100%',
       }}
     >
-      <CardHeader title='Unknown Words'></CardHeader>
+      <CardHeader title="Unknown Words"></CardHeader>
       <CardContent sx={{ textAlign: 'center' }}>
-        <Typography component='div' variant='h2'>
+        <Typography component="div" variant="h2">
           {total}
         </Typography>
-        <Typography variant='caption'>Unknown words logged</Typography>
+        <Typography variant="caption">Unknown words logged</Typography>
       </CardContent>
 
       <CardActions>
-        <Button size='small' onClick={handleReview} disabled={total === 0}>
+        <Button size="small" onClick={handleReview} disabled={total === 0}>
           Review
         </Button>
       </CardActions>

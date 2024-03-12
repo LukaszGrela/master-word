@@ -32,7 +32,7 @@ export const getById = async (connection: Connection, id: ObjectId | any) => {
 
 export const removeById = async (
   connection: Connection,
-  id: ObjectId | any
+  id: ObjectId | any,
 ) => {
   const UnknownWordModel = getModelForConnection(connection);
 
@@ -46,7 +46,7 @@ export const removeWordById = async (
   id: ObjectId | any,
   word: string,
   language: TSupportedLanguages,
-  length = 5
+  length = 5,
 ) => {
   const UnknownWordModel = getModelForConnection(connection);
 
@@ -54,7 +54,7 @@ export const removeWordById = async (
   if (!doc) return null;
 
   const index = doc.words.findIndex(
-    (needle) => needle.language === language && needle.word === word
+    (needle) => needle.language === language && needle.word === word,
   );
   if (index !== -1) {
     // remove it
@@ -84,7 +84,7 @@ export const addUnknownWord = async (
   connection: Connection,
   word: string,
   language: TSupportedLanguages,
-  length = 5
+  length = 5,
 ) => {
   const wordToAdd = word.toLocaleLowerCase();
 
@@ -109,7 +109,7 @@ export const addUnknownWord = async (
     // we dont have other words like that, check todays
     if (
       doc.words.findIndex(
-        (needle) => needle.language === language && needle.word === wordToAdd
+        (needle) => needle.language === language && needle.word === wordToAdd,
       ) === -1
     ) {
       // not found, add it

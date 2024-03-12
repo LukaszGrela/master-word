@@ -13,7 +13,7 @@ export const replaceSubstituteMap = (
   input: string,
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   substitutes: IDictionary<any>,
-  actionCallback?: (input: string, actions: string[]) => string
+  actionCallback?: (input: string, actions: string[]) => string,
 ): string => {
   return input.replace<[$1: string, $2: number, $3: string]>(
     SUBSTITUTE,
@@ -31,18 +31,18 @@ export const replaceSubstituteMap = (
 
       console.warn(
         `[i18n.replaceSubstituteMap] Param not found in the substitute map: '${substitute}', actions: '${actions.join(
-          ','
-        )}'.`
+          ',',
+        )}'.`,
       );
 
       return match;
-    }
+    },
   );
 };
 
 export const loadTranslation = async (
   language: TSupportedLanguages,
-  signal?: AbortSignal
+  signal?: AbortSignal,
 ) => {
   console.log('loadTranslation', language);
   try {

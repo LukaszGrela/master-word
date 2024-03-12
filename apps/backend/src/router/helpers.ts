@@ -8,7 +8,7 @@ import { MAX_ATTEMTPS } from '../constants';
 
 export const resetGameSession = (
   language: TSupportedLanguages,
-  word: string
+  word: string,
 ): TGameSession => {
   return {
     language,
@@ -26,10 +26,10 @@ export const resetGameSession = (
 export const validateWord = (
   guess: string[],
   compare: string[],
-  isGuessed: boolean
+  isGuessed: boolean,
 ): { guessed: boolean; validated: TValidationChar[] } => {
   const validated: TValidationChar[] = Array.from(Array(compare.length)).map(
-    () => (isGuessed ? 'C' : 'X')
+    () => (isGuessed ? 'C' : 'X'),
   );
 
   if (!isGuessed) {

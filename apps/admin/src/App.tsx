@@ -8,7 +8,7 @@ const App: FC = () => {
   return (
     <StyledEngineProvider injectFirst>
       <SnackbarProvider maxSnack={5}>
-        <div className='App'>
+        <div className="App">
           <CssBaseline />
           <Router />
         </div>

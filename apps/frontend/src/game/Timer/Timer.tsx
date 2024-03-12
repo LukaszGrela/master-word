@@ -40,7 +40,7 @@ const Timer: FC<IProps> = ({ startMs }) => {
     };
   }, [startMs]);
 
-  return <span className='timer'>{time}</span>;
+  return <span className="timer">{time}</span>;
 };
 
 export default Timer;

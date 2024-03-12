@@ -45,7 +45,7 @@ const NewWord: FC = () => {
         // runAfterUpdate(setCursor);
       }
     },
-    [word]
+    [word],
   );
   const handleSubmit: FormEventHandler<HTMLFormElement> = useCallback((e) => {
     e.preventDefault();
@@ -67,24 +67,24 @@ const NewWord: FC = () => {
 
   return (
     <Card
-      className='widget new-word'
+      className="widget new-word"
       elevation={3}
       sx={{
         height: '100%',
       }}
     >
-      <CardHeader title='Add new word' />
+      <CardHeader title="Add new word" />
       <CardContent>
         <Box
-          component='form'
+          component="form"
           noValidate
-          autoComplete='off'
+          autoComplete="off"
           onSubmit={handleSubmit}
         >
           <Stack spacing={2} direction={'column'} alignItems={'stretch'}>
             <Stack spacing={2} direction={'row'}>
               <FormControl>
-                <InputLabel variant='standard' htmlFor='language'>
+                <InputLabel variant="standard" htmlFor="language">
                   Language
                 </InputLabel>
                 <NativeSelect
@@ -99,9 +99,9 @@ const NewWord: FC = () => {
                 </NativeSelect>
               </FormControl>
               <input
-                type='hidden'
-                name='length'
-                id='length'
+                type="hidden"
+                name="length"
+                id="length"
                 value={wordLength}
               />
               <TextField
@@ -109,9 +109,9 @@ const NewWord: FC = () => {
                   name: 'length',
                   id: 'length',
                 }}
-                variant='standard'
-                type='number'
-                label='Length'
+                variant="standard"
+                type="number"
+                label="Length"
                 disabled
                 value={wordLength}
               />
@@ -120,9 +120,9 @@ const NewWord: FC = () => {
             <Stack spacing={2} direction={'row'}>
               <FormControl fullWidth>
                 <TextField
-                  variant='standard'
-                  label='Word'
-                  type='text'
+                  variant="standard"
+                  label="Word"
+                  type="text"
                   inputProps={{
                     name: 'word',
                     id: 'word',
@@ -133,10 +133,10 @@ const NewWord: FC = () => {
                 />
               </FormControl>
               <Button
-                variant='contained'
+                variant="contained"
                 endIcon={<SendIcon />}
                 disabled={word.length !== wordLength}
-                type='submit'
+                type="submit"
               >
                 Send
               </Button>

@@ -4,7 +4,7 @@ import { TDictionaryStatsResponse } from './types';
 export const getDictionaryStats = async (
   language = 'pl',
   length = 5,
-  signal?: AbortSignal | null | undefined
+  signal?: AbortSignal | null | undefined,
 ) => {
   const response = await fetch(apiDictionaryStats(language, length), {
     method: 'GET',
@@ -13,7 +13,7 @@ export const getDictionaryStats = async (
 
   if (response.ok) {
     return Promise.resolve(
-      JSON.parse(await response.text()) as TDictionaryStatsResponse
+      JSON.parse(await response.text()) as TDictionaryStatsResponse,
     );
   }
 

@@ -31,18 +31,18 @@ const DictionaryStats: FC = () => {
 
   return (
     <Card
-      className='widget dictionary-stats'
+      className="widget dictionary-stats"
       elevation={3}
       sx={{
         height: '100%',
       }}
     >
-      <CardHeader title='Total Words'></CardHeader>
+      <CardHeader title="Total Words"></CardHeader>
       <CardContent sx={{ textAlign: 'center' }}>
-        <Typography component='div' variant='h2'>
+        <Typography component="div" variant="h2">
           {total}
         </Typography>
-        <Typography variant='caption'>Polish words stored</Typography>
+        <Typography variant="caption">Polish words stored</Typography>
       </CardContent>
       {/* 
       <CardActions>

@@ -66,7 +66,7 @@ const InputGuess: FC<{
           runAfterUpdate(setCursor);
         }
       },
-      [guess, runAfterUpdate]
+      [guess, runAfterUpdate],
     );
 
   const disableButton = guess.length < maxLength;
@@ -77,7 +77,7 @@ const InputGuess: FC<{
         onClose('guess', guess);
       }
     },
-    [disableButton, guess, onClose]
+    [disableButton, guess, onClose],
   );
 
   const handleClose = useCallback(() => {
@@ -107,39 +107,39 @@ const InputGuess: FC<{
     displayed &&
     (hidden ? (
       createPortal(
-        <div className='input-modal fab-container'>
-          <button className='fab' onClick={handleShow}>
+        <div className="input-modal fab-container">
+          <button className="fab" onClick={handleShow}>
             <EditIcon />
           </button>
         </div>,
-        document.body
+        document.body,
       )
     ) : (
-      <div className='panel input-modal'>
-        <label htmlFor='guess'>{t('input-modal-label')}</label>
+      <div className="panel input-modal">
+        <label htmlFor="guess">{t('input-modal-label')}</label>
         <input
-          type='text'
-          name='guess'
+          type="text"
+          name="guess"
           maxLength={maxLength}
           autoFocus
           value={guess}
           onChange={handleChangeText}
           onPaste={(e) => e.preventDefault()}
           onKeyUp={handleEnter}
-          autoComplete='off'
-          enterKeyHint='done'
+          autoComplete="off"
+          enterKeyHint="done"
           aria-errormessage={error?.code === 6 ? error?.error : undefined}
           aria-invalid={error?.code === 6}
         ></input>
         {!disableButton && (
-          <div className='read-the-docs'>{t('input-modal-info-done')}</div>
+          <div className="read-the-docs">{t('input-modal-info-done')}</div>
         )}
         {disableButton && (
-          <div className='read-the-docs'>
+          <div className="read-the-docs">
             {t('input-modal-info-start', { maxLength })}
           </div>
         )}
-        <div className='button-row'>
+        <div className="button-row">
           <button onClick={handleClose}>{t('input-modal-close-button')}</button>
           <button onClick={handleCommit} disabled={disableButton}>
             {t('input-modal-ok-button')}

@@ -37,7 +37,7 @@ export const GamePage = () => {
   >(null);
   const [gameState, setGameState] = useState<TGameState>('start');
   const [gameSession, setGameSession] = useState<TGameSessionRecord | null>(
-    null
+    null,
   );
   const urlSession = location.state;
   const session = gameSession?.session ?? urlSession ?? undefined;
@@ -59,7 +59,7 @@ export const GamePage = () => {
         {
           ...rest,
         },
-        ''
+        '',
       );
     }
     if (session === urlSession) {
@@ -135,7 +135,7 @@ export const GamePage = () => {
           // make sure language is not changed
           AppStorage.getInstance().setItem(
             EStorageKeys.GAME_LANGUAGE,
-            response.game.language
+            response.game.language,
           );
           //
           if (!response.game.finished) {
@@ -180,7 +180,7 @@ export const GamePage = () => {
           setGameState('running');
         });
     },
-    [gameSession, navigate, clearSession, t, bowser.platform.type]
+    [gameSession, navigate, clearSession, t, bowser.platform.type],
   );
 
   const [showInputModal, setShowInputModal] = useState(false);
@@ -210,12 +210,12 @@ export const GamePage = () => {
         handleWordCommit(guess);
       }
     },
-    [handleWordCommit]
+    [handleWordCommit],
   );
 
   return (
-    <div className='game-page'>
-      <div className='header'>
+    <div className="game-page">
+      <div className="header">
         <h1>{t('main-title')}</h1>
         <Timer
           startMs={
@@ -225,16 +225,16 @@ export const GamePage = () => {
           }
         />
       </div>
-      <p className='read-the-docs'>
+      <p className="read-the-docs">
         {bowser.platform.type !== 'mobile' && t('main-desktop-info')}
         {bowser.platform.type === 'mobile' && t('main-mobile-info')}
       </p>
-      <div className='legend'>
-        <span className='incorrect'>{t('main-legend-incorrect')}</span>
-        <span className='misplaced'>{t('main-legend-misplaced')}</span>
-        <span className='correct'>{t('main-legend-correct')}</span>
+      <div className="legend">
+        <span className="incorrect">{t('main-legend-incorrect')}</span>
+        <span className="misplaced">{t('main-legend-misplaced')}</span>
+        <span className="correct">{t('main-legend-correct')}</span>
       </div>
-      <div className='game-board'>
+      <div className="game-board">
         <Board
           className={language}
           columns={wordLength}
@@ -260,7 +260,7 @@ export const GamePage = () => {
           })}
         </Board>
         {(gameState === 'pending' || gameState === 'start') && (
-          <h2 className='loading panel'>
+          <h2 className="loading panel">
             <Spinner />
             <span>{t('loading')}</span>
           </h2>

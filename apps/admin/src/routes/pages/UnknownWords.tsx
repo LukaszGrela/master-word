@@ -56,7 +56,7 @@ const getIdentifier = (data: TTableData): string =>
 const useFetchUnknownWords = (): [
   rows: readonly TTableData[],
   loading: boolean,
-  refresh: () => void
+  refresh: () => void,
 ] => {
   const [loading, setLoading] = useState(true);
   const [entries, setEntries] = useState<readonly TTableData[]>([]);
@@ -78,7 +78,7 @@ const useFetchUnknownWords = (): [
               date: entry.date,
               parentId: entry._id,
               ...word,
-            }))
+            })),
           );
         });
         // apply
@@ -115,14 +115,14 @@ const UnknownWords: FC = () => {
     (event: React.ChangeEvent<HTMLInputElement>) => {
       if (event.target.checked) {
         const newState = rows.map(
-          (data) => `${data.word}-${data.language}-${data.parentId}`
+          (data) => `${data.word}-${data.language}-${data.parentId}`,
         );
         setSelected(newState);
       } else {
         setSelected([]);
       }
     },
-    [rows]
+    [rows],
   );
 
   const handleRowSelection = useCallback(
@@ -150,7 +150,7 @@ const UnknownWords: FC = () => {
         });
       }
     },
-    []
+    [],
   );
 
   const entriesBySelection = useCallback((): TTableData[] => {
@@ -168,7 +168,7 @@ const UnknownWords: FC = () => {
   };
 
   const handleChangeRowsPerPage = (
-    event: React.ChangeEvent<HTMLInputElement>
+    event: React.ChangeEvent<HTMLInputElement>,
   ) => {
     setRowsPerPage(parseInt(event.target.value, 10));
     setPage(0);
@@ -186,20 +186,20 @@ const UnknownWords: FC = () => {
 
   const visibleRows = React.useMemo(
     () => rows.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage),
-    [page, rows, rowsPerPage]
+    [page, rows, rowsPerPage],
   );
   // pagination end
 
   const handleReview = useCallback(
     (
-        action:
-          | 'verify'
-          | 'reject'
-          | 'approve'
-          | 'reject-selected'
-          | 'approve-selected',
-        entry?: TTableData
-      ): React.MouseEventHandler<HTMLButtonElement> =>
+      action:
+        | 'verify'
+        | 'reject'
+        | 'approve'
+        | 'reject-selected'
+        | 'approve-selected',
+      entry?: TTableData,
+    ): React.MouseEventHandler<HTMLButtonElement> =>
       () => {
         console.log('action', action, entry);
         if (entry) {
@@ -208,7 +208,7 @@ const UnknownWords: FC = () => {
             window.open(
               `https://sjp.pwn.pl/szukaj/${entry.word.toLocaleUpperCase()}.html`,
               '_blank',
-              'noopener, noreferrer'
+              'noopener, noreferrer',
             );
           }
         }
@@ -289,17 +289,17 @@ const UnknownWords: FC = () => {
           }
         }
       },
-    [enqueueSnackbar, entriesBySelection, refresh]
+    [enqueueSnackbar, entriesBySelection, refresh],
   );
   const numSelected = selection.length;
   return (
-    <div className='unknown-words'>
+    <div className="unknown-words">
       <Container
         sx={{
           minHeight: '100vh',
         }}
       >
-        <Header title='Unknown Words' />
+        <Header title="Unknown Words" />
         <HeaderSpacer />
         <Main>
           <Paper>
@@ -311,7 +311,7 @@ const UnknownWords: FC = () => {
                   bgcolor: (theme) =>
                     alpha(
                       theme.palette.primary.main,
-                      theme.palette.action.activatedOpacity
+                      theme.palette.action.activatedOpacity,
                     ),
                 }),
               }}
@@ -319,9 +319,9 @@ const UnknownWords: FC = () => {
               {numSelected < 2 ? (
                 <Typography
                   sx={{ flex: '1 1 100%' }}
-                  variant='h6'
-                  id='tableTitle'
-                  component='div'
+                  variant="h6"
+                  id="tableTitle"
+                  component="div"
                 >
                   Review unknown words
                 </Typography>
@@ -329,25 +329,25 @@ const UnknownWords: FC = () => {
                 <>
                   <Typography
                     sx={{ flex: '1 1 100%' }}
-                    color='inherit'
-                    variant='subtitle1'
-                    component='div'
+                    color="inherit"
+                    variant="subtitle1"
+                    component="div"
                   >
                     {numSelected} selected
                   </Typography>
-                  <Tooltip title='Reject Selected'>
+                  <Tooltip title="Reject Selected">
                     <IconButton
-                      color='error'
-                      size='small'
+                      color="error"
+                      size="small"
                       onClick={handleReview('reject-selected')}
                     >
                       <ThumbDownIcon />
                     </IconButton>
                   </Tooltip>
-                  <Tooltip title='Approve Selected'>
+                  <Tooltip title="Approve Selected">
                     <IconButton
-                      color='success'
-                      size='small'
+                      color="success"
+                      size="small"
                       onClick={handleReview('approve-selected')}
                     >
                       <ThumbUpIcon />
@@ -361,7 +361,7 @@ const UnknownWords: FC = () => {
               <Table>
                 <TableHead>
                   <TableRow>
-                    <TableCell padding='checkbox'>
+                    <TableCell padding="checkbox">
                       <Checkbox
                         checked={selectedAll}
                         indeterminate={selectedSome}
@@ -383,7 +383,7 @@ const UnknownWords: FC = () => {
                     const isSelected = selection.indexOf(id) !== -1;
                     return (
                       <StyledTableRow key={id}>
-                        <TableCell padding='checkbox'>
+                        <TableCell padding="checkbox">
                           <Checkbox
                             checked={isSelected}
                             onChange={handleRowSelection(id)}
@@ -392,29 +392,29 @@ const UnknownWords: FC = () => {
                         <TableCell>{data.word}</TableCell>
                         <TableCell>{data.language}</TableCell>
                         <TableCell>
-                          <Tooltip title='Verify'>
+                          <Tooltip title="Verify">
                             <IconButton
-                              color='secondary'
-                              size='small'
+                              color="secondary"
+                              size="small"
                               onClick={handleReview('verify', data)}
                               disabled={data.language !== 'pl'}
                             >
                               <PreviewIcon />
                             </IconButton>
                           </Tooltip>
-                          <Tooltip title='Reject'>
+                          <Tooltip title="Reject">
                             <IconButton
-                              color='error'
-                              size='small'
+                              color="error"
+                              size="small"
                               onClick={handleReview('reject', data)}
                             >
                               <ThumbDownIcon />
                             </IconButton>
                           </Tooltip>
-                          <Tooltip title='Approve'>
+                          <Tooltip title="Approve">
                             <IconButton
-                              color='success'
-                              size='small'
+                              color="success"
+                              size="small"
                               onClick={handleReview('approve', data)}
                             >
                               <ThumbUpIcon />
@@ -445,12 +445,12 @@ const UnknownWords: FC = () => {
                           textAlign: 'center',
                         }}
                       >
-                        <Typography variant='h5'>All Words reviewed</Typography>
+                        <Typography variant="h5">All Words reviewed</Typography>
                         <Button
                           component={RouterLink}
                           to={EPaths.ROOT}
                           sx={{ mt: 3 }}
-                          variant='contained'
+                          variant="contained"
                         >
                           Go back to dashboard
                         </Button>
@@ -462,7 +462,7 @@ const UnknownWords: FC = () => {
             </TableContainer>
             <TablePagination
               rowsPerPageOptions={rowsPerPageOptions}
-              component='div'
+              component="div"
               count={rows.length}
               rowsPerPage={rowsPerPage}
               page={page}

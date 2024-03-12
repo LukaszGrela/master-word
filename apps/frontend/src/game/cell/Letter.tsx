@@ -8,10 +8,10 @@ const Letter: React.FC<ILetter> = ({ className, letter }): JSX.Element => {
   const cn = classNames('letter', className);
   return (
     <div className={cn}>
-      <span className='icon'>
+      <span className="icon">
         <EditIcon />
       </span>
-      <span className='container'>{letter}</span>
+      <span className="container">{letter}</span>
     </div>
   );
 };

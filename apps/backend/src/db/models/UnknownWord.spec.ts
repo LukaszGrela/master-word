@@ -102,7 +102,7 @@ describe('UnknownWord model', () => {
     assert.notEqual(error, undefined);
     assert.match(
       `${error?.message}`,
-      /Cast to SupportedLanguage failed for value "xx"/
+      /Cast to SupportedLanguage failed for value "xx"/,
     );
   });
 

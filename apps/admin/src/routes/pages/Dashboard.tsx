@@ -14,7 +14,7 @@ const Main = styled('main')({
 });
 export default function Dashboard() {
   return (
-    <div className='dashboard'>
+    <div className="dashboard">
       <Container
         sx={{
           minHeight: '100vh',

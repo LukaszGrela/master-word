@@ -346,7 +346,7 @@ describe('Dictionary CRUD operations', () => {
       const doc = await addManyWords(
         ['xylan', 'xenon', 'xoana'],
         config.language,
-        config.length
+        config.length,
       );
 
       // drop id
@@ -367,7 +367,7 @@ describe('Dictionary CRUD operations', () => {
       const doc = await addManyWords(
         ['bigos', 'barak', 'bęben'],
         config.language,
-        config.length
+        config.length,
       );
 
       // drop id

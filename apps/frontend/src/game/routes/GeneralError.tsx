@@ -10,7 +10,7 @@ export default function GeneralError() {
   console.error(error);
 
   return (
-    <div id='error-page'>
+    <div id="error-page">
       <h1>{t('general-error-title')}</h1>
       <p>{t('general-error-message')}</p>
       <p>
@@ -18,7 +18,7 @@ export default function GeneralError() {
       </p>
       <p>
         <button
-          className='primary'
+          className="primary"
           onClick={() => {
             navigate(EPaths.ROOT, { replace: true });
           }}

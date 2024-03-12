@@ -9,11 +9,11 @@ dotenv.config({
 const config = JSON.parse(`${process.env.APP_CONFIG || '{}'}`) as TConfig;
 //mongodb://localhost:27017/
 export default function connect(
-  overrideConfig: TConfig & { pass?: string } = config
+  overrideConfig: TConfig & { pass?: string } = config,
 ) {
   const mongoUsr = overrideConfig.mongo.user
     ? `${overrideConfig.mongo.user}:${encodeURIComponent(
-        overrideConfig.pass || process.env.MONGO_PASSWORD || ''
+        overrideConfig.pass || process.env.MONGO_PASSWORD || '',
       )}@`
     : '';
   // Note: EvenNode provides the database name within the hostString
@@ -33,7 +33,7 @@ export default function connect(
 async function createDictionaryDevConnection() {
   const mongoUsr = 'master-word-backend-dev';
   const usrPass = encodeURIComponent(
-    process.env.MONGO_BACKEND_DEV_PASSWORD || ''
+    process.env.MONGO_BACKEND_DEV_PASSWORD || '',
   );
 
   const user = process.env.NODE_ENV !== 'test' ? `${mongoUsr}:${usrPass}@` : '';

@@ -48,7 +48,7 @@ router.post(
         .status(StatusCodes.INTERNAL_SERVER_ERROR)
         .json({ message: 'Unknown error' });
     }
-  }
+  },
 );
 
 // log unknown word
@@ -63,7 +63,7 @@ router.post(
         .status(StatusCodes.INTERNAL_SERVER_ERROR)
         .json({ message: 'Unknown error' });
     }
-  }
+  },
 );
 
 // list unknown word entries
@@ -86,7 +86,7 @@ router.get(
         .status(StatusCodes.INTERNAL_SERVER_ERROR)
         .json({ message: 'Unknown error' });
     }
-  }
+  },
 );
 
 function* processApprovingWords(input: TTableData[]) {
@@ -103,7 +103,7 @@ function* processApprovingWords(input: TTableData[]) {
         await addWord(
           word.word,
           word.language as TSupportedLanguages,
-          word.length
+          word.length,
         );
         // remove word from unknown-words
         await removeWordById(
@@ -111,13 +111,13 @@ function* processApprovingWords(input: TTableData[]) {
           word.parentId,
           word.word,
           word.language as TSupportedLanguages,
-          word.length
+          word.length,
         );
         resolve(word.word);
       } catch (error) {
         console.error(word, error);
         reject(
-          new Error(`word:${word.word}, error:${(error as Error).message}`)
+          new Error(`word:${word.word}, error:${(error as Error).message}`),
         );
       }
     });
@@ -171,14 +171,14 @@ router.post(
             failure.length > 0
               ? `${failure.length} words failed to approve.`
               : ''
-          }`
+          }`,
         );
     } catch (error) {
       res
         .status(StatusCodes.INTERNAL_SERVER_ERROR)
         .json({ message: 'Unknown error' });
     }
-  }
+  },
 );
 
 function* processRejectingWords(input: TTableData[]) {
@@ -198,13 +198,13 @@ function* processRejectingWords(input: TTableData[]) {
           word.parentId,
           word.word,
           word.language as TSupportedLanguages,
-          word.length
+          word.length,
         );
         resolve(word.word);
       } catch (error) {
         console.error(word, error);
         reject(
-          new Error(`word:${word.word}, error:${(error as Error).message}`)
+          new Error(`word:${word.word}, error:${(error as Error).message}`),
         );
       }
     });
@@ -260,14 +260,14 @@ router.post(
             failure.length > 0
               ? `${failure.length} words failed to reject.`
               : ''
-          }`
+          }`,
         );
     } catch (error) {
       res
         .status(StatusCodes.INTERNAL_SERVER_ERROR)
         .json({ message: 'Unknown error' });
     }
-  }
+  },
 );
 
 // add words in bulk
@@ -294,7 +294,7 @@ router.post(
         .status(StatusCodes.INTERNAL_SERVER_ERROR)
         .json({ message: 'Unknown error' });
     }
-  }
+  },
 );
 
 router.get(
@@ -317,7 +317,7 @@ router.get(
         .status(StatusCodes.INTERNAL_SERVER_ERROR)
         .json({ message: 'Unknown error' });
     }
-  }
+  },
 );
 
 router.get(
@@ -341,7 +341,7 @@ router.get(
         .status(StatusCodes.INTERNAL_SERVER_ERROR)
         .json({ message: 'Unknown error' });
     }
-  }
+  },
 );
 
 export default router;

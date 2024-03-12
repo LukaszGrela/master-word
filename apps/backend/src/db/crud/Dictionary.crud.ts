@@ -21,7 +21,7 @@ const localeSorter =
  */
 export const getAlphabet = async (
   language: TSupportedLanguages = 'pl',
-  length = 5
+  length = 5,
 ): Promise<string[]> => {
   const alphabet = (
     await Dictionary.find({ language, length }, { letter: 1 }).exec()
@@ -32,7 +32,7 @@ export const getAlphabet = async (
 
 export const getRandomWord = async (
   language: TSupportedLanguages = 'pl',
-  length = 5
+  length = 5,
 ) => {
   const alphabet = await getAlphabet(language, length);
   if (alphabet.length > 0) {
@@ -58,7 +58,7 @@ export const getRandomWord = async (
 export const wordExists = async (
   word: string,
   language: TSupportedLanguages = 'pl',
-  length = 5
+  length = 5,
 ) => {
   const doc = await Dictionary.find({
     words: word,
@@ -79,7 +79,7 @@ export const wordExists = async (
 export const addWord = async (
   word: string,
   language: TSupportedLanguages = 'pl',
-  length = 5
+  length = 5,
 ) => {
   if (length === 0) {
     throw new Error('addWord: the length argument must not be 0.');
@@ -91,7 +91,7 @@ export const addWord = async (
 
   if (word.length !== length) {
     throw new Error(
-      `addWord: the word value must have length as declared by "length" argument (${word.length} != ${length}).`
+      `addWord: the word value must have length as declared by "length" argument (${word.length} != ${length}).`,
     );
   }
   return addManyWords([word], language, length);
@@ -100,7 +100,7 @@ export const addWord = async (
 export const addManyWords = async (
   words: string[],
   language: TSupportedLanguages = 'pl',
-  length = 5
+  length = 5,
 ) => {
   if (length === 0) {
     throw new Error('addManyWords: the length argument must not be 0.');
@@ -116,13 +116,13 @@ export const addManyWords = async (
     // check length of each word
     if (word.length !== length) {
       throw new Error(
-        `addManyWords: the words must have length as declared by "length" argument ("${word}" ${word.length} != ${length}).`
+        `addManyWords: the words must have length as declared by "length" argument ("${word}" ${word.length} != ${length}).`,
       );
     }
     // check all words are for the same letter dictionary
     if (nextWord && nextWord.charAt(0).toLocaleLowerCase() !== letter) {
       throw new Error(
-        `addManyWords: the words must start with the same letter "${letter}". Invalid word: "${nextWord}".`
+        `addManyWords: the words must start with the same letter "${letter}". Invalid word: "${nextWord}".`,
       );
     }
   }
@@ -161,7 +161,7 @@ type TCountDictionaryResponse = {
 
 export const countWords = async (
   language: TSupportedLanguages = 'pl',
-  length = 5
+  length = 5,
 ): Promise<TCountDictionaryResponse[]> => {
   const result = await Dictionary.aggregate<TCountDictionaryResponse>([
     {
@@ -238,7 +238,7 @@ export const getLanguages = async (length = 5) => {
 export const deleteWord = async (
   word: string,
   language: TSupportedLanguages = 'pl',
-  length = 5
+  length = 5,
 ) => {
   if (length === 0) {
     throw new Error('deleteWord: the length argument must not be 0.');
@@ -250,7 +250,7 @@ export const deleteWord = async (
 
   if (word.length !== length) {
     throw new Error(
-      `deleteWord: the word value must have length as declared by "length" argument (${word.length} != ${length}).`
+      `deleteWord: the word value must have length as declared by "length" argument (${word.length} != ${length}).`,
     );
   }
 
@@ -278,7 +278,7 @@ export const updateWord = async (
   oldWord: string,
   newWord: string,
   language: TSupportedLanguages = 'pl',
-  length = 5
+  length = 5,
 ) => {
   if (length === 0) {
     throw new Error('updateWord: the length argument must not be 0.');
@@ -293,13 +293,13 @@ export const updateWord = async (
 
   if (oldWord.length !== length) {
     throw new Error(
-      `updateWord: the oldWord value must have length as declared by "length" argument (${oldWord.length} != ${length}).`
+      `updateWord: the oldWord value must have length as declared by "length" argument (${oldWord.length} != ${length}).`,
     );
   }
 
   if (newWord.length !== length) {
     throw new Error(
-      `updateWord: the newWord value must have length as declared by "length" argument (${newWord.length} != ${length}).`
+      `updateWord: the newWord value must have length as declared by "length" argument (${newWord.length} != ${length}).`,
     );
   }
 
@@ -308,7 +308,7 @@ export const updateWord = async (
     oldWord.toLocaleLowerCase().charAt(0)
   ) {
     throw new Error(
-      `updateWord: You can only update words for the same letter.`
+      `updateWord: You can only update words for the same letter.`,
     );
   }
 

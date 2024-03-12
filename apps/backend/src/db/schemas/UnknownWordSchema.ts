@@ -20,7 +20,7 @@ UnknownWordSchema.index(
   {
     date: 1,
   },
-  { unique: true }
+  { unique: true },
 );
 
 export { UnknownWordSchema };

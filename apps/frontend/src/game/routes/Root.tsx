@@ -18,7 +18,7 @@ export const Root = () => {
       {!showLoading && (
         <>
           <Outlet />
-          <p className='footer read-the-docs'>
+          <p className="footer read-the-docs">
             <GrelaDesignIcon />
             <span>GrelaDesign (c) 2024</span>{' '}
             <span>[v{import.meta.env.VITE_VERSION}]</span>

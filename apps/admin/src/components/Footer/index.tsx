@@ -7,8 +7,8 @@ import { Container, Typography } from '@mui/material';
 export const Footer: FC = () => {
   return (
     <Box
-      className='footer'
-      component='footer'
+      className="footer"
+      component="footer"
       position={'fixed'}
       sx={{
         backgroundColor: 'background.paper',
@@ -24,11 +24,11 @@ export const Footer: FC = () => {
       }}
     >
       <Container sx={{}}>
-        <GrelaDesignIcon className='gd-logo' />
-        <Typography component='span' variant='caption'>
+        <GrelaDesignIcon className="gd-logo" />
+        <Typography component="span" variant="caption">
           GrelaDesign (c) 2024
         </Typography>{' '}
-        <Typography component='span' variant='caption'>
+        <Typography component="span" variant="caption">
           [v{import.meta.env.VITE_VERSION}]
         </Typography>
       </Container>

@@ -20,7 +20,7 @@ const DictionarySchema = new Schema({
 
 DictionarySchema.index(
   { letter: 1, language: 1, length: 1 },
-  { unique: true, sparse: true }
+  { unique: true, sparse: true },
 );
 
 DictionarySchema.pre('save', function (next, opt) {
@@ -30,11 +30,11 @@ DictionarySchema.pre('save', function (next, opt) {
     // check words are valid
     // 1. Word must start with the same character as the letter denotes
     const firstInvalid = this.words.find(
-      (word) => word.charAt(0) !== this.letter
+      (word) => word.charAt(0) !== this.letter,
     );
     if (firstInvalid) {
       err = new Error(
-        `DictionarySchema: path 'words' must contain entries starting with letter '${this.letter}', first invalid entry is '${firstInvalid}'`
+        `DictionarySchema: path 'words' must contain entries starting with letter '${this.letter}', first invalid entry is '${firstInvalid}'`,
       );
     }
     if (!err) {
@@ -44,7 +44,7 @@ DictionarySchema.pre('save', function (next, opt) {
 
       if (sorted.length !== uniqueWords.length) {
         err = new Error(
-          `DictionarySchema: path 'words' must contain unique entries.`
+          `DictionarySchema: path 'words' must contain unique entries.`,
         );
       }
     }

@@ -13,7 +13,7 @@ export function ensureDictionaryDevConnection(): RequestHandler {
   return async function ensureDictionaryDevConnectionRequestHandler(
     req,
     res,
-    next
+    next,
   ) {
     const connectToDb = async () => {
       try {
@@ -82,7 +82,7 @@ export const logUnknownWord = async (body: TAddWordRequestBody) => {
         mongoose.connection,
         word,
         language as TSupportedLanguages,
-        length
+        length,
       );
     } else {
       throw new Error('No DB Connection error');

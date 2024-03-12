@@ -18,12 +18,12 @@ if (!AppStorage.getInstance().has(EStorageKeys.UI_LANGUAGE)) {
 if (!AppStorage.getInstance().has(EStorageKeys.GAME_LANGUAGE)) {
   AppStorage.getInstance().setItem(
     EStorageKeys.GAME_LANGUAGE,
-    AppStorage.getInstance().getItem(EStorageKeys.UI_LANGUAGE) || 'pl'
+    AppStorage.getInstance().getItem(EStorageKeys.UI_LANGUAGE) || 'pl',
   );
 }
 
 ReactDOM.createRoot(document.getElementById('root')!).render(
   <React.StrictMode>
     <App />
-  </React.StrictMode>
+  </React.StrictMode>,
 );

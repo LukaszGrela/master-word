@@ -20,11 +20,11 @@ const LanguageSelector: FC<IProps> = ({
         onClick(selected);
       }
     },
-    [language, onClick]
+    [language, onClick],
   );
   return (
     <div className={classNames('language-selector', 'translation', className)}>
-      <span className='hidden sr'>
+      <span className="hidden sr">
         {translationOverride?.screenReaderInfo ?? t('translation-info-sr')}
       </span>
       <button
@@ -34,16 +34,16 @@ const LanguageSelector: FC<IProps> = ({
         }
         className={classNames(
           'translation-btn',
-          language === 'pl' && 'selected'
+          language === 'pl' && 'selected',
         )}
         onClick={() => {
           handleLanguageChange('pl');
         }}
       >
         {translationOverride?.buttonLabels?.pl && (
-          <span className='label'>{translationOverride?.buttonLabels?.pl}</span>
+          <span className="label">{translationOverride?.buttonLabels?.pl}</span>
         )}
-        <span className='flag'>🇵🇱</span>
+        <span className="flag">🇵🇱</span>
       </button>
       <button
         title={
@@ -52,16 +52,16 @@ const LanguageSelector: FC<IProps> = ({
         }
         className={classNames(
           'translation-btn',
-          language === 'en' && 'selected'
+          language === 'en' && 'selected',
         )}
         onClick={() => {
           handleLanguageChange('en');
         }}
       >
         {translationOverride?.buttonLabels?.en && (
-          <span className='label'>{translationOverride?.buttonLabels?.en}</span>
+          <span className="label">{translationOverride?.buttonLabels?.en}</span>
         )}
-        <span className='flag'>🇺🇸</span>
+        <span className="flag">🇺🇸</span>
       </button>
     </div>
   );

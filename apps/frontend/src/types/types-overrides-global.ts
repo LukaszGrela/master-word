@@ -14,10 +14,10 @@ declare global {
       searchValue: {
         [Symbol.replace](
           string: string,
-          replacer: (substring: string, ...args: A) => string
+          replacer: (substring: string, ...args: A) => string,
         ): string;
       },
-      replacer: (substring: string, ...args: A) => string
+      replacer: (substring: string, ...args: A) => string,
     ): string;
   }
 }

@@ -4,7 +4,7 @@ import { IDictionaryEntry } from '../types';
 
 const Dictionary = mongoose.model<IDictionaryEntry>(
   'Dictionary',
-  DictionarySchema
+  DictionarySchema,
 );
 
 /**

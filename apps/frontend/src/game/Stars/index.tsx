@@ -33,7 +33,7 @@ const Stars: FC<IProps> = ({ score }) => {
   }
 
   return (
-    <div className='stars'>
+    <div className="stars">
       <IconGrade
         className={classNames(grade1 !== 'zero' && 'gold', 'size-medium')}
         grade={grade1}

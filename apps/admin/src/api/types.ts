@@ -24,5 +24,5 @@ export type TPostRejectApproveWords = {
 
 export type TDictionaryLanguagesResponse = [{ languages: string[] }];
 export type TDictionaryStatsResponse = [
-  { language: string; length: number; alphabet: string[]; wordCount: number }
+  { language: string; length: number; alphabet: string[]; wordCount: number },
 ];

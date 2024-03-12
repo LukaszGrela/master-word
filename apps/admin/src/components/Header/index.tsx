@@ -19,7 +19,7 @@ export const Header: React.FC<IProps> = ({ title }) => {
   const settings = ['Profile', 'Account', 'Dashboard', 'Logout'];
 
   const [anchorElUser, setAnchorElUser] = React.useState<null | HTMLElement>(
-    null
+    null,
   );
 
   const handleOpenUserMenu = (event: React.MouseEvent<HTMLElement>) => {
@@ -31,17 +31,17 @@ export const Header: React.FC<IProps> = ({ title }) => {
   };
 
   return (
-    <AppBar position='fixed'>
-      <Container maxWidth='xl'>
+    <AppBar position="fixed">
+      <Container maxWidth="xl">
         <Toolbar disableGutters>
           <SvgIcon
             sx={{ display: { xs: 'none', sm: 'flex' }, mr: 1 }}
-            viewBox='0 0 32 24'
+            viewBox="0 0 32 24"
           >
             <GrelaDesignIcon width={'2rem'} height={'1.5rem'} />
           </SvgIcon>
           <Typography
-            variant='h5'
+            variant="h5"
             noWrap
             component={RouterLink}
             to={EPaths.ROOT}
@@ -67,14 +67,14 @@ export const Header: React.FC<IProps> = ({ title }) => {
           </Box>
 
           <Box sx={{ flexGrow: 0 }}>
-            <Tooltip title='Open settings'>
+            <Tooltip title="Open settings">
               <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
-                <Avatar alt='Lukasz Grela' />
+                <Avatar alt="Lukasz Grela" />
               </IconButton>
             </Tooltip>
             <Menu
               sx={{ mt: '45px' }}
-              id='menu-appbar'
+              id="menu-appbar"
               anchorEl={anchorElUser}
               anchorOrigin={{
                 vertical: 'top',
@@ -90,7 +90,7 @@ export const Header: React.FC<IProps> = ({ title }) => {
             >
               {settings.map((setting) => (
                 <MenuItem key={setting} onClick={handleCloseUserMenu}>
-                  <Typography textAlign='center'>{setting}</Typography>
+                  <Typography textAlign="center">{setting}</Typography>
                 </MenuItem>
               ))}
             </Menu>

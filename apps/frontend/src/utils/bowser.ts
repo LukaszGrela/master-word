@@ -16,7 +16,7 @@ export const applyBowserClass = (html: HTMLHtmlElement): void => {
     html.classList.add(makeClassFriendly(result.os.name));
     if (result.os.version) {
       html.classList.add(
-        makeClassFriendly(`${result.os.name}-${result.os.version}`)
+        makeClassFriendly(`${result.os.name}-${result.os.version}`),
       );
     }
   }

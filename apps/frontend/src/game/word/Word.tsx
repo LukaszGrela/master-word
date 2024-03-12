@@ -110,7 +110,7 @@ const Word: FC<IProps> = ({
               classes[i] || 'incorrect',
               className,
               i === 0 && 'first',
-              i === wordLength - 1 && 'last'
+              i === wordLength - 1 && 'last',
             )}
             letter={letter}
             key={`letter-${id}-${i}`}
@@ -136,7 +136,7 @@ const Word: FC<IProps> = ({
                   isIncorrect && 'wrong',
                   mobile && active && i === 0 && 'show-icon',
                   i === 0 && 'first',
-                  i === wordLength - 1 && 'last'
+                  i === wordLength - 1 && 'last',
                 )}
               />
             ))

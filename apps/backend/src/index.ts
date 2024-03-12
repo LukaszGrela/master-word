@@ -24,13 +24,13 @@ masterWordApp.use(
       'http://localhost:5273',
       'http://localhost:5274',
     ],
-  })
+  }),
 );
 
 masterWordApp.use(
   express.urlencoded({
     extended: true,
-  })
+  }),
 );
 
 masterWordApp.use('/api', gameRoutes);

@@ -13,13 +13,13 @@ export interface ILanguageContext {
 
   loadTranslation: (
     language: TSupportedLanguages,
-    signal?: AbortSignal
+    signal?: AbortSignal,
   ) => Promise<void>;
 
   getUIText: (
     textId: string,
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    substitutes?: IDictionary<any>
+    substitutes?: IDictionary<any>,
   ) => string;
 }
 
@@ -44,14 +44,14 @@ export function LanguageProvider({ children }: { children: React.ReactNode }) {
         setLoading(false);
       }
     },
-    []
+    [],
   );
 
   const getUIText = useCallback(
     (
       textId: string,
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      substitutes?: IDictionary<any>
+      substitutes?: IDictionary<any>,
     ): string => {
       if (hasOwn(translation, textId)) {
         const copy = translation[textId];
@@ -63,7 +63,7 @@ export function LanguageProvider({ children }: { children: React.ReactNode }) {
 
       return textId;
     },
-    [translation]
+    [translation],
   );
 
   const value = useMemo(
@@ -73,8 +73,8 @@ export function LanguageProvider({ children }: { children: React.ReactNode }) {
         loadedLanguage,
         getUIText,
         loadTranslation: loadTranslationCtx,
-      } as ILanguageContext),
-    [getUIText, loadTranslationCtx, loadedLanguage, loading]
+      }) as ILanguageContext,
+    [getUIText, loadTranslationCtx, loadedLanguage, loading],
   );
 
   // initial load
@@ -82,7 +82,7 @@ export function LanguageProvider({ children }: { children: React.ReactNode }) {
     setLoading(true);
     const language =
       (AppStorage.getInstance().getItem(
-        EStorageKeys.UI_LANGUAGE
+        EStorageKeys.UI_LANGUAGE,
       ) as TSupportedLanguages) || 'pl';
     loadTranslation(language)
       .then((translations) => {

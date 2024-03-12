@@ -83,7 +83,7 @@ describe('UnknownWord CRUD operations', () => {
       assert.notEqual(result, null);
       assert.deepEqual(
         result!.words.map(({ word }) => word),
-        ['kiszk', 'tomek']
+        ['kiszk', 'tomek'],
       );
     });
     it('returns empty result when not matche', async () => {
@@ -100,7 +100,7 @@ describe('UnknownWord CRUD operations', () => {
       assert.notEqual(result, null);
       assert.deepEqual(
         result!.words.map(({ word }) => word),
-        ['kiszk', 'tomek']
+        ['kiszk', 'tomek'],
       );
     });
     it('returns entry for given string id', async () => {
@@ -109,13 +109,13 @@ describe('UnknownWord CRUD operations', () => {
       assert.notEqual(result, null);
       assert.deepEqual(
         result!.words.map(({ word }) => word),
-        ['maria', 'mosty']
+        ['maria', 'mosty'],
       );
     });
     it('returns empty result when not match', async () => {
       const result = await getById(
         mongoose.connection,
-        '75e81e8dc26982deac62cede'
+        '75e81e8dc26982deac62cede',
       );
 
       assert.equal(result, null);
@@ -128,7 +128,7 @@ describe('UnknownWord CRUD operations', () => {
       assert.notEqual(result, null);
       assert.deepEqual(
         result!.words.map(({ word }) => word),
-        ['kiszk', 'tomek']
+        ['kiszk', 'tomek'],
       );
 
       const remaining = await UnknownWord.find({});
@@ -137,13 +137,13 @@ describe('UnknownWord CRUD operations', () => {
     it('removes entry for given string id', async () => {
       const result = await removeById(
         mongoose.connection,
-        ids[1].toHexString()
+        ids[1].toHexString(),
       );
 
       assert.notEqual(result, null);
       assert.deepEqual(
         result!.words.map(({ word }) => word),
-        ['maria', 'mosty']
+        ['maria', 'mosty'],
       );
 
       const remaining = await UnknownWord.find({});
@@ -152,7 +152,7 @@ describe('UnknownWord CRUD operations', () => {
     it('removes nothing when not match', async () => {
       const result = await removeById(
         mongoose.connection,
-        '75e81e8dc26982deac62cede'
+        '75e81e8dc26982deac62cede',
       );
 
       assert.equal(result, null);
@@ -168,7 +168,7 @@ describe('UnknownWord CRUD operations', () => {
         '75e81e8dc26982deac62cede',
         'bubel',
         'pl',
-        5
+        5,
       );
 
       assert.equal(result, null);
@@ -179,13 +179,13 @@ describe('UnknownWord CRUD operations', () => {
         ids[1].toHexString(),
         'bubel',
         'pl',
-        5
+        5,
       );
 
       assert.notEqual(result, null);
       assert.deepEqual(
         result!.words.map(({ word }) => word),
-        ['maria', 'mosty']
+        ['maria', 'mosty'],
       );
 
       // not changed
@@ -198,13 +198,13 @@ describe('UnknownWord CRUD operations', () => {
         ids[1].toHexString(),
         'mosty',
         'pl',
-        5
+        5,
       );
 
       assert.notEqual(result, null);
       assert.deepEqual(
         result!.words.map(({ word }) => word),
-        ['maria']
+        ['maria'],
       );
 
       // docs length not changed
@@ -254,7 +254,7 @@ describe('UnknownWord CRUD operations', () => {
               length: 6,
             },
           ],
-        }
+        },
       );
     });
     it('adds a new word to todays existing entry', async () => {

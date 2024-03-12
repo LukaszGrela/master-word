@@ -12,9 +12,9 @@ export default function GeneralError() {
   console.error(error);
 
   return (
-    <div id='error-page'>
+    <div id="error-page">
       <Box
-        component='main'
+        component="main"
         sx={{
           alignItems: 'center',
           display: 'flex',
@@ -22,7 +22,7 @@ export default function GeneralError() {
           minHeight: '100%',
         }}
       >
-        <Container maxWidth='md'>
+        <Container maxWidth="md">
           <Box
             sx={{
               alignItems: 'center',
@@ -31,25 +31,25 @@ export default function GeneralError() {
               mt: '3rem',
             }}
           >
-            <Typography align='center' sx={{ mb: 3 }} variant='h1'>
+            <Typography align="center" sx={{ mb: 3 }} variant="h1">
               Oops!
             </Typography>
-            <Typography align='center' sx={{ mb: 3 }} variant='h3'>
+            <Typography align="center" sx={{ mb: 3 }} variant="h3">
               Something went wrong
             </Typography>
-            <Typography align='center' color='text.secondary' variant='body1'>
+            <Typography align="center" color="text.secondary" variant="body1">
               {error.statusText || error.message}
             </Typography>
             <Button
               component={RouterLink}
               to={EPaths.ROOT}
               startIcon={
-                <SvgIcon fontSize='small'>
+                <SvgIcon fontSize="small">
                   <ArrowLeftIcon />
                 </SvgIcon>
               }
               sx={{ mt: 3 }}
-              variant='contained'
+              variant="contained"
             >
               Go back to dashboard
             </Button>

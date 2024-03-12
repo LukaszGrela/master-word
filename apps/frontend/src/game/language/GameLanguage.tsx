@@ -16,7 +16,7 @@ const GameLanguage: FC = () => {
   >(
     (storage.getItem(EStorageKeys.GAME_LANGUAGE) ||
       storage.getItem(EStorageKeys.UI_LANGUAGE) ||
-      'pl') as TSupportedLanguages
+      'pl') as TSupportedLanguages,
   );
 
   const handleWordLanguageChange = (language: TSupportedLanguages): void => {
@@ -25,8 +25,8 @@ const GameLanguage: FC = () => {
   };
 
   return (
-    <div className='game-language'>
-      <p className='language-info'>{t('result-language-info')}</p>
+    <div className="game-language">
+      <p className="language-info">{t('result-language-info')}</p>
       <LanguageSelector
         language={wordLanguage}
         onClick={handleWordLanguageChange}

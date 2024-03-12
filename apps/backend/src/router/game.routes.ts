@@ -24,7 +24,7 @@ const router = Router();
 
 async function getRandomWord(
   language = 'pl',
-  wordLength = 5
+  wordLength = 5,
 ): Promise<TRandomWordResponse> {
   if (language === 'pl') {
     try {
@@ -45,7 +45,7 @@ async function getRandomWord(
     // call external API endpoint
     try {
       const result = await fetch(
-        'https://words.dev-apis.com/word-of-the-day?random=1'
+        'https://words.dev-apis.com/word-of-the-day?random=1',
       );
       const response = (await result.json()) as { error?: string };
 
@@ -222,7 +222,7 @@ router.get('/init', async (req: Request, res: Response) => {
 const assureNextAttemptAllowed = (
   req: Request,
   res: Response,
-  next: NextFunction
+  next: NextFunction,
 ) => {
   const { session, guess } = req.query as TNextAttemptQuery;
   if (!session) {
@@ -319,7 +319,7 @@ router.get(
     const validationResult = validateWord(
       guessUpr.split(''),
       gameSession.game.word.split(''),
-      guessed
+      guessed,
     );
 
     // process game params
@@ -351,7 +351,7 @@ router.get(
         game,
       });
     }
-  }
+  },
 );
 
 router.get('/game-session', async (req: Request, res: Response) => {
