@@ -1,5 +1,5 @@
 import React from 'react';
-import { classNames } from '../../utils/classNames';
+import { classNames } from '@repo/utils';
 import { IProps } from './types';
 
 import './style/index.scss';

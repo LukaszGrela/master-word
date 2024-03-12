@@ -1,5 +1,5 @@
 import { FC } from 'react';
-import { classNames } from '../../utils/classNames';
+import { classNames } from '@repo/utils';
 import { IProps } from './types';
 
 export type TGrade = 'zero' | 'half' | 'full';

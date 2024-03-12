@@ -1,6 +1,6 @@
 import { FC, useEffect, useState } from 'react';
 import { IProps } from './types';
-import { toHMS } from '../../utils/datetime/toHMS';
+import { toHMS } from '@repo/utils';
 
 const prefix0 = (n: number): string => (n < 10 ? `0${n}` : `${n}`);
 const displayTime = (ms: number): string => {

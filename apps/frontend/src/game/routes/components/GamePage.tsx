@@ -9,14 +9,14 @@ import {
   guardTErrorResponse,
 } from '../../../api';
 import { useLanguage } from '../../../i18n';
-import { getBowserDetails } from '../../../utils/bowser';
+import { getBowserDetails } from '@repo/utils';
 import { ATTEMPTS, Board, WORD_LENGTH } from '../../index';
 import { InputGuessPanel } from '../../panel';
 import { TGameState } from '../../types';
 import Word from '../../word/Word';
 import { createGameState } from '../../../api/utils';
-import { AppStorage } from '../../../utils/localStorage';
-import { EStorageKeys } from '../../../utils/localStorage/enums';
+import { AppStorage } from '@repo/utils';
+import { EStorageKeys } from '@repo/utils';
 import { TClickAction } from '../../panel/types';
 import { getResultsPath } from '../enums';
 import './GamePage.scss';

@@ -1,6 +1,6 @@
 import { TSupportedLanguages } from '../api';
 import { IDictionary } from '../types/common';
-import { hasOwn } from '../utils/object/hasOwn';
+import { hasOwn } from '@repo/utils';
 
 /**
  * Placeholders e.g. `{code}` or `{code action1 action2}`

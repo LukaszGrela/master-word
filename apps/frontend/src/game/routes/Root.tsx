@@ -1,5 +1,5 @@
 import { Outlet } from 'react-router-dom';
-import { classNames } from '../../utils/classNames';
+import { classNames } from '@repo/utils';
 import { useLanguage } from '../../i18n';
 import Spinner from '../Spinner/Spinner';
 import { GrelaDesignIcon } from '../icons/GrelaDesignIcon';

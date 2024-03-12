@@ -1,6 +1,6 @@
 import { FC, useCallback } from 'react';
 import { IProps } from './types';
-import { classNames } from '../../utils/classNames';
+import { classNames } from '@repo/utils';
 import { TSupportedLanguages } from '../../api';
 import { useLanguage } from '../../i18n';
 

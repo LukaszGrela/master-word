@@ -2,9 +2,9 @@ import React, { useCallback, useEffect, useMemo, useState } from 'react';
 import { TSupportedLanguages } from '../../api';
 import { IDictionary } from '../../types/common';
 import { loadTranslation, replaceSubstituteMap } from '../helpers';
-import { hasOwn } from '../../utils/object/hasOwn';
-import { AppStorage } from '../../utils/localStorage';
-import { EStorageKeys } from '../../utils/localStorage/enums';
+import { hasOwn } from '@repo/utils';
+import { AppStorage } from '@repo/utils';
+import { EStorageKeys } from '@repo/utils';
 
 export interface ILanguageContext {
   loadedLanguage: TSupportedLanguages | undefined;

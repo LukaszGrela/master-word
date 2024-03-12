@@ -2,7 +2,7 @@ import { Location, useLocation, useNavigate } from 'react-router-dom';
 import { TGameSessionRecord } from '../../../api';
 import { useLanguage } from '../../../i18n';
 import { EPaths, getResultsPath } from '../enums';
-import { displayTime } from '../../../utils/displayTime';
+import { displayTime } from '@repo/utils';
 import { useCallback } from 'react';
 import { GameLanguage } from '../../language';
 import Stars from '../../Stars';

@@ -1,9 +1,11 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
-import { applyBowserClass } from './utils/bowser.ts';
-import { disableReactDevTools } from './utils/disableReactDevTools.ts';
-import { AppStorage } from './utils/localStorage/index.ts';
-import { EStorageKeys } from './utils/localStorage/enums.ts';
+import {
+  applyBowserClass,
+  disableReactDevTools,
+  AppStorage,
+  EStorageKeys,
+} from '@repo/utils';
 import { App } from './App.tsx';
 import './styles/index.scss';
 

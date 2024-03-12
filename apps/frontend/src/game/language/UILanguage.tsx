@@ -2,9 +2,7 @@ import { FC, useEffect, useState } from 'react';
 import LanguageSelector from './LanguageSelector';
 import { TSupportedLanguages } from '../../api';
 import { useLanguage } from '../../i18n';
-import { EStorageKeys } from '../../utils/localStorage/enums';
-import { AppStorage } from '../../utils/localStorage';
-import { noop } from '../../utils/noop';
+import { EStorageKeys, AppStorage, noop } from '@repo/utils';
 
 const UILanguage: FC = () => {
   const { loadedLanguage, loadTranslation } = useLanguage();

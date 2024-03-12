@@ -2,8 +2,8 @@ import { FC, useState } from 'react';
 import LanguageSelector from './LanguageSelector';
 import { useLanguage } from '../../i18n';
 import { TSupportedLanguages } from '../../api';
-import { EStorageKeys } from '../../utils/localStorage/enums';
-import { AppStorage } from '../../utils/localStorage';
+import { EStorageKeys } from '@repo/utils';
+import { AppStorage } from '@repo/utils';
 
 import './GameLanguage.scss';
 

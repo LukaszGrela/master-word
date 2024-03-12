@@ -1,6 +1,6 @@
 import { FC } from 'react';
 import { IProps } from './types';
-import { classNames } from '../../utils/classNames';
+import { classNames } from '@repo/utils';
 
 export const EditIcon: FC<IProps> = ({ className }) => {
   return (

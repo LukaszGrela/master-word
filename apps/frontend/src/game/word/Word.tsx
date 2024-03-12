@@ -1,7 +1,7 @@
 import { FC, useState, useEffect, Fragment, useMemo } from 'react';
 import { Letter } from '../cell';
-import { classNames } from '../../utils/classNames';
-import { isLetter } from '../../utils/isLetter';
+import { classNames } from '@repo/utils';
+import { isLetter } from '@repo/utils';
 import { IProps } from './types';
 import { TValidationChar } from '../../api';
 

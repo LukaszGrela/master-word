@@ -1,4 +1,4 @@
-import { hasOwn } from '../utils/object/hasOwn';
+import { hasOwn } from '@repo/utils';
 export type TSupportedLanguages = 'pl' | 'en';
 
 // Wrong - X, Misplaced - M, Correct - C

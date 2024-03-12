@@ -1,5 +1,5 @@
 import React from 'react';
-import { classNames } from '../../utils/classNames';
+import { classNames } from '@repo/utils';
 import { ILetter } from './types';
 import { EditIcon } from '../icons/EditIcon';
 import './Letter.scss';
