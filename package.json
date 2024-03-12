@@ -1,0 +1,38 @@
+{
+  "name": "master-word",
+  "version": "0.0.1",
+  "scripts": {
+    "build": "turbo run build",
+    "clean": "turbo run clean",
+    "dev": "turbo run dev",
+    "format": "prettier --write \"**/*.{ts,tsx,md}\"",
+    "lint": "turbo run lint",
+    "test": "turbo run test",
+    "type-check": "turbo run type-check",
+    "gen:workspace": "turbo gen workspace"
+  },
+  "keywords": [
+    "monorepo",
+    "turborepo",
+    "master-word",
+    "react",
+    "nodejs",
+    "express",
+    "mongodb",
+    "mongoose"
+  ],
+  "author": "Lukasz 'Severiaan' Grela",
+  "license": "ISC",
+  "devDependencies": {
+    "prettier": "^3.2.5",
+    "turbo": "^1.12.5"
+  },
+  "engines": {
+    "node": ">=18"
+  },
+  "packageManager": "npm@10.2.4",
+  "workspaces": [
+    "apps/*",
+    "packages/*"
+  ]
+}

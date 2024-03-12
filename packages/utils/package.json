@@ -1,0 +1,36 @@
+{
+  "name": "@repo/utils",
+  "version": "1.0.0",
+  "private": true,
+  "license": "MIT",
+  "exports": {
+    ".": "./src/index.ts",
+    "./bowser": "./src/bowser.ts",
+    "./displayTime": "./src/displayTime.ts",
+    "./isLetter": "./src/isLetter.ts",
+    "./noop": "./src/noop.ts",
+    "./classNames": "./src/classNames.ts",
+    "./disableReactDevTools": "./src/disableReactDevTools.ts",
+    "./getUrlSearch": "./src/getUrlSearch.ts",
+    "./toHMS": "./src/datetime/toHMS.ts",
+    "./getStartOfDay": "./src/datetime/getStartOfDay.ts",
+    "./useRunAfterUpdate": "./src/hooks/useRunAfterUpdate.ts",
+    "./useUrlObserver": "./src/hooks/useUrlObserver.ts",
+    "./AppStorage": "./src/localStorage/AppStorage.ts",
+    "./enums": "./src/localStorage/enums.ts",
+    "./types": "./src/localStorage/types.ts",
+    "./hasOwn": "./src/object/hasOwn.ts"
+  },
+  "scripts": {
+    "type-check": "tsc --noEmit",
+    "lint": "eslint \"**/*.ts\""
+  },
+  "peerDependencies": {
+    "bowser": "^2.11.0"
+  },
+  "devDependencies": {
+    "@repo/config-typescript": "*",
+    "eslint": "^8.56.0",
+    "typescript": "^5.2.2"
+  }
+}

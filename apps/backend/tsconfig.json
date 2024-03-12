@@ -1,0 +1,21 @@
+{
+  "extends": "@repo/config-typescript/tsconfig.base.json",
+  "compilerOptions": {
+    "outDir": "dist",
+    "lib": [
+      "esnext"
+    ],
+    "module": "Node16",
+    "moduleResolution": "Node16",
+    "typeRoots": [
+      "./node_modules/@types"
+    ]
+  },
+  "include": [
+    "src/**/*"
+  ],
+  "exclude": [
+    "src/test/**/*",
+    "src/**/*.spec.ts"
+  ]
+}

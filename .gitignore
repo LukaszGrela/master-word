@@ -1,0 +1,22 @@
+# Dependencies
+node_modules
+
+# Turbo
+.turbo
+
+# Testing
+coverage
+.nyc_coverage
+.nyc_output
+
+# Build Outputs
+.next/
+out/
+build
+dist
+
+# Misc
+.DS_Store
+*.log
+*.local
+.cache
