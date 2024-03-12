@@ -12,7 +12,6 @@ import {
   removeWordById,
 } from '../crud/UnknownWord.crud';
 import mongoose from 'mongoose';
-import { getStartOfDay } from '../../utils/datetime';
 
 describe('UnknownWord CRUD operations', () => {
   const date1 = new Date(1939, 8, 1, 0, 0, 0, 0);

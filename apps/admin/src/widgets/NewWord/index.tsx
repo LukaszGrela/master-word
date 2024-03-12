@@ -18,7 +18,7 @@ import {
   TextField,
 } from '@mui/material';
 import SendIcon from '@mui/icons-material/Send';
-import { isCorrectWord } from '../../utils/isLetter';
+import { isCorrectWord } from '@repo/utils/isLetter';
 import { postAddWord } from '../../api/postAddWord';
 import { TPostAddWordParams } from '../../api/types';
 

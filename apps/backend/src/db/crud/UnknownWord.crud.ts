@@ -2,7 +2,7 @@ import { Connection } from 'mongoose';
 import { getModelForConnection } from '../models/UnknownWord';
 import { ObjectId } from 'mongoose';
 import { TSupportedLanguages } from '../../types';
-import { getStartOfDay } from '../../utils/datetime';
+import { getStartOfDay } from '@repo/utils/getStartOfDay';
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 type TObjectId = ObjectId | any;
