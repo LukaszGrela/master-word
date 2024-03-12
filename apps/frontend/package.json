@@ -1,14 +1,16 @@
 {
-  "name": "master-word",
+  "name": "frontend",
   "description": "Simple word game where you need to guess a 5 letter word.",
   "private": true,
   "version": "0.7.5",
   "type": "module",
   "scripts": {
     "dev": "vite",
-    "build": "tsc && vite build",
+    "build": "vite build",
+    "type-check": "tsc",
     "lint": "eslint . --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "clean": "rm -rf dist"
   },
   "dependencies": {
     "bowser": "^2.11.0",

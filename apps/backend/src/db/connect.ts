@@ -6,8 +6,7 @@ import { TConfig } from './types';
 dotenv.config({
   path: ['.env.local', '.env.secret', '.env'],
 });
-
-const config = JSON.parse(`${process.env.APP_CONFIG}` || '{}') as TConfig;
+const config = JSON.parse(`${process.env.APP_CONFIG || '{}'}`) as TConfig;
 //mongodb://localhost:27017/
 export default function connect(
   overrideConfig: TConfig & { pass?: string } = config
@@ -40,7 +39,7 @@ async function createDictionaryDevConnection() {
   const user = process.env.NODE_ENV !== 'test' ? `${mongoUsr}:${usrPass}@` : '';
 
   // Note: EvenNode provides the database name within the hostString
-  const mongoUri = `mongodb://${user}${config.mongo.hostString}`;// "/${config.mongo.db}"
+  const mongoUri = `mongodb://${user}${config.mongo.hostString}`; // "/${config.mongo.db}"
 
   const connection = await mongoose
     .createConnection(mongoUri, {

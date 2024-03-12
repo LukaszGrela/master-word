@@ -1,5 +1,5 @@
 {
-  "name": "master-word-api",
+  "name": "backend",
   "version": "0.4.3",
   "description": "NodeJS backend for the Master Word app",
   "main": "index.js",
@@ -8,7 +8,10 @@
     "coverage": "nyc npm run test",
     "dev": "cross-env NODE_ENV=development nodemon src/index.ts",
     "build": "cross-env NODE_ENV=production tsc",
-    "prebuild": "rimraf dist"
+    "type-check": "tsc --noEmit",
+    "clean": "rm -rf dist",
+    "lint": "eslint src/",
+    "prebuild": "npm run clean"
   },
   "repository": {
     "type": "git",

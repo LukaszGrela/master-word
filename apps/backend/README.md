@@ -8,6 +8,8 @@ Game server for Master Word App.
 
 The local dev server is set to use port `3001`
 
+Note: Look at the [MongoDB section](#mongodb-mongoose) for further config
+
 ## Gameplay Endpoints
 
 - `GET` - `api/init` - Starts new game
@@ -35,7 +37,7 @@ The local dev server is set to use port `3001`
 
 The backend is using the MongoDB to store game information. Mongoose is used as a "mongodb Object Modeling for NodeJS".
 
-To run it locally you need 2 `.env` files first `.env.local` that will contain connection details (JSON stringified).
+To run it locally you need 2 `.env.*` files first `.env.local` that will contain connection details (JSON stringified).
 
 ```shell script
 APP_CONFIG='{"mongo":{"hostString":"localhost:27017/master-word","user":"master-word-user","db":"master-word"}}'
