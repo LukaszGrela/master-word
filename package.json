@@ -1,6 +1,6 @@
 {
   "name": "master-word",
-  "version": "0.0.0",
+  "version": "0.0.1",
   "scripts": {
     "build": "turbo run build",
     "clean": "turbo run clean",
@@ -8,7 +8,8 @@
     "format": "prettier --write \"**/*.{ts,tsx,md}\"",
     "lint": "turbo run lint",
     "test": "turbo run test",
-    "type-check": "turbo run typecheck"
+    "type-check": "turbo run typecheck",
+    "gen:workspace": "turbo gen workspace"
   },
   "keywords": [
     "monorepo",
@@ -23,6 +24,7 @@
   "author": "Lukasz 'Severiaan' Grela",
   "license": "ISC",
   "devDependencies": {
+    "prettier": "^3.2.5",
     "turbo": "^1.12.5"
   },
   "engines": {
