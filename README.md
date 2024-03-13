@@ -8,6 +8,10 @@ Project contains 3 `apps` workspaces: React `frontend` for game, NodeJS game ser
 
 [Live Example - Master Word](https://master-word.greladesign.co/)
 
+## Tools
+
+Make sure you have installed [Volta](http://volta.sh/) which ensures you have the right version of node and npm for this project.
+
 ## Frontend (Game)
 
 Tech: React, React Router, Typescript, Vite, SASS
