@@ -12,7 +12,7 @@ import type {
   TSessionQuery,
   TValidateWordBody,
 } from './types';
-import { resetGameSession, validateWord } from './helpers';
+import { calculateScore, resetGameSession, validateWord } from './helpers';
 import { WORD_LENGTH } from '../constants';
 import { logUnknownWord } from './backend/dictionary/helpers';
 import {
@@ -189,6 +189,28 @@ router.get('/init', async (req: Request, res: Response) => {
   } else {
     // all good - send game response
     if (response.game.finished) {
+      if (response.game.guessed) {
+        // previous game was finished, compare score with highest
+        const timePlayed =
+          Number(response.game.timestamp_finish) -
+          Number(response.game.timestamp_start);
+        const score = response.game.score;
+        // check with previous
+        if (
+          !response.highest ||
+          score > response.highest.score ||
+          (score === response.highest.score &&
+            timePlayed >= response.highest.timeMs)
+        ) {
+          // it is higher update
+          response.highest = {
+            attempts: response.game.attempt,
+            score,
+            timeMs: timePlayed,
+          };
+        }
+      }
+
       try {
         const word = await getRandomWord(language, WORD_LENGTH);
         response = {
@@ -344,6 +366,18 @@ router.get(
 
     // send response
     if (gameSession.game.finished) {
+      if (gameSession.game.guessed) {
+        const timePlayed =
+          Number(gameSession.game.timestamp_finish) -
+          Number(gameSession.game.timestamp_start);
+        const score = calculateScore(
+          true,
+          gameSession.game.attempt,
+          timePlayed,
+        );
+        gameSession.game.score = score;
+      }
+
       res.status(StatusCodes.OK).json(gameSession);
     } else {
       // eslint-disable-next-line @typescript-eslint/no-unused-vars

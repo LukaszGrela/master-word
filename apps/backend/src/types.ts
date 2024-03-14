@@ -20,6 +20,12 @@ export type TGameSessionIncomplete = {
   finished: false;
 };
 
+export type TScore = {
+  score: number;
+  timeMs: number;
+  attempts: number;
+};
+
 export type TGameSession = {
   language: TSupportedLanguages;
 
@@ -30,10 +36,11 @@ export type TGameSession = {
   word_length: number;
   state: TGameState[];
   guessed: boolean;
+  score: number;
 } & (TGameSessionFinished | TGameSessionIncomplete);
 
 export type TGameSessionRecord = {
   session: string;
-
+  highest?: TScore;
   game: TGameSession;
 };
