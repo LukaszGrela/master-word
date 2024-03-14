@@ -8,6 +8,7 @@ import {
   countWords,
   deleteWord,
   getAlphabet,
+  getLanguages,
   getRandomWord,
   updateWord,
   wordExists,
@@ -166,6 +167,25 @@ describe('Dictionary CRUD operations', () => {
     });
     it('returns 0 for non existing document', async () => {
       assert.deepEqual(await countWords('en', 6), []);
+    });
+  });
+  describe('getLanguages', () => {
+    it('returns empty list - empty collection', async () => {
+      await Dictionary.collection.drop();
+
+      const list = await getLanguages();
+
+      assert.deepEqual(list.sort(), []);
+    });
+    it('returns empty list - not found length', async () => {
+      const list = await getLanguages(6);
+
+      assert.deepEqual(list.sort(), []);
+    });
+    it('returns valid list', async () => {
+      const list = await getLanguages();
+
+      assert.deepEqual(list[0].languages.sort(), ['en', 'pl']);
     });
   });
   describe('deleteWord', () => {

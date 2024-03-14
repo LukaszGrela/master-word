@@ -211,9 +211,9 @@ export const countWords = async (
 
   return result;
 };
-
+type TLanguagesList = { languages: string[] };
 export const getLanguages = async (length = 5) => {
-  const result = await Dictionary.aggregate<{ languages: string[] }[]>([
+  const result = await Dictionary.aggregate<TLanguagesList>([
     {
       $match: {
         length,
