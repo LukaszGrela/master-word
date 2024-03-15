@@ -30,5 +30,6 @@
   "word-language-selector-btn-label-en": "Słowo",
   "general-error-title": "Ożesz kurczaczki!",
   "general-error-message": "Przepraszamy, nieoczekiwany błąd jak piorun z nieba spadł i zepsuł zabawę...",
-  "general-error-btn-home": "Zamknij"
+  "general-error-btn-home": "Zamknij",
+  "highscore-label": "Nowy Rekord"
 }

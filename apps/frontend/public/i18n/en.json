@@ -30,5 +30,6 @@
   "word-language-selector-btn-label-en": "Word",
   "general-error-title": "Oops!",
   "general-error-message": "Sorry, an unexpected error has occured.",
-  "general-error-btn-home": "Home"
+  "general-error-btn-home": "Home",
+  "highscore-label": "New High Score"
 }

@@ -1,0 +1,24 @@
+@import '../../styles/variables';
+
+.highscore-label {
+  background-color: $results-highscore-bgcolor;
+  padding: 0.25rem 0.5rem;
+  max-width: 6rem;
+  display: block;
+  border: 0.25rem $results-highscore-color solid;
+  border-radius: 0.5rem;
+  color: $results-highscore-color;
+  font-weight: 600;
+  position: absolute;
+  right: 0;
+  top: 0;
+  transform: rotate(0.08turn);
+  box-shadow: 1px 1px 7px 0px black;
+
+  @media (prefers-color-scheme: dark) {
+    color: $results-highscore-color-dark;
+    border-color: $results-highscore-color-dark;
+
+    text-shadow: 2px 2px 3px black;
+  }
+}

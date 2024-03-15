@@ -6,6 +6,7 @@ import { EPaths, getResultsPath } from '../enums';
 import { useCallback } from 'react';
 import { GameLanguage } from '../../language';
 import Stars from '../../Stars';
+import { HighScoreLabel } from '../../HighScoreLabel';
 
 import './ResultsPage.scss';
 
@@ -53,9 +54,7 @@ export const ResultsPage = () => {
 
       <div className="score-container">
         <Stars score={gameSession.game.score} />
-        {showHighScore && (
-          <span className="highscore-label">New High&nbsp;Score</span>
-        )}
+        {showHighScore && <HighScoreLabel />}
       </div>
 
       {playTimeMs > 0 && (
