@@ -1,6 +1,10 @@
 {
   "name": "master-word",
   "version": "0.2.1",
+  "bugs": {
+    "url": "https://github.com/LukaszGrela/master-word/issues"
+  },
+  "homepage": "https://github.com/LukaszGrela/master-word#readme",
   "scripts": {
     "build": "turbo run build",
     "clean": "turbo run clean",
