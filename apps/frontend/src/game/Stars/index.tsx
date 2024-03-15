@@ -1,8 +1,7 @@
 import { FC } from 'react';
-
+import { classNames } from '@repo/utils';
 import IconGrade, { TGrade } from '../icons/IconGrade';
 import { IProps } from './types';
-import { classNames } from '@repo/utils';
 
 import './Stars.scss';
 

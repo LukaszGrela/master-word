@@ -1,6 +1,6 @@
 import { FC } from 'react';
-import { IProps } from './types';
 import { classNames } from '@repo/utils';
+import { IProps } from './types';
 import './GrelaDesignIcon.scss';
 
 export const GrelaDesignIcon: FC<IProps> = ({ className }) => (

@@ -1,8 +1,8 @@
 import { Location, useLocation, useNavigate } from 'react-router-dom';
 import { TGameSessionRecord } from '@repo/backend-types';
+import { displayTime } from '@repo/utils';
 import { useLanguage } from '../../../i18n';
 import { EPaths, getResultsPath } from '../enums';
-import { displayTime } from '@repo/utils';
 import { useCallback } from 'react';
 import { GameLanguage } from '../../language';
 import Stars from '../../Stars';
@@ -14,6 +14,8 @@ export const ResultsPage = () => {
   const { getUIText: t } = useLanguage();
   const location = useLocation() as Location<TGameSessionRecord>;
   const gameSession = location.state;
+
+  console.log('gameSession', gameSession);
 
   const win = location.pathname === getResultsPath('win');
 
