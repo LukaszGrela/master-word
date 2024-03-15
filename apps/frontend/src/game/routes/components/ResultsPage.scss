@@ -1,4 +1,14 @@
 .results {
+  .score-container {
+    position: relative;
+    margin: 0 auto;
+    max-width: 20rem;
+  }
+
+  .playtime {
+    margin-bottom: 2rem;
+  }
+
   .game-language {
     margin-bottom: 2rem;
     .language-info {
@@ -13,12 +23,6 @@
 
       padding-bottom: 0.25rem;
     }
-  }
-
-  .score-container {
-    position: relative;
-    margin: 0 auto;
-    max-width: 20rem;
   }
 
   .button-row {
