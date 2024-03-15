@@ -8,6 +8,7 @@ module.exports = {
   parser: '@typescript-eslint/parser',
   ignorePatterns: [
     'dist',
+    'scripts',
     '.eslintrc.cjs',
     'src/test/**/*',
     'src/**/*.spec.ts',
