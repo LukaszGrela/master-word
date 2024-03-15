@@ -1,6 +1,6 @@
 import React, { useCallback, useEffect, useMemo, useState } from 'react';
 import { TSupportedLanguages } from '../../api';
-import { IDictionary } from '../../types/common';
+import { IDictionary } from '@repo/common-types';
 import { loadTranslation, replaceSubstituteMap } from '../helpers';
 import { hasOwn } from '@repo/utils';
 import { AppStorage } from '@repo/utils';

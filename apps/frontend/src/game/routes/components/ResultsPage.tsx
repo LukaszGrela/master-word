@@ -1,5 +1,5 @@
 import { Location, useLocation, useNavigate } from 'react-router-dom';
-import { TGameSessionRecord } from '../../../api';
+import { TGameSessionRecord } from '@repo/backend-types';
 import { useLanguage } from '../../../i18n';
 import { EPaths, getResultsPath } from '../enums';
 import { displayTime } from '@repo/utils';

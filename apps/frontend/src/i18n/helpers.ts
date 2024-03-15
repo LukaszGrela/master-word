@@ -1,5 +1,5 @@
 import { TSupportedLanguages } from '../api';
-import { IDictionary } from '../types/common';
+import { IDictionary } from '@repo/common-types';
 import { hasOwn } from '@repo/utils';
 
 /**

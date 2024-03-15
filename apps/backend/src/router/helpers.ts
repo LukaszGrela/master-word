@@ -1,9 +1,6 @@
 import { Request, Response, RequestHandler } from 'express';
-import type {
-  TGameSession,
-  TSupportedLanguages,
-  TValidationChar,
-} from '../types';
+import type { TSupportedLanguages } from '../types';
+import { TGameSession, TValidationChar } from '@repo/backend-types';
 import { MAX_ATTEMTPS } from '../constants';
 
 export const resetGameSession = (

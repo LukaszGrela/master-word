@@ -1,8 +1,8 @@
 import { Router, Request, Response, NextFunction } from 'express';
 import { StatusCodes } from 'http-status-codes';
 import { v4 as uuid } from 'uuid';
-import { ErrorCodes } from '../enums';
-import type { TGameSessionRecord } from '../types';
+import type { TGameSessionRecord } from '@repo/backend-types';
+import { ErrorCodes } from '@repo/backend-types/enums';
 import type {
   TRandomWordResponse,
   TRandomWordQuery,
@@ -19,6 +19,7 @@ import {
   wordExists,
   getRandomWord as apiGetRandomWord,
 } from '../db/crud/Dictionary.crud';
+import { TSupportedLanguages } from '../types';
 
 const router = Router();
 
@@ -309,7 +310,10 @@ router.get(
     }
 
     // isCorrectWord
-    const isCorrect = await isCorrectWord(guess, gameSession.game.language);
+    const isCorrect = await isCorrectWord(
+      guess,
+      gameSession.game.language as TSupportedLanguages,
+    );
     if (!isCorrect.validWord) {
       // reject the word
       if (gameSession.game.language === 'pl') {

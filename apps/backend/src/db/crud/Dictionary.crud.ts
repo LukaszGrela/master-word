@@ -1,3 +1,7 @@
+import {
+  TCountDictionaryResponse,
+  TLanguagesList,
+} from '@repo/backend-types/dictionary';
 import { TSupportedLanguages } from '../../types';
 import { Dictionary } from '../models/Dictionary';
 
@@ -152,13 +156,6 @@ export const addManyWords = async (
   return await dictionaryDoc.save();
 };
 
-type TCountDictionaryResponse = {
-  language: string;
-  length: number;
-  alphabet: string[];
-  wordCount: number;
-};
-
 export const countWords = async (
   language: TSupportedLanguages = 'pl',
   length = 5,
@@ -211,7 +208,7 @@ export const countWords = async (
 
   return result;
 };
-type TLanguagesList = { languages: string[] };
+
 export const getLanguages = async (length = 5) => {
   const result = await Dictionary.aggregate<TLanguagesList>([
     {
