@@ -40,38 +40,9 @@ export const ResultsPage = () => {
     },
     [gameSession.session, navigate],
   );
-
-  let score = 0; // out of 3 max
-  if (win) {
-    score = 0.5; // max attempts
-    const { attempt } = gameSession.game;
-    console.log('attempt', attempt);
-    if (attempt < 8) {
-      score = 1;
-    }
-    if (attempt < 6) {
-      score = 2;
-    }
-    if (attempt < 4) {
-      score = 3;
-    }
-
-    // time extras
-    const seconds = playTimeMs / 1000;
-    console.log(seconds);
-    if (seconds <= 15) {
-      score += 3;
-    }
-    if (seconds > 15 && seconds <= 35) {
-      score += 2;
-    }
-    if (seconds > 34 && seconds <= 60) {
-      score += 1;
-    }
-    if (seconds > 60 && seconds <= 90) {
-      score += 0.5;
-    }
-  }
+  // new high score
+  const showHighScore =
+    gameSession.highest && gameSession.game.score > gameSession.highest.score;
 
   return (
     <div className="results">
@@ -80,7 +51,12 @@ export const ResultsPage = () => {
         {!win && t('result-lose', { wordToGuess: gameSession.game.word })}
       </h2>
 
-      <Stars score={score} />
+      <div className="score-container">
+        <Stars score={gameSession.game.score} />
+        {showHighScore && (
+          <span className="highscore-label">New High&nbsp;Score</span>
+        )}
+      </div>
 
       {playTimeMs > 0 && (
         <p className="playtime">{t('result-playtime', { playTime })}</p>
