@@ -27,12 +27,13 @@ import { TTableData } from '@repo/backend-types/dictionary';
 import { Footer } from '../../components/Footer';
 import { Header } from '../../components/Header';
 import React, { FC, useCallback, useEffect, useState } from 'react';
-import { getUnknownWords } from '../../api/getUnknownWords';
-import { TUnknownWordEntry } from '../../api/types';
-import { postApproveWords } from '../../api/postApproveWords';
 import { useSnackbar } from 'notistack';
-import { postRejectWords } from '../../api/postRejectWords';
 import { EPaths } from '../enums/paths';
+import {
+  useGetUnknownWordsQuery,
+  usePostApproveWordsMutation,
+  usePostRejectWordsMutation,
+} from '../../store/slices/api';
 
 const HeaderSpacer = styled('div')(({ theme }) => theme.mixins.toolbar);
 const Main = styled('main')({
@@ -54,56 +55,28 @@ const rowsPerPageOptions = [5, 10, 25];
 const getIdentifier = (data: TTableData): string =>
   `${data.word}-${data.language}-${data.parentId}`;
 
-const useFetchUnknownWords = (): [
-  rows: readonly TTableData[],
-  loading: boolean,
-  refresh: () => void,
-] => {
-  const [loading, setLoading] = useState(true);
-  const [entries, setEntries] = useState<readonly TTableData[]>([]);
-  const [trigger, setTrigger] = useState(Math.random());
-  const refresh = useCallback(() => {
-    setTrigger(Math.random());
-  }, []);
-
-  useEffect(() => {
-    const controller = new AbortController();
-    setLoading(true);
-    getUnknownWords(controller.signal)
-      .then((list) => {
-        // TUnknownWordEntry[]
-        let newState: TTableData[] = [];
-        list.forEach((entry: TUnknownWordEntry) => {
-          newState = newState.concat(
-            entry.words.map((word) => ({
-              date: entry.date,
-              parentId: entry._id,
-              ...word,
-            })),
-          );
-        });
-        // apply
-        setEntries(newState);
-        setLoading(false);
-      })
-      .catch((error) => {
-        if (error instanceof DOMException) {
-          // dont change state on abort
-        } else {
-          setLoading(false);
-        }
-      });
-
-    return () => {
-      controller.abort();
-    };
-  }, [trigger]);
-
-  return [entries, loading, refresh];
-};
-
 const UnknownWords: FC = () => {
-  const [rows, loading, refresh] = useFetchUnknownWords();
+  const { data = [], isLoading } = useGetUnknownWordsQuery(undefined, {
+    pollingInterval: 60000,
+  });
+
+  const [approveWords, { isLoading: isApprovalInProgress }] =
+    usePostApproveWordsMutation();
+  const [rejectWords, { isLoading: isRejectionInProgress }] =
+    usePostRejectWordsMutation();
+
+  const loading = isApprovalInProgress || isRejectionInProgress || isLoading;
+
+  const rows = data.reduce((acc, entry): TTableData[] => {
+    return acc.concat(
+      entry.words.map((word) => ({
+        date: entry.date,
+        parentId: entry._id,
+        ...word,
+      })),
+    );
+  }, [] as TTableData[]);
+
   const { enqueueSnackbar } = useSnackbar();
 
   // selection start
@@ -216,11 +189,11 @@ const UnknownWords: FC = () => {
 
         if (action !== 'verify') {
           if (action === 'approve' || action === 'approve-selected') {
-            // approve word(s)
-            postApproveWords({
+            approveWords({
               words:
                 action === 'approve' && entry ? [entry] : entriesBySelection(),
             })
+              .unwrap()
               .then(() => {
                 // success
                 enqueueSnackbar(`Word(s) approved`, {
@@ -242,8 +215,6 @@ const UnknownWords: FC = () => {
                 } else {
                   setSelected([]);
                 }
-                // refresh after approve
-                refresh();
               })
               .catch((error) => {
                 console.error(error);
@@ -254,10 +225,11 @@ const UnknownWords: FC = () => {
           }
           if (action === 'reject' || action === 'reject-selected') {
             // reject word(s)
-            postRejectWords({
+            rejectWords({
               words:
                 action === 'reject' && entry ? [entry] : entriesBySelection(),
             })
+              .unwrap()
               .then(() => {
                 // success
                 enqueueSnackbar(`Word(s) rejectd`, {
@@ -278,8 +250,6 @@ const UnknownWords: FC = () => {
                 } else {
                   setSelected([]);
                 }
-                // refresh after reject
-                refresh();
               })
               .catch((error) => {
                 console.error(error);
@@ -290,7 +260,7 @@ const UnknownWords: FC = () => {
           }
         }
       },
-    [enqueueSnackbar, entriesBySelection, refresh],
+    [approveWords, enqueueSnackbar, entriesBySelection, rejectWords],
   );
   const numSelected = selection.length;
   return (

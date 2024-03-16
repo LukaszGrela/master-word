@@ -53,3 +53,11 @@ e.g.
 Then put the `.htpasswd` file outside of the protected (containing `.htaccess` file) folder (or anywhere but remember to adjust `AuthUserFile` path in `.htaccess`).
 
 Note: In the end in app authentication will be implemented.
+
+## Redux Toolkit Query
+
+There is problem with exporting hooks from `createApi` in version 2.x, downgraded to `1.9.7` where all is fine.
+
+```
+The inferred type of 'useGetUnknownWordsQuery' cannot be named without a reference to '@reduxjs/toolkit/dist/query/react/buildHooks'. This is likely not portable.
+```
