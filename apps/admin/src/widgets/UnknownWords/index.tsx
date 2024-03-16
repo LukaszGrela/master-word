@@ -1,4 +1,4 @@
-import { FC, useCallback, useEffect, useState } from 'react';
+import { FC, useCallback } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Button from '@mui/material/Button';
 import Typography from '@mui/material/Typography';
@@ -6,25 +6,21 @@ import CardContent from '@mui/material/CardContent';
 import CardHeader from '@mui/material/CardHeader';
 import CardActions from '@mui/material/CardActions';
 import Card from '@mui/material/Card';
-import { getUnknownWords } from '../../api/getUnknownWords';
+
 import { EPaths } from '../../routes/enums/paths';
+import { useGetUnknownWordsQuery } from '../../store/slices/api';
+import { LinearProgress } from '@mui/material';
 
 const UnknownWords: FC = () => {
   const navigate = useNavigate();
-  const [total, setTotal] = useState(0);
 
-  useEffect(() => {
-    getUnknownWords()
-      .then((list) => {
-        // count
-        const count = list.reduce((acc, { words }) => {
-          return acc + words.length;
-        }, 0);
+  const { data, error, isLoading } = useGetUnknownWordsQuery(undefined, {
+    pollingInterval: 30000,
+  });
 
-        setTotal(count);
-      })
-      .catch(console.error);
-  }, []);
+  const total = data?.reduce((acc, { words }) => {
+    return acc + words.length;
+  }, 0);
 
   const handleReview = useCallback(() => {
     navigate(EPaths.UNKOWN_WORDS);
@@ -38,9 +34,15 @@ const UnknownWords: FC = () => {
         height: '100%',
       }}
     >
-      <CardHeader title="Unknown Words"></CardHeader>
+      <CardHeader title="Unknown Words">
+        {isLoading && <LinearProgress />}
+      </CardHeader>
       <CardContent sx={{ textAlign: 'center' }}>
-        <Typography component="div" variant="h2">
+        <Typography
+          component="div"
+          variant="h2"
+          className={error ? 'error' : undefined}
+        >
           {total}
         </Typography>
         <Typography variant="caption">Unknown words logged</Typography>
