@@ -1,9 +1,8 @@
 import { FC, useState, useEffect, Fragment, useMemo } from 'react';
+import { TValidationChar } from '@repo/backend-types';
+import { classNames, isLetter } from '@repo/utils';
 import { Letter } from '../cell';
-import { classNames } from '@repo/utils';
-import { isLetter } from '@repo/utils';
 import { IProps } from './types';
-import { TValidationChar } from '../../api';
 
 const Word: FC<IProps> = ({
   active,

@@ -1,6 +1,6 @@
 import mongoose from 'mongoose';
 import { DictionarySchema } from '../schemas/DictionarySchema';
-import { IDictionaryEntry } from '../types';
+import { IDictionaryEntry } from '@repo/backend-types/db';
 
 const Dictionary = mongoose.model<IDictionaryEntry>(
   'Dictionary',

@@ -1,4 +1,4 @@
-import { TValidationChar } from '../../api';
+import { TValidationChar } from '@repo/backend-types';
 
 export interface IProps {
   // row identifier

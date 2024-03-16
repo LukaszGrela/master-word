@@ -6,13 +6,7 @@ module.exports = {
   },
   extends: ['eslint:recommended', 'plugin:@typescript-eslint/recommended'],
   parser: '@typescript-eslint/parser',
-  ignorePatterns: [
-    'dist',
-    'scripts',
-    '.eslintrc.cjs',
-    'src/test/**/*',
-    'src/**/*.spec.ts',
-  ],
+  ignorePatterns: ['.eslintrc.cjs', 'src/test/**/*', 'src/**/*.spec.ts'],
   parser: '@typescript-eslint/parser',
   parserOptions: {
     ecmaVersion: 'latest',

@@ -23,11 +23,12 @@ import {
 import ThumbUpIcon from '@mui/icons-material/ThumbUp';
 import ThumbDownIcon from '@mui/icons-material/ThumbDown';
 import PreviewIcon from '@mui/icons-material/Preview';
+import { TTableData } from '@repo/backend-types/dictionary';
 import { Footer } from '../../components/Footer';
 import { Header } from '../../components/Header';
 import React, { FC, useCallback, useEffect, useState } from 'react';
 import { getUnknownWords } from '../../api/getUnknownWords';
-import { TTableData, TUnknownWordEntry } from '../../api/types';
+import { TUnknownWordEntry } from '../../api/types';
 import { postApproveWords } from '../../api/postApproveWords';
 import { useSnackbar } from 'notistack';
 import { postRejectWords } from '../../api/postRejectWords';

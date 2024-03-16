@@ -2,7 +2,7 @@
   "name": "frontend",
   "description": "Simple word game where you need to guess a 5 letter word.",
   "private": true,
-  "version": "0.7.5",
+  "version": "0.8.3",
   "type": "module",
   "scripts": {
     "dev": "vite",
@@ -22,6 +22,8 @@
   },
   "devDependencies": {
     "@repo/config-typescript": "*",
+    "@repo/backend-types": "*",
+    "@repo/common-types": "*",
     "@types/react": "^18.2.55",
     "@types/react-dom": "^18.2.19",
     "@typescript-eslint/eslint-plugin": "^6.21.0",

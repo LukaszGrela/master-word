@@ -1,6 +1,10 @@
 {
   "name": "master-word",
-  "version": "0.0.1",
+  "version": "0.2.1",
+  "bugs": {
+    "url": "https://github.com/LukaszGrela/master-word/issues"
+  },
+  "homepage": "https://github.com/LukaszGrela/master-word#readme",
   "scripts": {
     "build": "turbo run build",
     "clean": "turbo run clean",
@@ -8,6 +12,7 @@
     "format": "prettier --write \"**/*.{ts,tsx,md}\"",
     "lint": "turbo run lint",
     "test": "turbo run test",
+    "coverage": "turbo run coverage",
     "type-check": "turbo run type-check",
     "gen:workspace": "turbo gen workspace"
   },

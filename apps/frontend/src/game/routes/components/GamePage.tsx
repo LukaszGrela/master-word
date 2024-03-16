@@ -1,27 +1,26 @@
 import { useCallback, useEffect, useState } from 'react';
 import { Location, useLocation, useNavigate } from 'react-router-dom';
+import { TGameSessionRecord } from '@repo/backend-types';
+import { getBowserDetails, AppStorage } from '@repo/utils';
+import { EStorageKeys } from '@repo/utils';
 import {
   TErrorResponse,
-  TGameSessionRecord,
   TSupportedLanguages,
   getInit,
   getNextAttempt,
   guardTErrorResponse,
 } from '../../../api';
 import { useLanguage } from '../../../i18n';
-import { getBowserDetails } from '@repo/utils';
 import { ATTEMPTS, Board, WORD_LENGTH } from '../../index';
 import { InputGuessPanel } from '../../panel';
 import { TGameState } from '../../types';
 import Word from '../../word/Word';
 import { createGameState } from '../../../api/utils';
-import { AppStorage } from '@repo/utils';
-import { EStorageKeys } from '@repo/utils';
 import { TClickAction } from '../../panel/types';
 import { getResultsPath } from '../enums';
-import './GamePage.scss';
 import Spinner from '../../Spinner/Spinner';
 import { Timer } from '../../Timer';
+import './GamePage.scss';
 
 const emptyGameState = createGameState(ATTEMPTS, WORD_LENGTH);
 

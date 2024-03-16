@@ -1,3 +1,10 @@
+import { IUnknownWordEntry } from '@repo/backend-types/db';
+import {
+  TCountDictionaryResponse,
+  TLanguagesList,
+  TTableData,
+} from '@repo/backend-types/dictionary';
+
 export type TPostAddWordParams = {
   word: string;
   language?: 'pl' | 'en';
@@ -7,22 +14,12 @@ export type TPostAddWordParams = {
 
 export type TUnknownWordEntry = {
   _id: string;
-  date: string;
-  words: { language: string; word: string; length?: number }[];
-};
-export type TTableData = {
-  word: string;
-  date: string;
-  language: string;
-  parentId: string;
-  length?: number;
-};
+} & Omit<IUnknownWordEntry, 'date'> & { date: string };
+
 export type TPostRejectApproveWords = {
   words: TTableData[];
   signal?: AbortSignal | null | undefined;
 };
 
-export type TDictionaryLanguagesResponse = [{ languages: string[] }];
-export type TDictionaryStatsResponse = [
-  { language: string; length: number; alphabet: string[]; wordCount: number },
-];
+export type TDictionaryLanguagesResponse = [TLanguagesList];
+export type TDictionaryStatsResponse = [TCountDictionaryResponse];

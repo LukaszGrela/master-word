@@ -1,5 +1,6 @@
+import { TGameSessionRecord, TGameStep } from '@repo/backend-types';
 import { apiInit } from './endpoints';
-import { TGameSessionRecord, TGameState, TPartialGameState } from './types';
+import { TPartialGameState } from './types';
 import { createGameState } from './utils';
 
 export const getInit = async (params: {
@@ -22,7 +23,8 @@ export const getInit = async (params: {
       .concat(emptyGameState)
       .slice(0, attempts);
 
-    data.game.state = state as TGameState[];
+    data.game.state = state as TGameStep[];
+
     return Promise.resolve(data);
   }
 

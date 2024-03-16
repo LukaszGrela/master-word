@@ -1,9 +1,6 @@
 import { Request, Response, RequestHandler } from 'express';
-import type {
-  TGameSession,
-  TSupportedLanguages,
-  TValidationChar,
-} from '../types';
+import type { TSupportedLanguages } from '../types';
+import { TGameSession, TValidationChar } from '@repo/backend-types';
 import { MAX_ATTEMTPS } from '../constants';
 
 export const resetGameSession = (
@@ -19,6 +16,7 @@ export const resetGameSession = (
     state: [],
     finished: false,
     guessed: false,
+    score: 0,
     timestamp_start: `${new Date().getTime()}`,
   };
 };
@@ -63,6 +61,60 @@ export const validateWord = (
     guessed: isGuessed,
     validated,
   };
+};
+
+/**
+ * Score is made up from the attempts
+ * and time using following matrix,
+ * when overall score is the same then
+ * times are compared.
+ * ```
+ *                     +¼  +¾  +1½
+ *       Time(s)   >60 >35 >15 <16
+ * Attempts       ┏━━━┳━━━┳━━━┳━━━┓
+ *     1,2,3      ┃ 3 ┃ 3¼┃ 3¾┃ 4½┃
+ *                ┣━━━╋━━━╋━━━╋━━━┫
+ *       4,5      ┃ 2 ┃ 2¼┃ 2¾┃ 3½┃
+ *                ┣━━━╋━━━╋━━━╋━━━┫
+ *       6,7      ┃ 1 ┃ 1¼┃ 1¾┃ 2½┃
+ *                ┣━━━╋━━━╋━━━╋━━━┫
+ *         8      ┃ ½ ┃ ¾ ┃ 1¼┃ 2 ┃
+ *                ┗━━━┻━━━┻━━━┻━━━┛
+ * ```
+ */
+export const calculateScore = (
+  win: boolean,
+  attempt: number,
+  playTimeMs: number,
+): number => {
+  let score = 0;
+  if (win) {
+    score = 0.5; // won max attempts
+    if (attempt < 8) {
+      score = 1;
+    }
+    if (attempt < 6) {
+      score = 2;
+    }
+    if (attempt < 4) {
+      score = 3;
+    }
+
+    // time extras
+    //                  +¼  +¾  +1½
+    //       Time(s)    >35 >15 <=15
+    const seconds = playTimeMs / 1000;
+    if (seconds <= 15) {
+      score += 1.5;
+    }
+    if (seconds > 15 && seconds <= 35) {
+      score += 0.75;
+    }
+    if (seconds > 35 && seconds <= 60) {
+      score += 0.25;
+    }
+  }
+  return score;
 };
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars

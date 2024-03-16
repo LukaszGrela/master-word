@@ -171,3 +171,7 @@ const run = async () => {
 
 run();
 ```
+
+## Turborepo
+
+This module could not bundle (transpile) code from internal packages (e.g. @repo/utils) so the `tsc` build was replaced with `esbuild` that bundled all the code, it is fine so far. It needs a review though as it feels dirty.

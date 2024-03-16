@@ -1,8 +1,8 @@
 import { FC, useEffect, useState } from 'react';
+import { EStorageKeys, AppStorage, noop } from '@repo/utils';
 import LanguageSelector from './LanguageSelector';
 import { TSupportedLanguages } from '../../api';
 import { useLanguage } from '../../i18n';
-import { EStorageKeys, AppStorage, noop } from '@repo/utils';
 
 const UILanguage: FC = () => {
   const { loadedLanguage, loadTranslation } = useLanguage();

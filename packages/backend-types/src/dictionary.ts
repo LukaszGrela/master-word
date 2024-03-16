@@ -1,7 +1,5 @@
-import { TSupportedLanguages } from '../../../types';
-
-type TLangAndLength = {
-  language: TSupportedLanguages;
+export type TLangAndLength = {
+  language: string;
   length: number;
 };
 
@@ -26,6 +24,14 @@ export type TApproveRejectRequestBody = {
 };
 
 export type TDictionaryStatsQuery = {
-  language?: TSupportedLanguages;
+  language?: string;
   length?: number;
 };
+
+export type TCountDictionaryResponse = {
+  language: string;
+  length: number;
+  alphabet: string[];
+  wordCount: number;
+};
+export type TLanguagesList = { languages: string[] };

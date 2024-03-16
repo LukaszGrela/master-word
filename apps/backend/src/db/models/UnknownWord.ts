@@ -1,6 +1,6 @@
 import mongoose from 'mongoose';
+import { IUnknownWordEntry } from '@repo/backend-types/db';
 import { UnknownWordSchema } from '../schemas/UnknownWordSchema';
-import { IUnknownWordEntry } from '../types';
 
 const UnknownWord = mongoose.model<IUnknownWordEntry>(
   'UnknownWord',

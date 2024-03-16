@@ -1,9 +1,8 @@
 import { FC, useCallback, useEffect, useState } from 'react';
-import { TErrorResponse } from '../../api';
-import { isCorrectWord } from '@repo/utils';
-import { EditIcon } from '../icons/EditIcon';
 import { createPortal } from 'react-dom';
-import { useRunAfterUpdate, noop } from '@repo/utils';
+import { isCorrectWord, useRunAfterUpdate, noop } from '@repo/utils';
+import { TErrorResponse } from '../../api';
+import { EditIcon } from '../icons/EditIcon';
 import { useLanguage } from '../../i18n';
 import './InputGuess.css';
 

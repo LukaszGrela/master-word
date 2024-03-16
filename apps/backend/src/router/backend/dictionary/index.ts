@@ -6,7 +6,7 @@ import {
   TApproveRejectRequestBody,
   TDictionaryStatsQuery,
   TTableData,
-} from './types';
+} from '@repo/backend-types/dictionary';
 import { StatusCodes } from 'http-status-codes';
 import {
   addManyWords,
@@ -32,7 +32,7 @@ router.post(
   async (req: Request, res: Response) => {
     const { word, language, length } = req.body as TAddWordRequestBody;
     try {
-      await addWord(word, language, length);
+      await addWord(word, language as TSupportedLanguages, length);
       res.status(StatusCodes.OK).json(`Word '${word}' was added.`);
       return;
     } catch (error) {
@@ -280,7 +280,7 @@ router.post(
   async (req: Request, res: Response) => {
     const { words, language, length } = req.body as TAddManyWordsRequestBody;
     try {
-      await addManyWords(words, language, length);
+      await addManyWords(words, language as TSupportedLanguages, length);
       res.status(StatusCodes.OK).json(`${words.length} words were added.`);
       return;
     } catch (error) {
@@ -308,7 +308,10 @@ router.get(
     try {
       const connection = dictionaryDevConnection();
       if (connection) {
-        const list = await countWords(language, Number(length));
+        const list = await countWords(
+          language as TSupportedLanguages,
+          Number(length),
+        );
 
         res.status(StatusCodes.OK).json(list);
       } else {

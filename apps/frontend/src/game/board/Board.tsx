@@ -1,6 +1,6 @@
 import React from 'react';
-import { IBoard } from '../types';
 import { classNames } from '@repo/utils';
+import { IBoard } from '../types';
 import './Board.scss';
 
 /* Grid Board */

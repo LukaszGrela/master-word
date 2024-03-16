@@ -2,8 +2,8 @@ import { RequestHandler } from 'express';
 import mongoose from 'mongoose';
 import connect from '../../../db/connect';
 import { StatusCodes } from 'http-status-codes';
+import { TAddWordRequestBody } from '@repo/backend-types/dictionary';
 import { getModelForConnection } from '../../../db/models/Dictionary';
-import { TAddWordRequestBody } from './types';
 import { addUnknownWord } from '../../../db/crud/UnknownWord.crud';
 import { TSupportedLanguages } from '../../../types';
 
