@@ -77,7 +77,6 @@ const UnknownWords: FC = () => {
     );
   }, [] as TTableData[]);
 
-  // const [rows, loading, refresh] = useFetchUnknownWords();
   const { enqueueSnackbar } = useSnackbar();
 
   // selection start
