@@ -250,7 +250,6 @@ const UnknownWords: FC = () => {
                 } else {
                   setSelected([]);
                 }
-                // refresh();
               })
               .catch((error) => {
                 console.error(error);
