@@ -16,7 +16,6 @@ export const ResultsPage = () => {
   const location = useLocation() as Location<TGameSessionRecord>;
   const gameSession = location.state;
 
-  console.log('gameSession', gameSession);
 
   const win = location.pathname === getResultsPath('win');
 
