@@ -2,12 +2,13 @@ import { adminApi } from './slice';
 import {
   apiDictionaryLanguages,
   apiDictionaryStats,
-} from '../../../api/endpoints';
+  apiAddWord,
+} from './endpoints';
 import {
   TDictionaryLanguagesResponse,
   TDictionaryStatsResponse,
   TPostAddWordParams,
-} from '../../../api/types';
+} from './types';
 
 export const dictionaryApi = adminApi.injectEndpoints({
   endpoints: (builder) => ({
@@ -31,7 +32,7 @@ export const dictionaryApi = adminApi.injectEndpoints({
       query: ({ length = 5 }) => apiDictionaryLanguages(length),
     }),
     postAddWord: builder.mutation<string, TPostAddWordParams>({
-      query: (params) => ({ url: 'add-word', method: 'POST', body: params }),
+      query: (params) => ({ url: apiAddWord(), method: 'POST', body: params }),
 
       invalidatesTags: ['Dictionary'],
     }),

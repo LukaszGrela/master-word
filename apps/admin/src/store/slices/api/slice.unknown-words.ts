@@ -1,16 +1,17 @@
-import { TUnknownWordEntry } from '../../../api/types';
 import { TTableData } from '@repo/backend-types/dictionary';
+import { TUnknownWordEntry } from './types';
 import { adminApi } from './slice';
+import { apiApproveWords, apiRejectWords, apiUnknownWords } from './endpoints';
 
 export const unknownWordsApi = adminApi.injectEndpoints({
   endpoints: (builder) => ({
     getUnknownWords: builder.query<TUnknownWordEntry[], void>({
-      query: () => 'list',
+      query: () => apiUnknownWords(),
       providesTags: ['UnknownWords'],
     }),
     postApproveWords: builder.mutation<string, { words: TTableData[] }>({
       query: (params) => ({
-        url: 'approve-words',
+        url: apiApproveWords(),
         method: 'POST',
         body: params,
       }),
@@ -18,7 +19,7 @@ export const unknownWordsApi = adminApi.injectEndpoints({
     }),
     postRejectWords: builder.mutation<string, { words: TTableData[] }>({
       query: (params) => ({
-        url: 'reject-words',
+        url: apiRejectWords(),
         method: 'POST',
         body: params,
       }),

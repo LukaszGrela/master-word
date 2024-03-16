@@ -1,5 +1,5 @@
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
-import { BACKEND_API } from '../../../api/endpoints';
+import { BACKEND_API } from './constants';
 
 export const adminApi = createApi({
   reducerPath: 'api',

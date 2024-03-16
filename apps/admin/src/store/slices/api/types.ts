@@ -7,7 +7,7 @@ import {
 
 export type TPostAddWordParams = {
   word: string;
-  language?: 'pl' | 'en';
+  language?: string;
   length?: number;
   signal?: AbortSignal | null | undefined;
 };
