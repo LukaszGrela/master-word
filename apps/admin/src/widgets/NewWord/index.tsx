@@ -19,11 +19,14 @@ import {
 } from '@mui/material';
 import SendIcon from '@mui/icons-material/Send';
 import { isCorrectWord } from '@repo/utils/isLetter';
-import { postAddWord } from '../../api/postAddWord';
 import { TPostAddWordParams } from '../../api/types';
+import { usePostAddWordMutation } from '../../store/slices/api';
 
 const NewWord: FC = () => {
   const wordLength = 5;
+
+  const [addWord, { isLoading }] = usePostAddWordMutation();
+
   const [word, setWord] = useState('');
   const onWordChange: ChangeEventHandler<HTMLInputElement> = useCallback(
     (e) => {
@@ -47,23 +50,29 @@ const NewWord: FC = () => {
     },
     [word],
   );
-  const handleSubmit: FormEventHandler<HTMLFormElement> = useCallback((e) => {
-    e.preventDefault();
-    const form = e.target as HTMLFormElement;
-    const data = new FormData(form);
+  const handleSubmit: FormEventHandler<HTMLFormElement> = useCallback(
+    (e) => {
+      e.preventDefault();
+      const form = e.target as HTMLFormElement;
+      const data = new FormData(form);
 
-    const params = Object.fromEntries(data) as unknown as TPostAddWordParams;
-
-    // call API
-    postAddWord(params)
-      .then((successMessage: string) => {
-        // clear word
-        setWord('');
-        // show toast
-        console.log(successMessage);
-      })
-      .catch(console.error);
-  }, []);
+      const params = Object.fromEntries(data) as unknown as TPostAddWordParams;
+      if (params.length) {
+        params.length = Number(params.length);
+      }
+      // call API
+      addWord(params)
+        .unwrap()
+        .then((successMessage: string) => {
+          // clear word
+          setWord('');
+          // show toast
+          console.log(successMessage);
+        })
+        .catch(console.error);
+    },
+    [addWord],
+  );
 
   return (
     <Card
@@ -88,6 +97,7 @@ const NewWord: FC = () => {
                   Language
                 </InputLabel>
                 <NativeSelect
+                  disabled={isLoading}
                   defaultValue={'pl'}
                   inputProps={{
                     name: 'language',
@@ -130,12 +140,13 @@ const NewWord: FC = () => {
                   }}
                   value={word}
                   onChange={onWordChange}
+                  disabled={isLoading}
                 />
               </FormControl>
               <Button
                 variant="contained"
                 endIcon={<SendIcon />}
-                disabled={word.length !== wordLength}
+                disabled={word.length !== wordLength || isLoading}
                 type="submit"
               >
                 Send

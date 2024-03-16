@@ -15,7 +15,7 @@ export const apiDictionaryLanguages = (length = 5) => {
 
   const query = search === '' ? '' : `?${search}`;
 
-  return `${BACKEND_API}/dictionary-languages${query}`;
+  return `/dictionary-languages${query}`;
 };
 export const apiDictionaryStats = (language = 'pl', length = 5) => {
   const urlParams = new URLSearchParams({});
@@ -28,5 +28,5 @@ export const apiDictionaryStats = (language = 'pl', length = 5) => {
   const search = urlParams.toString();
 
   const query = search === '' ? '' : `?${search}`;
-  return `${BACKEND_API}/dictionary-stats${query}`;
+  return `/dictionary-stats${query}`;
 };

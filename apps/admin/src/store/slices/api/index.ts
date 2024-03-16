@@ -1,11 +1,20 @@
 import { adminApi } from './slice';
 export { default as apiReducer } from './slice';
-// actions
-export const {
+
+export const { reducerPath, middleware } = adminApi;
+
+// actions for unknown words
+export {
   useGetUnknownWordsQuery,
   useLazyGetUnknownWordsQuery,
   usePostApproveWordsMutation,
   usePostRejectWordsMutation,
-} = adminApi;
-
-export const { reducerPath, middleware } = adminApi;
+} from './slice.unknown-words';
+// actions from dictionary
+export {
+  useGetDictionaryStatsQuery,
+  useLazyGetDictionaryStatsQuery,
+  useGetDictionaryLanguagesQuery,
+  useLazyGetDictionaryLanguagesQuery,
+  usePostAddWordMutation,
+} from './slice.dictionary';
