@@ -9,6 +9,7 @@
     "moduleResolution": "Node16",
     "typeRoots": [
       "./node_modules/@types",
+      "./node_modules/@repo/backend-types"
     ]
   },
   "include": [
