@@ -32,6 +32,7 @@ describe('UnknownWord model', () => {
         {
           language: 'pl',
           word: 'album',
+          length: 5,
         },
       ],
     });
@@ -67,6 +68,7 @@ describe('UnknownWord model', () => {
         words: [
           {
             word: 'Boom',
+            length: 5,
           },
         ],
       });
@@ -91,6 +93,7 @@ describe('UnknownWord model', () => {
           {
             language: 'xx',
             word: 'Boom',
+            length: 5,
           },
         ],
       });
@@ -104,6 +107,30 @@ describe('UnknownWord model', () => {
       `${error?.message}`,
       /Cast to SupportedLanguage failed for value "xx"/,
     );
+  });
+  it('requires correct entry in words property - missing length', async () => {
+    let error: Error | undefined;
+    const stub = sinon.useFakeTimers({
+      now: new Date(1939, 9, 1).getTime(),
+      shouldClearNativeTimers: true,
+    });
+    try {
+      await UnknownWord.create({
+        date: new Date(),
+        words: [
+          {
+            language: 'en',
+            word: 'Boom',
+          },
+        ],
+      });
+    } catch (e) {
+      error = e as Error;
+    }
+    stub.restore();
+
+    assert.notEqual(error, undefined);
+    assert.match(`${error?.message}`, /Path `length` is required./);
   });
 
   it('requires correct entry in words property - missing word', async () => {
@@ -142,6 +169,7 @@ describe('UnknownWord model', () => {
           {
             language: 'pl',
             word: '',
+            length: 5,
           },
         ],
       });

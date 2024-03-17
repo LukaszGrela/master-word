@@ -27,10 +27,12 @@ describe('UnknownWord CRUD operations', () => {
           {
             language: 'pl',
             word: 'kiszk',
+            length: 5,
           },
           {
             language: 'pl',
             word: 'tomek',
+            length: 5,
           },
         ],
       },
@@ -40,10 +42,12 @@ describe('UnknownWord CRUD operations', () => {
           {
             language: 'pl',
             word: 'maria',
+            length: 5,
           },
           {
             language: 'pl',
             word: 'mosty',
+            length: 5,
           },
         ],
       },
@@ -53,14 +57,17 @@ describe('UnknownWord CRUD operations', () => {
           {
             language: 'pl',
             word: 'kramy',
+            length: 5,
           },
           {
             language: 'pl',
             word: 'omary',
+            length: 5,
           },
           {
             language: 'pl',
             word: 'rampy',
+            length: 5,
           },
         ],
       },
