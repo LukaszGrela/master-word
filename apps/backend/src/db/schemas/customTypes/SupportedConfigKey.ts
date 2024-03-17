@@ -1,12 +1,8 @@
 /*  istanbul ignore file */
+import { TConfigEntryKey } from '@repo/backend-types/db';
 import mongoose, { AnyObject } from 'mongoose';
 
 const { SchemaType } = mongoose;
-
-const SUPPORTED_LANG = 'supportedLanguages' as const;
-const ATTEMPTS_LIST = 'attemptsList' as const;
-
-export const configKeys = [SUPPORTED_LANG, ATTEMPTS_LIST];
 
 const NAME = 'SupportedConfigKey' as const;
 
@@ -19,9 +15,9 @@ export class SupportedConfigKey extends SchemaType {
 
   cast(val: unknown) {
     if (typeof val === 'string') {
-      switch (val) {
-        case SUPPORTED_LANG:
-        case ATTEMPTS_LIST:
+      switch (val as TConfigEntryKey) {
+        case 'attemptsList':
+        case 'supportedLanguages':
           return val;
 
         default:

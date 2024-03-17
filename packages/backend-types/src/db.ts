@@ -18,7 +18,7 @@ export interface IConfigEntry {
   /**
    * Configuration key
    */
-  key: string;
+  key: TConfigEntryKey;
   /**
    * JSON stringified value of the configuration
    */
@@ -29,3 +29,5 @@ export interface IConfigEntry {
    */
   appId: string[];
 }
+
+export type TConfigEntryKey = 'supportedLanguages' | 'attemptsList';
