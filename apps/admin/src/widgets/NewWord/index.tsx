@@ -19,8 +19,10 @@ import {
 } from '@mui/material';
 import SendIcon from '@mui/icons-material/Send';
 import { isCorrectWord } from '@repo/utils/isLetter';
-import { TPostAddWordParams } from '../../api/types';
-import { usePostAddWordMutation } from '../../store/slices/api';
+import {
+  usePostAddWordMutation,
+  TPostAddWordParams,
+} from '../../store/slices/api';
 
 const NewWord: FC = () => {
   const wordLength = 5;
