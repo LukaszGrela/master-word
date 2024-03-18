@@ -24,12 +24,17 @@
   "main-legend-correct": "Dobra litera",
   "result-language-selector-btn-title-pl": "Słowo polskie",
   "result-language-selector-btn-title-en": "Słowo angielskie",
+  "result-language-selector-btn-title-fr": "Słowo francuskie",
+  "result-language-selector-btn-title-it": "Słowo włoskie",
   "input-modal-close-button": "Ukryj",
   "home-game-description": "Masz 8 prób aby odgadnąć 5-literowe słowo, zrób to w jak najmniejszej ilości prób i w jak najkrótszym czasie. Czas odliczany jest od wysłania pierwszej propozycji słowa. Przed rozpoczęciem gry możesz zmienić język odgadywanego słowa.",
   "word-language-selector-btn-label-pl": "Słowo",
   "word-language-selector-btn-label-en": "Słowo",
+  "word-language-selector-btn-label-fr": "Słowo",
+  "word-language-selector-btn-label-it": "Słowo",
   "general-error-title": "Ożesz kurczaczki!",
   "general-error-message": "Przepraszamy, nieoczekiwany błąd jak piorun z nieba spadł i zepsuł zabawę...",
   "general-error-btn-home": "Zamknij",
+  "game-error-subtitle": "Problem z sesją gry.",
   "highscore-label": "Nowy Rekord"
 }

@@ -16,7 +16,7 @@ import { TGameState } from '../../types';
 import Word from '../../word/Word';
 import { createGameState } from '../../../api/utils';
 import { TClickAction } from '../../panel/types';
-import { getResultsPath } from '../enums';
+import { EPaths, getResultsPath } from '../enums';
 import Spinner from '../../Spinner/Spinner';
 import { Timer } from '../../Timer';
 import './GamePage.scss';
@@ -96,13 +96,26 @@ export const GamePage = () => {
               setGameState('start');
               return;
             } else {
-              setError(error);
+              // navigate to error page
+              navigate(EPaths.GAME_ERROR, {
+                // no back to game
+                replace: true,
+                state: { error, session: gameSession },
+              });
             }
           } else if (error instanceof DOMException) {
             // abort error is OK
             return;
           } else {
-            setError({ code: -1, error: (error as Error).message });
+            // navigate to error page
+            navigate(EPaths.GAME_ERROR, {
+              // no back to game
+              replace: true,
+              state: {
+                error: { code: -1, error: (error as Error).message },
+                session: gameSession,
+              },
+            });
           }
           setGameState('error');
         });
@@ -115,7 +128,7 @@ export const GamePage = () => {
     return () => {
       controller.abort();
     };
-  }, [clearSession, gameState, language, session]);
+  }, [clearSession, gameSession, gameState, language, navigate, session]);
 
   const handleWordCommit = useCallback(
     (guess: string) => {
@@ -155,10 +168,7 @@ export const GamePage = () => {
           // session error is a showstopper here
           if (guardTErrorResponse(error)) {
             // if provided session is invalid, discard it and try again
-            if (
-              error.code === 2 /* ErrorCodes.SESSION_ERROR */ ||
-              error.code === 3 /* ErrorCodes.GENERAL_ERROR */
-            ) {
+            if (error.code === 2 /* ErrorCodes.SESSION_ERROR */) {
               clearSession();
               setGameState('start');
               return;
@@ -173,6 +183,13 @@ export const GamePage = () => {
               if (bowser.platform.type === 'mobile') {
                 setShowInputModal(true);
               }
+            } else {
+              // navigate to error page
+              navigate(EPaths.GAME_ERROR, {
+                // no back to game
+                replace: true,
+                state: { error, session: gameSession },
+              });
             }
           } else if (error instanceof DOMException) {
             // abort error is OK (abort is never ok)

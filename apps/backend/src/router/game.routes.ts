@@ -312,7 +312,7 @@ const assureNextAttemptAllowed = (
   const gameSession = gameSessions.get(session);
   if (!gameSession) {
     res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({
-      code: ErrorCodes.GENERAL_ERROR,
+      code: ErrorCodes.SESSION_NO_GAME_ERROR,
       error: 'Game for that session does not exist.',
     });
     return;
@@ -329,7 +329,7 @@ const assureNextAttemptAllowed = (
 
   if (gameSession.game.finished) {
     res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({
-      code: ErrorCodes.GENERAL_ERROR,
+      code: ErrorCodes.SESSION_GAME_FINISHED_ERROR,
       error: 'Game for that session is already finished.',
     });
     return;
@@ -454,7 +454,7 @@ router.get('/game-session', async (req: Request, res: Response) => {
 
   if (!gameSession) {
     res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({
-      code: ErrorCodes.GENERAL_ERROR,
+      code: ErrorCodes.SESSION_NO_GAME_ERROR,
       error: 'Game for that session does not exist.',
     });
     return;

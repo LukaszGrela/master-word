@@ -7,6 +7,6 @@ export const getFlag = (language: string): React.ReactNode => {
     case 'en':
       return <>🇺🇸</>;
     default:
-      return <></>;
+      return <>{language.toUpperCase()}</>;
   }
 };

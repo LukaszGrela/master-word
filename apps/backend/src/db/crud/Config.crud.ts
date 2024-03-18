@@ -55,6 +55,7 @@ export const setConfigDefaults = async (
 
   await ConfigModel.collection.drop();
 
+  await ConfigModel.init();
   await ConfigModel.create<IConfigEntry>([
     {
       key: 'supportedAttempts',

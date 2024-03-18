@@ -62,6 +62,7 @@ describe('Config CRUD operations', () => {
 
   describe('setConfigValue', () => {
     it('Fails to modify non existing new config entry', async () => {
+      await Config.init();
       await Config.collection.drop();
 
       let empty = await Config.find({});

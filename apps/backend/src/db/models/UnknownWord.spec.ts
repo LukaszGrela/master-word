@@ -80,7 +80,7 @@ describe('UnknownWord model', () => {
     assert.notEqual(error, undefined);
     assert.match(`${error?.message}`, /Path `language` is required/);
   });
-  it('requires correct entry in words property - incorrect language', async () => {
+  it('requires correct entry in words property - incorrect language max length', async () => {
     let error: Error | undefined;
     const stub = sinon.useFakeTimers({
       now: new Date(1939, 9, 1).getTime(),
@@ -91,7 +91,7 @@ describe('UnknownWord model', () => {
         date: new Date(),
         words: [
           {
-            language: 'xx',
+            language: 'xxx',
             word: 'Boom',
             length: 5,
           },
@@ -105,7 +105,35 @@ describe('UnknownWord model', () => {
     assert.notEqual(error, undefined);
     assert.match(
       `${error?.message}`,
-      /Cast to SupportedLanguage failed for value "xx"/,
+      /Path `language` \(`xxx`\) is longer than the maximum allowed length \(2\)\./,
+    );
+  });
+  it('requires correct entry in words property - incorrect language min length', async () => {
+    let error: Error | undefined;
+    const stub = sinon.useFakeTimers({
+      now: new Date(1939, 9, 1).getTime(),
+      shouldClearNativeTimers: true,
+    });
+    try {
+      await UnknownWord.create({
+        date: new Date(),
+        words: [
+          {
+            language: 'x',
+            word: 'Boom',
+            length: 5,
+          },
+        ],
+      });
+    } catch (e) {
+      error = e as Error;
+    }
+    stub.restore();
+
+    assert.notEqual(error, undefined);
+    assert.match(
+      `${error?.message}`,
+      /Path `language` \(`x`\) is shorter than the minimum allowed length \(2\)\./,
     );
   });
   it('requires correct entry in words property - missing length', async () => {
