@@ -13,33 +13,33 @@ import type {
   TValidateWordBody,
 } from './types';
 import { calculateScore, resetGameSession, validateWord } from './helpers';
-import { WORD_LENGTH } from '../constants';
+import { MAX_ATTEMTPS, WORD_LENGTH } from '../constants';
 import { logUnknownWord } from './backend/dictionary/helpers';
 import {
   wordExists,
   getRandomWord as apiGetRandomWord,
 } from '../db/crud/Dictionary.crud';
-import { TSupportedLanguages } from '../types';
+import { getConfiguration } from '../db/crud/Config.crud';
 
 const router = Router();
 
 async function getRandomWord(
   language = 'pl',
-  wordLength = 5,
+  wordLength: number = WORD_LENGTH,
 ): Promise<TRandomWordResponse> {
-  if (language === 'pl') {
+  if (language !== 'en') {
     try {
       const word = await apiGetRandomWord(language, wordLength);
       return {
         word,
-        language: 'pl',
+        language,
       } as TRandomWordResponse;
     } catch (error) {
       console.log(error);
       return Promise.reject({
         code: ErrorCodes.RANDOM_WORD_ERROR,
-        error: "Can't retrieve polish word.",
-        language: 'pl',
+        error: `Can't retrieve ${language} word.`,
+        language,
       });
     }
   } else {
@@ -69,7 +69,7 @@ async function getRandomWord(
 // get random word
 router.get('/random-word', async (req: Request, res: Response) => {
   // parameters
-  const { language = 'pl', wordLength = 5 } =
+  const { language = 'pl', wordLength = WORD_LENGTH } =
     req.query as unknown as TRandomWordQuery;
 
   try {
@@ -82,7 +82,11 @@ router.get('/random-word', async (req: Request, res: Response) => {
   }
 });
 
-const isCorrectWord = async (word: string, language: 'pl' | 'en') => {
+const isCorrectWord = async (
+  word: string,
+  language: string,
+  wordLength: number = WORD_LENGTH,
+) => {
   if (language === 'en') {
     try {
       const response = await fetch('https://words.dev-apis.com/validate-word', {
@@ -122,7 +126,7 @@ const isCorrectWord = async (word: string, language: 'pl' | 'en') => {
   } else {
     const needle = word.toLocaleLowerCase();
     // search for the word
-    const result = await wordExists(needle, language, WORD_LENGTH);
+    const result = await wordExists(needle, language, wordLength);
 
     if (result) {
       // correct
@@ -146,7 +150,44 @@ const isCorrectWord = async (word: string, language: 'pl' | 'en') => {
 const gameSessions = new Map<string, TGameSessionRecord>();
 
 router.get('/init', async (req: Request, res: Response) => {
+  // TODO: add init word length, attempts
+  const wordLength = WORD_LENGTH;
+  const maxAttempts = MAX_ATTEMTPS;
   const { session, language = 'pl' } = req.query as TInitQuery;
+
+  const config = await getConfiguration('frontend');
+
+  const enabledLanguagesConfig = config.find(
+    ({ key }) => key === 'enabledLanguages',
+  );
+
+  if (!enabledLanguagesConfig) {
+    res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({
+      code: ErrorCodes.CONFIGURATION,
+      error: 'Can not start new game. Misconfiguration.',
+    });
+    return;
+  } else {
+    const enabledLanguages = JSON.parse(
+      enabledLanguagesConfig.value,
+    ) as string[];
+    if (Array.isArray(enabledLanguages) && enabledLanguages.length > 0) {
+      // verify requested language
+      if (enabledLanguages.indexOf(language) === -1) {
+        res.status(StatusCodes.BAD_REQUEST).json({
+          code: ErrorCodes.SESSION_ERROR,
+          error: 'Invalid session id',
+        });
+        return;
+      }
+    } else {
+      res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({
+        code: ErrorCodes.CONFIGURATION,
+        error: 'Can not start new game. Misconfiguration.',
+      });
+      return;
+    }
+  }
 
   let response: TGameSessionRecord | undefined;
   if (session) {
@@ -164,11 +205,11 @@ router.get('/init', async (req: Request, res: Response) => {
   } else {
     // create and return
     try {
-      const word = await getRandomWord(language, WORD_LENGTH);
+      const word = await getRandomWord(language, wordLength);
       const id = uuid();
       response = {
         session: id,
-        game: resetGameSession(language, word.word),
+        game: resetGameSession(language, word.word, maxAttempts),
       };
       gameSessions.set(id, response);
     } catch (error) {
@@ -213,10 +254,10 @@ router.get('/init', async (req: Request, res: Response) => {
       }
 
       try {
-        const word = await getRandomWord(language, WORD_LENGTH);
+        const word = await getRandomWord(language, wordLength);
         response = {
           ...response,
-          game: resetGameSession(language, word.word),
+          game: resetGameSession(language, word.word, maxAttempts),
         };
         // store/update
         gameSessions.set(response.session, response);
@@ -249,6 +290,7 @@ const assureNextAttemptAllowed = (
   next: NextFunction,
 ) => {
   const { session, guess } = req.query as TNextAttemptQuery;
+
   if (!session) {
     // shows over
     res.status(StatusCodes.BAD_REQUEST).json({
@@ -265,25 +307,27 @@ const assureNextAttemptAllowed = (
     });
     return;
   }
-  if (guess.length !== WORD_LENGTH) {
-    // shows over
-    res.status(StatusCodes.BAD_REQUEST).json({
-      code: ErrorCodes.PARAMS_ERROR,
-      error: `Param "guess" has invalid length, allowed is ${WORD_LENGTH}`,
-    });
-    return;
-  }
 
   // grab game data
   const gameSession = gameSessions.get(session);
-
   if (!gameSession) {
     res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({
       code: ErrorCodes.GENERAL_ERROR,
       error: 'Game for that session does not exist.',
     });
     return;
-  } else if (gameSession.game.finished) {
+  }
+
+  if (guess.length !== gameSession!.game.word_length) {
+    // shows over
+    res.status(StatusCodes.BAD_REQUEST).json({
+      code: ErrorCodes.PARAMS_ERROR,
+      error: `Param "guess" has invalid length, allowed is ${gameSession!.game.word_length}`,
+    });
+    return;
+  }
+
+  if (gameSession.game.finished) {
     res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({
       code: ErrorCodes.GENERAL_ERROR,
       error: 'Game for that session is already finished.',
@@ -312,11 +356,12 @@ router.get(
     // isCorrectWord
     const isCorrect = await isCorrectWord(
       guess,
-      gameSession.game.language as TSupportedLanguages,
+      gameSession.game.language,
+      gameSession.game.word_length,
     );
     if (!isCorrect.validWord) {
       // reject the word
-      if (gameSession.game.language === 'pl') {
+      if (gameSession.game.language !== 'en') {
         // TODO implement for polish when dictionary will contain > 1000 words
         // log the word, it is possible that it is correct but missing from dictionary
         console.log('LOG NEW WORD:', gameSession.session, isCorrect);
@@ -429,6 +474,7 @@ router.get('/game-session', async (req: Request, res: Response) => {
 });
 
 router.post('/validate-word', async (req: Request, res: Response) => {
+  // TODO: add enabled word length validation
   const { word, language = 'pl' } = req.body as TValidateWordBody;
   if (!word) {
     // shows over
@@ -447,7 +493,7 @@ router.post('/validate-word', async (req: Request, res: Response) => {
     return;
   }
 
-  const result = await isCorrectWord(word, language);
+  const result = await isCorrectWord(word, language, WORD_LENGTH);
 
   res.status(StatusCodes.OK).json(result);
 });

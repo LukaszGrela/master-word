@@ -1,5 +1,4 @@
 import { Schema } from 'mongoose';
-import { SupportedLanguage } from './customTypes/SupportedLanguage';
 
 const { Types } = Schema;
 
@@ -8,7 +7,12 @@ const UnknownWordSchema = new Schema({
   words: {
     type: [
       new Schema({
-        language: { type: SupportedLanguage, required: true },
+        language: {
+          type: Types.String,
+          required: true,
+          maxlength: 2,
+          minlength: 2,
+        },
         word: { type: Types.String, required: true },
         length: { type: Types.Number, required: true },
       }),
