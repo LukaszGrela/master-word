@@ -59,7 +59,7 @@ export const setConfigDefaults = async (
     {
       key: 'supportedAttempts',
       value: JSON.stringify([8]),
-      appId: ['frontend'],
+      appId: ['admin'],
       validation: {
         type: 'number[]',
         defaultsTo: JSON.stringify([8]),
@@ -68,7 +68,7 @@ export const setConfigDefaults = async (
     {
       key: 'enabledAttempts',
       value: JSON.stringify([8]),
-      appId: ['frontend'],
+      appId: ['admin', 'frontend'],
       validation: {
         type: 'number[]',
         defaultsTo: JSON.stringify([8]),
@@ -77,7 +77,7 @@ export const setConfigDefaults = async (
     {
       key: 'supportedLength',
       value: JSON.stringify([5]),
-      appId: ['frontend'],
+      appId: ['admin'],
       validation: {
         type: 'number[]',
         defaultsTo: JSON.stringify([5]),
@@ -86,7 +86,7 @@ export const setConfigDefaults = async (
     {
       key: 'enabledLength',
       value: JSON.stringify([5]),
-      appId: ['frontend'],
+      appId: ['admin', 'frontend'],
       validation: {
         type: 'number[]',
         defaultsTo: JSON.stringify([5]),
@@ -95,18 +95,18 @@ export const setConfigDefaults = async (
     {
       key: 'supportedLanguages',
       value: JSON.stringify(['en', 'pl']),
-      appId: ['frontend'],
+      appId: ['admin'],
       validation: {
-        type: 'number[]',
+        type: 'string[]',
         defaultsTo: JSON.stringify(['en', 'pl']),
       },
     },
     {
       key: 'enabledLanguages',
       value: JSON.stringify(['en', 'pl']),
-      appId: ['frontend'],
+      appId: ['admin', 'frontend'],
       validation: {
-        type: 'number[]',
+        type: 'string[]',
         defaultsTo: JSON.stringify(['en', 'pl']),
       },
     },
