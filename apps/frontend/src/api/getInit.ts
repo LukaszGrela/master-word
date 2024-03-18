@@ -4,7 +4,7 @@ import { TPartialGameState } from './types';
 import { createGameState } from './utils';
 
 export const getInit = async (params: {
-  language: 'pl' | 'en';
+  language: string;
   session?: string;
   signal?: AbortSignal | null | undefined;
 }) => {
