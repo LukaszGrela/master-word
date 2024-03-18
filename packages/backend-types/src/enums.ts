@@ -5,4 +5,5 @@ export enum ErrorCodes {
   PARAMS_ERROR = 4,
   LOCAL_DICTIONARY_ERROR = 5,
   INVALID_WORD = 6,
+  CONFIGURATION = 7,
 }

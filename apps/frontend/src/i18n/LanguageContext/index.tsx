@@ -1,5 +1,4 @@
 import React, { useCallback, useEffect, useMemo, useState } from 'react';
-import { TSupportedLanguages } from '../../api';
 import { IDictionary } from '@repo/common-types';
 import { loadTranslation, replaceSubstituteMap } from '../helpers';
 import { hasOwn } from '@repo/utils';
@@ -7,14 +6,11 @@ import { AppStorage } from '@repo/utils';
 import { EStorageKeys } from '@repo/utils';
 
 export interface ILanguageContext {
-  loadedLanguage: TSupportedLanguages | undefined;
+  loadedLanguage: string | undefined;
 
   loading: boolean;
 
-  loadTranslation: (
-    language: TSupportedLanguages,
-    signal?: AbortSignal,
-  ) => Promise<void>;
+  loadTranslation: (language: string, signal?: AbortSignal) => Promise<void>;
 
   getUIText: (
     textId: string,
@@ -28,11 +24,11 @@ export const LanguageContext = React.createContext<ILanguageContext>(null!);
 export function LanguageProvider({ children }: { children: React.ReactNode }) {
   const [loading, setLoading] = useState(true);
 
-  const [loadedLanguage, setLoadedLanguage] = useState<TSupportedLanguages>();
+  const [loadedLanguage, setLoadedLanguage] = useState<string>();
   const [translation, setTranslation] = useState<IDictionary<string>>({});
 
   const loadTranslationCtx = useCallback(
-    async (language: TSupportedLanguages, signal?: AbortSignal) => {
+    async (language: string, signal?: AbortSignal) => {
       try {
         setLoading(true);
         const translations = await loadTranslation(language, signal);
@@ -81,9 +77,7 @@ export function LanguageProvider({ children }: { children: React.ReactNode }) {
   useEffect(() => {
     setLoading(true);
     const language =
-      (AppStorage.getInstance().getItem(
-        EStorageKeys.UI_LANGUAGE,
-      ) as TSupportedLanguages) || 'pl';
+      AppStorage.getInstance().getItem(EStorageKeys.UI_LANGUAGE) || 'pl';
     loadTranslation(language)
       .then((translations) => {
         setLoadedLanguage(language);
