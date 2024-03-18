@@ -1,5 +1,5 @@
 /*  istanbul ignore file */
-import { TConfigEntryKey } from '@repo/backend-types/db';
+import { guardTConfigEntryKey } from '@repo/backend-types/db';
 import mongoose, { AnyObject } from 'mongoose';
 
 const { SchemaType } = mongoose;
@@ -15,15 +15,10 @@ export class SupportedConfigKey extends SchemaType {
 
   cast(val: unknown) {
     if (typeof val === 'string') {
-      switch (val as TConfigEntryKey) {
-        case 'attemptsList':
-        case 'supportedLanguages':
-          return val;
-
-        default:
-          throw new Error(
-            `${NAME}: ${val} is not supported configuration key.`,
-          );
+      if (guardTConfigEntryKey(val)) {
+        return val;
+      } else {
+        throw new Error(`${NAME}: ${val} is not supported configuration key.`);
       }
     }
 

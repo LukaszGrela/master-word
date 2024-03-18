@@ -15,6 +15,7 @@ describe('Config model', () => {
       await Config.create<AnyKeys<IConfigEntry>>({
         key: 'fake',
         value: JSON.stringify(''),
+        validation: { type: 'string' },
       });
     } catch (e) {
       error = e as Error;
@@ -26,11 +27,29 @@ describe('Config model', () => {
       /Cast to SupportedConfigKey failed for value "fake"/,
     );
   });
+  it('fails if validation is not supported', async () => {
+    let error: Error | undefined;
+    try {
+      await Config.create<AnyKeys<IConfigEntry>>({
+        key: 'enabledLanguages',
+        value: JSON.stringify(''),
+      });
+    } catch (e) {
+      error = e as Error;
+    }
+
+    assert.notEqual(error, undefined);
+    assert.match(
+      `${error?.message}`,
+      /Config validation failed: validation.type: Path `validation.type` is required./,
+    );
+  });
   it('fails if value is missing', async () => {
     let error: Error | undefined;
     try {
       await Config.create({
         key: 'supportedLanguages',
+        validation: { type: 'string[]' },
       });
     } catch (e) {
       error = e as Error;
@@ -43,22 +62,24 @@ describe('Config model', () => {
     let error: Error | undefined;
     try {
       let doc = await Config.create<AnyKeys<IConfigEntry>>({
-        key: 'attemptsList',
+        key: 'supportedAttempts',
         value: JSON.stringify([]),
         appId: ['frontend'],
+        validation: { type: 'number[]' },
       });
       // try to save the same
       doc = await Config.create<AnyKeys<IConfigEntry>>({
-        key: 'attemptsList',
+        key: 'supportedAttempts',
         value: JSON.stringify([8]),
         appId: ['frontend'],
+        validation: { type: 'number[]' },
       });
     } catch (e) {
       error = e as Error;
     }
 
     assert.notEqual(error, undefined);
-    assert.match(`${error?.message}`, /dup key: { key: "attemptsList" }/);
+    assert.match(`${error?.message}`, /dup key: { key: "supportedAttempts" }/);
   });
   describe('getModelForConnection', () => {
     it('creates config entry with all fields', async () => {
@@ -67,6 +88,7 @@ describe('Config model', () => {
         key: 'supportedLanguages',
         value: JSON.stringify(['en', 'pl'].sort()),
         appId: ['admin', 'frontend'],
+        validation: { type: 'string[]' },
       });
 
       assert.equal(a.isNew, true);

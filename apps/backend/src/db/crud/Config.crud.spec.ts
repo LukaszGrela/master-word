@@ -3,7 +3,11 @@ import assert from 'node:assert';
 import type { IConfigEntry } from '@repo/backend-types/db';
 import mongoose, { AnyKeys } from 'mongoose';
 import { Config } from '../models/Config';
-import { getConfiguration, setConfigValue } from '../crud/Config.crud';
+import {
+  getConfiguration,
+  setConfigDefaults,
+  setConfigValue,
+} from '../crud/Config.crud';
 
 describe('Config CRUD operations', () => {
   let ids: mongoose.Types.ObjectId[];
@@ -15,21 +19,35 @@ describe('Config CRUD operations', () => {
         key: 'supportedLanguages',
         value: JSON.stringify(['en', 'pl']),
         appId: ['frontend', 'admin'],
+        validation: { type: 'string[]' },
       },
       {
-        key: 'attemptsList',
+        key: 'supportedAttempts',
         value: JSON.stringify([6, 7, 8]),
         appId: ['frontend'],
+        validation: { type: 'number[]' },
       },
     ]);
 
     ids = (await Config.find({}).exec()).map((d) => d._id);
   });
 
+  describe('setConfigDefaults', () => {
+    it('sets defaults', async () => {
+      let list = await setConfigDefaults();
+      assert.equal(list.length, 6);
+
+      list = await setConfigDefaults(mongoose.connection);
+      assert.equal(list.length, 6);
+    });
+  });
+
   describe('getConfiguration', () => {
     it('returns all configuration entries', async () => {
-      const list = await getConfiguration();
+      let list = await getConfiguration();
+      assert.equal(list.length, 2);
 
+      list = await getConfiguration(undefined, mongoose.connection);
       assert.equal(list.length, 2);
     });
     it('returns configuration entries for given appId', async () => {
@@ -43,20 +61,31 @@ describe('Config CRUD operations', () => {
   });
 
   describe('setConfigValue', () => {
-    it('creates new config entry', async () => {
+    it('Fails to modify non existing new config entry', async () => {
       await Config.collection.drop();
 
-      const empty = await Config.find({});
+      let empty = await Config.find({});
       assert.equal(empty.length, 0);
 
-      const doc = await setConfigValue(
-        'supportedLanguages',
-        JSON.stringify(['en', 'it', 'pl']),
-        ['frontend', 'admin'],
+      let error: Error | undefined;
+      try {
+        const doc = await setConfigValue(
+          'supportedLanguages',
+          JSON.stringify(['en', 'it', 'pl']),
+          ['frontend', 'admin'],
+        );
+      } catch (e) {
+        error = e as Error;
+      }
+
+      assert.notEqual(error, undefined);
+      assert.match(
+        `${error?.message}`,
+        /Config for supportedLanguages does not exist. Apply defaults first./,
       );
 
-      const notEmpty = await Config.find({});
-      assert.equal(notEmpty.length, 1);
+      empty = await Config.find({});
+      assert.equal(empty.length, 0);
     });
     it('updates existing config entry', async () => {
       const current = await Config.findOne({
@@ -81,6 +110,43 @@ describe('Config CRUD operations', () => {
       });
       assert.notEqual(modified, null);
       assert.equal(modified!.value, JSON.stringify(value));
+    });
+    it('changes the appId', async () => {
+      const current = await Config.findOne({
+        key: 'supportedLanguages',
+      });
+      assert.notEqual(current, null);
+
+      // save
+      await setConfigValue('supportedLanguages', current!.value, ['frontend']);
+
+      // check
+      const modified = await Config.findOne({
+        key: 'supportedLanguages',
+      });
+      assert.notEqual(modified, null);
+      assert.deepEqual(modified!.appId, ['frontend']);
+    });
+    it('defaults the appId to empty array', async () => {
+      const current = await Config.findOne({
+        key: 'supportedLanguages',
+      });
+      assert.notEqual(current, null);
+
+      // save
+      await setConfigValue(
+        'supportedLanguages',
+        current!.value,
+        undefined,
+        mongoose.connection,
+      );
+
+      // check
+      const modified = await Config.findOne({
+        key: 'supportedLanguages',
+      });
+      assert.notEqual(modified, null);
+      assert.equal(modified!.appId.length, 0);
     });
   });
 });
