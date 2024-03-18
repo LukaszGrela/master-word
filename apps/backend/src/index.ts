@@ -4,14 +4,21 @@ import {
   gameRoutes,
   backendDictionaryRoutes,
   frontendConfigRoutes,
+  backendConfigRoutes,
 } from './router';
 import dotenv from 'dotenv';
 import mongoose from 'mongoose';
 import connect from './db/connect';
+import { applyDefaults } from './db/applyDefaults';
 
 dotenv.config({
   path: ['.env.local', '.env'],
 });
+
+const isDevelopment = process.env.NODE_ENV === 'development';
+if (isDevelopment) {
+  mongoose.set('debug', true);
+}
 
 const PORT = process.env.PORT || 3001;
 
@@ -39,10 +46,14 @@ masterWordApp.use(
 
 masterWordApp.use('/api', frontendConfigRoutes);
 masterWordApp.use('/api', gameRoutes);
+masterWordApp.use('/api/backend', backendConfigRoutes);
 masterWordApp.use('/api/backend', backendDictionaryRoutes);
 const server = masterWordApp.listen(PORT, async () => {
   console.log(`Master Word server started, listening on port ${PORT}`);
+
   await connect();
+  applyDefaults();
+
   console.log('DB Connection status', mongoose.connection.readyState);
 });
 
