@@ -1,6 +1,10 @@
 import express from 'express';
 import cors from 'cors';
-import { gameRoutes, backendDictionaryRoutes } from './router';
+import {
+  gameRoutes,
+  backendDictionaryRoutes,
+  frontendConfigRoutes,
+} from './router';
 import dotenv from 'dotenv';
 import mongoose from 'mongoose';
 import connect from './db/connect';
@@ -33,6 +37,7 @@ masterWordApp.use(
   }),
 );
 
+masterWordApp.use('/api', frontendConfigRoutes);
 masterWordApp.use('/api', gameRoutes);
 masterWordApp.use('/api/backend', backendDictionaryRoutes);
 const server = masterWordApp.listen(PORT, async () => {

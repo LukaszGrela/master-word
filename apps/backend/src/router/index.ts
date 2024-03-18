@@ -1,4 +1,5 @@
 export * from './types';
 import { default as gameRoutes } from './game.routes';
 import { default as backendDictionaryRoutes } from './backend/dictionary';
-export { gameRoutes, backendDictionaryRoutes };
+import { default as frontendConfigRoutes } from './frontend/config.routes';
+export { gameRoutes, backendDictionaryRoutes, frontendConfigRoutes };
