@@ -1,17 +1,23 @@
-import { useCallback } from 'react';
+import { useCallback, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { EPaths } from '../enums';
 import { useLanguage } from '../../../i18n';
 import { GameLanguage } from '../../language';
+import { useConfig } from '../../../config';
 import './HomePage.scss';
 
 export const HomePage = () => {
+  const { loading, refresh } = useConfig();
   const { getUIText: t } = useLanguage();
   const navigate = useNavigate();
 
   const handleAction = useCallback(() => {
     navigate(EPaths.GAME);
   }, [navigate]);
+
+  useEffect(() => {
+    refresh();
+  }, [refresh]);
 
   return (
     <div className="page home">
@@ -28,7 +34,7 @@ export const HomePage = () => {
           {t('home-archive-button')}
         </button> */}
 
-        <button onClick={handleAction} className="primary">
+        <button onClick={handleAction} className="primary" disabled={loading}>
           {t('start-button')}
         </button>
       </div>

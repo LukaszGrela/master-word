@@ -1,17 +1,16 @@
-import { useCallback, useEffect, useState } from 'react';
+import { useCallback, useEffect, useMemo, useState } from 'react';
 import { Location, useLocation, useNavigate } from 'react-router-dom';
 import { TGameSessionRecord } from '@repo/backend-types';
 import { getBowserDetails, AppStorage } from '@repo/utils';
 import { EStorageKeys } from '@repo/utils';
 import {
   TErrorResponse,
-  TSupportedLanguages,
   getInit,
   getNextAttempt,
   guardTErrorResponse,
 } from '../../../api';
 import { useLanguage } from '../../../i18n';
-import { ATTEMPTS, Board, WORD_LENGTH } from '../../index';
+import { ATTEMPTS, Board, LANGUAGE, WORD_LENGTH } from '../../index';
 import { InputGuessPanel } from '../../panel';
 import { TGameState } from '../../types';
 import Word from '../../word/Word';
@@ -21,8 +20,6 @@ import { getResultsPath } from '../enums';
 import Spinner from '../../Spinner/Spinner';
 import { Timer } from '../../Timer';
 import './GamePage.scss';
-
-const emptyGameState = createGameState(ATTEMPTS, WORD_LENGTH);
 
 export const GamePage = () => {
   const location = useLocation() as Location<string | undefined>;
@@ -38,17 +35,23 @@ export const GamePage = () => {
   const [gameSession, setGameSession] = useState<TGameSessionRecord | null>(
     null,
   );
+  //
+  const language = storage.getItem(EStorageKeys.GAME_LANGUAGE) || LANGUAGE;
+  const attempts =
+    gameSession?.game?.max_attempts ||
+    Number(storage.getItem(EStorageKeys.GAME_ATTEMPTS)) ||
+    ATTEMPTS;
+  const wordLength =
+    gameSession?.game?.word_length ||
+    Number(storage.getItem(EStorageKeys.GAME_WORD_LENGTH)) ||
+    WORD_LENGTH;
+  const game = useMemo(() => {
+    return gameSession?.game?.state ?? createGameState(attempts, wordLength);
+  }, [attempts, gameSession?.game?.state, wordLength]);
+  //
   const urlSession = location.state;
   const session = gameSession?.session ?? urlSession ?? undefined;
-  const wordLength = gameSession?.game?.word_length ?? WORD_LENGTH;
-  const attempts = gameSession?.game?.max_attempts ?? ATTEMPTS;
-  const game = gameSession?.game?.state ?? emptyGameState.concat();
   const attempt = gameSession?.game?.attempt ?? 0;
-
-  // game word language
-  const language = (storage.getItem('word-language') ||
-    storage.getItem('ui-language') ||
-    'pl') as TSupportedLanguages;
 
   const clearSession = useCallback(() => {
     if (location.state && location.state === session) {
