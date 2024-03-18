@@ -1,21 +1,37 @@
-import { FC, useEffect, useState } from 'react';
+import { FC, useEffect, useMemo, useState } from 'react';
 import { EStorageKeys, AppStorage, noop } from '@repo/utils';
-import LanguageSelector from './LanguageSelector';
-import { TSupportedLanguages } from '../../api';
 import { useLanguage } from '../../i18n';
+import { getFlag } from '../../i18n/helpers';
+import LanguageSelector from './LanguageSelector';
+import { ILanguageListItem } from './types';
 
 const UILanguage: FC = () => {
-  const { loadedLanguage, loadTranslation } = useLanguage();
+  const { loadedLanguage, loadTranslation, getUIText: t } = useLanguage();
 
-  const [selectedTranslation, setTranslation] = useState<
-    TSupportedLanguages | undefined
-  >(loadedLanguage);
+  const [selectedTranslation, setTranslation] = useState<string | undefined>(
+    loadedLanguage,
+  );
 
   useEffect(() => {
     setTranslation(loadedLanguage);
   }, [loadedLanguage]);
 
-  const handleTranslationChange = (language: TSupportedLanguages): void => {
+  const uiList: ILanguageListItem[] = useMemo(() => {
+    return [
+      {
+        value: 'pl',
+        title: t('translation-button-pl'),
+        icon: getFlag('pl'),
+      },
+      {
+        value: 'en',
+        title: t('translation-button-en'),
+        icon: getFlag('en'),
+      },
+    ] as ILanguageListItem[];
+  }, [t]);
+
+  const handleTranslationChange = (language: string): void => {
     const used = loadedLanguage;
     if (language !== used) {
       loadTranslation(language)
@@ -29,6 +45,7 @@ const UILanguage: FC = () => {
 
   return (
     <LanguageSelector
+      list={uiList}
       language={selectedTranslation}
       onClick={handleTranslationChange}
     />
