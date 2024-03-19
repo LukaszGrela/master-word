@@ -16,7 +16,6 @@ export const ResultsPage = () => {
   const location = useLocation() as Location<TGameSessionRecord>;
   const gameSession = location.state;
 
-
   const win = location.pathname === getResultsPath('win');
 
   const playTimeMs = gameSession.game.finished
@@ -73,3 +72,9 @@ export const ResultsPage = () => {
     </div>
   );
 };
+
+export function Component() {
+  return <ResultsPage />;
+}
+
+Component.displayName = 'LazyResultsPage';

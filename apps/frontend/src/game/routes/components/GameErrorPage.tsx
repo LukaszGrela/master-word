@@ -4,11 +4,11 @@ import {
   useNavigate,
   useRouteError,
 } from 'react-router-dom';
+import { TGameSessionRecord } from '@repo/backend-types';
 import { useLanguage } from '../../../i18n';
 import { GameLanguage } from '../../language';
 import { useCallback } from 'react';
 import { EPaths } from '../enums';
-import { TGameSessionRecord } from '@repo/backend-types';
 import { TErrorResponse } from '../../../api';
 
 export const GameErrorPage = () => {
@@ -71,3 +71,8 @@ export const GameErrorPage = () => {
     </div>
   );
 };
+
+export function Component() {
+  return <GameErrorPage />;
+}
+Component.displayName = 'LazyGameErrorPage';

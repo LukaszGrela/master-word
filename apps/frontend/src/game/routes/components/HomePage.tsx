@@ -41,3 +41,9 @@ export const HomePage = () => {
     </div>
   );
 };
+
+export function Component() {
+  return <HomePage />;
+}
+
+Component.displayName = 'LazyHomePage';
