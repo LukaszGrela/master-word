@@ -3,6 +3,7 @@ import {
   FC,
   FormEventHandler,
   useCallback,
+  useMemo,
   useState,
 } from 'react';
 import {
@@ -19,10 +20,46 @@ import {
 } from '@mui/material';
 import SendIcon from '@mui/icons-material/Send';
 import { isCorrectWord } from '@repo/utils/isLetter';
-import { TPostAddWordParams } from '../../api/types';
-import { usePostAddWordMutation } from '../../store/slices/api';
+import {
+  usePostAddWordMutation,
+  TPostAddWordParams,
+} from '../../store/slices/api';
+import { useAppDispatch, useConfigState } from '../../store/hooks';
+import { ILanguageSelectorOption } from '../../types';
+import { setLanguage } from '../../store/slices/config';
 
 const NewWord: FC = () => {
+  const dispatch = useAppDispatch();
+  const { selectedLanguage, supportedLanguages } = useConfigState();
+
+  const languageList = useMemo(() => {
+    return supportedLanguages
+      .map(
+        (language): ILanguageSelectorOption => ({
+          value: language,
+          label: language.toUpperCase(),
+          flag:
+            language === 'pl' ? (
+              <>🇵🇱</>
+            ) : language === 'en' ? (
+              <>🇺🇸</>
+            ) : undefined,
+        }),
+      )
+      .map((option) => (
+        <option key={option.value} value={option.value}>
+          {option.flag} {option.label}
+        </option>
+      ));
+  }, [supportedLanguages]);
+  const handleSelectChange: ChangeEventHandler<HTMLSelectElement> = useCallback(
+    (e) => {
+      console.log(e.target.value);
+      dispatch(setLanguage(e.target.value));
+    },
+    [dispatch],
+  );
+
   const wordLength = 5;
 
   const [addWord, { isLoading }] = usePostAddWordMutation();
@@ -98,14 +135,14 @@ const NewWord: FC = () => {
                 </InputLabel>
                 <NativeSelect
                   disabled={isLoading}
-                  defaultValue={'pl'}
+                  value={selectedLanguage}
                   inputProps={{
                     name: 'language',
                     id: 'language',
                   }}
+                  onChange={handleSelectChange}
                 >
-                  <option value={'pl'}>🇵🇱 Polish</option>
-                  <option value={'en'}>🇺🇸 English</option>
+                  {languageList}
                 </NativeSelect>
               </FormControl>
               <input

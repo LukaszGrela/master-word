@@ -1,23 +1,22 @@
-import React from 'react';
+import React, { useCallback } from 'react';
 import AppBar from '@mui/material/AppBar';
 import Box from '@mui/material/Box';
 import Toolbar from '@mui/material/Toolbar';
-import IconButton from '@mui/material/IconButton';
 import Typography from '@mui/material/Typography';
 import Menu from '@mui/material/Menu';
 import Container from '@mui/material/Container';
 import Avatar from '@mui/material/Avatar';
-import Tooltip from '@mui/material/Tooltip';
 import MenuItem from '@mui/material/MenuItem';
 import SvgIcon from '@mui/material/SvgIcon';
 import { GrelaDesignIcon } from '../icons/GrelaDesignIcon';
-import { Link as RouterLink } from 'react-router-dom';
+import { Link as RouterLink, useNavigate } from 'react-router-dom';
 import { EPaths } from '../../routes/enums/paths';
-import { IProps } from './types';
+import { EMenuItemTypes, IMenuItems, IProps } from './types';
+import { Divider, ListItemIcon, ListItemText } from '@mui/material';
+import { IconButtonWithTooltip } from '../IconButtonWithTooltip';
 
-export const Header: React.FC<IProps> = ({ title }) => {
-  const settings = ['Profile', 'Account', 'Dashboard', 'Logout'];
-
+export const Header: React.FC<IProps> = ({ title, menu }) => {
+  const navigate = useNavigate();
   const [anchorElUser, setAnchorElUser] = React.useState<null | HTMLElement>(
     null,
   );
@@ -29,6 +28,25 @@ export const Header: React.FC<IProps> = ({ title }) => {
   const handleCloseUserMenu = () => {
     setAnchorElUser(null);
   };
+
+  const handleMenuItemSelected = useCallback(
+    (menuItem: IMenuItems) => () => {
+      const { value, link } = menuItem;
+      if (value === EMenuItemTypes.GAME) {
+        window.open(
+          `https://master-word.greladesign.co`,
+          '_blank',
+          'noopener, noreferrer',
+        );
+      }
+
+      if (value === EMenuItemTypes.LINK && link) {
+        navigate(link);
+      }
+      handleCloseUserMenu();
+    },
+    [navigate],
+  );
 
   return (
     <AppBar position="fixed">
@@ -67,33 +85,51 @@ export const Header: React.FC<IProps> = ({ title }) => {
           </Box>
 
           <Box sx={{ flexGrow: 0 }}>
-            <Tooltip title="Open settings">
-              <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
-                <Avatar alt="Lukasz Grela" />
-              </IconButton>
-            </Tooltip>
-            <Menu
-              sx={{ mt: '45px' }}
-              id="menu-appbar"
-              anchorEl={anchorElUser}
-              anchorOrigin={{
-                vertical: 'top',
-                horizontal: 'right',
+            <IconButtonWithTooltip
+              tooltipProps={{
+                title: 'Open menu',
               }}
-              keepMounted
-              transformOrigin={{
-                vertical: 'top',
-                horizontal: 'right',
+              buttonProps={{
+                onClick: handleOpenUserMenu,
+                sx: { p: 0 },
+                disabled: !menu || menu.length === 0,
               }}
-              open={Boolean(anchorElUser)}
-              onClose={handleCloseUserMenu}
             >
-              {settings.map((setting) => (
-                <MenuItem key={setting} onClick={handleCloseUserMenu}>
-                  <Typography textAlign="center">{setting}</Typography>
-                </MenuItem>
-              ))}
-            </Menu>
+              <Avatar alt="Lukasz Grela" />
+            </IconButtonWithTooltip>
+            {menu && (
+              <Menu
+                sx={{ mt: '45px' }}
+                id="menu-appbar"
+                anchorEl={anchorElUser}
+                anchorOrigin={{
+                  vertical: 'top',
+                  horizontal: 'right',
+                }}
+                keepMounted
+                transformOrigin={{
+                  vertical: 'top',
+                  horizontal: 'right',
+                }}
+                open={Boolean(anchorElUser)}
+                onClose={handleCloseUserMenu}
+              >
+                {menu.map((item, index) => {
+                  const { value, label, icon } = item;
+                  return value === EMenuItemTypes.SEPARATOR ? (
+                    <Divider key={`${value}-${index}`} variant="middle" />
+                  ) : (
+                    <MenuItem
+                      key={value}
+                      onClick={handleMenuItemSelected(item)}
+                    >
+                      {icon && <ListItemIcon>{icon}</ListItemIcon>}
+                      <ListItemText>{label}</ListItemText>
+                    </MenuItem>
+                  );
+                })}
+              </Menu>
+            )}
           </Box>
         </Toolbar>
       </Container>

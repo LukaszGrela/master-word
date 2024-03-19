@@ -6,10 +6,11 @@ import { MAX_ATTEMTPS } from '../constants';
 export const resetGameSession = (
   language: TSupportedLanguages,
   word: string,
+  maxAttempts = MAX_ATTEMTPS,
 ): TGameSession => {
   return {
     language,
-    max_attempts: MAX_ATTEMTPS,
+    max_attempts: maxAttempts,
     attempt: 0,
     word: word.toLocaleUpperCase(),
     word_length: word.length,

@@ -1,12 +1,11 @@
 import { Schema } from 'mongoose';
-import { SupportedLanguage } from './customTypes/SupportedLanguage';
 
 const { Types } = Schema;
 
 const DictionarySchema = new Schema({
-  language: { type: SupportedLanguage, required: true },
+  language: { type: Types.String, required: true, maxlength: 2, minlength: 2 },
   length: { type: Types.Number, required: true },
-  letter: { type: Types.String, maxLength: 1, required: true },
+  letter: { type: Types.String, maxLength: 1, minlength: 1, required: true },
   words: {
     type: [
       {

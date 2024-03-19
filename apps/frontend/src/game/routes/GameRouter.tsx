@@ -5,6 +5,7 @@ import { EPaths } from './enums';
 import { GamePage } from './components/GamePage';
 import GeneralError from './GeneralError';
 import { ResultsPage } from './components/ResultsPage';
+import { GameErrorPage } from './components/GameErrorPage';
 
 const router = createBrowserRouter([
   {
@@ -19,6 +20,11 @@ const router = createBrowserRouter([
       {
         path: EPaths.GAME,
         element: <GamePage />,
+      },
+      {
+        path: EPaths.GAME_ERROR,
+        element: <GameErrorPage />,
+        errorElement: <GameErrorPage />,
       },
       {
         path: EPaths.RESULTS,

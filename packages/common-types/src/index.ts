@@ -13,3 +13,8 @@ export type TStrictRequired<T, E = null | undefined> = {
 };
 export type PartialPick<T, K extends keyof T> = Partial<Omit<T, K>> &
   Pick<T, K>;
+
+export type TOptionData<T = string> = {
+  label: string;
+  value: T;
+};

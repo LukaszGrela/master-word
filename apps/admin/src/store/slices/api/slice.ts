@@ -6,7 +6,7 @@ export const adminApi = createApi({
   baseQuery: fetchBaseQuery({
     baseUrl: BACKEND_API,
   }),
-  tagTypes: ['UnknownWords', 'Dictionary'],
+  tagTypes: ['UnknownWords', 'Dictionary', 'Config'],
   endpoints: () => ({}),
 });
 

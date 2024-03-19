@@ -52,7 +52,7 @@ describe('Dictionary model', () => {
     let error;
     try {
       await Dictionary.create({
-        language: 'xx',
+        language: 'xxx',
         length: 5,
         letter: 'b',
       });

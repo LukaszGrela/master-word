@@ -34,6 +34,26 @@ import {
   usePostApproveWordsMutation,
   usePostRejectWordsMutation,
 } from '../../store/slices/api';
+import { IconButtonWithTooltip } from '../../components/IconButtonWithTooltip';
+import { EMenuItemTypes, IMenuItems } from '../../components/Header/types';
+
+const menu: IMenuItems[] = [
+  { label: 'Dashboard', value: EMenuItemTypes.LINK, link: EPaths.ROOT },
+
+  {
+    label: 'Manage Configuration',
+    value: EMenuItemTypes.LINK,
+    link: EPaths.CONFIG,
+  },
+  {
+    label: 'Manage Dictionaries',
+    value: EMenuItemTypes.LINK,
+    link: EPaths.DICTIONARIES,
+  },
+  { label: '', value: EMenuItemTypes.SEPARATOR },
+  { label: 'Master Word', value: EMenuItemTypes.GAME },
+  { label: 'Logout', value: EMenuItemTypes.LOGOUT },
+];
 
 const HeaderSpacer = styled('div')(({ theme }) => theme.mixins.toolbar);
 const Main = styled('main')({
@@ -54,6 +74,9 @@ const rowsPerPageOptions = [5, 10, 25];
 
 const getIdentifier = (data: TTableData): string =>
   `${data.word}-${data.language}-${data.parentId}`;
+
+const reviewSupported = (language: string): boolean =>
+  ['pl', 'fr'].indexOf(language) !== -1;
 
 const UnknownWords: FC = () => {
   const { data = [], isLoading } = useGetUnknownWordsQuery(undefined, {
@@ -163,7 +186,6 @@ const UnknownWords: FC = () => {
     [page, rows, rowsPerPage],
   );
   // pagination end
-
   const handleReview = useCallback(
     (
       action:
@@ -176,11 +198,18 @@ const UnknownWords: FC = () => {
     ): React.MouseEventHandler<HTMLButtonElement> =>
       () => {
         console.log('action', action, entry);
-        if (entry) {
-          if (action === 'verify' && entry.language === 'pl') {
+        if (action === 'verify' && entry) {
+          if (entry.language === 'pl') {
             // open popup with SJP
             window.open(
               `https://sjp.pwn.pl/szukaj/${entry.word.toLocaleUpperCase()}.html`,
+              '_blank',
+              'noopener, noreferrer',
+            );
+          }
+          if (entry.language === 'fr') {
+            window.open(
+              `https://www.wordmine.info/french/word/${entry.word.toLocaleUpperCase()}`,
               '_blank',
               'noopener, noreferrer',
             );
@@ -270,7 +299,7 @@ const UnknownWords: FC = () => {
           minHeight: '100vh',
         }}
       >
-        <Header title="Unknown Words" />
+        <Header title="Unknown Words" menu={menu} />
         <HeaderSpacer />
         <Main>
           <Paper>
@@ -363,16 +392,19 @@ const UnknownWords: FC = () => {
                         <TableCell>{data.word}</TableCell>
                         <TableCell>{data.language}</TableCell>
                         <TableCell>
-                          <Tooltip title="Verify">
-                            <IconButton
-                              color="secondary"
-                              size="small"
-                              onClick={handleReview('verify', data)}
-                              disabled={data.language !== 'pl'}
-                            >
-                              <PreviewIcon />
-                            </IconButton>
-                          </Tooltip>
+                          <IconButtonWithTooltip
+                            tooltipProps={{
+                              title: 'Verify',
+                            }}
+                            buttonProps={{
+                              color: 'secondary',
+                              size: 'small',
+                              onClick: handleReview('verify', data),
+                              disabled: !reviewSupported(data.language),
+                            }}
+                          >
+                            <PreviewIcon />
+                          </IconButtonWithTooltip>
                           <Tooltip title="Reject">
                             <IconButton
                               color="error"

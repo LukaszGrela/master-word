@@ -1,6 +1,6 @@
 const GATEWAY = import.meta.env.VITE_API_ENDPOINT as string;
 
-export const apiInit = (language: 'pl' | 'en', session?: string): string => {
+export const apiInit = (language: string, session?: string): string => {
   const urlParams = new URLSearchParams({
     language,
   });
@@ -34,3 +34,5 @@ export const apiGameSession = (session: string): string => {
 
   return `${GATEWAY}/game-session${query}`;
 };
+
+export const apiConfig = () => `${GATEWAY}/config`;

@@ -1,4 +1,3 @@
-import { TSupportedLanguages } from '../api';
 import { IDictionary } from '@repo/common-types';
 import { hasOwn } from '@repo/utils';
 
@@ -41,7 +40,7 @@ export const replaceSubstituteMap = (
 };
 
 export const loadTranslation = async (
-  language: TSupportedLanguages,
+  language: string,
   signal?: AbortSignal,
 ) => {
   console.log('loadTranslation', language);

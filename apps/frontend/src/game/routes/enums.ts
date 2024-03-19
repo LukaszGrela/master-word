@@ -1,6 +1,7 @@
 export enum EPaths {
   ROOT = '/',
   GAME = '/game',
+  GAME_ERROR = '/game/error',
   RESULTS = '/results/:result',
 }
 
