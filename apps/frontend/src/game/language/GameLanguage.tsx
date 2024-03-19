@@ -38,15 +38,16 @@ const GameLanguage: FC = () => {
 
   return (
     <div className="game-language">
-      <p className="language-info">{t('result-language-info')}</p>
-      <LanguageSelector
-        list={languages}
-        language={wordLanguage}
-        onClick={handleWordLanguageChange}
-        translationOverride={{
-          screenReaderInfo: t('result-language-selector-sr'),
-        }}
-      />
+      {languages.length > 0 && (
+        <>
+          <p className="language-info">{t('result-language-info')}</p>
+          <LanguageSelector
+            list={languages}
+            language={wordLanguage}
+            onClick={handleWordLanguageChange}
+          />
+        </>
+      )}
     </div>
   );
 };
