@@ -5,6 +5,7 @@ import {
   Checkbox,
   Container,
   IconButton,
+  IconButtonProps,
   LinearProgress,
   Paper,
   Table,
@@ -16,6 +17,7 @@ import {
   TableRow,
   Toolbar,
   Tooltip,
+  TooltipProps,
   Typography,
   alpha,
   styled,
@@ -26,7 +28,13 @@ import PreviewIcon from '@mui/icons-material/Preview';
 import { TTableData } from '@repo/backend-types/dictionary';
 import { Footer } from '../../components/Footer';
 import { Header } from '../../components/Header';
-import React, { FC, useCallback, useEffect, useState } from 'react';
+import React, {
+  FC,
+  PropsWithChildren,
+  useCallback,
+  useEffect,
+  useState,
+} from 'react';
 import { useSnackbar } from 'notistack';
 import { EPaths } from '../enums/paths';
 import {
@@ -34,6 +42,23 @@ import {
   usePostApproveWordsMutation,
   usePostRejectWordsMutation,
 } from '../../store/slices/api';
+
+type TIconButtonWithTooltipProps = {
+  tooltipProps: Omit<TooltipProps, 'children'>;
+  buttonProps: Omit<IconButtonProps, 'children'>;
+};
+
+const IconButtonWithTooltip: FC<
+  PropsWithChildren<TIconButtonWithTooltipProps>
+> = ({ tooltipProps, buttonProps, children }) => {
+  const button = <IconButton {...buttonProps}>{children}</IconButton>;
+
+  return buttonProps.disabled ? (
+    button
+  ) : (
+    <Tooltip {...tooltipProps}>{button}</Tooltip>
+  );
+};
 
 const HeaderSpacer = styled('div')(({ theme }) => theme.mixins.toolbar);
 const Main = styled('main')({
@@ -54,6 +79,9 @@ const rowsPerPageOptions = [5, 10, 25];
 
 const getIdentifier = (data: TTableData): string =>
   `${data.word}-${data.language}-${data.parentId}`;
+
+const reviewSupported = (language: string): boolean =>
+  ['pl', 'fr'].indexOf(language) !== -1;
 
 const UnknownWords: FC = () => {
   const { data = [], isLoading } = useGetUnknownWordsQuery(undefined, {
@@ -163,7 +191,6 @@ const UnknownWords: FC = () => {
     [page, rows, rowsPerPage],
   );
   // pagination end
-
   const handleReview = useCallback(
     (
       action:
@@ -176,11 +203,18 @@ const UnknownWords: FC = () => {
     ): React.MouseEventHandler<HTMLButtonElement> =>
       () => {
         console.log('action', action, entry);
-        if (entry) {
-          if (action === 'verify' && entry.language === 'pl') {
+        if (action === 'verify' && entry) {
+          if (entry.language === 'pl') {
             // open popup with SJP
             window.open(
               `https://sjp.pwn.pl/szukaj/${entry.word.toLocaleUpperCase()}.html`,
+              '_blank',
+              'noopener, noreferrer',
+            );
+          }
+          if (entry.language === 'fr') {
+            window.open(
+              `https://www.wordmine.info/french/word/${entry.word.toLocaleUpperCase()}`,
               '_blank',
               'noopener, noreferrer',
             );
@@ -363,16 +397,19 @@ const UnknownWords: FC = () => {
                         <TableCell>{data.word}</TableCell>
                         <TableCell>{data.language}</TableCell>
                         <TableCell>
-                          <Tooltip title="Verify">
-                            <IconButton
-                              color="secondary"
-                              size="small"
-                              onClick={handleReview('verify', data)}
-                              disabled={data.language !== 'pl'}
-                            >
-                              <PreviewIcon />
-                            </IconButton>
-                          </Tooltip>
+                          <IconButtonWithTooltip
+                            tooltipProps={{
+                              title: 'Verify',
+                            }}
+                            buttonProps={{
+                              color: 'secondary',
+                              size: 'small',
+                              onClick: handleReview('verify', data),
+                              disabled: !reviewSupported(data.language),
+                            }}
+                          >
+                            <PreviewIcon />
+                          </IconButtonWithTooltip>
                           <Tooltip title="Reject">
                             <IconButton
                               color="error"
