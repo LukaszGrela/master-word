@@ -19,3 +19,8 @@ export {
   useLazyGetDictionaryLanguagesQuery,
   usePostAddWordMutation,
 } from './slice.dictionary';
+// actions from config
+export {
+  useGetConfigurationQuery,
+  useLazyGetConfigurationQuery,
+} from './slice.config';

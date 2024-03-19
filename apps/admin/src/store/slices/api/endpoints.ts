@@ -26,3 +26,5 @@ export const apiDictionaryStats = (language = 'pl', length = 5) => {
   const query = search === '' ? '' : `?${search}`;
   return `/dictionary-stats${query}`;
 };
+
+export const apiConfig = () => `/configuration`;
