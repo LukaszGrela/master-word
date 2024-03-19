@@ -1,7 +1,7 @@
 import { FC } from 'react';
 import { Provider } from 'react-redux';
-import { CssBaseline } from '@mui/material';
-import { StyledEngineProvider } from '@mui/material/styles';
+import CssBaseline from '@mui/material/CssBaseline';
+import StyledEngineProvider from '@mui/material/StyledEngineProvider';
 import { SnackbarProvider } from 'notistack';
 import { Router } from './routes/Router';
 import { store } from './store';

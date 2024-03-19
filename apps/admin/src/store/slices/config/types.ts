@@ -1,6 +1,6 @@
 import { TConfigEntryKey } from '@repo/backend-types/db';
 
-type TConfigKeys = Extract<
+export type TConfigKeys = Extract<
   TConfigEntryKey,
   'supportedLanguages' | 'supportedLength'
 >;
@@ -17,8 +17,3 @@ export interface IConfigState extends TConfigMap {
 }
 
 export type TSetConfigPayload = Pick<IConfigState, TConfigKeys>;
-
-export const isAdminConfiguration = (
-  key: TConfigEntryKey,
-): key is TConfigKeys =>
-  key === 'supportedLanguages' || key === 'supportedLength';

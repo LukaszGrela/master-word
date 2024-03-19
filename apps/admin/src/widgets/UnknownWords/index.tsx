@@ -6,10 +6,10 @@ import CardContent from '@mui/material/CardContent';
 import CardHeader from '@mui/material/CardHeader';
 import CardActions from '@mui/material/CardActions';
 import Card from '@mui/material/Card';
+import LinearProgress from '@mui/material/LinearProgress';
 
 import { EPaths } from '../../routes/enums/paths';
 import { useGetUnknownWordsQuery } from '../../store/slices/api';
-import { LinearProgress } from '@mui/material';
 
 const UnknownWords: FC = () => {
   const navigate = useNavigate();

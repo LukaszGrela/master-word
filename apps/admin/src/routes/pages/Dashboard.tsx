@@ -1,4 +1,6 @@
-import { Container, Grid, styled } from '@mui/material';
+import Container from '@mui/material/Container';
+import Grid from '@mui/material/Grid';
+import styled from '@mui/material/styles/styled';
 import { Footer } from '../../components/Footer';
 import { Header } from '../../components/Header';
 import {
@@ -35,7 +37,7 @@ const Main = styled('main')({
   marginTop: '1rem',
   marginBottom: '2.5rem',
 });
-export default function Dashboard() {
+export function Dashboard() {
   return (
     <div className="dashboard">
       <Container
@@ -80,3 +82,9 @@ export default function Dashboard() {
     </div>
   );
 }
+
+export function Component() {
+  return <Dashboard />;
+}
+
+Component.displayName = 'LazyDashboardPage';

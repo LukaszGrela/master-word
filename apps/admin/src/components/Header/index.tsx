@@ -1,4 +1,5 @@
 import React, { useCallback } from 'react';
+import { Link as RouterLink, useNavigate } from 'react-router-dom';
 import AppBar from '@mui/material/AppBar';
 import Box from '@mui/material/Box';
 import Toolbar from '@mui/material/Toolbar';
@@ -8,11 +9,12 @@ import Container from '@mui/material/Container';
 import Avatar from '@mui/material/Avatar';
 import MenuItem from '@mui/material/MenuItem';
 import SvgIcon from '@mui/material/SvgIcon';
+import Divider from '@mui/material/Divider';
+import ListItemIcon from '@mui/material/ListItemIcon';
+import ListItemText from '@mui/material/ListItemText';
 import { GrelaDesignIcon } from '../icons/GrelaDesignIcon';
-import { Link as RouterLink, useNavigate } from 'react-router-dom';
 import { EPaths } from '../../routes/enums/paths';
 import { EMenuItemTypes, IMenuItems, IProps } from './types';
-import { Divider, ListItemIcon, ListItemText } from '@mui/material';
 import { IconButtonWithTooltip } from '../IconButtonWithTooltip';
 
 export const Header: React.FC<IProps> = ({ title, menu }) => {
@@ -115,12 +117,12 @@ export const Header: React.FC<IProps> = ({ title, menu }) => {
                 onClose={handleCloseUserMenu}
               >
                 {menu.map((item, index) => {
-                  const { value, label, icon } = item;
+                  const { value, label, icon, link } = item;
                   return value === EMenuItemTypes.SEPARATOR ? (
                     <Divider key={`${value}-${index}`} variant="middle" />
                   ) : (
                     <MenuItem
-                      key={value}
+                      key={`${value}:${label}:${link}`}
                       onClick={handleMenuItemSelected(item)}
                     >
                       {icon && <ListItemIcon>{icon}</ListItemIcon>}
