@@ -24,6 +24,7 @@ const router = createBrowserRouter([
       {
         path: EPaths.GAME_ERROR,
         element: <GameErrorPage />,
+        errorElement: <GameErrorPage />,
       },
       {
         path: EPaths.RESULTS,
