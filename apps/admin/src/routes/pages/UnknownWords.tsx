@@ -5,7 +5,6 @@ import {
   Checkbox,
   Container,
   IconButton,
-  IconButtonProps,
   LinearProgress,
   Paper,
   Table,
@@ -17,7 +16,6 @@ import {
   TableRow,
   Toolbar,
   Tooltip,
-  TooltipProps,
   Typography,
   alpha,
   styled,
@@ -28,13 +26,7 @@ import PreviewIcon from '@mui/icons-material/Preview';
 import { TTableData } from '@repo/backend-types/dictionary';
 import { Footer } from '../../components/Footer';
 import { Header } from '../../components/Header';
-import React, {
-  FC,
-  PropsWithChildren,
-  useCallback,
-  useEffect,
-  useState,
-} from 'react';
+import React, { FC, useCallback, useEffect, useState } from 'react';
 import { useSnackbar } from 'notistack';
 import { EPaths } from '../enums/paths';
 import {
@@ -42,23 +34,17 @@ import {
   usePostApproveWordsMutation,
   usePostRejectWordsMutation,
 } from '../../store/slices/api';
+import { IconButtonWithTooltip } from '../../components/IconButtonWithTooltip';
+import { IMenuItems } from '../../components/Header/types';
 
-type TIconButtonWithTooltipProps = {
-  tooltipProps: Omit<TooltipProps, 'children'>;
-  buttonProps: Omit<IconButtonProps, 'children'>;
-};
-
-const IconButtonWithTooltip: FC<
-  PropsWithChildren<TIconButtonWithTooltipProps>
-> = ({ tooltipProps, buttonProps, children }) => {
-  const button = <IconButton {...buttonProps}>{children}</IconButton>;
-
-  return buttonProps.disabled ? (
-    button
-  ) : (
-    <Tooltip {...tooltipProps}>{button}</Tooltip>
-  );
-};
+const menu: IMenuItems[] = [
+  { label: 'Dashboard', value: 'link', link: EPaths.ROOT },
+  { label: 'Manage Configuration', value: 'link', link: EPaths.CONFIG },
+  { label: 'Manage Dictionaries', value: 'link', link: EPaths.DICTIONARIES },
+  { label: '', value: 'SEPARATOR' },
+  { label: 'Master Word', value: 'game' },
+  { label: 'Logout', value: 'logout' },
+];
 
 const HeaderSpacer = styled('div')(({ theme }) => theme.mixins.toolbar);
 const Main = styled('main')({
@@ -304,7 +290,7 @@ const UnknownWords: FC = () => {
           minHeight: '100vh',
         }}
       >
-        <Header title="Unknown Words" />
+        <Header title="Unknown Words" menu={menu} />
         <HeaderSpacer />
         <Main>
           <Paper>

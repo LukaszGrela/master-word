@@ -6,6 +6,17 @@ import {
   NewWordWidget,
   UnknownWordsWidget,
 } from '../../widgets';
+import { IMenuItems } from '../../components/Header/types';
+import { EPaths } from '../enums/paths';
+
+const menu: IMenuItems[] = [
+  { label: 'Unknown Words', value: 'link', link: EPaths.UNKOWN_WORDS },
+  { label: 'Manage Configuration', value: 'link', link: EPaths.CONFIG },
+  { label: 'Manage Dictionaries', value: 'link', link: EPaths.DICTIONARIES },
+  { label: '', value: 'SEPARATOR' },
+  { label: 'Master Word', value: 'game' },
+  { label: 'Logout', value: 'logout' },
+];
 
 const HeaderSpacer = styled('div')(({ theme }) => theme.mixins.toolbar);
 const Main = styled('main')({
@@ -20,7 +31,7 @@ export default function Dashboard() {
           minHeight: '100vh',
         }}
       >
-        <Header />
+        <Header menu={menu} />
         <HeaderSpacer />
         <Main>
           <Grid container spacing={2}>
