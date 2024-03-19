@@ -6,6 +6,7 @@ import { GrelaDesignIcon } from '../icons/GrelaDesignIcon';
 import UILanguage from '../language/UILanguage';
 
 import './Root.scss';
+import GeneralError from './GeneralError';
 
 export const Root = () => {
   const { loadedLanguage, loading } = useLanguage();
@@ -29,3 +30,15 @@ export const Root = () => {
     </div>
   );
 };
+
+export function Component() {
+  return <Root />;
+}
+
+Component.displayName = 'LazyRoot';
+
+export function ErrorBoundry() {
+  return <GeneralError />;
+}
+
+ErrorBoundry.displayName = 'LazyGeneralError';

@@ -297,3 +297,9 @@ export const GamePage = () => {
     </div>
   );
 };
+
+export function Component() {
+  return <GamePage />;
+}
+
+Component.displayName = 'LazyGamePage';

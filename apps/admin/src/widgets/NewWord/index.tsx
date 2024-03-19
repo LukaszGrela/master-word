@@ -6,18 +6,16 @@ import {
   useMemo,
   useState,
 } from 'react';
-import {
-  Box,
-  Button,
-  CardContent,
-  CardHeader,
-  FormControl,
-  InputLabel,
-  NativeSelect,
-  Card,
-  Stack,
-  TextField,
-} from '@mui/material';
+import Box from '@mui/material/Box';
+import Button from '@mui/material/Button';
+import CardContent from '@mui/material/CardContent';
+import CardHeader from '@mui/material/CardHeader';
+import FormControl from '@mui/material/FormControl';
+import InputLabel from '@mui/material/InputLabel';
+import NativeSelect from '@mui/material/NativeSelect';
+import Card from '@mui/material/Card';
+import Stack from '@mui/material/Stack';
+import TextField from '@mui/material/TextField';
 import SendIcon from '@mui/icons-material/Send';
 import { isCorrectWord } from '@repo/utils/isLetter';
 import {

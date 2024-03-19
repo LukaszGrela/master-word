@@ -1,4 +1,4 @@
-import { TooltipProps, IconButtonProps } from '@mui/material';
+import type { TooltipProps, IconButtonProps } from '@mui/material';
 
 export interface IProps {
   tooltipProps: Omit<TooltipProps, 'children'>;

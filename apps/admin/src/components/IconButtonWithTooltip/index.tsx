@@ -1,5 +1,6 @@
 import { FC, PropsWithChildren } from 'react';
-import { IconButton, Tooltip } from '@mui/material';
+import IconButton from '@mui/material/IconButton';
+import Tooltip from '@mui/material/Tooltip';
 import { IProps } from './types';
 
 export const IconButtonWithTooltip: FC<PropsWithChildren<IProps>> = ({

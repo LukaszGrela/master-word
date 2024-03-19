@@ -1,34 +1,26 @@
 import { RouterProvider, createBrowserRouter } from 'react-router-dom';
-import { Root } from './Root';
-import { HomePage } from './components/HomePage';
 import { EPaths } from './enums';
-import { GamePage } from './components/GamePage';
-import GeneralError from './GeneralError';
-import { ResultsPage } from './components/ResultsPage';
-import { GameErrorPage } from './components/GameErrorPage';
 
 const router = createBrowserRouter([
   {
     path: EPaths.ROOT,
-    element: <Root />,
-    errorElement: <GeneralError />,
+    lazy: () => import('./Root'),
     children: [
       {
         index: true,
-        element: <HomePage />,
+        lazy: () => import('./components/HomePage'),
       },
       {
         path: EPaths.GAME,
-        element: <GamePage />,
+        lazy: () => import('./components/GamePage'),
       },
       {
         path: EPaths.GAME_ERROR,
-        element: <GameErrorPage />,
-        errorElement: <GameErrorPage />,
+        lazy: () => import('./components/GameErrorPage'),
       },
       {
         path: EPaths.RESULTS,
-        element: <ResultsPage />,
+        lazy: () => import('./components/ResultsPage'),
       },
     ],
   },

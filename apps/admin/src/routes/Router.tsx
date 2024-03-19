@@ -1,7 +1,7 @@
 import { FC } from 'react';
 import { RouterProvider, createBrowserRouter } from 'react-router-dom';
 import { EPaths } from './enums/paths';
-import { DashboardPage, GeneralErrorPage, UnknownWordsPage } from './pages';
+import { default as GeneralErrorPage } from './pages/GeneralError';
 import { useGetConfigurationQuery } from '../store/slices/api';
 
 const router = createBrowserRouter([
@@ -11,11 +11,11 @@ const router = createBrowserRouter([
     children: [
       {
         index: true,
-        element: <DashboardPage />,
+        lazy: () => import('./pages/Dashboard'),
       },
       {
         path: EPaths.UNKOWN_WORDS,
-        element: <UnknownWordsPage />,
+        lazy: () => import('./pages/UnknownWords'),
       },
     ],
   },

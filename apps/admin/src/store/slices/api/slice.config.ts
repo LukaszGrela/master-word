@@ -1,7 +1,8 @@
 import { IConfigEntry } from '@repo/backend-types/db';
 import { adminApi } from './slice';
 import { apiConfig } from './endpoints';
-import { TSetConfigPayload, isAdminConfiguration, setConfig } from '../config';
+import { isAdminConfiguration, setConfig } from '../config';
+import type { TSetConfigPayload } from '../config';
 
 export const configApi = adminApi.injectEndpoints({
   endpoints: (builder) => ({
@@ -10,7 +11,7 @@ export const configApi = adminApi.injectEndpoints({
       string | string[] | undefined
     >({
       query: () => apiConfig(),
-      onQueryStarted: async (id, { dispatch, queryFulfilled }) => {
+      onQueryStarted: async (_id, { dispatch, queryFulfilled }) => {
         try {
           const { data } = await queryFulfilled;
           const payload = data.reduce((acc: TSetConfigPayload, item) => {

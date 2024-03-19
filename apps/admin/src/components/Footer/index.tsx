@@ -1,8 +1,9 @@
 import { FC } from 'react';
 import { GrelaDesignIcon } from '../icons/GrelaDesignIcon';
 import Box from '@mui/material/Box';
+import Container from '@mui/material/Container';
+import Typography from '@mui/material/Typography';
 import './Footer.scss';
-import { Container, Typography } from '@mui/material';
 
 export const Footer: FC = () => {
   return (

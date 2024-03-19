@@ -1,33 +1,31 @@
+import React, { FC, useCallback, useEffect, useState } from 'react';
 import { Link as RouterLink } from 'react-router-dom';
-
-import {
-  Button,
-  Checkbox,
-  Container,
-  IconButton,
-  LinearProgress,
-  Paper,
-  Table,
-  TableBody,
-  TableCell,
-  TableContainer,
-  TableHead,
-  TablePagination,
-  TableRow,
-  Toolbar,
-  Tooltip,
-  Typography,
-  alpha,
-  styled,
-} from '@mui/material';
+import { useSnackbar } from 'notistack';
+import Button from '@mui/material/Button';
+import Checkbox from '@mui/material/Checkbox';
+import Container from '@mui/material/Container';
+import IconButton from '@mui/material/IconButton';
+import LinearProgress from '@mui/material/LinearProgress';
+import Paper from '@mui/material/Paper';
+import Table from '@mui/material/Table';
+import TableBody from '@mui/material/TableBody';
+import TableCell from '@mui/material/TableCell';
+import TableContainer from '@mui/material/TableContainer';
+import TableHead from '@mui/material/TableHead';
+import TablePagination from '@mui/material/TablePagination';
+import TableRow from '@mui/material/TableRow';
+import Toolbar from '@mui/material/Toolbar';
+import Tooltip from '@mui/material/Tooltip';
+import Typography from '@mui/material/Typography';
+import { alpha } from '@mui/system/colorManipulator';
+import styled from '@mui/material/styles/styled';
 import ThumbUpIcon from '@mui/icons-material/ThumbUp';
 import ThumbDownIcon from '@mui/icons-material/ThumbDown';
 import PreviewIcon from '@mui/icons-material/Preview';
 import { TTableData } from '@repo/backend-types/dictionary';
+
 import { Footer } from '../../components/Footer';
 import { Header } from '../../components/Header';
-import React, { FC, useCallback, useEffect, useState } from 'react';
-import { useSnackbar } from 'notistack';
 import { EPaths } from '../enums/paths';
 import {
   useGetUnknownWordsQuery,
@@ -78,7 +76,7 @@ const getIdentifier = (data: TTableData): string =>
 const reviewSupported = (language: string): boolean =>
   ['pl', 'fr'].indexOf(language) !== -1;
 
-const UnknownWords: FC = () => {
+export const UnknownWords: FC = () => {
   const { data = [], isLoading } = useGetUnknownWordsQuery(undefined, {
     pollingInterval: 60000,
   });
@@ -480,4 +478,8 @@ const UnknownWords: FC = () => {
   );
 };
 
-export default UnknownWords;
+export function Component() {
+  return <UnknownWords />;
+}
+
+Component.displayName = 'LazyUnknownWordsPage';
