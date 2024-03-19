@@ -1,7 +1,7 @@
 import { IConfigEntry } from '@repo/backend-types/db';
 import { adminApi } from './slice';
 import { apiConfig } from './endpoints';
-import { TSetConfigPayload, setConfig } from '../config';
+import { TSetConfigPayload, isAdminConfiguration, setConfig } from '../config';
 
 export const configApi = adminApi.injectEndpoints({
   endpoints: (builder) => ({
@@ -16,8 +16,7 @@ export const configApi = adminApi.injectEndpoints({
           const payload = data.reduce((acc: TSetConfigPayload, item) => {
             if (
               item.appId.indexOf('admin') !== -1 &&
-              (item.key === 'supportedLanguages' ||
-                item.key === 'supportedLength')
+              isAdminConfiguration(item.key)
             ) {
               const value = JSON.parse(item.value) as string;
               return { ...acc, [item.key]: value };
