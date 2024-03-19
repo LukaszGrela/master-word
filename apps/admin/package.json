@@ -26,6 +26,7 @@
   },
   "devDependencies": {
     "@repo/backend-types": "*",
+    "@repo/common-types": "*",
     "@repo/config-typescript": "*",
     "@types/react": "^18.2.56",
     "@types/react-dom": "^18.2.19",
