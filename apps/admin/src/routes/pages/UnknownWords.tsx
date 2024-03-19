@@ -35,15 +35,24 @@ import {
   usePostRejectWordsMutation,
 } from '../../store/slices/api';
 import { IconButtonWithTooltip } from '../../components/IconButtonWithTooltip';
-import { IMenuItems } from '../../components/Header/types';
+import { EMenuItemTypes, IMenuItems } from '../../components/Header/types';
 
 const menu: IMenuItems[] = [
-  { label: 'Dashboard', value: 'link', link: EPaths.ROOT },
-  { label: 'Manage Configuration', value: 'link', link: EPaths.CONFIG },
-  { label: 'Manage Dictionaries', value: 'link', link: EPaths.DICTIONARIES },
-  { label: '', value: 'SEPARATOR' },
-  { label: 'Master Word', value: 'game' },
-  { label: 'Logout', value: 'logout' },
+  { label: 'Dashboard', value: EMenuItemTypes.LINK, link: EPaths.ROOT },
+
+  {
+    label: 'Manage Configuration',
+    value: EMenuItemTypes.LINK,
+    link: EPaths.CONFIG,
+  },
+  {
+    label: 'Manage Dictionaries',
+    value: EMenuItemTypes.LINK,
+    link: EPaths.DICTIONARIES,
+  },
+  { label: '', value: EMenuItemTypes.SEPARATOR },
+  { label: 'Master Word', value: EMenuItemTypes.GAME },
+  { label: 'Logout', value: EMenuItemTypes.LOGOUT },
 ];
 
 const HeaderSpacer = styled('div')(({ theme }) => theme.mixins.toolbar);

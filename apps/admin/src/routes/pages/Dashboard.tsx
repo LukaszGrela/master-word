@@ -6,16 +6,28 @@ import {
   NewWordWidget,
   UnknownWordsWidget,
 } from '../../widgets';
-import { IMenuItems } from '../../components/Header/types';
+import { EMenuItemTypes, IMenuItems } from '../../components/Header/types';
 import { EPaths } from '../enums/paths';
 
 const menu: IMenuItems[] = [
-  { label: 'Unknown Words', value: 'link', link: EPaths.UNKOWN_WORDS },
-  { label: 'Manage Configuration', value: 'link', link: EPaths.CONFIG },
-  { label: 'Manage Dictionaries', value: 'link', link: EPaths.DICTIONARIES },
-  { label: '', value: 'SEPARATOR' },
-  { label: 'Master Word', value: 'game' },
-  { label: 'Logout', value: 'logout' },
+  {
+    label: 'Unknown Words',
+    value: EMenuItemTypes.LINK,
+    link: EPaths.UNKOWN_WORDS,
+  },
+  {
+    label: 'Manage Configuration',
+    value: EMenuItemTypes.LINK,
+    link: EPaths.CONFIG,
+  },
+  {
+    label: 'Manage Dictionaries',
+    value: EMenuItemTypes.LINK,
+    link: EPaths.DICTIONARIES,
+  },
+  { label: '', value: EMenuItemTypes.SEPARATOR },
+  { label: 'Master Word', value: EMenuItemTypes.GAME },
+  { label: 'Logout', value: EMenuItemTypes.LOGOUT },
 ];
 
 const HeaderSpacer = styled('div')(({ theme }) => theme.mixins.toolbar);

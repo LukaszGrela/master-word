@@ -11,7 +11,7 @@ import SvgIcon from '@mui/material/SvgIcon';
 import { GrelaDesignIcon } from '../icons/GrelaDesignIcon';
 import { Link as RouterLink, useNavigate } from 'react-router-dom';
 import { EPaths } from '../../routes/enums/paths';
-import { IMenuItems, IProps, MENU_SEPARATOR_ITEM } from './types';
+import { EMenuItemTypes, IMenuItems, IProps } from './types';
 import { Divider, ListItemIcon, ListItemText } from '@mui/material';
 import { IconButtonWithTooltip } from '../IconButtonWithTooltip';
 
@@ -32,7 +32,7 @@ export const Header: React.FC<IProps> = ({ title, menu }) => {
   const handleMenuItemSelected = useCallback(
     (menuItem: IMenuItems) => () => {
       const { value, link } = menuItem;
-      if (value === 'game') {
+      if (value === EMenuItemTypes.GAME) {
         window.open(
           `https://master-word.greladesign.co`,
           '_blank',
@@ -40,7 +40,7 @@ export const Header: React.FC<IProps> = ({ title, menu }) => {
         );
       }
 
-      if (value === 'link' && link) {
+      if (value === EMenuItemTypes.LINK && link) {
         navigate(link);
       }
       handleCloseUserMenu();
@@ -116,7 +116,7 @@ export const Header: React.FC<IProps> = ({ title, menu }) => {
               >
                 {menu.map((item, index) => {
                   const { value, label, icon } = item;
-                  return value === MENU_SEPARATOR_ITEM ? (
+                  return value === EMenuItemTypes.SEPARATOR ? (
                     <Divider key={`${value}-${index}`} variant="middle" />
                   ) : (
                     <MenuItem
