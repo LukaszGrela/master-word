@@ -25,7 +25,7 @@ import PreviewIcon from '@mui/icons-material/Preview';
 import { TTableData } from '@repo/backend-types/dictionary';
 
 import { Footer } from '../../components/Footer';
-import { Header } from '../../components/Header';
+import { Header, HeaderSpacer } from '../../components/Header';
 import { EPaths } from '../enums/paths';
 import {
   useGetUnknownWordsQuery,
@@ -53,7 +53,6 @@ const menu: IMenuItems[] = [
   { label: 'Logout', value: EMenuItemTypes.LOGOUT },
 ];
 
-const HeaderSpacer = styled('div')(({ theme }) => theme.mixins.toolbar);
 const Main = styled('main')({
   marginTop: '1rem',
   marginBottom: '2.5rem',
@@ -88,7 +87,7 @@ export const UnknownWords: FC = () => {
 
   const loading = isApprovalInProgress || isRejectionInProgress || isLoading;
 
-  const rows = data.reduce((acc, entry): TTableData[] => {
+  const rows = data.reduce((acc: TTableData[], entry): TTableData[] => {
     return acc.concat(
       entry.words.map((word) => ({
         date: entry.date,
