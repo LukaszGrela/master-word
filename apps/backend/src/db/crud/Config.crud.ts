@@ -65,6 +65,9 @@ export const setConfigDefaults = async (
         type: 'number[]',
         defaultsTo: JSON.stringify([8]),
       },
+      admin: {
+        label: 'Supported attempts',
+      },
     },
     {
       key: 'enabledAttempts',
@@ -73,6 +76,10 @@ export const setConfigDefaults = async (
       validation: {
         type: 'number[]',
         defaultsTo: JSON.stringify([8]),
+        sourceValuesKey: 'supportedAttempts',
+      },
+      admin: {
+        label: 'Enabled attempts',
       },
     },
     {
@@ -83,6 +90,9 @@ export const setConfigDefaults = async (
         type: 'number[]',
         defaultsTo: JSON.stringify([5]),
       },
+      admin: {
+        label: 'Supported word length',
+      },
     },
     {
       key: 'enabledLength',
@@ -91,6 +101,10 @@ export const setConfigDefaults = async (
       validation: {
         type: 'number[]',
         defaultsTo: JSON.stringify([5]),
+        sourceValuesKey: 'supportedLength',
+      },
+      admin: {
+        label: 'Enabled word length',
       },
     },
     {
@@ -101,6 +115,9 @@ export const setConfigDefaults = async (
         type: 'string[]',
         defaultsTo: JSON.stringify(['en', 'pl']),
       },
+      admin: {
+        label: 'Supported languages',
+      },
     },
     {
       key: 'enabledLanguages',
@@ -109,6 +126,10 @@ export const setConfigDefaults = async (
       validation: {
         type: 'string[]',
         defaultsTo: JSON.stringify(['en', 'pl']),
+        sourceValuesKey: 'supportedLanguages',
+      },
+      admin: {
+        label: 'Enabled languages',
       },
     },
   ]);

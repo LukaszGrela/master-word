@@ -81,6 +81,43 @@ describe('Config model', () => {
     assert.notEqual(error, undefined);
     assert.match(`${error?.message}`, /dup key: { key: "supportedAttempts" }/);
   });
+  it('fails if key is not supported for sourceValuesKey', async () => {
+    let error: Error | undefined;
+    try {
+      await Config.create<AnyKeys<IConfigEntry>>({
+        key: 'enabledAttempts',
+        value: JSON.stringify(''),
+        validation: { type: 'string', sourceValuesKey: 'fake' },
+      });
+    } catch (e) {
+      error = e as Error;
+    }
+
+    assert.notEqual(error, undefined);
+    assert.match(
+      `${error?.message}`,
+      /Cast to SupportedConfigKey failed for value "fake"/,
+    );
+  });
+  it('fails if label of admin is missing', async () => {
+    let error: Error | undefined;
+    try {
+      await Config.create({
+        key: 'supportedLanguages',
+        validation: { type: 'string[]' },
+        value: 'abc',
+        admin: {},
+      });
+    } catch (e) {
+      error = e as Error;
+    }
+
+    assert.notEqual(error, undefined);
+    assert.match(
+      `${error?.message}`,
+      /Config validation failed: admin\.label: Path `label` is required/,
+    );
+  });
   describe('getModelForConnection', () => {
     it('creates config entry with all fields', async () => {
       const ConfigModel = getModelForConnection(mongoose.connection);
@@ -89,6 +126,9 @@ describe('Config model', () => {
         value: JSON.stringify(['en', 'pl'].sort()),
         appId: ['admin', 'frontend'],
         validation: { type: 'string[]' },
+        admin: {
+          label: 'Supported languages',
+        },
       });
 
       assert.equal(a.isNew, true);

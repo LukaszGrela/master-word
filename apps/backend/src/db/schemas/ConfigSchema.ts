@@ -10,6 +10,13 @@ const ConfigSchema = new Schema({
     defaultsTo: {
       type: Schema.Types.String,
     },
+    sourceValuesKey: {
+      type: SupportedConfigKey,
+    },
+  },
+  admin: {
+    type: { label: { type: Schema.Types.String, required: true } },
+    required: false,
   },
 });
 

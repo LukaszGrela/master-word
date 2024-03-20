@@ -14,6 +14,11 @@ export interface IUnknownWordEntry {
   date: Date;
   words: IUnknownWordWordsItem[];
 }
+
+type TPrimitives = 'string' | 'number' | 'boolean';
+type TListOfPrimitives = `${TPrimitives}[]`;
+type TConfigEntryValueTypes = TPrimitives | TListOfPrimitives;
+
 export interface IConfigEntry {
   /**
    * Configuration key
@@ -33,11 +38,26 @@ export interface IConfigEntry {
    * Object describing data type of the value
    */
   validation: {
-    type: string;
+    /**
+     * Type of the `value`: 'string','number','boolean','<type>[]'
+     */
+    type: TConfigEntryValueTypes;
     /**
      * JSON stringified default value
      */
     defaultsTo?: string;
+
+    /**
+     * Which other key contains source of valid values
+     */
+    sourceValuesKey?: TConfigEntryKey;
+  };
+
+  admin?: {
+    /**
+     * Display label for this configuration (english)
+     */
+    label: string;
   };
 }
 
