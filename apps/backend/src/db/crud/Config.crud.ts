@@ -27,7 +27,7 @@ export const getConfiguration = async (
 export const setConfigValue = async (
   key: string,
   value: string,
-  appId: string[] = [],
+  appId: string[] = [], // TODO: make it optional
   connection: Connection = mongoose.connection,
 ) => {
   const ConfigModel = getModelForConnection(connection);
