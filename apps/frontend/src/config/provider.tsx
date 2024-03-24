@@ -46,19 +46,19 @@ export function ConfigProvider({ children }: React.PropsWithChildren) {
           const config = list.reduce(
             (acc: IConfig, entry): IConfig => {
               if (entry.key === 'enabledAttempts') {
-                const value = JSON.parse(entry.value) as number[];
+                const value = entry.value as number[];
                 if (Array.isArray(value)) {
                   acc.enabledAttempts = value;
                 }
               }
               if (entry.key === 'enabledLength') {
-                const value = JSON.parse(entry.value) as number[];
+                const value = entry.value as number[];
                 if (Array.isArray(value)) {
                   acc.enabledLength = value;
                 }
               }
               if (entry.key === 'enabledLanguages') {
-                const value = JSON.parse(entry.value) as string[];
+                const value = entry.value as string[];
                 if (Array.isArray(value)) {
                   acc.enabledLanguages = value;
                 }
