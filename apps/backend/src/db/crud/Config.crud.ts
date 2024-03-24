@@ -26,7 +26,7 @@ export const getConfiguration = async (
 
 export const setConfigValue = async (
   key: string,
-  value: string,
+  value: string | number | boolean | string[] | number[] | boolean[],
   appId: string[] = [], // TODO: make it optional
   connection: Connection = mongoose.connection,
 ) => {
@@ -59,78 +59,42 @@ export const setConfigDefaults = async (
   await ConfigModel.create<IConfigEntry>([
     {
       key: 'supportedAttempts',
-      value: JSON.stringify([8]),
+      value: [8],
       appId: ['admin'],
-      validation: {
-        type: 'number[]',
-        defaultsTo: JSON.stringify([8]),
-      },
-      admin: {
-        label: 'Supported attempts',
-      },
+      defaultsTo: [8],
     },
     {
       key: 'enabledAttempts',
-      value: JSON.stringify([8]),
+      value: [8],
       appId: ['admin', 'frontend'],
-      validation: {
-        type: 'number[]',
-        defaultsTo: JSON.stringify([8]),
-        sourceValuesKey: 'supportedAttempts',
-      },
-      admin: {
-        label: 'Enabled attempts',
-      },
+      defaultsTo: [8],
+      sourceValuesKey: 'supportedAttempts',
     },
     {
       key: 'supportedLength',
-      value: JSON.stringify([5]),
+      value: [5],
       appId: ['admin'],
-      validation: {
-        type: 'number[]',
-        defaultsTo: JSON.stringify([5]),
-      },
-      admin: {
-        label: 'Supported word length',
-      },
+      defaultsTo: [5],
     },
     {
       key: 'enabledLength',
-      value: JSON.stringify([5]),
+      value: [5],
       appId: ['admin', 'frontend'],
-      validation: {
-        type: 'number[]',
-        defaultsTo: JSON.stringify([5]),
-        sourceValuesKey: 'supportedLength',
-      },
-      admin: {
-        label: 'Enabled word length',
-      },
+      defaultsTo: [5],
+      sourceValuesKey: 'supportedLength',
     },
     {
       key: 'supportedLanguages',
-      value: JSON.stringify(['en', 'pl']),
+      value: ['en', 'pl'],
       appId: ['admin'],
-      validation: {
-        type: 'string[]',
-        defaultsTo: JSON.stringify(['en', 'pl']),
-      },
-      admin: {
-        label: 'Supported languages',
-      },
+      defaultsTo: ['en', 'pl'],
     },
     {
       key: 'enabledLanguages',
-      value: JSON.stringify(['en', 'pl']),
+      value: ['en', 'pl'],
       appId: ['admin', 'frontend'],
-      validation: {
-        type: 'string[]',
-        defaultsTo: JSON.stringify(['en', 'pl']),
-        sourceValuesKey: 'supportedLanguages',
-      },
-      admin: {
-        label: 'Enabled languages',
-      },
+      defaultsTo: ['en', 'pl'],
+      sourceValuesKey: 'supportedLanguages',
     },
   ]);
 

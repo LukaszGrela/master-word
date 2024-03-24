@@ -17,7 +17,15 @@ export interface IUnknownWordEntry {
 
 type TPrimitives = 'string' | 'number' | 'boolean';
 type TListOfPrimitives = `${TPrimitives}[]`;
-type TConfigEntryValueTypes = TPrimitives | TListOfPrimitives;
+export type TConfigEntryValueTypes = TPrimitives | TListOfPrimitives;
+export type TConfigEntryValueTypesMap = {
+  string: string;
+  number: number;
+  boolean: boolean;
+  'string[]': string[];
+  'number[]': number[];
+  'boolean[]': boolean[];
+};
 
 export interface IConfigEntry {
   /**
@@ -25,44 +33,26 @@ export interface IConfigEntry {
    */
   key: TConfigEntryKey;
   /**
-   * JSON stringified value of the configuration
+   * Value of the configuration
    */
-  value: string;
+  value: string | number | boolean | string[] | number[] | boolean[];
+  /**
+   * Default value
+   */
+  defaultsTo?: string | number | boolean | string[] | number[] | boolean[];
+  /**
+   * Which other key contains source of valid values (for list types only)
+   */
+  sourceValuesKey?: TConfigEntryKey;
   /**
    * List of application ids that this config applies to
    * Note: empty list means config turned off
    */
   appId: string[];
-
-  /**
-   * Object describing data type of the value
-   */
-  validation: {
-    /**
-     * Type of the `value`: 'string','number','boolean','<type>[]'
-     */
-    type: TConfigEntryValueTypes;
-    /**
-     * JSON stringified default value
-     */
-    defaultsTo?: string;
-
-    /**
-     * Which other key contains source of valid values
-     */
-    sourceValuesKey?: TConfigEntryKey;
-  };
-
-  admin?: {
-    /**
-     * Display label for this configuration (english)
-     */
-    label: string;
-  };
 }
 
 export type TConfigEntryKey =
-  | /* list of all langauges */ 'supportedLanguages'
+  | /* list of all languages */ 'supportedLanguages'
   | /* list of all allowed attempts */ 'supportedAttempts'
   | /* list of all allowed word lenght */ 'supportedLength'
   | /* frontend enabled */ 'enabledLanguages'

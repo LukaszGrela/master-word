@@ -3,20 +3,13 @@ import { SupportedConfigKey } from './customTypes/SupportedConfigKey';
 
 const ConfigSchema = new Schema({
   key: { type: SupportedConfigKey, required: true },
-  value: { type: Schema.Types.String, required: true },
+  value: { type: Schema.Types.Mixed, required: true },
   appId: { type: [{ type: Schema.Types.String }] },
-  validation: {
-    type: { type: Schema.Types.String, required: true },
-    defaultsTo: {
-      type: Schema.Types.String,
-    },
-    sourceValuesKey: {
-      type: SupportedConfigKey,
-    },
+  defaultsTo: {
+    type: Schema.Types.Mixed,
   },
-  admin: {
-    type: { label: { type: Schema.Types.String, required: true } },
-    required: false,
+  sourceValuesKey: {
+    type: SupportedConfigKey,
   },
 });
 

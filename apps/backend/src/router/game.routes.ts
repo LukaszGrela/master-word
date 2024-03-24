@@ -168,9 +168,7 @@ router.get('/init', async (req: Request, res: Response) => {
     });
     return;
   } else {
-    const enabledLanguages = JSON.parse(
-      enabledLanguagesConfig.value,
-    ) as string[];
+    const enabledLanguages = enabledLanguagesConfig.value as string[];
     if (Array.isArray(enabledLanguages) && enabledLanguages.length > 0) {
       // verify requested language
       if (enabledLanguages.indexOf(language) === -1) {
