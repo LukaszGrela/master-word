@@ -11,6 +11,7 @@ import {
 } from '../../widgets';
 import { EMenuItemTypes, IMenuItems } from '../../components/Header/types';
 import { EPaths } from '../enums/paths';
+import { useGetConfigurationQuery } from '../../store/slices/api';
 
 const menu: IMenuItems[] = [
   {
@@ -38,6 +39,8 @@ const Main = styled('main')({
   marginBottom: '2.5rem',
 });
 export function Dashboard() {
+  useGetConfigurationQuery(undefined);
+
   return (
     <div className="dashboard">
       <Container
@@ -49,13 +52,13 @@ export function Dashboard() {
         <HeaderSpacer />
         <Main>
           <Grid container spacing={2}>
-            <Grid item xs={12} sm={8}>
+            <Grid item xs={12} md={8} lg={6}>
               <NewWordWidget />
             </Grid>
-            <Grid item xs={12} sm={4}>
+            <Grid item xs={12} sm={4} lg={3}>
               <GameConfigStatsWidget />
             </Grid>
-            <Grid item xs={12} sm={4}>
+            <Grid item xs={12} sm={4} lg={3}>
               <UnknownWordsWidget />
             </Grid>
             <Grid item xs={12} sm={4}>
