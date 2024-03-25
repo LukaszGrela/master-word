@@ -26,7 +26,11 @@ import { useAppDispatch, useConfigFormEntry } from '../../../store/hooks';
 import { ILangaugeListProps } from './types';
 import { FlagSPQR } from '../../icons/FlagSPQR';
 import { FlagEsperanto } from '../../icons/FlagEsperanto';
-import { setConfigValue } from '../../../store/slices/config-form';
+import {
+  resetConfigValue,
+  setConfigValue,
+} from '../../../store/slices/config-form';
+import { IconButtonWithTooltip } from '../../IconButtonWithTooltip';
 
 const flagList: IDictionary<string> = {
   af: 'za',
@@ -251,6 +255,10 @@ export const LanguageListForm: FC<ILangaugeListProps> = ({ configKey }) => {
   );
 
   const handleSave = useCallback(() => {}, []);
+  const handleReset = useCallback(() => {
+    dispatch(resetConfigValue(configKey));
+  }, [configKey, dispatch]);
+  const handleApplyDefault = useCallback(() => {}, []);
 
   return (
     <>
@@ -375,15 +383,46 @@ export const LanguageListForm: FC<ILangaugeListProps> = ({ configKey }) => {
       </Box>
 
       <CardActions disableSpacing>
-        <IconButton aria-label="save" onClick={handleSave}>
+        <IconButtonWithTooltip
+          tooltipProps={{
+            title: 'Save',
+          }}
+          buttonProps={{
+            color: 'primary',
+            size: 'small',
+            onClick: handleSave,
+            disabled: !configEntry?.isModified && !configEntry?.isNew,
+          }}
+        >
           <Save />
-        </IconButton>
-        <IconButton aria-label="clear">
+        </IconButtonWithTooltip>
+
+        <IconButtonWithTooltip
+          tooltipProps={{
+            title: 'Reset',
+          }}
+          buttonProps={{
+            color: 'error',
+            size: 'small',
+            onClick: handleReset,
+            disabled: !configEntry?.isModified && !configEntry?.isNew,
+          }}
+        >
           <Clear />
-        </IconButton>
-        <IconButton aria-label="apply defaults">
+        </IconButtonWithTooltip>
+
+        <IconButtonWithTooltip
+          tooltipProps={{
+            title: 'Apply defaults',
+          }}
+          buttonProps={{
+            color: 'warning',
+            size: 'small',
+            onClick: handleApplyDefault,
+          }}
+        >
           <SettingsBackupRestore />
-        </IconButton>
+        </IconButtonWithTooltip>
       </CardActions>
     </>
   );
