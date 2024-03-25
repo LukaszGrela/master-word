@@ -29,6 +29,7 @@ import { FlagEsperanto } from '../../icons/FlagEsperanto';
 import {
   resetConfigValue,
   setConfigValue,
+  setDefaultValue,
 } from '../../../store/slices/config-form';
 import { IconButtonWithTooltip } from '../../IconButtonWithTooltip';
 
@@ -258,7 +259,9 @@ export const LanguageListForm: FC<ILangaugeListProps> = ({ configKey }) => {
   const handleReset = useCallback(() => {
     dispatch(resetConfigValue(configKey));
   }, [configKey, dispatch]);
-  const handleApplyDefault = useCallback(() => {}, []);
+  const handleApplyDefault = useCallback(() => {
+    dispatch(setDefaultValue(configKey));
+  }, [configKey, dispatch]);
 
   return (
     <>
