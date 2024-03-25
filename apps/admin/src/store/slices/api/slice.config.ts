@@ -3,6 +3,7 @@ import { adminApi } from './slice';
 import { apiConfig } from './endpoints';
 import { isAdminConfiguration, setConfig } from '../config';
 import type { TSetConfigPayload } from '../config';
+import { hydrate } from '../config-form';
 
 export const configApi = adminApi.injectEndpoints({
   endpoints: (builder) => ({
@@ -19,12 +20,12 @@ export const configApi = adminApi.injectEndpoints({
               item.appId.indexOf('admin') !== -1 &&
               isAdminConfiguration(item.key)
             ) {
-              const value = JSON.parse(item.value) as string;
-              return { ...acc, [item.key]: value };
+              return { ...acc, [item.key]: item.value };
             }
             return acc;
           }, {} as TSetConfigPayload);
           dispatch(setConfig(payload));
+          dispatch(hydrate(data));
         } catch (error) {
           console.error(error);
         }
