@@ -9,11 +9,7 @@ import ListItem from '@mui/material/ListItem';
 import ListItemButton from '@mui/material/ListItemButton';
 import ListItemIcon from '@mui/material/ListItemIcon';
 import ListItemText from '@mui/material/ListItemText';
-import CardActions from '@mui/material/CardActions';
-import Clear from '@mui/icons-material/Clear';
-import Save from '@mui/icons-material/Save';
 import DeleteIcon from '@mui/icons-material/Delete';
-import SettingsBackupRestore from '@mui/icons-material/SettingsBackupRestore';
 import Chip from '@mui/material/Chip';
 import Autocomplete, { createFilterOptions } from '@mui/material/Autocomplete';
 import TextField from '@mui/material/TextField';
@@ -26,12 +22,8 @@ import { useAppDispatch, useConfigFormEntry } from '../../../store/hooks';
 import { ILangaugeListProps } from './types';
 import { FlagSPQR } from '../../icons/FlagSPQR';
 import { FlagEsperanto } from '../../icons/FlagEsperanto';
-import {
-  resetConfigValue,
-  setConfigValue,
-  setDefaultValue,
-} from '../../../store/slices/config-form';
-import { IconButtonWithTooltip } from '../../IconButtonWithTooltip';
+import { setConfigValue } from '../../../store/slices/config-form';
+import { noop } from '@repo/utils';
 
 const flagList: IDictionary<string> = {
   af: 'za',
@@ -255,178 +247,125 @@ export const LanguageListForm: FC<ILangaugeListProps> = ({ configKey }) => {
     [configKey, configSelection, data, dispatch, isEditList],
   );
 
-  const handleSave = useCallback(() => {}, []);
-  const handleReset = useCallback(() => {
-    dispatch(resetConfigValue(configKey));
-  }, [configKey, dispatch]);
-  const handleApplyDefault = useCallback(() => {
-    dispatch(setDefaultValue(configKey));
-  }, [configKey, dispatch]);
-
   return (
-    <>
-      <Box>
-        {isEditList && (
-          <Stack spacing={2} direction={'row'}>
-            <Autocomplete
-              fullWidth
-              multiple
-              id="add-language"
-              options={languageOptions}
-              limitTags={3}
-              value={autSelectionSource}
-              onChange={(_, newValue: string[] | undefined) => {
-                setAutoSelectionSource(newValue || []);
-              }}
-              filterSelectedOptions
-              filterOptions={filterLanguage}
-              renderTags={(value: readonly string[], getTagProps) =>
-                value.map((language: string, index: number) => {
-                  const { key, ...tagProps } = getTagProps({ index });
-                  return (
-                    <Chip
-                      key={key}
-                      variant="outlined"
-                      label={
-                        <>
-                          <FlagIcon countryCode={flagList[language]} />{' '}
-                          {language.toUpperCase()}
-                        </>
-                      }
-                      {...tagProps}
-                    />
-                  );
-                })
-              }
-              renderOption={(props, language) => (
-                <Box
-                  component="li"
-                  sx={{ '& > img': { mr: 2, flexShrink: 0 } }}
-                  {...props}
-                >
-                  <FlagIcon countryCode={flagList[language]} />{' '}
-                  {capitalize(languageList[language])}
-                </Box>
-              )}
-              renderInput={(params) => (
-                <TextField
-                  {...params}
-                  label="Choose a language to add"
-                  variant="standard"
-                />
-              )}
-            />
-            <IconButton
-              disabled={!(autSelectionSource.length > 0)}
-              onClick={addLanguages}
-              color="primary"
-              sx={{ p: '10px' }}
-              aria-label="add"
-            >
-              <AddIcon />
-            </IconButton>
-          </Stack>
-        )}
-        <List
-          sx={{
-            width: '100%',
-            maxWidth: 360,
-            bgcolor: 'background.paper',
-            overflow: 'auto',
-            maxHeight: 4 * 60,
-          }}
-        >
-          <TransitionGroup>
-            {configSelection.map((languageCode, index) => {
-              const labelId = `checkbox-list-label-${languageCode}`;
-
-              return (
-                <Collapse key={`${configKey}:${index}:${languageCode}`}>
-                  <ListItem
-                    disablePadding
-                    secondaryAction={
-                      <FlagIcon countryCode={flagList[languageCode]} />
+    <Box>
+      {isEditList && (
+        <Stack spacing={2} direction={'row'}>
+          <Autocomplete
+            fullWidth
+            multiple
+            id="add-language"
+            options={languageOptions}
+            limitTags={3}
+            value={autSelectionSource}
+            onChange={(_, newValue: string[] | undefined) => {
+              setAutoSelectionSource(newValue || []);
+            }}
+            filterSelectedOptions
+            filterOptions={filterLanguage}
+            renderTags={(value: readonly string[], getTagProps) =>
+              value.map((language: string, index: number) => {
+                const { key, ...tagProps } = getTagProps({ index });
+                return (
+                  <Chip
+                    key={key}
+                    variant="outlined"
+                    label={
+                      <>
+                        <FlagIcon countryCode={flagList[language]} />{' '}
+                        {language.toUpperCase()}
+                      </>
                     }
+                    {...tagProps}
+                  />
+                );
+              })
+            }
+            renderOption={(props, language) => (
+              <Box
+                component="li"
+                sx={{ '& > img': { mr: 2, flexShrink: 0 } }}
+                {...props}
+              >
+                <FlagIcon countryCode={flagList[language]} />{' '}
+                {capitalize(languageList[language])}
+              </Box>
+            )}
+            renderInput={(params) => (
+              <TextField
+                {...params}
+                label="Choose a language to add"
+                variant="standard"
+              />
+            )}
+          />
+          <IconButton
+            disabled={!(autSelectionSource.length > 0)}
+            onClick={addLanguages}
+            color="primary"
+            sx={{ p: '10px' }}
+            aria-label="add"
+          >
+            <AddIcon />
+          </IconButton>
+        </Stack>
+      )}
+      <List
+        sx={{
+          width: '100%',
+          maxWidth: 360,
+          bgcolor: 'background.paper',
+          overflow: 'auto',
+          maxHeight: 4 * 60,
+        }}
+      >
+        <TransitionGroup>
+          {configSelection.map((languageCode, index) => {
+            const labelId = `checkbox-list-label-${languageCode}`;
+
+            return (
+              <Collapse key={`${configKey}:${index}:${languageCode}`}>
+                <ListItem
+                  disablePadding
+                  secondaryAction={
+                    <FlagIcon countryCode={flagList[languageCode]} />
+                  }
+                >
+                  <ListItemButton
+                    role={undefined}
+                    onClick={handleToggle(languageCode)}
+                    dense
                   >
-                    <ListItemButton
-                      role={undefined}
-                      onClick={handleToggle(languageCode)}
-                      dense
-                    >
-                      <ListItemIcon>
-                        {isEditList ? (
-                          <IconButton edge="start" aria-label="delete">
-                            <DeleteIcon />
-                          </IconButton>
-                        ) : (
-                          <Checkbox
-                            edge="start"
-                            checked={
-                              false ||
-                              configEntry?.value.indexOf(languageCode) !== -1
-                            }
-                            tabIndex={-1}
-                            disableRipple
-                            inputProps={{ 'aria-labelledby': labelId }}
-                          />
-                        )}
-                      </ListItemIcon>
-                      <ListItemText
-                        id={labelId}
-                        primary={capitalize(languageList[languageCode])}
-                        secondary={languageCode}
-                      />
-                    </ListItemButton>
-                  </ListItem>
-                </Collapse>
-              );
-            })}
-          </TransitionGroup>
-        </List>
-      </Box>
-
-      <CardActions disableSpacing>
-        <IconButtonWithTooltip
-          tooltipProps={{
-            title: 'Save',
-          }}
-          buttonProps={{
-            color: 'primary',
-            size: 'small',
-            onClick: handleSave,
-            disabled: !configEntry?.isModified && !configEntry?.isNew,
-          }}
-        >
-          <Save />
-        </IconButtonWithTooltip>
-
-        <IconButtonWithTooltip
-          tooltipProps={{
-            title: 'Reset',
-          }}
-          buttonProps={{
-            color: 'error',
-            size: 'small',
-            onClick: handleReset,
-            disabled: !configEntry?.isModified && !configEntry?.isNew,
-          }}
-        >
-          <Clear />
-        </IconButtonWithTooltip>
-
-        <IconButtonWithTooltip
-          tooltipProps={{
-            title: 'Apply defaults',
-          }}
-          buttonProps={{
-            color: 'warning',
-            size: 'small',
-            onClick: handleApplyDefault,
-          }}
-        >
-          <SettingsBackupRestore />
-        </IconButtonWithTooltip>
-      </CardActions>
-    </>
+                    <ListItemIcon>
+                      {isEditList ? (
+                        <IconButton edge="start" aria-label="delete">
+                          <DeleteIcon />
+                        </IconButton>
+                      ) : (
+                        <Checkbox
+                          edge="start"
+                          checked={
+                            configEntry?.value.indexOf(languageCode) !== -1
+                          }
+                          tabIndex={-1}
+                          disableRipple
+                          inputProps={{ 'aria-labelledby': labelId }}
+                          onChange={noop}
+                        />
+                      )}
+                    </ListItemIcon>
+                    <ListItemText
+                      id={labelId}
+                      primary={capitalize(languageList[languageCode])}
+                      secondary={languageCode}
+                    />
+                  </ListItemButton>
+                </ListItem>
+              </Collapse>
+            );
+          })}
+        </TransitionGroup>
+      </List>
+    </Box>
   );
 };
