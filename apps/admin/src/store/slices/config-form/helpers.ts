@@ -76,7 +76,11 @@ export const validateLinkedConfig = <Key extends TConfigEntryKey>(
     // source config, search for dependents
     const dependents = Object.entries(state.forms).reduce(
       (ids: TConfigEntryKey[], [, value]): TConfigEntryKey[] => {
-        if (value.key !== config.key && value.sourceValuesKey === config.key) {
+        if (
+          value &&
+          value.key !== config.key &&
+          value.sourceValuesKey === config.key
+        ) {
           ids.push(value.key);
         }
         return ids;

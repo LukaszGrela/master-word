@@ -19,19 +19,59 @@ export const configFormSlice = createSlice({
       }
       return state;
     },
-    addConfig: (state, action: PayloadAction<string>) => {
+
+    resetConfig: (state) => {
+      const toDelete: TConfigEntryKey[] = [];
+
+      Object.entries(state.forms).forEach(([key, config]) => {
+        if (config) {
+          if (config.isModified) {
+            config.value = config.original.value;
+            config.isModified = false;
+          }
+          if (config.isDeleted) {
+            config.isDeleted = false;
+          }
+          if (config.isNew) {
+            // remove
+            toDelete.push(key);
+          }
+        }
+      });
+      toDelete.forEach((key) => {
+        delete state.forms[key];
+      });
+    },
+
+    addConfigValue: (state, action: PayloadAction<string>) => {
       // TODO: add new hydrated IConfigEntry to be stored in DB
       console.log(action);
       return state;
     },
-    removeConfig: (state, action: PayloadAction<string>) => {
+    removeConfigValue: (state, action: PayloadAction<string>) => {
       // TODO: remove config entry
       console.log(action);
       return state;
     },
-    resetConfig: (state, action: PayloadAction<string>) => {
-      // TODO: reset config entry to original state
-      console.log(action);
+    resetConfigValue: (state, action: PayloadAction<TConfigEntryKey>) => {
+      const key = action.payload;
+
+      const config = state.forms[key];
+      if (config && !config.isNew) {
+        config.value = config.original.value;
+        config.isModified = false;
+      }
+
+      return state;
+    },
+    setDefaultValue: (state, action: PayloadAction<TConfigEntryKey>) => {
+      const key = action.payload;
+      const config = state.forms[key];
+      if (config && config.defaultsTo) {
+        config.value = config.defaultsTo;
+        config.isModified = true;
+      }
+
       return state;
     },
 
@@ -39,13 +79,11 @@ export const configFormSlice = createSlice({
       state,
       action: PayloadAction<TSetHydrateConfigValueParamType<TConfigEntryKey>>,
     ) => {
-      console.log(action);
       const { key, value } = action.payload;
       const config = state.forms[key];
       if (config) {
         config.value = value;
         config.isModified = true;
-        // TODO: validate linked config
         // if linked config has selection outside of sourceValues then filter it out
         validateLinkedConfig(config, state);
       }
