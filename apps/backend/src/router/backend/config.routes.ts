@@ -10,7 +10,10 @@ import {
   dictionaryDevConnection,
   ensureDictionaryDevConnection,
 } from './dictionary/helpers';
-import { IConfigEntry, TConfigEntryKey } from '@repo/backend-types/db';
+import {
+  IConfigEntry,
+  TProcessConfigResultEntry,
+} from '@repo/backend-types/db';
 
 const router = Router();
 
@@ -81,11 +84,7 @@ router.post(
     }
   },
 );
-type TProcessConfigResult = {
-  key: TConfigEntryKey;
-  result?: IConfigEntry;
-  error?: unknown;
-};
+
 function* processConfigList(input: IConfigEntry[]) {
   const toProcess = input.concat();
   const connection = dictionaryDevConnection();
@@ -93,7 +92,7 @@ function* processConfigList(input: IConfigEntry[]) {
   while (toProcess.length) {
     const config = toProcess.pop();
     if (!config) yield Promise.reject('Invalid empty entry in the list.');
-    yield new Promise<TProcessConfigResult>((resolve, reject) => {
+    yield new Promise<TProcessConfigResultEntry>((resolve, reject) => {
       const { appId, key, value } = config!;
       try {
         setConfigValue(key, value, appId, connection).then((result) => {
@@ -125,7 +124,7 @@ router.post(
 
     try {
       const processing = processConfigList(list);
-      const result: TProcessConfigResult[] = [];
+      const result: TProcessConfigResultEntry[] = [];
       for await (const iterator of processing) {
         result.push(iterator);
       }

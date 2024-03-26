@@ -73,3 +73,9 @@ export const guardTConfigEntryKey = (
     ].indexOf(test as TConfigEntryKey) !== -1
   );
 };
+
+export type TProcessConfigResultEntry = {
+  key: TConfigEntryKey;
+  result?: IConfigEntry;
+  error?: unknown;
+};
