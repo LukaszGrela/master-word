@@ -79,6 +79,7 @@ export const GamePage = () => {
     const getInitSync = () => {
       getInit({
         language,
+        maxAttempts: attempts,
         signal: controller.signal,
         session,
       })

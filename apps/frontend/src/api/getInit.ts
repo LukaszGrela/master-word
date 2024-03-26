@@ -5,13 +5,17 @@ import { createGameState } from './utils';
 
 export const getInit = async (params: {
   language: string;
+  maxAttempts?: number;
   session?: string;
   signal?: AbortSignal | null | undefined;
 }) => {
-  const response = await fetch(apiInit(params.language, params.session), {
-    method: 'GET',
-    signal: params.signal,
-  });
+  const response = await fetch(
+    apiInit(params.language, params.session, params.maxAttempts),
+    {
+      method: 'GET',
+      signal: params.signal,
+    },
+  );
 
   const data = JSON.parse(await response.text()) as TGameSessionRecord;
 

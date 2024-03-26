@@ -10,6 +10,7 @@ import LinearProgress from '@mui/material/LinearProgress';
 
 import { EPaths } from '../../routes/enums/paths';
 import { useGetUnknownWordsQuery } from '../../store/slices/api';
+import { FlexGrow } from '../../components/FlexGrow';
 
 const UnknownWords: FC = () => {
   const navigate = useNavigate();
@@ -32,6 +33,8 @@ const UnknownWords: FC = () => {
       elevation={3}
       sx={{
         height: '100%',
+        display: 'flex',
+        flexDirection: 'column',
       }}
     >
       <CardHeader title="Unknown Words">
@@ -47,7 +50,7 @@ const UnknownWords: FC = () => {
         </Typography>
         <Typography variant="caption">Unknown words logged</Typography>
       </CardContent>
-
+      <FlexGrow />
       <CardActions>
         <Button size="small" onClick={handleReview} disabled={total === 0}>
           Review

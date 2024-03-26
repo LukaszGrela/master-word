@@ -42,7 +42,7 @@ Few features are still to be developed, below is a list divided by the module
 
 - ~Use RTK and QTK for API calls~ [Feature #15](https://github.com/LukaszGrela/master-word/issues/15)
 - Show Unknown Words Stats widget - rechart driven [Feature #14](https://github.com/LukaszGrela/master-word/issues/14)
-- Config route [Feature #16](https://github.com/LukaszGrela/master-word/issues/16)
+- ~Config route~ [Feature #16](https://github.com/LukaszGrela/master-word/issues/16)
 - Update and improve dictionary word count widget [Feature #17](https://github.com/LukaszGrela/master-word/issues/17)
 - Session review [Feature #19](https://github.com/LukaszGrela/master-word/issues/19)
 - Archived games review [Feature #20](https://github.com/LukaszGrela/master-word/issues/20)

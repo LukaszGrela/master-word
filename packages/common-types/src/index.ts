@@ -18,3 +18,6 @@ export type TOptionData<T = string> = {
   label: string;
   value: T;
 };
+
+export type TArrayElementType<A extends readonly unknown[]> =
+  A extends readonly (infer ElementType)[] ? ElementType : never;

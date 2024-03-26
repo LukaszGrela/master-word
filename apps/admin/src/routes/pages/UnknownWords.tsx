@@ -1,12 +1,16 @@
 import React, { FC, useCallback, useEffect, useState } from 'react';
 import { Link as RouterLink } from 'react-router-dom';
 import { useSnackbar } from 'notistack';
+import { alpha } from '@mui/system/colorManipulator';
+import { TTableData } from '@repo/backend-types/dictionary';
 import Button from '@mui/material/Button';
 import Checkbox from '@mui/material/Checkbox';
 import Container from '@mui/material/Container';
 import IconButton from '@mui/material/IconButton';
 import LinearProgress from '@mui/material/LinearProgress';
 import Paper from '@mui/material/Paper';
+import PreviewIcon from '@mui/icons-material/Preview';
+import styled from '@mui/material/styles/styled';
 import Table from '@mui/material/Table';
 import TableBody from '@mui/material/TableBody';
 import TableCell from '@mui/material/TableCell';
@@ -14,18 +18,14 @@ import TableContainer from '@mui/material/TableContainer';
 import TableHead from '@mui/material/TableHead';
 import TablePagination from '@mui/material/TablePagination';
 import TableRow from '@mui/material/TableRow';
+import ThumbDownIcon from '@mui/icons-material/ThumbDown';
+import ThumbUpIcon from '@mui/icons-material/ThumbUp';
 import Toolbar from '@mui/material/Toolbar';
 import Tooltip from '@mui/material/Tooltip';
 import Typography from '@mui/material/Typography';
-import { alpha } from '@mui/system/colorManipulator';
-import styled from '@mui/material/styles/styled';
-import ThumbUpIcon from '@mui/icons-material/ThumbUp';
-import ThumbDownIcon from '@mui/icons-material/ThumbDown';
-import PreviewIcon from '@mui/icons-material/Preview';
-import { TTableData } from '@repo/backend-types/dictionary';
 
 import { Footer } from '../../components/Footer';
-import { Header } from '../../components/Header';
+import { Header, HeaderSpacer } from '../../components/Header';
 import { EPaths } from '../enums/paths';
 import {
   useGetUnknownWordsQuery,
@@ -53,7 +53,6 @@ const menu: IMenuItems[] = [
   { label: 'Logout', value: EMenuItemTypes.LOGOUT },
 ];
 
-const HeaderSpacer = styled('div')(({ theme }) => theme.mixins.toolbar);
 const Main = styled('main')({
   marginTop: '1rem',
   marginBottom: '2.5rem',
@@ -88,7 +87,7 @@ export const UnknownWords: FC = () => {
 
   const loading = isApprovalInProgress || isRejectionInProgress || isLoading;
 
-  const rows = data.reduce((acc, entry): TTableData[] => {
+  const rows = data.reduce((acc: TTableData[], entry): TTableData[] => {
     return acc.concat(
       entry.words.map((word) => ({
         date: entry.date,

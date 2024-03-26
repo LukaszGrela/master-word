@@ -21,7 +21,8 @@ export type TIsCorrectWordResponse = {
 
 export type TSessionQuery = { session?: string };
 export type TLanguageQuery = { language?: TSupportedLanguages };
-export type TInitQuery = TSessionQuery & TLanguageQuery;
+export type TAttemptsQuery = { maxAttempts?: number };
+export type TInitQuery = TSessionQuery & TLanguageQuery & TAttemptsQuery;
 
 export type TNextAttemptQuery = TSessionQuery & { guess: string };
 

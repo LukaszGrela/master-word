@@ -1,11 +1,18 @@
 const GATEWAY = import.meta.env.VITE_API_ENDPOINT as string;
 
-export const apiInit = (language: string, session?: string): string => {
+export const apiInit = (
+  language: string,
+  session?: string,
+  maxAttempts?: number,
+): string => {
   const urlParams = new URLSearchParams({
     language,
   });
   if (session) {
     urlParams.append('session', session);
+  }
+  if (maxAttempts !== undefined) {
+    urlParams.append('maxAttempts', `${maxAttempts}`);
   }
   const search = urlParams.toString();
 

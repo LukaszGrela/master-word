@@ -1,12 +1,12 @@
 import { Request, Response, RequestHandler } from 'express';
 import type { TSupportedLanguages } from '../types';
 import { TGameSession, TValidationChar } from '@repo/backend-types';
-import { MAX_ATTEMTPS } from '../constants';
+import { MAX_ATTEMPTS } from '../constants';
 
 export const resetGameSession = (
   language: TSupportedLanguages,
   word: string,
-  maxAttempts = MAX_ATTEMTPS,
+  maxAttempts: number = MAX_ATTEMPTS,
 ): TGameSession => {
   return {
     language,

@@ -17,6 +17,10 @@ const router = createBrowserRouter([
         path: EPaths.UNKOWN_WORDS,
         lazy: () => import('./pages/UnknownWords'),
       },
+      {
+        path: EPaths.CONFIG,
+        lazy: () => import('./pages/Config'),
+      },
     ],
   },
 ]);

@@ -9,13 +9,27 @@ describe('Config model', () => {
   beforeEach(async () => {
     await Config.init();
   });
+
+  it('fails if key is missing', async () => {
+    let error: Error | undefined;
+    try {
+      await Config.create({
+        value: 'supportedLanguages',
+      });
+    } catch (e) {
+      error = e as Error;
+    }
+
+    assert.notEqual(error, undefined);
+    assert.match(`${error?.message}`, /Path `key` is required/);
+  });
+
   it('fails if key is not supported', async () => {
     let error: Error | undefined;
     try {
       await Config.create<AnyKeys<IConfigEntry>>({
         key: 'fake',
-        value: JSON.stringify(''),
-        validation: { type: 'string' },
+        value: '',
       });
     } catch (e) {
       error = e as Error;
@@ -27,29 +41,12 @@ describe('Config model', () => {
       /Cast to SupportedConfigKey failed for value "fake"/,
     );
   });
-  it('fails if validation is not supported', async () => {
-    let error: Error | undefined;
-    try {
-      await Config.create<AnyKeys<IConfigEntry>>({
-        key: 'enabledLanguages',
-        value: JSON.stringify(''),
-      });
-    } catch (e) {
-      error = e as Error;
-    }
 
-    assert.notEqual(error, undefined);
-    assert.match(
-      `${error?.message}`,
-      /Config validation failed: validation.type: Path `validation.type` is required./,
-    );
-  });
   it('fails if value is missing', async () => {
     let error: Error | undefined;
     try {
       await Config.create({
         key: 'supportedLanguages',
-        validation: { type: 'string[]' },
       });
     } catch (e) {
       error = e as Error;
@@ -58,21 +55,20 @@ describe('Config model', () => {
     assert.notEqual(error, undefined);
     assert.match(`${error?.message}`, /Path `value` is required/);
   });
+
   it('fails to add document with the same key', async () => {
     let error: Error | undefined;
     try {
       let doc = await Config.create<AnyKeys<IConfigEntry>>({
         key: 'supportedAttempts',
-        value: JSON.stringify([]),
+        value: [],
         appId: ['frontend'],
-        validation: { type: 'number[]' },
       });
       // try to save the same
       doc = await Config.create<AnyKeys<IConfigEntry>>({
         key: 'supportedAttempts',
-        value: JSON.stringify([8]),
+        value: [8],
         appId: ['frontend'],
-        validation: { type: 'number[]' },
       });
     } catch (e) {
       error = e as Error;
@@ -81,14 +77,35 @@ describe('Config model', () => {
     assert.notEqual(error, undefined);
     assert.match(`${error?.message}`, /dup key: { key: "supportedAttempts" }/);
   });
+
+  it('fails if sourceValuesKey is not supported key', async () => {
+    let error: Error | undefined;
+    try {
+      await Config.create<AnyKeys<IConfigEntry>>({
+        key: 'enabledAttempts',
+        value: '',
+        sourceValuesKey: 'fake',
+      });
+    } catch (e) {
+      error = e as Error;
+    }
+
+    assert.notEqual(error, undefined);
+    assert.match(
+      `${error?.message}`,
+      /Cast to SupportedConfigKey failed for value "fake"/,
+    );
+  });
+
   describe('getModelForConnection', () => {
     it('creates config entry with all fields', async () => {
       const ConfigModel = getModelForConnection(mongoose.connection);
       const a = new ConfigModel({
         key: 'supportedLanguages',
-        value: JSON.stringify(['en', 'pl'].sort()),
+        value: ['en', 'pl'].sort(),
         appId: ['admin', 'frontend'],
-        validation: { type: 'string[]' },
+        defaultsTo: [],
+        sourceValuesKey: 'enabledLanguages',
       });
 
       assert.equal(a.isNew, true);

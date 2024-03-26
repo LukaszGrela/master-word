@@ -12,6 +12,7 @@ import SvgIcon from '@mui/material/SvgIcon';
 import Divider from '@mui/material/Divider';
 import ListItemIcon from '@mui/material/ListItemIcon';
 import ListItemText from '@mui/material/ListItemText';
+import styled from '@mui/material/styles/styled';
 import { GrelaDesignIcon } from '../icons/GrelaDesignIcon';
 import { EPaths } from '../../routes/enums/paths';
 import { EMenuItemTypes, IMenuItems, IProps } from './types';
@@ -138,3 +139,5 @@ export const Header: React.FC<IProps> = ({ title, menu }) => {
     </AppBar>
   );
 };
+
+export const HeaderSpacer = styled('div')(({ theme }) => theme.mixins.toolbar);

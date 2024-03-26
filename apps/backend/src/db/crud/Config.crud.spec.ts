@@ -17,15 +17,14 @@ describe('Config CRUD operations', () => {
     await Config.create<AnyKeys<IConfigEntry>>([
       {
         key: 'supportedLanguages',
-        value: JSON.stringify(['en', 'pl']),
+        value: ['en', 'pl'],
         appId: ['frontend', 'admin'],
-        validation: { type: 'string[]' },
       },
       {
         key: 'supportedAttempts',
-        value: JSON.stringify([6, 7, 8]),
+        value: [6, 7, 8],
         appId: ['frontend'],
-        validation: { type: 'number[]' },
+        defaultsTo: [],
       },
     ]);
 
@@ -72,7 +71,7 @@ describe('Config CRUD operations', () => {
       try {
         const doc = await setConfigValue(
           'supportedLanguages',
-          JSON.stringify(['en', 'it', 'pl']),
+          ['en', 'it', 'pl'],
           ['frontend', 'admin'],
         );
       } catch (e) {
@@ -94,23 +93,20 @@ describe('Config CRUD operations', () => {
       });
       assert.notEqual(current, null);
 
-      const value = JSON.parse(current!.value) as string[];
+      const value = current!.value as string[];
       // add italy
       value.push('it');
       value.sort();
 
       // save
-      const doc = await setConfigValue(
-        'supportedLanguages',
-        JSON.stringify(value),
-      );
+      const doc = await setConfigValue('supportedLanguages', value);
 
       // check
       const modified = await Config.findOne({
         key: 'supportedLanguages',
       });
       assert.notEqual(modified, null);
-      assert.equal(modified!.value, JSON.stringify(value));
+      assert.deepEqual(modified!.value, value);
     });
     it('changes the appId', async () => {
       const current = await Config.findOne({

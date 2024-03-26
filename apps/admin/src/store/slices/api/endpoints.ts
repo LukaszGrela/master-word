@@ -1,3 +1,5 @@
+import { TConfigEntryKey } from '@repo/backend-types/db';
+
 export const apiAddWord = () => `/add-word`;
 export const apiUnknownWords = (): string => `/list`;
 export const apiApproveWords = () => `/approve-words`;
@@ -28,3 +30,7 @@ export const apiDictionaryStats = (language = 'pl', length = 5) => {
 };
 
 export const apiConfig = () => `/configuration`;
+
+export const apiConfigSet = (configKey: TConfigEntryKey) =>
+  `${apiConfig()}/set/${configKey}`;
+export const apiConfigSetMultiple = () => `${apiConfig()}/set-multiple`;
