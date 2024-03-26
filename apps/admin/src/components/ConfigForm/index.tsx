@@ -9,15 +9,23 @@ import Save from '@mui/icons-material/Save';
 import SettingsBackupRestore from '@mui/icons-material/SettingsBackupRestore';
 
 import { IProps } from './types';
-import { useAppDispatch, useAppSelector } from '../../store/hooks';
+import {
+  useAppDispatch,
+  useAppSelector,
+  useConfigFormEntry,
+} from '../../store/hooks';
 import { NumberListForm } from './dataTypes/NumberListForm';
 import { TConfigEntryKey } from '@repo/backend-types/db';
 import { LanguageListForm } from './dataTypes/LanguageListForm';
 import { IconButtonWithTooltip } from '../IconButtonWithTooltip';
 import {
   resetConfigValue,
+  resetFlag,
   setDefaultValue,
 } from '../../store/slices/config-form';
+import { usePostConfigurationValueMutation } from '../../store/slices/api/slice.config';
+import { FetchBaseQueryError } from '@reduxjs/toolkit/query';
+import { SerializedError } from '@reduxjs/toolkit';
 
 const labels: Partial<Record<TConfigEntryKey, string>> = {
   enabledLanguages: 'Enabled languages',
@@ -42,8 +50,41 @@ const printType = (t: unknown): string => {
   return '';
 };
 
+const usePostConfiguration = (
+  configKey: TConfigEntryKey,
+): [
+  () => void,
+  {
+    isError: boolean;
+    isSuccess: boolean;
+    isLoading: boolean;
+    isUninitialized: boolean;
+    error?: FetchBaseQueryError | SerializedError;
+  },
+] => {
+  const dispatch = useAppDispatch();
+  const configEntry = useConfigFormEntry(configKey);
+
+  const [post, { isError, isSuccess, isLoading, isUninitialized, error }] =
+    usePostConfigurationValueMutation();
+
+  const setConfigValue = useCallback(async () => {
+    if (configEntry) {
+      // reset flags of the saved entry
+      dispatch(resetFlag(configEntry.key));
+      return post(configEntry).unwrap();
+    }
+  }, [configEntry, dispatch, post]);
+
+  return [
+    setConfigValue,
+    { isError, isSuccess, isLoading, isUninitialized, error },
+  ];
+};
+
 export const ConfigForm: FC<IProps> = ({ configKey }) => {
   const dispatch = useAppDispatch();
+  const [setConfigValue, { isLoading }] = usePostConfiguration(configKey);
 
   const sourceValuesKey = useAppSelector(
     (state) => state.configForm.forms[configKey]?.sourceValuesKey || 'none',
@@ -64,10 +105,11 @@ export const ConfigForm: FC<IProps> = ({ configKey }) => {
   const adminLabel = labels[configKey];
 
   const handleSave = useCallback(
-    (configKey: TConfigEntryKey) => () => {
-      console.warn('TODO: implement me', configKey);
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    (_configKey: TConfigEntryKey) => () => {
+      setConfigValue();
     },
-    [],
+    [setConfigValue],
   );
   const handleReset = useCallback(
     (configKey: TConfigEntryKey) => () => {
@@ -110,7 +152,7 @@ export const ConfigForm: FC<IProps> = ({ configKey }) => {
             color: 'primary',
             size: 'small',
             onClick: handleSave(configKey),
-            disabled: !isModified && !isNew,
+            disabled: (!isModified && !isNew) || isLoading,
           }}
         >
           <Save />
@@ -124,7 +166,7 @@ export const ConfigForm: FC<IProps> = ({ configKey }) => {
             color: 'error',
             size: 'small',
             onClick: handleReset(configKey),
-            disabled: !isModified && !isNew,
+            disabled: (!isModified && !isNew) || isLoading,
           }}
         >
           <Clear />
@@ -138,7 +180,7 @@ export const ConfigForm: FC<IProps> = ({ configKey }) => {
             color: 'warning',
             size: 'small',
             onClick: handleApplyDefault(configKey),
-            disabled: !hasDefaultsTo,
+            disabled: !hasDefaultsTo || isLoading,
           }}
         >
           <SettingsBackupRestore />
