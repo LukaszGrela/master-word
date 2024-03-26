@@ -10,7 +10,7 @@ import {
   dictionaryDevConnection,
   ensureDictionaryDevConnection,
 } from './dictionary/helpers';
-import { IConfigEntry } from '@repo/backend-types/db';
+import { IConfigEntry, TConfigEntryKey } from '@repo/backend-types/db';
 
 const router = Router();
 
@@ -73,6 +73,62 @@ router.post(
 
       const connection = dictionaryDevConnection();
       const result = await setConfigValue(key, value, appId, connection);
+
+      res.status(StatusCodes.OK).json(result);
+    } catch (error) {
+      console.log(error);
+      res.status(StatusCodes.BAD_REQUEST).json(error);
+    }
+  },
+);
+type TProcessConfigResult = {
+  key: TConfigEntryKey;
+  result?: IConfigEntry;
+  error?: unknown;
+};
+function* processConfigList(input: IConfigEntry[]) {
+  const toProcess = input.concat();
+  const connection = dictionaryDevConnection();
+
+  while (toProcess.length) {
+    const config = toProcess.pop();
+    if (!config) yield Promise.reject('Invalid empty entry in the list.');
+    yield new Promise<TProcessConfigResult>((resolve, reject) => {
+      const { appId, key, value } = config!;
+      try {
+        setConfigValue(key, value, appId, connection).then((result) => {
+          resolve({ key, result });
+        });
+      } catch (error) {
+        reject({ key, error });
+      }
+    });
+  }
+}
+
+router.post(
+  '/configuration/set-multiple',
+
+  ensureDictionaryDevConnection(),
+  ensureLoggedIn(),
+
+  async (req: Request, res: Response) => {
+    const list = req.body as IConfigEntry[];
+
+    if (!list || list.length === 0) {
+      res.status(StatusCodes.BAD_REQUEST).json({
+        name: 'Error',
+        message: 'Body array must contain at least one entry.',
+      });
+      return;
+    }
+
+    try {
+      const processing = processConfigList(list);
+      const result: TProcessConfigResult[] = [];
+      for await (const iterator of processing) {
+        result.push(iterator);
+      }
 
       res.status(StatusCodes.OK).json(result);
     } catch (error) {
