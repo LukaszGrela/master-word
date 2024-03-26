@@ -13,7 +13,7 @@ import type {
   TValidateWordBody,
 } from './types';
 import { calculateScore, resetGameSession, validateWord } from './helpers';
-import { MAX_ATTEMTPS, WORD_LENGTH } from '../constants';
+import { MAX_ATTEMPTS, WORD_LENGTH } from '../constants';
 import { logUnknownWord } from './backend/dictionary/helpers';
 import {
   wordExists,
@@ -150,11 +150,10 @@ const isCorrectWord = async (
 const gameSessions = new Map<string, TGameSessionRecord>();
 
 router.get('/init', async (req: Request, res: Response) => {
-  // TODO: add init word length, attempts
+  // TODO: add init word length
   const wordLength = WORD_LENGTH;
-  const maxAttempts = MAX_ATTEMTPS;
-  const { session, language = 'pl' } = req.query as TInitQuery;
-
+  const { session, language = 'pl', ...rest } = req.query as TInitQuery;
+  const maxAttempts = Number(rest.maxAttempts || MAX_ATTEMPTS);
   const config = await getConfiguration('frontend');
 
   const enabledLanguagesConfig = config.find(
