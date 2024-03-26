@@ -1,9 +1,14 @@
-import { IConfigEntry } from '@repo/backend-types/db';
+import {
+  IConfigEntry,
+  TConfigEntryKey,
+  TProcessConfigResultEntry,
+} from '@repo/backend-types/db';
 import { adminApi } from './slice';
-import { apiConfig } from './endpoints';
+import { apiConfig, apiConfigSet, apiConfigSetMultiple } from './endpoints';
 import { isAdminConfiguration, setConfig } from '../config';
 import type { TSetConfigPayload } from '../config';
-import { hydrate } from '../config-form';
+import { hydrate, resetFlags, THydratedEntry } from '../config-form';
+import { FetchBaseQueryError } from '@reduxjs/toolkit/query';
 
 export const configApi = adminApi.injectEndpoints({
   endpoints: (builder) => ({
@@ -32,9 +37,71 @@ export const configApi = adminApi.injectEndpoints({
       },
       providesTags: ['Config'],
     }),
+    postConfigurationValue: builder.mutation<
+      IConfigEntry[],
+      THydratedEntry<TConfigEntryKey>
+    >({
+      query: ({ key, value, appId }) => ({
+        url: apiConfigSet(key),
+        method: 'POST',
+        body: { value, appId, key },
+      }),
+
+      invalidatesTags: ['Config'],
+    }),
+    postConfiguration: builder.mutation<
+      TProcessConfigResultEntry[],
+      THydratedEntry<TConfigEntryKey>[]
+    >({
+      queryFn: async (list, api, _extraOptions, baseQuery) => {
+        try {
+          const { data, error } = (await baseQuery({
+            url: apiConfigSetMultiple(),
+            method: 'POST',
+            body: list,
+          })) as {
+            data?: TProcessConfigResultEntry[];
+            error?: FetchBaseQueryError;
+            meta?: unknown;
+          };
+          console.log('response', data, error);
+          if (error) {
+            throw error;
+          }
+          if (!data || data.length === 0) {
+            throw { status: 'CUSTOM_ERROR', error: 'Invalid empty response.' };
+          }
+
+          // check if there are any error entries
+          const errors = data.filter((entry) => entry.error);
+          //
+          if (errors.length > 0) {
+            throw {
+              status: 'CUSTOM_ERROR',
+              error: 'Some entries were not saved.',
+              data,
+            };
+          }
+          // reset all flags
+          api.dispatch(resetFlags());
+          // Return the result in an object with a `data` field
+          return { data };
+        } catch (error) {
+          // Catch any errors and return them as an object with an `error` field
+          return { error: error as FetchBaseQueryError };
+        }
+      },
+      invalidatesTags: (_, error) => {
+        return !error ? ['Config'] : [];
+      },
+    }),
   }),
   overrideExisting: false,
 });
 
-export const { useGetConfigurationQuery, useLazyGetConfigurationQuery } =
-  configApi;
+export const {
+  useGetConfigurationQuery,
+  useLazyGetConfigurationQuery,
+  usePostConfigurationValueMutation,
+  usePostConfigurationMutation,
+} = configApi;
