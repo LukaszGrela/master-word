@@ -6,6 +6,7 @@ import {
   IConfigFormState,
 } from './types';
 import { Draft } from '@reduxjs/toolkit';
+import { hasOwn } from '@repo/utils';
 
 const typedDrop = <Key extends TConfigEntryKey>(
   key: Key,
@@ -114,4 +115,17 @@ export const validateLinkedConfig = <Key extends TConfigEntryKey>(
       });
     }
   }
+};
+
+export const guardDefinedConfigEntry = <Key extends TConfigEntryKey>(
+  test: unknown,
+): test is THydratedEntry<Key> => {
+  type TKeys = keyof THydratedEntry<Key>;
+  return (
+    test !== undefined &&
+    hasOwn<TKeys>(test, 'appId') &&
+    hasOwn<TKeys>(test, 'value') &&
+    hasOwn<TKeys>(test, 'key') &&
+    hasOwn<TKeys>(test, 'original')
+  );
 };

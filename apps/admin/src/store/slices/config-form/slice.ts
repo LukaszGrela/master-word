@@ -1,5 +1,10 @@
-import { PayloadAction, createSlice } from '@reduxjs/toolkit';
-import { IConfigFormState, TSetHydrateConfigValueParamType } from './types';
+import { Draft, PayloadAction, createSlice } from '@reduxjs/toolkit';
+import {
+  IConfigFormState,
+  TForms,
+  THydratedEntry,
+  TSetHydrateConfigValueParamType,
+} from './types';
 import { IConfigEntry, TConfigEntryKey } from '@repo/backend-types/db';
 import { hydrateConfig, validateLinkedConfig } from './helpers';
 
@@ -9,13 +14,70 @@ const initialState: IConfigFormState = {
 
 const SLICE_NAME = 'config-form' as const;
 
+const applyNewConfig = <Key extends TConfigEntryKey>(
+  key: Key,
+  forms: Draft<TForms>,
+  newValue: THydratedEntry<Key>,
+): void => {
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  (forms[key] as any) = newValue;
+};
+
 export const configFormSlice = createSlice({
   initialState,
   name: SLICE_NAME,
   reducers: {
     hydrate: (state, action: PayloadAction<IConfigEntry[]>) => {
       if (action.payload) {
-        state.forms = hydrateConfig(action.payload);
+        // at this point we can have some of the config already in store, possibly not saved
+        // we can't override the state
+        const hydrated = hydrateConfig(action.payload);
+        if (
+          state.forms &&
+          (Object.keys(state.forms).length === 0 ||
+            Object.entries(state.forms).filter(
+              (tuple) =>
+                tuple[1]?.isModified || tuple[1]?.isNew || tuple[1]?.isDeleted,
+            ).length === 0)
+        ) {
+          // default
+          state.forms = hydrated;
+        } else {
+          // patch
+          console.group('Patch');
+          Object.entries(state.forms).forEach(([key, entry]) => {
+            const newConfig = hydrated[key];
+            console.log('Patching...', key, 'incoming', newConfig);
+            if (entry) {
+              console.log('test entry', entry);
+              if (newConfig) {
+                if (entry.isModified) {
+                  // patch the original value
+                  entry.original.appId = newConfig.appId;
+                  entry.original.value = newConfig.value;
+                } else if (entry.isNew || entry.isDeleted) {
+                  // leave as is
+                } else {
+                  // use incoming
+                  applyNewConfig(key, state.forms, newConfig);
+                }
+              } else {
+                // newConfig was missing, delete this entry
+                delete state.forms[key];
+              }
+            }
+          });
+          // now what's left, add to the store
+          const currentKeys = Object.keys(state.forms);
+          Object.entries(hydrated)
+            .filter(([key]) => currentKeys.indexOf(key) === -1)
+            .forEach(([key, newConfig]) => {
+              if (newConfig) {
+                applyNewConfig(key, state.forms, newConfig);
+              }
+            });
+          console.groupEnd();
+        }
       }
       return state;
     },
@@ -73,6 +135,26 @@ export const configFormSlice = createSlice({
       }
 
       return state;
+    },
+    resetFlag: (state, action: PayloadAction<TConfigEntryKey>) => {
+      const key = action.payload;
+      const config = state.forms[key];
+      if (config) {
+        config.isDeleted = false;
+        config.isNew = false;
+        config.isModified = false;
+      }
+
+      return state;
+    },
+    resetFlags: (state) => {
+      Object.entries(state.forms).forEach(([, config]) => {
+        if (config) {
+          config.isModified = false;
+          config.isDeleted = false;
+          config.isNew = false;
+        }
+      });
     },
 
     setConfigValue: (

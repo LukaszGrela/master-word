@@ -10,6 +10,8 @@ export const {
   setConfigValue,
   setDefaultValue,
   resetConfig,
+  resetFlag,
+  resetFlags,
 } = configFormSlice.actions;
 
 export default configFormSlice.reducer;
