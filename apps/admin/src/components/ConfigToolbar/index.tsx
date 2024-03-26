@@ -5,10 +5,52 @@ import Toolbar from '@mui/material/Toolbar';
 import Typography from '@mui/material/Typography';
 import { alpha } from '@mui/system/colorManipulator';
 import { IconButtonWithTooltip } from '../IconButtonWithTooltip';
-import { useAppDispatch, useFormsModifiedState } from '../../store/hooks';
-import { resetConfig } from '../../store/slices/config-form';
+import {
+  useAppDispatch,
+  useConfigFormState,
+  useFormsModifiedState,
+} from '../../store/hooks';
+import { THydratedEntry, resetConfig } from '../../store/slices/config-form';
+import { usePostConfigurationMutation } from '../../store/slices/api/slice.config';
+import { TConfigEntryKey } from '@repo/backend-types/db';
+import { SerializedError } from '@reduxjs/toolkit';
+import { FetchBaseQueryError } from '@reduxjs/toolkit/query';
+
+const useSaveAll = (): [
+  () => void,
+  {
+    isError: boolean;
+    isSuccess: boolean;
+    isLoading: boolean;
+    isUninitialized: boolean;
+    error?: FetchBaseQueryError | SerializedError;
+  },
+] => {
+  const [save, props] = usePostConfigurationMutation();
+
+  const config = useConfigFormState();
+
+  const saveAll = useCallback(async () => {
+    console.log('saveAll');
+    const toSave = Object.entries(config.forms)
+      .filter(([, configEntry]) => {
+        return (
+          configEntry !== undefined &&
+          (configEntry.isModified || configEntry.isNew)
+        );
+      })
+      .map((tuple) => tuple[1]) as THydratedEntry<TConfigEntryKey>[];
+
+    if (toSave.length > 0) {
+      return save(toSave).unwrap();
+    }
+  }, [config.forms, save]);
+
+  return [saveAll, { ...props }];
+};
 
 export const ConfigToolbar: FC = () => {
+  const [save, { isLoading }] = useSaveAll();
   const dispatch = useAppDispatch();
   const numConfigChanged = useFormsModifiedState();
 
@@ -17,6 +59,9 @@ export const ConfigToolbar: FC = () => {
   const handleReset = useCallback(() => {
     dispatch(resetConfig());
   }, [dispatch]);
+  const handleSave = useCallback(() => {
+    save();
+  }, [save]);
 
   return (
     <Toolbar
@@ -56,6 +101,7 @@ export const ConfigToolbar: FC = () => {
               color: 'error',
               size: 'small',
               onClick: handleReset,
+              disabled: isLoading,
             }}
           >
             <Clear />
@@ -68,7 +114,8 @@ export const ConfigToolbar: FC = () => {
             buttonProps={{
               color: 'success',
               size: 'small',
-              /* onClick:{handleReview('approve-selected')}, */
+              onClick: handleSave,
+              disabled: isLoading,
             }}
           >
             <Save />
