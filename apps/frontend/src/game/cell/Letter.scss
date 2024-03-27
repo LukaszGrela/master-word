@@ -76,8 +76,8 @@
       padding: 0.3rem 0.3rem;
       border-radius: 1rem;
 
-      .mobile .pl &,
-      .mobile .en & {
+      .mobile &,
+      .mobile & {
         top: 2rem;
         @media screen and (max-width: 320px) {
           bottom: 0;
