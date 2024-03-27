@@ -3,7 +3,6 @@ import {
   FC,
   FormEventHandler,
   useCallback,
-  useMemo,
   useState,
 } from 'react';
 import Box from '@mui/material/Box';
@@ -12,7 +11,6 @@ import CardContent from '@mui/material/CardContent';
 import CardHeader from '@mui/material/CardHeader';
 import FormControl from '@mui/material/FormControl';
 import InputLabel from '@mui/material/InputLabel';
-import NativeSelect from '@mui/material/NativeSelect';
 import Card from '@mui/material/Card';
 import Stack from '@mui/material/Stack';
 import TextField from '@mui/material/TextField';
@@ -22,38 +20,17 @@ import {
   usePostAddWordMutation,
   TPostAddWordParams,
 } from '../../store/slices/api';
-import { useAppDispatch, useConfigState } from '../../store/hooks';
-import { ILanguageSelectorOption } from '../../types';
+import { useAppDispatch } from '../../store/hooks';
 import { setLanguage } from '../../store/slices/config';
+import { LanguageListSelect } from '../../components/LanguageListSelect';
 
 const NewWord: FC = () => {
   const dispatch = useAppDispatch();
-  const { selectedLanguage, supportedLanguages } = useConfigState();
 
-  const languageList = useMemo(() => {
-    return supportedLanguages
-      .map(
-        (language): ILanguageSelectorOption => ({
-          value: language,
-          label: language.toUpperCase(),
-          flag:
-            language === 'pl' ? (
-              <>🇵🇱</>
-            ) : language === 'en' ? (
-              <>🇺🇸</>
-            ) : undefined,
-        }),
-      )
-      .map((option) => (
-        <option key={option.value} value={option.value}>
-          {option.flag} {option.label}
-        </option>
-      ));
-  }, [supportedLanguages]);
-  const handleSelectChange: ChangeEventHandler<HTMLSelectElement> = useCallback(
-    (e) => {
-      console.log(e.target.value);
-      dispatch(setLanguage(e.target.value));
+  const handleSelectChange = useCallback(
+    (language: string) => {
+      console.log(language);
+      dispatch(setLanguage(language));
     },
     [dispatch],
   );
@@ -127,21 +104,14 @@ const NewWord: FC = () => {
         >
           <Stack spacing={2} direction={'column'} alignItems={'stretch'}>
             <Stack spacing={2} direction={'row'}>
-              <FormControl>
+              <FormControl variant="standard">
                 <InputLabel variant="standard" htmlFor="language">
                   Language
                 </InputLabel>
-                <NativeSelect
+                <LanguageListSelect
                   disabled={isLoading}
-                  value={selectedLanguage}
-                  inputProps={{
-                    name: 'language',
-                    id: 'language',
-                  }}
                   onChange={handleSelectChange}
-                >
-                  {languageList}
-                </NativeSelect>
+                />
               </FormControl>
               <input
                 type="hidden"
