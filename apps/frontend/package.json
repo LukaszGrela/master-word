@@ -2,7 +2,7 @@
   "name": "frontend",
   "description": "Simple word game where you need to guess a 5 letter word.",
   "private": true,
-  "version": "0.9.3",
+  "version": "0.9.4",
   "type": "module",
   "scripts": {
     "dev": "vite",
@@ -14,6 +14,7 @@
   },
   "dependencies": {
     "@repo/utils": "*",
+    "@repo/shared-ui": "*",
     "bowser": "^2.11.0",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",

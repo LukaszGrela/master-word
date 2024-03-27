@@ -1,7 +1,7 @@
 import { FC, useEffect, useMemo, useState } from 'react';
 import { EStorageKeys, AppStorage, noop } from '@repo/utils';
+import { getFlag } from '@repo/shared-ui';
 import { useLanguage } from '../../i18n';
-import { getFlag } from '../../i18n/helpers';
 import LanguageSelector from './LanguageSelector';
 import { ILanguageListItem } from './types';
 
