@@ -138,8 +138,14 @@ const InputGuess: FC<{
           </div>
         )}
         <div className="button-row">
-          <button onClick={handleClose}>{t('input-modal-close-button')}</button>
-          <button onClick={handleCommit} disabled={disableButton}>
+          <button className="secondary" onClick={handleClose}>
+            {t('input-modal-close-button')}
+          </button>
+          <button
+            className="primary"
+            onClick={handleCommit}
+            disabled={disableButton}
+          >
             {t('input-modal-ok-button')}
           </button>
         </div>

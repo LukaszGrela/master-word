@@ -51,36 +51,49 @@ button {
   font-size: 1em;
   font-weight: 500;
   font-family: inherit;
+  background-color: $button;
+  color: $button-color;
 
   cursor: pointer;
   transition: background-color 0.25s;
-}
 
-button:disabled {
-  cursor: not-allowed;
-}
+  @media (prefers-color-scheme: dark) {
+    background-color: $button-dark;
+    color: $button-color-dark;
+  }
 
-button.primary {
-  background-color: $button-primary;
-  color: $button-primary-color;
-}
-button.secondary {
-  background-color: $button-secondary;
-  color: $button-secondary-color;
-}
+  &:disabled {
+    cursor: not-allowed;
+    opacity: 0.75;
+  }
 
-button.primary:hover {
-  background-color: $button-primary-hover;
-}
+  &:focus,
+  &:focus-visible {
+    outline: 4px auto -webkit-focus-ring-color;
+  }
 
-button.secondary:hover {
-  background-color: $button-secondary-hover;
-  color: $button-secondary-color-hover;
-}
+  &:hover {
+    background-color: $skyBlue;
+    @media (prefers-color-scheme: dark) {
+      background-color: $platinum;
+    }
+  }
 
-button:focus,
-button:focus-visible {
-  outline: 4px auto -webkit-focus-ring-color;
+  &.primary {
+    background-color: $button-primary;
+    color: $button-primary-color;
+    &:hover {
+      background-color: $button-primary-hover;
+    }
+  }
+  &.secondary {
+    background-color: $button-secondary;
+    color: $button-secondary-color;
+    &:hover {
+      background-color: $button-secondary-hover;
+      color: $button-secondary-color-hover;
+    }
+  }
 }
 
 .button-row {
@@ -129,10 +142,6 @@ button:focus-visible {
   :root {
     color: $foreground-dark;
     background-color: $background-dark;
-  }
-
-  button {
-    background-color: #f9f9f9;
   }
 
   .read-the-docs {
