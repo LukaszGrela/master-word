@@ -1,1 +1,1 @@
-export * from './NewWord';
+export { default as NewWordWidget } from './NewWord';

@@ -1,1 +1,1 @@
-export * from './DictionaryStats';
+export { default as DictionaryStatsWidget } from './DictionaryStats';
