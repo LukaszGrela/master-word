@@ -23,6 +23,7 @@ import ThumbUpIcon from '@mui/icons-material/ThumbUp';
 import Toolbar from '@mui/material/Toolbar';
 import Tooltip from '@mui/material/Tooltip';
 import Typography from '@mui/material/Typography';
+import { getFlag } from '@repo/shared-ui';
 
 import { Footer } from '../../components/Footer';
 import { Header, HeaderSpacer } from '../../components/Header';
@@ -387,7 +388,9 @@ export const UnknownWords: FC = () => {
                           />
                         </TableCell>
                         <TableCell>{data.word}</TableCell>
-                        <TableCell>{data.language}</TableCell>
+                        <TableCell>
+                          {getFlag(data.language)} {data.language.toUpperCase()}
+                        </TableCell>
                         <TableCell>
                           <IconButtonWithTooltip
                             tooltipProps={{

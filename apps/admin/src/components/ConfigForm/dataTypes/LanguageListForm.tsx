@@ -1,5 +1,13 @@
 import { FC, useCallback, useEffect, useMemo, useState } from 'react';
-import { IDictionary, TArrayElementType } from '@repo/common-types';
+import { TransitionGroup } from 'react-transition-group';
+import { TArrayElementType } from '@repo/common-types';
+import { noop } from '@repo/utils';
+import {
+  languageList,
+  FlagIcon,
+  countryNamesList,
+  flagList,
+} from '@repo/shared-ui';
 import Box from '@mui/material/Box';
 import Stack from '@mui/material/Stack';
 import List from '@mui/material/List';
@@ -16,142 +24,12 @@ import TextField from '@mui/material/TextField';
 import capitalize from '@mui/utils/capitalize';
 import IconButton from '@mui/material/IconButton';
 import AddIcon from '@mui/icons-material/Add';
-import { TransitionGroup } from 'react-transition-group';
 
 import { useAppDispatch, useConfigFormEntry } from '../../../store/hooks';
 import { ILangaugeListProps } from './types';
-import { FlagSPQR } from '../../icons/FlagSPQR';
-import { FlagEsperanto } from '../../icons/FlagEsperanto';
 import { setConfigValue } from '../../../store/slices/config-form';
-import { noop } from '@repo/utils';
 
-const flagList: IDictionary<string> = {
-  af: 'za',
-  sq: 'al',
-  be: 'by',
-  bs: 'ba',
-  bg: 'bg',
-  hr: 'hr',
-  cs: 'cz',
-  da: 'dk',
-  nl: 'nl',
-  en: 'us',
-  eo: 'esperanto',
-  et: 'ee',
-  fi: 'fi',
-  fr: 'fr',
-  de: 'de',
-  hu: 'hu',
-  is: 'is',
-  ga: 'ie',
-  it: 'it',
-  la: 'spqr',
-  lv: 'lv',
-  lt: 'lt',
-  mk: 'mk',
-  no: 'no',
-  pl: 'pl',
-  pt: 'pt',
-  ro: 'ro',
-  ru: 'ru',
-  sr: 'rs',
-  sk: 'sk',
-  sl: 'si',
-  es: 'es',
-  sv: 'se',
-  tr: 'tr',
-};
-const countryNamesList: IDictionary<string> = {
-  af: 'South Africa',
-  sq: 'Albania',
-  be: 'Belarus',
-  bs: 'Bosnia and Herzegovina',
-  bg: 'Bulgaria',
-  hr: 'Croatia',
-  cs: 'Czechia',
-  da: 'Denmark',
-  nl: 'Netherlands, Kingdom of the',
-  en: 'United States of America',
-  eo: 'esperanto',
-  et: 'Estonia',
-  fi: 'Finland',
-  fr: 'France',
-  de: 'Germany',
-  hu: 'Hungary',
-  is: 'Iceland',
-  ga: 'Ireland',
-  it: 'Italy',
-  la: 'Roman Empire, SPQR',
-  lv: 'Latvia',
-  lt: 'Lithuania',
-  mk: 'North Macedonia',
-  no: 'Norway',
-  pl: 'Poland',
-  pt: 'Portugal',
-  ro: 'Romania',
-  ru: 'Russian Federation',
-  sr: 'Serbia',
-  sk: 'Slovakia',
-  sl: 'Slovenia',
-  es: 'Spain',
-  sv: 'Sweden',
-  tr: 'Türkiye',
-};
-const languageList: IDictionary<string> = {
-  af: 'afrikaans',
-  sq: 'albanian',
-  be: 'belarusian',
-  bs: 'bosnian',
-  bg: 'bulgarian',
-  hr: 'croatian',
-  cs: 'czech',
-  da: 'danish',
-  nl: 'dutch',
-  en: 'english',
-  eo: 'esperanto',
-  et: 'estonian',
-  fi: 'finnish',
-  fr: 'french',
-  de: 'german',
-  hu: 'hungarian',
-  is: 'icelandic',
-  ga: 'irish',
-  it: 'italian',
-  la: 'latin',
-  lv: 'latvian',
-  lt: 'lithuanian',
-  mk: 'macedonian',
-  no: 'norwegian',
-  pl: 'polish',
-  pt: 'portuguese',
-  ro: 'romanian',
-  ru: 'russian',
-  sr: 'serbian',
-  sk: 'slovak',
-  sl: 'slovenian',
-  es: 'spanish',
-  sv: 'swedish',
-  tr: 'turkish',
-};
 const options = Object.keys(languageList);
-
-const FlagIcon: FC<{ countryCode: string }> = ({ countryCode }) => {
-  if (countryCode === 'spqr') {
-    return <FlagSPQR width={20} height={14} />;
-  }
-  if (countryCode === 'esperanto') {
-    return <FlagEsperanto width={20} height={14} />;
-  }
-  return (
-    <img
-      loading="lazy"
-      width="20"
-      srcSet={`https://flagcdn.com/w40/${countryCode}.png 2x`}
-      src={`https://flagcdn.com/w20/${countryCode}.png`}
-      alt=""
-    />
-  );
-};
 
 const filterLanguage = createFilterOptions<string>({
   matchFrom: 'any',
