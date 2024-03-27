@@ -308,16 +308,14 @@ router.get(
     try {
       const connection = dictionaryDevConnection();
       if (connection) {
-        const list = await countWords(
-          language as TSupportedLanguages,
-          Number(length),
-        );
+        const list = await countWords(language, Number(length));
 
         res.status(StatusCodes.OK).json(list);
       } else {
         throw new Error('No DB Connection error');
       }
     } catch (error) {
+      console.log(error);
       res
         .status(StatusCodes.INTERNAL_SERVER_ERROR)
         .json({ message: 'Unknown error' });
