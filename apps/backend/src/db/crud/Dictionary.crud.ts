@@ -196,7 +196,8 @@ export const countWords = async (
     },
   ])
     .collation({
-      locale: language,
+      /* latin not supported? Outrageus */
+      locale: language === 'la' ? 'it' : language,
       strength: 1,
     })
     .exec();
