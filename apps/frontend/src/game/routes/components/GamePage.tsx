@@ -129,7 +129,15 @@ export const GamePage = () => {
     return () => {
       controller.abort();
     };
-  }, [clearSession, gameSession, gameState, language, navigate, session]);
+  }, [
+    attempts,
+    clearSession,
+    gameSession,
+    gameState,
+    language,
+    navigate,
+    session,
+  ]);
 
   const handleWordCommit = useCallback(
     (guess: string) => {

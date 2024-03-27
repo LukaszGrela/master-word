@@ -1,10 +1,10 @@
 import { FC, useMemo, useState } from 'react';
 import { EStorageKeys, AppStorage } from '@repo/utils';
+import { getFlag } from '@repo/shared-ui';
 import LanguageSelector from './LanguageSelector';
 import { useLanguage } from '../../i18n';
 import { useConfig } from '../../config';
 import { ILanguageListItem } from './types';
-import { getFlag } from '../../i18n/helpers/getFlag';
 
 import './GameLanguage.scss';
 

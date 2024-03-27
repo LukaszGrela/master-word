@@ -1,13 +1,13 @@
-import { FC, useCallback, useState, ChangeEventHandler } from 'react';
+import { FC, useCallback, useState } from 'react';
 import Typography from '@mui/material/Typography';
 import CardContent from '@mui/material/CardContent';
 import CardHeader from '@mui/material/CardHeader';
 import Card from '@mui/material/Card';
 import FormControl from '@mui/material/FormControl';
 import LinearProgress from '@mui/material/LinearProgress';
-import NativeSelect from '@mui/material/NativeSelect';
 import Stack from '@mui/material/Stack';
 import { useGetDictionaryStatsQuery } from '../../store/slices/api';
+import { LanguageListSelect } from '../../components/LanguageListSelect';
 
 const DictionaryStats: FC = () => {
   const [language, setLanguage] = useState('pl');
@@ -22,13 +22,11 @@ const DictionaryStats: FC = () => {
 
   const total = data && data.length > 0 ? data[0].wordCount : 0;
 
-  const handleSelectChange: ChangeEventHandler<HTMLSelectElement> = useCallback(
-    (e) => {
-      console.log(e.target.value);
-      setLanguage(e.target.value);
-    },
-    [],
-  );
+  const handleSelectChange = useCallback((language: string) => {
+    console.log(language);
+    setLanguage(language);
+  }, []);
+
   return (
     <Card
       className="widget dictionary-stats"
@@ -45,19 +43,12 @@ const DictionaryStats: FC = () => {
           {total}
         </Typography>
         <Stack spacing={2} direction={'row'} alignItems={'baseline'}>
-          <FormControl>
-            <NativeSelect
-              inputProps={{
-                name: 'language',
-                id: 'language',
-              }}
-              value={language}
+          <FormControl variant="standard">
+            <LanguageListSelect
+              disabled={isLoading}
               onChange={handleSelectChange}
-            >
-              <option value={'pl'}>🇵🇱 Polish</option>
-              <option value={'en'}>🇺🇸 English</option>
-              <option value={'fr'}>🇫🇷 French</option>
-            </NativeSelect>
+              value={language}
+            />
           </FormControl>
           <Typography variant="caption">words stored</Typography>
         </Stack>

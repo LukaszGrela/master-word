@@ -4,6 +4,7 @@
   button.translation-btn {
     display: flex;
     gap: 0.25rem;
+    color: inherit;
 
     @media (prefers-color-scheme: dark) {
       background-color: $language-btn-background-dark;

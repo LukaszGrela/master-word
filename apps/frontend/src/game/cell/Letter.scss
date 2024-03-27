@@ -20,6 +20,17 @@
     display: none;
   }
 
+  & .flag {
+    display: none;
+    &-wrapper {
+      display: inline-flex;
+    }
+
+    & img {
+      width: 1rem;
+    }
+  }
+
   &.inactive {
     background-color: $letter-inactive;
     &.correct {
@@ -54,24 +65,20 @@
       border-right: 1px solid $letter-wrong;
     }
 
-    &.first:before {
-      top: 1rem;
-      left: -0.75rem;
+    &.first .flag {
+      display: inline-flex;
+      align-items: center;
+
+      top: 1.5rem;
+      left: -0.55rem;
       position: absolute;
       background-color: inherit;
-      padding: 0.125rem 0.25rem;
+      padding: 0.3rem 0.3rem;
       border-radius: 1rem;
 
-      .pl & {
-        content: '🇵🇱';
-      }
-      .en & {
-        content: '🇺🇸';
-      }
-
-      .mobile .pl &,
-      .mobile .en & {
-        top: 1.75rem;
+      .mobile &,
+      .mobile & {
+        top: 2rem;
         @media screen and (max-width: 320px) {
           bottom: 0;
           border: none;
