@@ -1,6 +1,15 @@
 // the game
 // Wrong - X, Misplaced - M, Correct - C
 export type TValidationChar = 'X' | 'M' | 'C';
+
+export const guardTValidationChar = (
+  test: unknown,
+): test is TValidationChar => {
+  return (
+    typeof test === 'string' && (test === 'X' || test === 'M' || test === 'C')
+  );
+};
+
 export type TGameStep = {
   word: string[];
   validated: TValidationChar[];
@@ -20,7 +29,7 @@ export type TScore = {
   attempts: number;
 };
 
-export type TGameSession = {
+export type TGameRecord = {
   language: string;
 
   timestamp_start: string;
@@ -33,8 +42,8 @@ export type TGameSession = {
   score: number;
 } & (TGameSessionFinished | TGameSessionIncomplete);
 
-export type TGameSessionRecord = {
+export type TGameSession = {
   session: string;
   highest?: TScore;
-  game: TGameSession;
+  game: TGameRecord;
 };

@@ -1,7 +1,7 @@
 import { Router, Request, Response, NextFunction } from 'express';
 import { StatusCodes } from 'http-status-codes';
 import { v4 as uuid } from 'uuid';
-import type { TGameSessionRecord } from '@repo/backend-types';
+import type { TGameSession } from '@repo/backend-types';
 import { ErrorCodes } from '@repo/backend-types/enums';
 import type {
   TRandomWordResponse,
@@ -147,7 +147,7 @@ const isCorrectWord = async (
   }
 };
 
-const gameSessions = new Map<string, TGameSessionRecord>();
+const gameSessions = new Map<string, TGameSession>();
 
 router.get('/init', async (req: Request, res: Response) => {
   // TODO: add init word length
@@ -186,7 +186,7 @@ router.get('/init', async (req: Request, res: Response) => {
     }
   }
 
-  let response: TGameSessionRecord | undefined;
+  let response: TGameSession | undefined;
   if (session) {
     // read and return
     if (gameSessions.has(session)) {
