@@ -1,3 +1,5 @@
+import { IDictionary } from '@repo/common-types';
+
 // the game
 // Wrong - X, Misplaced - M, Correct - C
 export type TValidationChar = 'X' | 'M' | 'C';
@@ -30,20 +32,45 @@ export type TScore = {
 };
 
 export type TGameRecord = {
-  language: string;
-
-  timestamp_start: string;
-  max_attempts: number;
   attempt: number;
-  word: string;
-  word_length: number;
-  state: TGameStep[];
   guessed: boolean;
+  language: string;
+  max_attempts: number;
   score: number;
+  state: TGameStep[];
+  timestamp_start: string;
+  word_length: number;
+  word: string;
 } & (TGameSessionFinished | TGameSessionIncomplete);
 
+/**
+ * Game play session, holds identifier to the current game and archived games
+ */
 export type TGameSession = {
   session: string;
-  highest?: TScore;
-  game: TGameRecord;
+  highest?: IDictionary<TScore>;
+  game?: TGameRecord;
 };
+
+/*
+const game: TGameRecord = {
+  attempt: 0,
+  finished: false,
+  guessed: false,
+  language: 'pl',
+  max_attempts: 8,
+  score: 0,
+  state: [],
+  timestamp_start: '1711623239613',
+  word_length: 5,
+  word: 'robak',
+};
+console.log(game);
+*/
+
+/**
+ * Archive record entry
+ */
+export type TGameRecordArchive = {
+  session: string;
+} & TGameRecord;
