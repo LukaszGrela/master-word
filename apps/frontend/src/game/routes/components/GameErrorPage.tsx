@@ -4,7 +4,7 @@ import {
   useNavigate,
   useRouteError,
 } from 'react-router-dom';
-import { TGameSessionRecord } from '@repo/backend-types';
+import { TGameSession } from '@repo/backend-types';
 import { useLanguage } from '../../../i18n';
 import { GameLanguage } from '../../language';
 import { useCallback } from 'react';
@@ -15,7 +15,7 @@ export const GameErrorPage = () => {
   const { getUIText: t } = useLanguage();
   const navigate = useNavigate();
   const location = useLocation() as Location<
-    { session: TGameSessionRecord; error: TErrorResponse } | undefined
+    { session: TGameSession; error: TErrorResponse } | undefined
   >;
   const gameSession = location.state?.session;
   const gameError = location.state?.error;

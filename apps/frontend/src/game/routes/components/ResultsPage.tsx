@@ -1,5 +1,9 @@
 import { Location, useLocation, useNavigate } from 'react-router-dom';
-import { TGameSessionRecord } from '@repo/backend-types';
+import {
+  TGameRecord,
+  TGameSession,
+  TGameSessionFinished,
+} from '@repo/backend-types';
 import { displayTime } from '@repo/utils';
 import { useLanguage } from '../../../i18n';
 import { EPaths, getResultsPath } from '../enums';
@@ -13,14 +17,38 @@ import './ResultsPage.scss';
 export const ResultsPage = () => {
   const navigate = useNavigate();
   const { getUIText: t } = useLanguage();
-  const location = useLocation() as Location<TGameSessionRecord>;
+  const location = useLocation() as Location<TGameSession>;
   const gameSession = location.state;
-
+  const {
+    score,
+    attempt,
+    word,
+    timestamp_start,
+    finished,
+    word_length,
+    language,
+  } =
+    gameSession.game ||
+    ({
+      score: 0,
+      highest: {},
+      attempt: 0,
+      word: '',
+      language: '',
+      timestamp_start: '0',
+      finished: false,
+      guessed: false,
+      word_length: 5,
+      state: [],
+      max_attempts: 0,
+    } as TGameRecord);
+  const highest = gameSession.highest;
+  const highId = `${language}:${word_length}`;
   const win = location.pathname === getResultsPath('win');
 
-  const playTimeMs = gameSession.game.finished
-    ? Number(gameSession.game.timestamp_finish) -
-      Number(gameSession.game.timestamp_start)
+  const playTimeMs = finished
+    ? Number((gameSession.game! as TGameSessionFinished).timestamp_finish) -
+      Number(timestamp_start)
     : 0;
 
   const playTime = playTimeMs > 0 ? displayTime(playTimeMs) : '';
@@ -41,17 +69,17 @@ export const ResultsPage = () => {
   );
   // new high score
   const showHighScore =
-    gameSession.highest && gameSession.game.score > gameSession.highest.score;
+    highest && highest[highId] && score > highest[highId].score;
 
   return (
     <div className="results">
       <h2>
-        {win && t('result-win', { attempt: gameSession.game.attempt })}
-        {!win && t('result-lose', { wordToGuess: gameSession.game.word })}
+        {win && t('result-win', { attempt })}
+        {!win && t('result-lose', { wordToGuess: word })}
       </h2>
 
       <div className="score-container">
-        <Stars score={gameSession.game.score} />
+        <Stars score={score} />
         {showHighScore && <HighScoreLabel />}
       </div>
 
