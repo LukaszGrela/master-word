@@ -218,7 +218,7 @@ router.get('/init', async (req: Request, res: Response) => {
       return;
     }
   }
-  if (!response) {
+  if (!response || !response.game) {
     // session doesnt exist
     res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({
       code: ErrorCodes.GENERAL_ERROR,
@@ -235,14 +235,22 @@ router.get('/init', async (req: Request, res: Response) => {
           Number(response.game.timestamp_start);
         const score = response.game.score;
         // check with previous
+        const highestId = `${response.game.language}:${response.game.word_length}`;
+        const highest =
+          response.highest && response.highest[highestId]
+            ? response.highest[highestId]
+            : undefined;
         if (
-          !response.highest ||
-          score > response.highest.score ||
-          (score === response.highest.score &&
-            timePlayed >= response.highest.timeMs)
+          !highest ||
+          score > highest.score ||
+          (score === highest.score && timePlayed >= highest.timeMs)
         ) {
           // it is higher update
-          response.highest = {
+          if (!response.highest) {
+            response.highest = {};
+          }
+
+          response.highest[highestId] = {
             attempts: response.game.attempt,
             score,
             timeMs: timePlayed,
@@ -269,10 +277,10 @@ router.get('/init', async (req: Request, res: Response) => {
     }
 
     console.log('Game started', response.session);
-    console.log('details', response.game.language, response.game.word);
+    console.log('details', response.game!.language, response.game!.word);
 
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    const { word, ...game } = response.game;
+    const { word, ...game } = response.game!;
     // deliver in progress session
     res.status(StatusCodes.OK).json({
       session: response.session,
@@ -314,6 +322,13 @@ const assureNextAttemptAllowed = (
     });
     return;
   }
+  if (!gameSession.game) {
+    res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({
+      code: ErrorCodes.SESSION_NO_GAME_ERROR,
+      error: 'No game initialised for that session.',
+    });
+    return;
+  }
 
   if (guess.length !== gameSession!.game.word_length) {
     // shows over
@@ -344,6 +359,21 @@ router.get(
 
     // grab game data
     const gameSession = gameSessions.get(session)!;
+
+    if (!gameSession) {
+      res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({
+        code: ErrorCodes.SESSION_NO_GAME_ERROR,
+        error: 'Game for that session does not exist.',
+      });
+      return;
+    }
+    if (!gameSession.game) {
+      res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({
+        code: ErrorCodes.SESSION_NO_GAME_ERROR,
+        error: 'No game initialised for that session.',
+      });
+      return;
+    }
 
     if (gameSession.game.attempt === 0) {
       // start time from the first word guess
@@ -456,7 +486,13 @@ router.get('/game-session', async (req: Request, res: Response) => {
     });
     return;
   }
-
+  if (!gameSession.game) {
+    res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({
+      code: ErrorCodes.SESSION_NO_GAME_ERROR,
+      error: 'No game initialised for that session.',
+    });
+    return;
+  }
   // send response
   if (gameSession.game.finished) {
     res.status(StatusCodes.OK).json(gameSession);
