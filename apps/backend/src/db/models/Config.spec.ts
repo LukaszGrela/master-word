@@ -2,7 +2,6 @@ import mongoose, { AnyKeys } from 'mongoose';
 import { beforeEach, describe, it } from 'node:test';
 import assert from 'node:assert';
 import type { IConfigEntry } from '@repo/backend-types/db';
-
 import { getModelForConnection, Config } from './Config';
 
 describe('Config model', () => {
@@ -100,6 +99,8 @@ describe('Config model', () => {
   describe('getModelForConnection', () => {
     it('creates config entry with all fields', async () => {
       const ConfigModel = getModelForConnection(mongoose.connection);
+      await ConfigModel.collection.drop();
+
       const a = new ConfigModel({
         key: 'supportedLanguages',
         value: ['en', 'pl'].sort(),
