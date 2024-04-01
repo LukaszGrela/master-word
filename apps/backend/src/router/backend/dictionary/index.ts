@@ -20,7 +20,6 @@ import {
   logUnknownWord,
 } from './helpers';
 import { getAll, removeWordById } from '../../../db/crud/UnknownWord.crud';
-import { TSupportedLanguages } from '../../../types';
 
 const router = Router();
 
@@ -32,7 +31,7 @@ router.post(
   async (req: Request, res: Response) => {
     const { word, language, length } = req.body as TAddWordRequestBody;
     try {
-      await addWord(word, language as TSupportedLanguages, length);
+      await addWord(word, language, length);
       res.status(StatusCodes.OK).json(`Word '${word}' was added.`);
       return;
     } catch (error) {
@@ -52,6 +51,7 @@ router.post(
 );
 
 // log unknown word
+// TODO: check not used
 router.post(
   '/logger/unknown-word',
   ensureDictionaryDevConnection(), // assure default connection
@@ -67,6 +67,7 @@ router.post(
 );
 
 // list unknown word entries
+// TODO: rename path?
 router.get(
   '/list',
   ensureDictionaryDevConnection(),
@@ -101,17 +102,13 @@ function* processApprovingWords(input: TTableData[]) {
     // eslint-disable-next-line no-async-promise-executor
     yield new Promise<string>(async (resolve, reject) => {
       try {
-        await addWord(
-          word.word,
-          word.language as TSupportedLanguages,
-          word.length,
-        );
+        await addWord(word.word, word.language, word.length);
         // remove word from unknown-words
         await removeWordById(
           connection!,
           word.parentId,
           word.word,
-          word.language as TSupportedLanguages,
+          word.language,
           word.length,
         );
         resolve(word.word);
@@ -199,7 +196,7 @@ function* processRejectingWords(input: TTableData[]) {
           connection!,
           word.parentId,
           word.word,
-          word.language as TSupportedLanguages,
+          word.language,
           word.length,
         );
         resolve(word.word);
@@ -280,7 +277,7 @@ router.post(
   async (req: Request, res: Response) => {
     const { words, language, length } = req.body as TAddManyWordsRequestBody;
     try {
-      await addManyWords(words, language as TSupportedLanguages, length);
+      await addManyWords(words, language, length);
       res.status(StatusCodes.OK).json(`${words.length} words were added.`);
       return;
     } catch (error) {

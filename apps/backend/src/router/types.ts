@@ -1,26 +1,24 @@
-import { TSupportedLanguages } from '../types';
-
 export type TRandomWordResponse = {
-  language: TSupportedLanguages;
+  language: string;
   word: string;
   error?: string;
 };
 
 export type TRandomWordQuery = {
-  language: TSupportedLanguages;
+  language: string;
   wordLength: number;
 };
 
 export type TIsCorrectWordResponse = {
   word: string;
   validWord: boolean;
-  language: TSupportedLanguages;
+  language: string;
 
   error?: string;
 };
 
 export type TSessionQuery = { session?: string };
-export type TLanguageQuery = { language?: TSupportedLanguages };
+export type TLanguageQuery = { language?: string };
 export type TAttemptsQuery = { maxAttempts?: number };
 export type TInitQuery = TSessionQuery & TLanguageQuery & TAttemptsQuery;
 
