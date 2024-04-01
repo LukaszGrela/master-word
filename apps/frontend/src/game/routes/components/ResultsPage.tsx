@@ -14,6 +14,19 @@ import { HighScoreLabel } from '../../HighScoreLabel';
 
 import './ResultsPage.scss';
 
+const defaultGameRecord: TGameRecord = {
+  score: 0,
+  attempt: 0,
+  word: '',
+  language: '',
+  timestamp_start: '0',
+  finished: false,
+  guessed: false,
+  word_length: 5,
+  state: [],
+  max_attempts: 0,
+};
+
 export const ResultsPage = () => {
   const navigate = useNavigate();
   const { getUIText: t } = useLanguage();
@@ -27,21 +40,7 @@ export const ResultsPage = () => {
     finished,
     word_length,
     language,
-  } =
-    gameSession.game ||
-    ({
-      score: 0,
-      highest: {},
-      attempt: 0,
-      word: '',
-      language: '',
-      timestamp_start: '0',
-      finished: false,
-      guessed: false,
-      word_length: 5,
-      state: [],
-      max_attempts: 0,
-    } as TGameRecord);
+  } = gameSession.game || defaultGameRecord;
   const highest = gameSession.highest;
   const highId = `${language}:${word_length}`;
   const win = location.pathname === getResultsPath('win');
@@ -67,9 +66,12 @@ export const ResultsPage = () => {
     },
     [gameSession.session, navigate],
   );
+
   // new high score
   const showHighScore =
-    highest && highest[highId] && score > highest[highId].score;
+    !highest || !highest[highId]
+      ? true
+      : highest && highest[highId] && score > highest[highId].score;
 
   return (
     <div className="results">
