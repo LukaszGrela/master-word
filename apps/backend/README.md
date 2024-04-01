@@ -12,15 +12,17 @@ Note: Look at the [MongoDB section](#mongodb-mongoose) for further config
 
 ## Gameplay Endpoints
 
-- `GET` - `api/init` - Starts new game
+- `GET` - `api/frontend/init` - Starts new game
   - URL Query `language` - defaults to `pl`, supported values `pl`,`en`. For which language to start the game.
   - URL Query `session` - defaults to `undefined`. A previous game session id. If valid a game can be resumed (if not finished already).
   - response
-- `GET` - `api/next-attempt` - Continues the game by sending guessed word to compare.
+- `GET` - `api/frontend/guess` - Continues the game by sending guessed word to compare.
   - URL Query `session` - required. Session id recieved from the `init` api.
   - URL Query `guess` - required. Guess attempt to compare.
 
 ## Non game endpoints
+
+- `GET` - `api/frontend/config` - get configuration object for the game
 
 - `GET` - `api/random-word` - get random word from available dictionary.
   - URL Query `language` - defaults to `pl`, supported values `pl`,`en`. For which language to pick a word.
@@ -32,6 +34,47 @@ Note: Look at the [MongoDB section](#mongodb-mongoose) for further config
     - `word` - word that was validated
     - `langauge` - language of the word
     - `validWord` - boolean - flag if the word is correct or not
+
+## Admin endpoints
+
+- `GET` - `api/backend/configuration` - get configuration object matching optional `appId` param
+  - URL Query `appId` - app identifier single or list, optional.
+- `GET` - `api/backend/configuration/reset` - resets the configuration collection to use default values
+- `POST` - `api/backend/configuration/set/:configKey` - set new value to the configuration object
+  - `:configKey` - configuration key to update
+  - JSON Body:
+    - `appId` - Array of application ID's this config entry should apply
+    - `key` - configuration object key
+    - `value` - value of the configuration
+- `POST` - `api/backend/configuration/set-multiple` - set new configuration values to many config entries
+  - JSON Body (an Array of):
+    - `appId` - Array of application ID's this config entry should apply
+    - `key` - configuration object key
+    - `value` - value of the configuration
+- `POST` - `api/backend/add-word` - add new word to dictionary collection
+  - JSON Body:
+    - `word` - new word to add
+    - `language` - what language it is
+    - `length` - what lenght of the word it should be
+- `GET` - `api/backend/list` - list unknown words entries
+- `POST` - `api/backend/approve-words` - approve a list of unknown words
+  - JSON Body:
+    - `words` - an array of `TTableData`
+- `POST` - `api/backend/reject-words` - reject a list of unknown words
+  - JSON Body:
+    - `words` - an array of `TTableData`
+- `POST` - `api/backend/add-many-words` - adds many new words to the dictionary collection
+  - JSON Body:
+    - `words` - list of words
+    - `language` - what language it is
+    - `length` - what lenght of the word it should be
+- `GET` - `dictionary-stats` - retrieve dictionary statistics
+  - URL Query:
+    - `language` - defaults to `pl` - language of the dictionary
+    - `length` - defaults to `5` - length of the word
+- `GET` - `dictionary-languages` - retrieve dictionary languages
+  - URL Query:
+    - `length` - defaults to `5` - length of the word
 
 ## MongoDB, Mongoose
 

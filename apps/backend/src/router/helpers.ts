@@ -1,10 +1,12 @@
 import { Request, Response, RequestHandler } from 'express';
-import type { TSupportedLanguages } from '../types';
 import { TGameRecord, TValidationChar } from '@repo/backend-types';
-import { MAX_ATTEMPTS } from '../constants';
+import { MAX_ATTEMPTS, WORD_LENGTH } from '../constants';
+import { TIsCorrectWordResponse, TRandomWordResponse } from './types';
+import { ErrorCodes } from '@repo/backend-types/enums';
+import { getRandomWord, wordExists } from '../db/crud/Dictionary.crud';
 
 export const resetGameSession = (
-  language: TSupportedLanguages,
+  language: string,
   word: string,
   maxAttempts: number = MAX_ATTEMPTS,
 ): TGameRecord => {
@@ -137,3 +139,111 @@ export function ensureLoggedIn(): RequestHandler {
     } /* else - the failure is handled by isAuthorised itself */
   };
 }
+
+export async function randomWord(
+  language = 'pl',
+  wordLength: number = WORD_LENGTH,
+): Promise<TRandomWordResponse> {
+  if (language !== 'en') {
+    try {
+      const word = await getRandomWord(language, wordLength);
+      return {
+        word,
+        language,
+      } as TRandomWordResponse;
+    } catch (error) {
+      console.log(error);
+      return Promise.reject({
+        code: ErrorCodes.RANDOM_WORD_ERROR,
+        error: `Can't retrieve ${language} word.`,
+        language,
+      });
+    }
+  } else {
+    // call external API endpoint
+    try {
+      const result = await fetch(
+        'https://words.dev-apis.com/word-of-the-day?random=1',
+      );
+      const response = (await result.json()) as { error?: string };
+
+      if (result.ok) {
+        return { ...response, language: 'en' } as TRandomWordResponse;
+      } else {
+        throw response.error;
+      }
+    } catch (error) {
+      console.log(error);
+      return Promise.reject({
+        code: ErrorCodes.RANDOM_WORD_ERROR,
+        language: 'en',
+        error: "Can't retrieve english word.",
+      });
+    }
+  }
+}
+
+export const isWordCorrect = async (
+  word: string,
+  language: string,
+  wordLength: number = WORD_LENGTH,
+) => {
+  if (language === 'en') {
+    try {
+      const response = await fetch('https://words.dev-apis.com/validate-word', {
+        headers: {
+          'content-type': 'application/json',
+        },
+        method: 'POST',
+        body: JSON.stringify({ word }),
+      });
+      const data = JSON.parse(await response.text()) as TIsCorrectWordResponse;
+      if (response.ok) {
+        if (!data.validWord) {
+          return { ...data, language, error: 'Invalid word' };
+        }
+        return { ...data, language };
+      } else {
+        // endpoint returned error
+        console.log(data);
+        return {
+          ...data,
+          word,
+          validWord: true,
+          error: 'Validation endpoint error',
+          language,
+        };
+      }
+    } catch (error) {
+      console.log(error);
+      // something is broken, accept word for game play
+      return {
+        word,
+        validWord: true,
+        error: (error as Error).message || 'Validation endpoint error',
+        language,
+      };
+    }
+  } else {
+    const needle = word.toLocaleLowerCase();
+    // search for the word
+    const result = await wordExists(needle, language, wordLength);
+
+    if (result) {
+      // correct
+      return {
+        word,
+        language,
+        validWord: true,
+      };
+    } else {
+      // incorrect
+      return {
+        word,
+        language,
+        validWord: false,
+        error: 'Word not found',
+      };
+    }
+  }
+};
