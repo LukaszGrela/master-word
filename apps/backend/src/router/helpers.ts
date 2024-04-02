@@ -119,6 +119,7 @@ export const calculateScore = (
   }
   return score;
 };
+const isDevelopment = process.env.NODE_ENV === 'development';
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 export const isAuthorised = (req: Request, res: Response): boolean => {
@@ -127,7 +128,10 @@ export const isAuthorised = (req: Request, res: Response): boolean => {
     return false;
   }
   */
-  console.warn('TODO: implement authorisation');
+
+  if (isDevelopment) {
+    console.warn('TODO: implement authorisation');
+  }
   return true;
 };
 
