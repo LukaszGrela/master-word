@@ -282,10 +282,12 @@ describe('GameSession model', () => {
       }
 
       assert.notEqual(error, undefined);
-      assert.match(
-        `${error?.message}`,
-        /GameSession validation failed: highest.fr:5.attempts: Path `attempts` is required., highest.fr:5.timeMs: Path `timeMs` is required., highest.fr:5.score: Path `score` is required./,
-      );
+      // chck each required property
+      assert.match(`${error?.message}`, /Path `length` is required/);
+      assert.match(`${error?.message}`, /Path `language` is required/);
+      assert.match(`${error?.message}`, /Path `attempts` is required/);
+      assert.match(`${error?.message}`, /Path `timeMs` is required/);
+      assert.match(`${error?.message}`, /Path `score` is required/);
     });
   });
   describe('success', () => {
@@ -358,9 +360,11 @@ describe('GameSession model', () => {
       await sessionModel.save();
       assert.equal(sessionModel.isNew, false);
     });
-    it('initiates  with game object', async () => {
+    it('initiates with game object', async () => {
       const connection = await createDictionaryDevConnection();
+
       const GameSessionModel = getModelForConnection(connection);
+      await GameSessionModel.collection.drop();
       const sessionModel = new GameSessionModel({
         session: 'ed28b702-5205-43bc-97a4-39a09a647f20',
         game: {

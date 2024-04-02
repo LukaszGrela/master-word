@@ -365,8 +365,9 @@ const checkFinished = async (req: Request, res: Response) => {
     if (gameSession.game.finished) {
       gameSession.game.timestamp_finish = `${new Date().getTime()}`;
     }
-
-    const highScoreId = `${gameSession.game.language}:${gameSession.game.word_length}`;
+    const language = gameSession.game.language;
+    const wordLength = gameSession.game.word_length;
+    const highScoreId = `${language}:${wordLength}`;
     const highScorePath = `highest.${highScoreId}`;
     const copyHighScore = gameSession.toJSON<TGameSession>().highest;
     // send response
@@ -399,6 +400,8 @@ const checkFinished = async (req: Request, res: Response) => {
               attempts: gameSession.game.attempt,
               score,
               timeMs: timePlayed,
+              language,
+              length: wordLength,
             });
           }
         } else {
@@ -407,6 +410,8 @@ const checkFinished = async (req: Request, res: Response) => {
             attempts: gameSession.game.attempt,
             score,
             timeMs: timePlayed,
+            language,
+            length: wordLength,
           });
         }
         //

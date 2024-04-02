@@ -66,6 +66,8 @@ const GameSessionSchema = new Schema({
       score: { type: Number, required: true },
       timeMs: { type: Number, required: true },
       attempts: { type: Number, required: true },
+      language: { type: String, required: true },
+      length: { type: Number, required: true },
     },
   },
   game: GameRecordSchema,
