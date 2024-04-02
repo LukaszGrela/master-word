@@ -15,6 +15,7 @@ const Word: FC<IProps> = ({
   className,
   mobile,
   validated,
+  language,
 }) => {
   const [index, setIndex] = useState(0);
   const [guessing, setGuessing] = useState(' '.repeat(wordLength));
@@ -105,6 +106,7 @@ const Word: FC<IProps> = ({
         .split('')
         .map((letter, i) => (
           <Letter
+            language={language}
             className={classNames(
               classes[i] || 'incorrect',
               className,
@@ -118,7 +120,7 @@ const Word: FC<IProps> = ({
     }
 
     return null;
-  }, [active, className, id, validated, word, wordLength]);
+  }, [active, className, id, validated, word, wordLength, language]);
 
   return (
     <Fragment>
@@ -127,6 +129,7 @@ const Word: FC<IProps> = ({
             .split('')
             .map((letter, i) => (
               <Letter
+                language={language}
                 letter={letter || '&nbsp;'}
                 key={`letter-${id}-${i}`}
                 className={classNames(

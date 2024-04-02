@@ -271,6 +271,7 @@ export const GamePage = () => {
             const active = index === attempt && gameState === 'running';
             return (
               <Word
+                language={language}
                 mobile={bowser.platform.type === 'mobile'}
                 commit={handleWordCommit}
                 active={active}
