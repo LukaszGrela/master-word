@@ -14,9 +14,8 @@ export const apiInit = (
   if (maxAttempts !== undefined) {
     urlParams.append('maxAttempts', `${maxAttempts}`);
   }
-  const search = urlParams.toString();
 
-  const query = search === '' ? '' : `?${search}`;
+  const query = `?${urlParams.toString()}`;
 
   return `${GATEWAY}/init${query}`;
 };
@@ -27,7 +26,7 @@ export const apiNextAttempt = (guess: string, session: string): string => {
     session,
   }).toString();
 
-  const query = search === '' ? '' : `?${search}`;
+  const query = `?${search}`;
 
   return `${GATEWAY}/guess${query}`;
 };
@@ -37,7 +36,7 @@ export const apiGameSession = (session: string): string => {
     session,
   }).toString();
 
-  const query = search === '' ? '' : `?${search}`;
+  const query = `?${search}`;
 
   return `${GATEWAY}/game-session${query}`;
 };

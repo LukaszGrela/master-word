@@ -1,0 +1,125 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`game > panel > InputGuess > Display error 1`] = `
+<div>
+  <div
+    class="panel input-modal"
+  >
+    <label
+      for="guess"
+    >
+      Insert word to guess
+    </label>
+    <input
+      aria-errormessage="Invalid word"
+      aria-invalid="true"
+      autocomplete="off"
+      data-testid="input-modal-guess"
+      enterkeyhint="done"
+      maxlength="5"
+      name="guess"
+      type="text"
+      value="WRONG"
+    />
+    <div
+      class="read-the-docs"
+    >
+      Tap Done to check
+    </div>
+    <div
+      class="button-row"
+    >
+      <button
+        class="secondary"
+      >
+        Hide
+      </button>
+      <button
+        class="primary"
+      >
+        Done
+      </button>
+    </div>
+  </div>
+</div>
+`;
+
+exports[`game > panel > InputGuess > Renders with context and all props 1`] = `
+<div>
+  <div
+    class="panel input-modal"
+  >
+    <label
+      for="guess"
+    >
+      Insert word to guess
+    </label>
+    <input
+      aria-invalid="false"
+      autocomplete="off"
+      data-testid="input-modal-guess"
+      enterkeyhint="done"
+      maxlength="5"
+      name="guess"
+      type="text"
+      value=""
+    />
+    <div
+      class="read-the-docs"
+    >
+      Enter {maxLength} letter word
+    </div>
+    <div
+      class="button-row"
+    >
+      <button
+        class="secondary"
+      >
+        Hide
+      </button>
+      <button
+        class="primary"
+        disabled=""
+      >
+        Done
+      </button>
+    </div>
+  </div>
+</div>
+`;
+
+exports[`game > panel > InputGuess > Renders with required props 1`] = `
+<div>
+  <div
+    class="panel input-modal"
+  >
+    <label
+      for="guess"
+    />
+    <input
+      aria-invalid="false"
+      autocomplete="off"
+      data-testid="input-modal-guess"
+      enterkeyhint="done"
+      maxlength="5"
+      name="guess"
+      type="text"
+      value=""
+    />
+    <div
+      class="read-the-docs"
+    />
+    <div
+      class="button-row"
+    >
+      <button
+        class="secondary"
+      />
+      <button
+        class="primary"
+        disabled=""
+      />
+    </div>
+  </div>
+</div>
+`;

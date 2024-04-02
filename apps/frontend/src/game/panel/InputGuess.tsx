@@ -106,7 +106,11 @@ const InputGuess: FC<{
     (hidden ? (
       createPortal(
         <div className="input-modal fab-container">
-          <button className="fab" onClick={handleShow}>
+          <button
+            data-testid="input-modal-fab-button"
+            className="fab"
+            onClick={handleShow}
+          >
             <EditIcon />
           </button>
         </div>,
@@ -116,12 +120,14 @@ const InputGuess: FC<{
       <div className="panel input-modal">
         <label htmlFor="guess">{t('input-modal-label')}</label>
         <input
+          data-testid="input-modal-guess"
           type="text"
           name="guess"
           maxLength={maxLength}
           autoFocus
           value={guess}
           onChange={handleChangeText}
+          /* v8 ignore next */
           onPaste={(e) => e.preventDefault()}
           onKeyUp={handleEnter}
           autoComplete="off"
