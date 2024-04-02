@@ -2,7 +2,7 @@
   "name": "frontend",
   "description": "Simple word game where you need to guess a 5 letter word.",
   "private": true,
-  "version": "0.9.6",
+  "version": "0.9.7",
   "type": "module",
   "scripts": {
     "dev": "vite",
@@ -10,11 +10,13 @@
     "type-check": "tsc",
     "lint": "eslint . --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
     "preview": "vite preview",
-    "clean": "rm -rf dist"
+    "clean": "rm -rf dist",
+    "test": "vitest",
+    "coverage": "vitest run --coverage"
   },
   "dependencies": {
-    "@repo/utils": "*",
     "@repo/shared-ui": "*",
+    "@repo/utils": "*",
     "bowser": "^2.11.0",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
@@ -22,19 +24,25 @@
     "sass": "^1.71.1"
   },
   "devDependencies": {
-    "@repo/config-typescript": "*",
     "@repo/backend-types": "*",
     "@repo/common-types": "*",
+    "@repo/config-typescript": "*",
+    "@testing-library/jest-dom": "^6.4.2",
+    "@testing-library/react": "^14.2.2",
     "@types/react": "^18.2.55",
     "@types/react-dom": "^18.2.19",
     "@typescript-eslint/eslint-plugin": "^6.21.0",
     "@typescript-eslint/parser": "^6.21.0",
     "@vitejs/plugin-react-swc": "^3.5.0",
+    "@vitest/coverage-v8": "^1.4.0",
+    "@vitest/ui": "^1.4.0",
     "eslint": "^8.56.0",
     "eslint-plugin-react": "^7.33.2",
     "eslint-plugin-react-hooks": "^4.6.0",
     "eslint-plugin-react-refresh": "^0.4.5",
+    "jsdom": "^24.0.0",
     "typescript": "^5.2.2",
-    "vite": "^5.1.0"
+    "vite": "^5.1.0",
+    "vitest": "^1.4.0"
   }
 }
