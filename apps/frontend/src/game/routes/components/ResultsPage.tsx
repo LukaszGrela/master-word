@@ -4,7 +4,7 @@ import {
   TGameSession,
   TGameSessionFinished,
 } from '@repo/backend-types';
-import { displayTime } from '@repo/utils';
+import { displayTime, EStorageKeys, AppStorage } from '@repo/utils';
 import { useLanguage } from '../../../i18n';
 import { EPaths, getResultsPath } from '../enums';
 import { useCallback } from 'react';
@@ -28,6 +28,7 @@ const defaultGameRecord: TGameRecord = {
 };
 
 export const ResultsPage = () => {
+  const storage = AppStorage.getInstance();
   const navigate = useNavigate();
   const { getUIText: t } = useLanguage();
   const location = useLocation() as Location<TGameSession>;
@@ -53,8 +54,13 @@ export const ResultsPage = () => {
   const playTime = playTimeMs > 0 ? displayTime(playTimeMs) : '';
 
   const handleAction = useCallback(
-    (action: 'again' | 'quit') => () => {
+    (action: 'again' | 'quit' | 'save-session') => () => {
+      if (action === 'save-session') {
+        storage.setItem(EStorageKeys.GAME_SESSION, gameSession.session);
+        navigate(EPaths.ROOT, { replace: true });
+      }
       if (action === 'quit') {
+        storage.removeItem(EStorageKeys.GAME_SESSION);
         navigate(EPaths.ROOT, { replace: true });
       }
       if (action === 'again') {
@@ -64,7 +70,7 @@ export const ResultsPage = () => {
         });
       }
     },
-    [gameSession.session, navigate],
+    [gameSession.session, navigate, storage],
   );
 
   // new high score
@@ -92,6 +98,9 @@ export const ResultsPage = () => {
       <GameLanguage />
 
       <div className="button-row">
+        <button onClick={handleAction('save-session')} className={'secondary'}>
+          {t('result-save-session-button')}
+        </button>
         <button onClick={handleAction('quit')} className={'secondary'}>
           {t('result-quit-button')}
         </button>

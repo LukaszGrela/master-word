@@ -1,10 +1,12 @@
 import { RouterProvider, createBrowserRouter } from 'react-router-dom';
 import { EPaths } from './enums';
+import GeneralError from './GeneralError';
 
 const router = createBrowserRouter([
   {
     path: EPaths.ROOT,
     lazy: () => import('./Root'),
+    errorElement: <GeneralError />,
     children: [
       {
         index: true,

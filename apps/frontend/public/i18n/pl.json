@@ -36,5 +36,7 @@
   "general-error-message": "Przepraszamy, nieoczekiwany błąd jak piorun z nieba spadł i zepsuł zabawę...",
   "general-error-btn-home": "Zamknij",
   "game-error-subtitle": "Problem z sesją gry.",
-  "highscore-label": "Nowy Rekord"
+  "highscore-label": "Nowy Rekord",
+  "result-save-session-button": "Kontynuuj później",
+  "continue-button": "Kontynuuj grę"
 }
