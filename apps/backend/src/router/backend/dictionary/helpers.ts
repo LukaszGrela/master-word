@@ -5,7 +5,6 @@ import { StatusCodes } from 'http-status-codes';
 import { TAddWordRequestBody } from '@repo/backend-types/dictionary';
 import { getModelForConnection } from '../../../db/models/Dictionary';
 import { addUnknownWord } from '../../../db/crud/UnknownWord.crud';
-import { TSupportedLanguages } from '../../../types';
 
 let connection: mongoose.Connection | undefined;
 
@@ -78,12 +77,7 @@ export const logUnknownWord = async (body: TAddWordRequestBody) => {
 
   try {
     if (mongoose.connection.readyState === 1) {
-      await addUnknownWord(
-        mongoose.connection,
-        word,
-        language as TSupportedLanguages,
-        length,
-      );
+      await addUnknownWord(mongoose.connection, word, language, length);
     } else {
       throw new Error('No DB Connection error');
     }

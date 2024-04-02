@@ -1,7 +1,6 @@
 import { Connection } from 'mongoose';
 import { getModelForConnection } from '../models/UnknownWord';
 import { ObjectId } from 'mongoose';
-import { TSupportedLanguages } from '../../types';
 import { getStartOfDay } from '@repo/utils/getStartOfDay';
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -45,7 +44,7 @@ export const removeWordById = async (
   connection: Connection,
   id: TObjectId,
   word: string,
-  language: TSupportedLanguages,
+  language: string,
   /* TODO verify the need for this param */
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   length = 5,
@@ -85,7 +84,7 @@ export const getDocsByWord = async (connection: Connection, word: string) => {
 export const addUnknownWord = async (
   connection: Connection,
   word: string,
-  language: TSupportedLanguages,
+  language: string,
   length = 5,
 ) => {
   const wordToAdd = word.toLocaleLowerCase();

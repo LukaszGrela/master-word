@@ -36,5 +36,7 @@
   "general-error-message": "Sorry, an unexpected error has occured.",
   "general-error-btn-home": "Home",
   "game-error-subtitle": "Problem with game session.",
-  "highscore-label": "New High Score"
+  "highscore-label": "New High Score",
+  "result-save-session-button": "Continue later",
+  "continue-button": "Continue"
 }

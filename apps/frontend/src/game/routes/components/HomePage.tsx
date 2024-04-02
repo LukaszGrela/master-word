@@ -1,5 +1,6 @@
 import { useCallback, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { EStorageKeys, AppStorage } from '@repo/utils';
 import { EPaths } from '../enums';
 import { useLanguage } from '../../../i18n';
 import { GameLanguage } from '../../language';
@@ -7,13 +8,25 @@ import { useConfig } from '../../../config';
 import './HomePage.scss';
 
 export const HomePage = () => {
+  const storage = AppStorage.getInstance();
   const { loading, refresh } = useConfig();
   const { getUIText: t } = useLanguage();
   const navigate = useNavigate();
 
-  const handleAction = useCallback(() => {
-    navigate(EPaths.GAME);
-  }, [navigate]);
+  const session = storage.getItem(EStorageKeys.GAME_SESSION);
+
+  const handleAction = useCallback(
+    (action: 'start-new' | 'continue' | 'archived-games') => () => {
+      if (action === 'start-new') {
+        storage.removeItem(EStorageKeys.GAME_SESSION);
+        navigate(EPaths.GAME);
+      }
+      if (action === 'continue') {
+        navigate(EPaths.GAME, { state: session });
+      }
+    },
+    [navigate, session, storage],
+  );
 
   useEffect(() => {
     refresh();
@@ -30,11 +43,24 @@ export const HomePage = () => {
       <GameLanguage />
 
       <div className="button-row">
-        {/*         <button onClick={handleAction} className='secondary' disabled={true}>
+        {/*         <button onClick={handleAction('archived-games')} className='secondary' disabled={true}>
           {t('home-archive-button')}
         </button> */}
 
-        <button onClick={handleAction} className="primary" disabled={loading}>
+        {session && (
+          <button
+            onClick={handleAction('continue')}
+            className="primary"
+            disabled={loading}
+          >
+            {t('continue-button')}
+          </button>
+        )}
+        <button
+          onClick={handleAction('start-new')}
+          className={session ? 'secondary' : 'primary'}
+          disabled={loading}
+        >
           {t('start-button')}
         </button>
       </div>

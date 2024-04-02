@@ -13,7 +13,6 @@ import {
   updateWord,
   wordExists,
 } from './Dictionary.crud';
-import { TSupportedLanguages } from '../../types';
 
 describe('Dictionary CRUD operations', () => {
   beforeEach(async () => {
@@ -109,7 +108,7 @@ describe('Dictionary CRUD operations', () => {
       const config = {
         letter: 'x',
         length: 5,
-        language: 'en' as TSupportedLanguages,
+        language: 'en',
       };
       const words = await Dictionary.findOne(config);
       assert.equal(words, null);
@@ -127,7 +126,7 @@ describe('Dictionary CRUD operations', () => {
       const config = {
         letter: 'b',
         length: 5,
-        language: 'pl' as TSupportedLanguages,
+        language: 'pl',
       };
 
       const doc = await addWord('bigos', config.language, config.length);
@@ -208,7 +207,7 @@ describe('Dictionary CRUD operations', () => {
       const config = {
         letter: 'c',
         length: 5,
-        language: 'pl' as TSupportedLanguages,
+        language: 'pl',
       };
       const wordsBefore = await Dictionary.findOne(config);
       assert.deepEqual(wordsBefore?.words, ['czart', 'człek']);
@@ -223,7 +222,7 @@ describe('Dictionary CRUD operations', () => {
       const config = {
         letter: 'j',
         length: 5,
-        language: 'en' as TSupportedLanguages,
+        language: 'en',
       };
       const wordsBefore = await Dictionary.findOne(config);
       assert.deepEqual(wordsBefore?.words, ['james', 'jelly']);
@@ -238,7 +237,7 @@ describe('Dictionary CRUD operations', () => {
       const config = {
         letter: 'c',
         length: 5,
-        language: 'pl' as TSupportedLanguages,
+        language: 'pl',
       };
       const wordsBefore = await Dictionary.findOne(config);
       assert.deepEqual(wordsBefore?.words, ['czart', 'człek']);
@@ -283,7 +282,7 @@ describe('Dictionary CRUD operations', () => {
       const config = {
         letter: 'j',
         length: 5,
-        language: 'en' as TSupportedLanguages,
+        language: 'en',
       };
       const wordsBefore = await Dictionary.findOne(config);
       assert.deepEqual(wordsBefore?.words, ['james', 'jelly']);
@@ -298,7 +297,7 @@ describe('Dictionary CRUD operations', () => {
       const config = {
         letter: 'j',
         length: 5,
-        language: 'en' as TSupportedLanguages,
+        language: 'en',
       };
       const wordsBefore = await Dictionary.findOne(config);
       assert.deepEqual(wordsBefore?.words, ['james', 'jelly']);
@@ -313,7 +312,7 @@ describe('Dictionary CRUD operations', () => {
       const config = {
         letter: 'b',
         length: 5,
-        language: 'pl' as TSupportedLanguages,
+        language: 'pl',
       };
       const wordsBefore = await Dictionary.findOne(config);
       assert.deepEqual(wordsBefore?.words, ['baton', 'brama']);
@@ -358,7 +357,7 @@ describe('Dictionary CRUD operations', () => {
       const config = {
         letter: 'x',
         length: 5,
-        language: 'en' as TSupportedLanguages,
+        language: 'en',
       };
       const words = await Dictionary.findOne(config);
       assert.equal(words, null);
@@ -381,7 +380,7 @@ describe('Dictionary CRUD operations', () => {
       const config = {
         letter: 'b',
         length: 5,
-        language: 'pl' as TSupportedLanguages,
+        language: 'pl',
       };
 
       const doc = await addManyWords(

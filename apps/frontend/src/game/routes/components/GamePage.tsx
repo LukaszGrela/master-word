@@ -1,6 +1,6 @@
 import { useCallback, useEffect, useMemo, useState } from 'react';
 import { Location, useLocation, useNavigate } from 'react-router-dom';
-import { TGameSessionRecord } from '@repo/backend-types';
+import { TGameSession } from '@repo/backend-types';
 import { getBowserDetails, AppStorage } from '@repo/utils';
 import { EStorageKeys } from '@repo/utils';
 import {
@@ -32,9 +32,7 @@ export const GamePage = () => {
     (TErrorResponse & { details?: string }) | null
   >(null);
   const [gameState, setGameState] = useState<TGameState>('start');
-  const [gameSession, setGameSession] = useState<TGameSessionRecord | null>(
-    null,
-  );
+  const [gameSession, setGameSession] = useState<TGameSession | null>(null);
   //
   const language = storage.getItem(EStorageKeys.GAME_LANGUAGE) || LANGUAGE;
   const attempts =
@@ -247,7 +245,7 @@ export const GamePage = () => {
         <h1>{t('main-title')}</h1>
         <Timer
           startMs={
-            gameSession && gameSession.game.attempt > 0
+            gameSession && gameSession.game && gameSession.game.attempt > 0
               ? Number(gameSession.game.timestamp_start)
               : undefined
           }
@@ -293,7 +291,7 @@ export const GamePage = () => {
             <span>{t('loading')}</span>
           </h2>
         )}
-        {!gameSession?.game.finished && (
+        {!gameSession?.game?.finished && (
           <InputGuessPanel
             show={showInputModal}
             initWord={game[attempt].word.join('')}

@@ -29,7 +29,7 @@ export const apiNextAttempt = (guess: string, session: string): string => {
 
   const query = search === '' ? '' : `?${search}`;
 
-  return `${GATEWAY}/next-attempt${query}`;
+  return `${GATEWAY}/guess${query}`;
 };
 
 export const apiGameSession = (session: string): string => {
