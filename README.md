@@ -53,7 +53,7 @@ Few features are still to be developed, below is a list divided by the module
 - word count attached to the game session [Feature #17](https://github.com/LukaszGrela/master-word/issues/17)
 - ~store last game elapsed time~ (for comparison of best times) [Feature #9](https://github.com/LukaszGrela/master-word/issues/9)
 - Unknown Words Stats functionality [Feature #14](https://github.com/LukaszGrela/master-word/issues/14)
-- Game session data in DB [Feature #19](https://github.com/LukaszGrela/master-word/issues/19)
+- ~Game session data in DB~ [Feature #19](https://github.com/LukaszGrela/master-word/issues/19)
 - Archive game sessions in DB [Feature #20](https://github.com/LukaszGrela/master-word/issues/20)
 - ~Config functionality~ [Feature #16](https://github.com/LukaszGrela/master-word/issues/16)
 - measure transaction times and accumulate offset to adjust game time (so longer responses do not affect the game play time) [Feature #23](https://github.com/LukaszGrela/master-word/issues/23)
