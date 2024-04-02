@@ -1,0 +1,51 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`game > Timer > Renders with no props 1`] = `
+<div>
+  <span
+    class="timer"
+  >
+    00:00
+  </span>
+</div>
+`;
+
+exports[`game > Timer > Renders with preset time - 7sec 1`] = `
+<div>
+  <span
+    class="timer"
+  >
+    00:07
+  </span>
+</div>
+`;
+
+exports[`game > Timer > Renders with preset time - now 1`] = `
+<div>
+  <span
+    class="timer"
+  >
+    00:00
+  </span>
+</div>
+`;
+
+exports[`game > Timer > Renders with preset time - over a minute 1`] = `
+<div>
+  <span
+    class="timer"
+  >
+    01:11
+  </span>
+</div>
+`;
+
+exports[`game > Timer > Renders with preset time - over an hour 1`] = `
+<div>
+  <span
+    class="timer"
+  >
+    01:00:11
+  </span>
+</div>
+`;
