@@ -1,0 +1,77 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`game > icons > IconGrade > Renders with all props - grade full 1`] = `
+<div>
+  <svg
+    class="grade-icon test full"
+    height="24"
+    viewBox="0 -960 960 960"
+    width="24"
+    xmlns="http://www.w3.org/2000/svg"
+  >
+    <path
+      d="m233-80 65-281L80-550l288-25 112-265 112 265 288 25-218 189 65 281-247-149L233-80Z"
+    />
+  </svg>
+</div>
+`;
+
+exports[`game > icons > IconGrade > Renders with all props - grade half 1`] = `
+<div>
+  <svg
+    class="grade-icon test half"
+    height="24"
+    viewBox="0 -960 960 960"
+    width="24"
+    xmlns="http://www.w3.org/2000/svg"
+  >
+    <path
+      d="m480-323 126 77-33-144 111-96-146-13-58-136v312ZM233-80l65-281L80-550l288-25 112-265 112 265 288 25-218 189 65 281-247-149L233-80Z"
+    />
+  </svg>
+</div>
+`;
+
+exports[`game > icons > IconGrade > Renders with all props - grade invalid 1`] = `
+<div>
+  <svg
+    class="grade-icon test invalid"
+    height="24"
+    viewBox="0 -960 960 960"
+    width="24"
+    xmlns="http://www.w3.org/2000/svg"
+  />
+</div>
+`;
+
+exports[`game > icons > IconGrade > Renders with all props - grade zero 1`] = `
+<div>
+  <svg
+    class="grade-icon test zero"
+    height="24"
+    viewBox="0 -960 960 960"
+    width="24"
+    xmlns="http://www.w3.org/2000/svg"
+  >
+    <path
+      d="m354-247 126-76 126 77-33-144 111-96-146-13-58-136-58 135-146 13 111 97-33 143ZM233-80l65-281L80-550l288-25 112-265 112 265 288 25-218 189 65 281-247-149L233-80Zm247-350Z"
+    />
+  </svg>
+</div>
+`;
+
+exports[`game > icons > IconGrade > Renders with required props 1`] = `
+<div>
+  <svg
+    class="grade-icon full"
+    height="24"
+    viewBox="0 -960 960 960"
+    width="24"
+    xmlns="http://www.w3.org/2000/svg"
+  >
+    <path
+      d="m233-80 65-281L80-550l288-25 112-265 112 265 288 25-218 189 65 281-247-149L233-80Z"
+    />
+  </svg>
+</div>
+`;
