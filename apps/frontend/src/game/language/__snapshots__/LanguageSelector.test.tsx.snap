@@ -1,0 +1,85 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`game > language > LanguageSelector > Renders with context and all props 1`] = `
+<div>
+  <div
+    class="language-selector translation test"
+  >
+    <span
+      class="hidden sr"
+    >
+      screenReaderInfo
+    </span>
+  </div>
+</div>
+`;
+
+exports[`game > language > LanguageSelector > Renders with context and required props 1`] = `
+<div>
+  <div
+    class="language-selector translation"
+  >
+    <span
+      class="hidden sr"
+    >
+      screen reader info
+    </span>
+  </div>
+</div>
+`;
+
+exports[`game > language > LanguageSelector > Renders with required props 1`] = `
+<div>
+  <div
+    class="language-selector translation"
+  >
+    <span
+      class="hidden sr"
+    />
+  </div>
+</div>
+`;
+
+exports[`game > language > LanguageSelector > renders options 1`] = `
+<div>
+  <div
+    class="language-selector translation"
+  >
+    <span
+      class="hidden sr"
+    >
+      screen reader info
+    </span>
+    <button
+      class="translation-btn"
+      title="Option 1 Button Title"
+    >
+      <span
+        class="label"
+      >
+        Option 1
+      </span>
+      <span
+        class="flag"
+      >
+        ICO
+      </span>
+    </button>
+    <button
+      class="translation-btn"
+      title="Option 2 Button Title"
+    >
+      <span
+        class="label"
+      >
+        Option 2
+      </span>
+      <span
+        class="flag"
+      >
+        ICO
+      </span>
+    </button>
+  </div>
+</div>
+`;

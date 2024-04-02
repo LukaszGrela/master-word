@@ -1,0 +1,89 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`game > language > UILanguage > Renders 1`] = `
+<div>
+  <div
+    class="language-selector translation"
+  >
+    <span
+      class="hidden sr"
+    />
+    <button
+      class="translation-btn selected"
+    >
+      <span
+        class="flag"
+      >
+        <img
+          alt=""
+          loading="lazy"
+          src="https://flagcdn.com/w20/pl.png"
+          srcset="https://flagcdn.com/w40/pl.png 2x"
+          width="20"
+        />
+      </span>
+    </button>
+    <button
+      class="translation-btn"
+    >
+      <span
+        class="flag"
+      >
+        <img
+          alt=""
+          loading="lazy"
+          src="https://flagcdn.com/w20/us.png"
+          srcset="https://flagcdn.com/w40/us.png 2x"
+          width="20"
+        />
+      </span>
+    </button>
+  </div>
+</div>
+`;
+
+exports[`game > language > UILanguage > Renders with context 1`] = `
+<div>
+  <div
+    class="language-selector translation"
+  >
+    <span
+      class="hidden sr"
+    >
+      screen reader info
+    </span>
+    <button
+      class="translation-btn selected"
+      title="BTN PL"
+    >
+      <span
+        class="flag"
+      >
+        <img
+          alt=""
+          loading="lazy"
+          src="https://flagcdn.com/w20/pl.png"
+          srcset="https://flagcdn.com/w40/pl.png 2x"
+          width="20"
+        />
+      </span>
+    </button>
+    <button
+      class="translation-btn"
+      title="BTN EN"
+    >
+      <span
+        class="flag"
+      >
+        <img
+          alt=""
+          loading="lazy"
+          src="https://flagcdn.com/w20/us.png"
+          srcset="https://flagcdn.com/w40/us.png 2x"
+          width="20"
+        />
+      </span>
+    </button>
+  </div>
+</div>
+`;

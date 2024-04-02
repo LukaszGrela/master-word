@@ -7,24 +7,30 @@ import {
   render,
 } from '@testing-library/react';
 import { vi } from 'vitest';
-import { ILanguageContext, LanguageContext } from '../index';
+import { IConfigContext } from '../index';
+import { ConfigContext } from '../context';
 
-const defaultLanguageContext: ILanguageContext = {
+const defaultConfigContext: IConfigContext = {
+  config: {
+    enabledAttempts: [8],
+    enabledLanguages: ['pl', 'en'],
+    enabledLength: [5],
+  },
   loading: false,
-  loadTranslation: vi.fn(),
-  getUIText: vi.fn(),
-  loadedLanguage: 'pl',
+  refresh: vi.fn(),
+  error: undefined,
 };
 
 const MockContext = (props: {
-  context?: ILanguageContext;
+  context?: IConfigContext;
   children: React.ReactNode;
 }) => {
-  const value = props.context || defaultLanguageContext;
+  const value = props.context || defaultConfigContext;
+
   return (
-    <LanguageContext.Provider value={value}>
+    <ConfigContext.Provider value={value}>
       {props.children}
-    </LanguageContext.Provider>
+    </ConfigContext.Provider>
   );
 };
 
@@ -35,17 +41,17 @@ const contextRenderer = <
 >(
   children: React.ReactNode,
   props: {
-    languageContext?: ILanguageContext;
+    context?: IConfigContext;
     renderOptions: RenderOptions<Q, Container, BaseElement>;
   } = { renderOptions: {} },
 ): RenderResult<Q, Container, BaseElement> => {
-  const { languageContext, renderOptions = {} } = props;
+  const { context, renderOptions = {} } = props;
 
   return render<Q, Container, BaseElement>(
-    <MockContext context={languageContext}>{children}</MockContext>,
+    <MockContext context={context}>{children}</MockContext>,
     renderOptions,
   );
 };
 
 // eslint-disable-next-line react-refresh/only-export-components
-export { contextRenderer, defaultLanguageContext, MockContext };
+export { contextRenderer, defaultConfigContext, MockContext };
