@@ -2,7 +2,7 @@ import { IDictionary } from '@repo/common-types';
 import { hasOwn } from '@repo/utils';
 
 /**
- * Placeholders e.g. `{code}` or `{code action1 action2}`
+ * Placeholders e.g. `{code}` or `{code actionOne actionTwo}`
  */
 const SUBSTITUTE = /\{([a-zA-Z ]+)\}/gm;
 
@@ -18,7 +18,6 @@ export const replaceSubstituteMap = (
     SUBSTITUTE,
     (match: string, $1: string) => {
       const [substitute, ...actions] = $1.replace(SPACE, ' ').split(' ');
-
       if (hasOwn(substitutes, substitute)) {
         if (actionCallback && Array.isArray(actions) && actions.length > 0) {
           // if callback provided use it's value
@@ -57,6 +56,7 @@ export const loadTranslation = async (
     }
     throw new Error(`Failed to load translation for ${language} language.`);
   } catch (error) {
+    console.error(error);
     // throw error
     throw new Error(`Failed to load translation for ${language} language.`);
   }
