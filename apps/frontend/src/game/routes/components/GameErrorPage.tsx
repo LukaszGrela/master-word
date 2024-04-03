@@ -72,7 +72,9 @@ export const GameErrorPage = () => {
   );
 };
 
+/* v8 ignore start */
 export function Component() {
   return <GameErrorPage />;
 }
 Component.displayName = 'LazyGameErrorPage';
+/* v8 ignore stop */

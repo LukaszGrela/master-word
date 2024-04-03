@@ -35,14 +35,18 @@ const contextRenderer = <
 >(
   children: React.ReactNode,
   props: {
-    languageContext?: ILanguageContext;
-    renderOptions: RenderOptions<Q, Container, BaseElement>;
+    languageContext?: Partial<ILanguageContext>;
+    renderOptions?: RenderOptions<Q, Container, BaseElement>;
   } = { renderOptions: {} },
 ): RenderResult<Q, Container, BaseElement> => {
   const { languageContext, renderOptions = {} } = props;
 
   return render<Q, Container, BaseElement>(
-    <MockContext context={languageContext}>{children}</MockContext>,
+    <MockContext
+      context={{ ...defaultLanguageContext, ...(languageContext || {}) }}
+    >
+      {children}
+    </MockContext>,
     renderOptions,
   );
 };
