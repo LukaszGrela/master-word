@@ -1,8 +1,7 @@
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
-import { render } from '@testing-library/react';
+import { render, act } from '@testing-library/react';
 
 import Timer from './Timer';
-import { act } from 'react-dom/test-utils';
 
 describe('game', () => {
   describe('Timer', () => {

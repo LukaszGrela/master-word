@@ -38,11 +38,14 @@ const Word: FC<IProps> = ({
   }, [mobile, word, wordLength]);
 
   useEffect(() => {
+    /* v8 ignore start */
     const preventDefault = (e: KeyboardEvent): void => {
       e.preventDefault();
       e.stopImmediatePropagation();
       e.stopPropagation();
     };
+    /* v8 ignore stop */
+
     const handleKeyUp = (e: KeyboardEvent): void => {
       const action = e.key;
       if (action === 'Enter' && index === wordLength) {
@@ -108,7 +111,7 @@ const Word: FC<IProps> = ({
           <Letter
             language={language}
             className={classNames(
-              classes[i] || 'incorrect',
+              classes[i],
               className,
               i === 0 && 'first',
               i === wordLength - 1 && 'last',
@@ -130,8 +133,9 @@ const Word: FC<IProps> = ({
             .map((letter, i) => (
               <Letter
                 language={language}
-                letter={letter || '&nbsp;'}
+                letter={letter}
                 key={`letter-${id}-${i}`}
+                data-testid={`letter-${id}-${i}`}
                 className={classNames(
                   active && 'active',
                   className,

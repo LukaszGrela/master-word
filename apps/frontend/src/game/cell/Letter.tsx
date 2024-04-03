@@ -10,11 +10,12 @@ const Letter: React.FC<ILetter> = ({
   className,
   letter,
   language = LANGUAGE,
+  ...testId
 }): JSX.Element => {
   const cn = classNames('letter', className);
 
   return (
-    <div className={cn}>
+    <div className={cn} {...testId}>
       <span className="flag">
         <span className="flag-wrapper">{getFlag(language)}</span>
       </span>

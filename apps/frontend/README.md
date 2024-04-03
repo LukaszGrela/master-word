@@ -4,6 +4,10 @@ Sample word game using polish only (currently) words. You have to guess 5 letter
 
 [Live Example - Master Word](https://master-word.greladesign.co/)
 
+## Tech
+
+React + TypeScript + Vite + Vitest + SASS
+
 ## Run locally
 
 The local dev server is set to use port `5273`

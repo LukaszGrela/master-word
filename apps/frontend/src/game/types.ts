@@ -9,6 +9,7 @@ export interface IBoard {
 
 export interface ICell {
   className?: string;
+  'data-testid'?: string;
 }
 
 export interface IMasterWord {
