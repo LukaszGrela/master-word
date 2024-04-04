@@ -39,50 +39,46 @@ export function ConfigProvider({ children }: React.PropsWithChildren) {
       setLoading(false);
     };
 
-    try {
-      getConfig({ signal: abortController.current.signal })
-        .then((list) => {
-          // transform IConfigEntry to IConfig
-          const config = list.reduce(
-            (acc: IConfig, entry): IConfig => {
-              if (entry.key === 'enabledAttempts') {
-                const value = entry.value as number[];
-                if (Array.isArray(value)) {
-                  acc.enabledAttempts = value;
-                }
+    getConfig({ signal: abortController.current.signal })
+      .then((list) => {
+        // transform IConfigEntry to IConfig
+        const config = list.reduce(
+          (acc: IConfig, entry): IConfig => {
+            if (entry.key === 'enabledAttempts') {
+              const value = entry.value as number[];
+              if (Array.isArray(value)) {
+                acc.enabledAttempts = value;
               }
-              if (entry.key === 'enabledLength') {
-                const value = entry.value as number[];
-                if (Array.isArray(value)) {
-                  acc.enabledLength = value;
-                }
+            }
+            if (entry.key === 'enabledLength') {
+              const value = entry.value as number[];
+              if (Array.isArray(value)) {
+                acc.enabledLength = value;
               }
-              if (entry.key === 'enabledLanguages') {
-                const value = entry.value as string[];
-                if (Array.isArray(value)) {
-                  acc.enabledLanguages = value;
-                }
+            }
+            if (entry.key === 'enabledLanguages') {
+              const value = entry.value as string[];
+              if (Array.isArray(value)) {
+                acc.enabledLanguages = value;
               }
+            }
 
-              return acc;
-            },
-            {
-              enabledAttempts: [],
-              enabledLanguages: [],
-              enabledLength: [],
-            } as IConfig,
-          );
+            return acc;
+          },
+          {
+            enabledAttempts: [],
+            enabledLanguages: [],
+            enabledLength: [],
+          } as IConfig,
+        );
 
-          setConfig(config);
-          setLoading(false);
-        })
-        .catch(handleError)
-        .finally(() => {
-          setInit(false);
-        });
-    } catch (error) {
-      handleError(error);
-    }
+        setConfig(config);
+        setLoading(false);
+      })
+      .catch(handleError)
+      .finally(() => {
+        setInit(false);
+      });
   }, []);
 
   const value = useMemo(() => {
