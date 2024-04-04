@@ -5,13 +5,13 @@ import {
   RenderResult,
 } from '@testing-library/react';
 import { RouterProvider, RouterProviderProps } from 'react-router-dom';
-import { contextRenderer } from '../../../../i18n/LanguageContext/__tests__/contextRenderer';
+import { contextRenderer } from '../../../i18n/LanguageContext/__tests__/contextRenderer';
 import {
   MockContext as MockConfigContext,
   defaultConfigContext,
-} from '../../../../config/__tests__/contextRenderer';
-import { ILanguageContext } from '../../../../i18n';
-import { IConfigContext } from '../../../../config';
+} from '../../../config/__tests__/contextRenderer';
+import { ILanguageContext } from '../../../i18n';
+import { IConfigContext } from '../../../config';
 
 type TRenderMockRouterProps<
   Q extends Queries = typeof queries,

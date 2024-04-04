@@ -1,0 +1,417 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`game > routes > components > ResultsPage > renders lose 1`] = `
+<div>
+  <div
+    class="results"
+  >
+    <h2>
+      Przegrałeś, słowo do odgadnięcia to ŁZAWY
+    </h2>
+    <div
+      class="score-container"
+    >
+      <div
+        class="stars"
+      >
+        <svg
+          class="grade-icon size-medium zero"
+          height="24"
+          viewBox="0 -960 960 960"
+          width="24"
+          xmlns="http://www.w3.org/2000/svg"
+        >
+          <path
+            d="m354-247 126-76 126 77-33-144 111-96-146-13-58-136-58 135-146 13 111 97-33 143ZM233-80l65-281L80-550l288-25 112-265 112 265 288 25-218 189 65 281-247-149L233-80Zm247-350Z"
+          />
+        </svg>
+        <svg
+          class="grade-icon size-large zero"
+          height="24"
+          viewBox="0 -960 960 960"
+          width="24"
+          xmlns="http://www.w3.org/2000/svg"
+        >
+          <path
+            d="m354-247 126-76 126 77-33-144 111-96-146-13-58-136-58 135-146 13 111 97-33 143ZM233-80l65-281L80-550l288-25 112-265 112 265 288 25-218 189 65 281-247-149L233-80Zm247-350Z"
+          />
+        </svg>
+        <svg
+          class="grade-icon size-medium zero"
+          height="24"
+          viewBox="0 -960 960 960"
+          width="24"
+          xmlns="http://www.w3.org/2000/svg"
+        >
+          <path
+            d="m354-247 126-76 126 77-33-144 111-96-146-13-58-136-58 135-146 13 111 97-33 143ZM233-80l65-281L80-550l288-25 112-265 112 265 288 25-218 189 65 281-247-149L233-80Zm247-350Z"
+          />
+        </svg>
+      </div>
+    </div>
+    <p
+      class="playtime"
+    >
+      Czas rozgrywki: 1m 1s
+    </p>
+    <div
+      class="game-language"
+    >
+      <p
+        class="language-info"
+      >
+        result-language-info
+      </p>
+      <div
+        class="language-selector translation"
+      >
+        <span
+          class="hidden sr"
+        >
+          Wybierz język interfejsu
+        </span>
+        <button
+          class="translation-btn selected"
+          title="Słowo polskie"
+        >
+          <span
+            class="label"
+          >
+            word-language-selector-btn-label-pl
+          </span>
+          <span
+            class="flag"
+          >
+            <img
+              alt=""
+              loading="lazy"
+              src="https://flagcdn.com/w20/pl.png"
+              srcset="https://flagcdn.com/w40/pl.png 2x"
+              width="20"
+            />
+          </span>
+        </button>
+        <button
+          class="translation-btn"
+          title="Słowo angielskie"
+        >
+          <span
+            class="label"
+          >
+            word-language-selector-btn-label-en
+          </span>
+          <span
+            class="flag"
+          >
+            <img
+              alt=""
+              loading="lazy"
+              src="https://flagcdn.com/w20/us.png"
+              srcset="https://flagcdn.com/w40/us.png 2x"
+              width="20"
+            />
+          </span>
+        </button>
+      </div>
+    </div>
+    <div
+      class="button-row"
+    >
+      <button
+        class="secondary"
+      >
+        Kontynuuj później
+      </button>
+      <button
+        class="secondary"
+      >
+        Zakończ grę
+      </button>
+      <button
+        class="primary"
+      >
+        Odgadnij następne słowo
+      </button>
+    </div>
+  </div>
+</div>
+`;
+
+exports[`game > routes > components > ResultsPage > renders lose, no game object 1`] = `
+<div>
+  <div
+    class="results"
+  >
+    <h2>
+      Wygrałeś w 0 próbach
+    </h2>
+    <div
+      class="score-container"
+    >
+      <div
+        class="stars"
+      >
+        <svg
+          class="grade-icon size-medium zero"
+          height="24"
+          viewBox="0 -960 960 960"
+          width="24"
+          xmlns="http://www.w3.org/2000/svg"
+        >
+          <path
+            d="m354-247 126-76 126 77-33-144 111-96-146-13-58-136-58 135-146 13 111 97-33 143ZM233-80l65-281L80-550l288-25 112-265 112 265 288 25-218 189 65 281-247-149L233-80Zm247-350Z"
+          />
+        </svg>
+        <svg
+          class="grade-icon size-large zero"
+          height="24"
+          viewBox="0 -960 960 960"
+          width="24"
+          xmlns="http://www.w3.org/2000/svg"
+        >
+          <path
+            d="m354-247 126-76 126 77-33-144 111-96-146-13-58-136-58 135-146 13 111 97-33 143ZM233-80l65-281L80-550l288-25 112-265 112 265 288 25-218 189 65 281-247-149L233-80Zm247-350Z"
+          />
+        </svg>
+        <svg
+          class="grade-icon size-medium zero"
+          height="24"
+          viewBox="0 -960 960 960"
+          width="24"
+          xmlns="http://www.w3.org/2000/svg"
+        >
+          <path
+            d="m354-247 126-76 126 77-33-144 111-96-146-13-58-136-58 135-146 13 111 97-33 143ZM233-80l65-281L80-550l288-25 112-265 112 265 288 25-218 189 65 281-247-149L233-80Zm247-350Z"
+          />
+        </svg>
+      </div>
+      <span
+        class="highscore-label"
+      >
+        Nowy Rekord
+      </span>
+    </div>
+    <div
+      class="game-language"
+    >
+      <p
+        class="language-info"
+      >
+        result-language-info
+      </p>
+      <div
+        class="language-selector translation"
+      >
+        <span
+          class="hidden sr"
+        >
+          Wybierz język interfejsu
+        </span>
+        <button
+          class="translation-btn selected"
+          title="Słowo polskie"
+        >
+          <span
+            class="label"
+          >
+            word-language-selector-btn-label-pl
+          </span>
+          <span
+            class="flag"
+          >
+            <img
+              alt=""
+              loading="lazy"
+              src="https://flagcdn.com/w20/pl.png"
+              srcset="https://flagcdn.com/w40/pl.png 2x"
+              width="20"
+            />
+          </span>
+        </button>
+        <button
+          class="translation-btn"
+          title="Słowo angielskie"
+        >
+          <span
+            class="label"
+          >
+            word-language-selector-btn-label-en
+          </span>
+          <span
+            class="flag"
+          >
+            <img
+              alt=""
+              loading="lazy"
+              src="https://flagcdn.com/w20/us.png"
+              srcset="https://flagcdn.com/w40/us.png 2x"
+              width="20"
+            />
+          </span>
+        </button>
+      </div>
+    </div>
+    <div
+      class="button-row"
+    >
+      <button
+        class="secondary"
+      >
+        Kontynuuj później
+      </button>
+      <button
+        class="secondary"
+      >
+        Zakończ grę
+      </button>
+      <button
+        class="primary"
+      >
+        Odgadnij następne słowo
+      </button>
+    </div>
+  </div>
+</div>
+`;
+
+exports[`game > routes > components > ResultsPage > renders win 1`] = `
+<div>
+  <div
+    class="results"
+  >
+    <h2>
+      Wygrałeś w 3 próbach
+    </h2>
+    <div
+      class="score-container"
+    >
+      <div
+        class="stars"
+      >
+        <svg
+          class="grade-icon gold size-medium full"
+          height="24"
+          viewBox="0 -960 960 960"
+          width="24"
+          xmlns="http://www.w3.org/2000/svg"
+        >
+          <path
+            d="m233-80 65-281L80-550l288-25 112-265 112 265 288 25-218 189 65 281-247-149L233-80Z"
+          />
+        </svg>
+        <svg
+          class="grade-icon gold size-large full"
+          height="24"
+          viewBox="0 -960 960 960"
+          width="24"
+          xmlns="http://www.w3.org/2000/svg"
+        >
+          <path
+            d="m233-80 65-281L80-550l288-25 112-265 112 265 288 25-218 189 65 281-247-149L233-80Z"
+          />
+        </svg>
+        <svg
+          class="grade-icon gold size-medium full"
+          height="24"
+          viewBox="0 -960 960 960"
+          width="24"
+          xmlns="http://www.w3.org/2000/svg"
+        >
+          <path
+            d="m233-80 65-281L80-550l288-25 112-265 112 265 288 25-218 189 65 281-247-149L233-80Z"
+          />
+        </svg>
+      </div>
+      <span
+        class="highscore-label"
+      >
+        Nowy Rekord
+      </span>
+    </div>
+    <p
+      class="playtime"
+    >
+      Czas rozgrywki: 48.005s
+    </p>
+    <div
+      class="game-language"
+    >
+      <p
+        class="language-info"
+      >
+        result-language-info
+      </p>
+      <div
+        class="language-selector translation"
+      >
+        <span
+          class="hidden sr"
+        >
+          Wybierz język interfejsu
+        </span>
+        <button
+          class="translation-btn selected"
+          title="Słowo polskie"
+        >
+          <span
+            class="label"
+          >
+            word-language-selector-btn-label-pl
+          </span>
+          <span
+            class="flag"
+          >
+            <img
+              alt=""
+              loading="lazy"
+              src="https://flagcdn.com/w20/pl.png"
+              srcset="https://flagcdn.com/w40/pl.png 2x"
+              width="20"
+            />
+          </span>
+        </button>
+        <button
+          class="translation-btn"
+          title="Słowo angielskie"
+        >
+          <span
+            class="label"
+          >
+            word-language-selector-btn-label-en
+          </span>
+          <span
+            class="flag"
+          >
+            <img
+              alt=""
+              loading="lazy"
+              src="https://flagcdn.com/w20/us.png"
+              srcset="https://flagcdn.com/w40/us.png 2x"
+              width="20"
+            />
+          </span>
+        </button>
+      </div>
+    </div>
+    <div
+      class="button-row"
+    >
+      <button
+        class="secondary"
+      >
+        Kontynuuj później
+      </button>
+      <button
+        class="secondary"
+      >
+        Zakończ grę
+      </button>
+      <button
+        class="primary"
+      >
+        Odgadnij następne słowo
+      </button>
+    </div>
+  </div>
+</div>
+`;

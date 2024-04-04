@@ -6,7 +6,7 @@ import { IDictionary } from '@repo/common-types';
 import { replaceSubstituteMap } from '../../../i18n/helpers';
 import { createMemoryRouter } from 'react-router-dom';
 import { EPaths } from '../enums';
-import { renderMockRouter } from './__tests__/helpers';
+import { renderMockRouter } from '../__tests__/helpers';
 import { fireEvent, waitFor } from '@testing-library/react';
 
 vi.mock('@repo/utils', async (importOriginal) => {
@@ -134,6 +134,10 @@ describe('game', () => {
               path: EPaths.GAME_ERROR,
               element: <GameErrorPage />,
             },
+            {
+              path: EPaths.GAME,
+              element: <p>GAME</p>,
+            },
           ]);
           await router.navigate(EPaths.GAME_ERROR, {
             state: {
@@ -166,7 +170,7 @@ describe('game', () => {
           fireEvent.click(getByText(translationPl['result-again-button']));
 
           await waitFor(() => {
-            expect(router.state.location.pathname).toEqual('/game');
+            expect(router.state.location.pathname).toEqual(EPaths.GAME);
             expect(router.state.location.state).toBe('session');
           });
         });
@@ -253,7 +257,7 @@ describe('game', () => {
           fireEvent.click(getByText(translationPl['general-error-btn-home']));
 
           await waitFor(() => {
-            expect(router.state.location.pathname).toEqual('/');
+            expect(router.state.location.pathname).toEqual(EPaths.ROOT);
             expect(router.state.location.state).toBeNull();
           });
         });

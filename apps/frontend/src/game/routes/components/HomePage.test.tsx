@@ -6,7 +6,7 @@ import { IDictionary } from '@repo/common-types';
 import { replaceSubstituteMap } from '../../../i18n/helpers';
 import { createMemoryRouter } from 'react-router-dom';
 import { EPaths } from '../enums';
-import { renderMockRouter } from './__tests__/helpers';
+import { renderMockRouter } from '../__tests__/helpers';
 import { fireEvent, waitFor } from '@testing-library/react';
 
 vi.mock('@repo/utils', async (importOriginal) => {
