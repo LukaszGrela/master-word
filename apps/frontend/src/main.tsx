@@ -1,3 +1,4 @@
+/* v8 ignore start */
 import React from 'react';
 import ReactDOM from 'react-dom/client';
 import { applyBowserClass, disableReactDevTools } from '@repo/utils';
@@ -15,3 +16,4 @@ ReactDOM.createRoot(document.getElementById('root')!).render(
     <App />
   </React.StrictMode>,
 );
+/* v8 ignore stop */

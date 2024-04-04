@@ -42,7 +42,6 @@ export const loadTranslation = async (
   language: string,
   signal?: AbortSignal,
 ) => {
-  console.log('loadTranslation', language);
   try {
     const response = await fetch(`/i18n/${language}.json`, {
       method: 'GET',

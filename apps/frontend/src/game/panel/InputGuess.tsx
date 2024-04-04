@@ -48,8 +48,7 @@ const InputGuess: FC<{
       (e) => {
         const input = e.target;
         const value = input.value;
-        const { selectionDirection, selectionEnd, selectionStart } = input;
-        console.log({ selectionDirection, selectionEnd, selectionStart });
+        const { selectionEnd } = input;
         if (value === '' || isCorrectWord(value)) {
           const newValue = value.toLocaleUpperCase();
           let setCursor = noop;
