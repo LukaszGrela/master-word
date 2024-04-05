@@ -1,6 +1,6 @@
 import { TGameRecord, TGameSession } from '@repo/backend-types';
 import { describe, it, expect, beforeEach, vi, afterEach } from 'vitest';
-import { getNextAttempt } from './getNextAttempt';
+import { getNextAttempt, inflateGameState } from './getNextAttempt';
 
 const createFetchResponse = (ok: boolean, response: unknown) => ({
   ok,
@@ -67,6 +67,12 @@ describe('api', () => {
           session: 'session',
         }),
       ).rejects.toThrow('Error');
+    });
+  });
+
+  describe('inflateGameState', () => {
+    it('returns null when session is missing game object', () => {
+      expect(inflateGameState({ session: 'abcd' })).toBeNull();
     });
   });
 });

@@ -619,6 +619,7 @@ exports[`game > word > Word > Renders inactive 1`] = `
 <div>
   <div
     class="letter correct first"
+    data-testid="letter-id-0"
   >
     <span
       class="flag"
@@ -658,6 +659,7 @@ exports[`game > word > Word > Renders inactive 1`] = `
   </div>
   <div
     class="letter misplaced"
+    data-testid="letter-id-1"
   >
     <span
       class="flag"
@@ -697,6 +699,7 @@ exports[`game > word > Word > Renders inactive 1`] = `
   </div>
   <div
     class="letter incorrect"
+    data-testid="letter-id-2"
   >
     <span
       class="flag"
@@ -736,6 +739,7 @@ exports[`game > word > Word > Renders inactive 1`] = `
   </div>
   <div
     class="letter incorrect"
+    data-testid="letter-id-3"
   >
     <span
       class="flag"
@@ -775,6 +779,7 @@ exports[`game > word > Word > Renders inactive 1`] = `
   </div>
   <div
     class="letter incorrect last"
+    data-testid="letter-id-4"
   >
     <span
       class="flag"

@@ -13,7 +13,7 @@ import {
 import { ILanguageContext } from '../../../i18n';
 import { IConfigContext } from '../../../config';
 
-type TRenderMockRouterProps<
+export type TRenderMockRouterProps<
   Q extends Queries = typeof queries,
   Container extends Element | DocumentFragment = HTMLElement,
   BaseElement extends Element | DocumentFragment = Container,

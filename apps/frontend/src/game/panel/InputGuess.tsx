@@ -100,6 +100,7 @@ const InputGuess: FC<{
     };
   }, [hidden, show]);
 
+  console.log('InputGuess displayed', displayed, error);
   return (
     displayed &&
     (hidden ? (

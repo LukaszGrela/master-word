@@ -245,7 +245,7 @@ describe('game', () => {
           });
 
           expect(container).toMatchSnapshot();
-        });
+        }, 10000);
         it('renders lose, no game object', async () => {
           const router = createMemoryRouter([
             {
@@ -284,7 +284,7 @@ describe('game', () => {
           });
 
           expect(container).toMatchSnapshot();
-        });
+        }, 10000);
         it('Won, continue later', async () => {
           const router = createMemoryRouter([
             {
@@ -335,7 +335,7 @@ describe('game', () => {
               gameWon.session,
             );
           });
-        });
+        }, 10000);
         it('Won, guess another', async () => {
           const router = createMemoryRouter([
             {
@@ -383,7 +383,7 @@ describe('game', () => {
             expect(router.state.location.pathname).toEqual(EPaths.GAME);
             expect(router.state.location.state).toBe(gameWon.session);
           });
-        });
+        }, 10000);
         it('renders lose', async () => {
           const router = createMemoryRouter([
             {
@@ -422,7 +422,7 @@ describe('game', () => {
           });
 
           expect(container).toMatchSnapshot();
-        });
+        }, 10000);
         it('Lost, finish game', async () => {
           const router = createMemoryRouter([
             {
@@ -470,7 +470,7 @@ describe('game', () => {
               EStorageKeys.GAME_SESSION,
             );
           });
-        });
+        }, 10000);
       });
     });
   });

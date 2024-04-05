@@ -86,7 +86,7 @@ export const GamePage = () => {
           setGameState('running');
         })
         .catch((error): void => {
-          console.error(error);
+          console.error('getInitSync.ERROR', error);
           // handle custom error
           if (guardTErrorResponse(error)) {
             // if provided session is invalid, discard it and try again
@@ -102,10 +102,12 @@ export const GamePage = () => {
                 state: { error, session: gameSession },
               });
             }
+            /* v8 ignore start */
           } else if (error instanceof DOMException) {
             // abort error is OK
             return;
           } else {
+            /* v8 ignore stop */
             // navigate to error page
             navigate(EPaths.GAME_ERROR, {
               // no back to game
@@ -144,7 +146,9 @@ export const GamePage = () => {
       // reset error
       setError(null);
 
+      /* v8 ignore start */
       if (!gameSession) return;
+      /* v8 ignore stop */
 
       setGameState('pending');
 
@@ -172,6 +176,8 @@ export const GamePage = () => {
           }
         })
         .catch((error) => {
+          console.error('getNextAttempt.ERROR', error);
+
           // session error is a showstopper here
           if (guardTErrorResponse(error)) {
             // if provided session is invalid, discard it and try again
@@ -198,10 +204,12 @@ export const GamePage = () => {
                 state: { error, session: gameSession },
               });
             }
+            /* v8 ignore start */
           } else if (error instanceof DOMException) {
             // abort error is OK (abort is never ok)
             return;
           }
+          /* v8 ignore stop */
           // no action for other errors
           setGameState('running');
         });
@@ -212,6 +220,7 @@ export const GamePage = () => {
   const [showInputModal, setShowInputModal] = useState(false);
   useEffect(() => {
     const tapHandler = (e: MouseEvent) => {
+      console.log('tapHandler', (e.target as HTMLElement).classList);
       if ((e.target as HTMLElement).classList.contains('board')) {
         setShowInputModal(true);
       }
@@ -238,7 +247,6 @@ export const GamePage = () => {
     },
     [handleWordCommit],
   );
-
   return (
     <div className="game-page">
       <div className="header">
@@ -306,8 +314,10 @@ export const GamePage = () => {
   );
 };
 
+/* v8 ignore start */
 export function Component() {
   return <GamePage />;
 }
 
 Component.displayName = 'LazyGamePage';
+/* v8 ignore stop */

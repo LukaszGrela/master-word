@@ -118,13 +118,13 @@ const Word: FC<IProps> = ({
             )}
             letter={letter}
             key={`letter-${id}-${i}`}
+            data-testid={`letter-${id}-${i}`}
           />
         ));
     }
 
     return null;
   }, [active, className, id, validated, word, wordLength, language]);
-
   return (
     <Fragment>
       {active || !word

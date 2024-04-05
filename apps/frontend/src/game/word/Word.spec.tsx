@@ -1,28 +1,7 @@
 import { fireEvent, render, waitFor } from '@testing-library/react';
 import { describe, expect, it, vi } from 'vitest';
 import Word from './Word';
-
-const hitEnter = () => {
-  fireEvent.keyUp(document.activeElement || document.body, {
-    key: 'Enter',
-    code: 'Enter',
-    charCode: 13,
-  });
-};
-const hitDelete = () => {
-  fireEvent.keyUp(document.activeElement || document.body, {
-    key: 'Delete',
-    code: 'Delete',
-    charCode: 46,
-  });
-};
-const hitBackspace = () => {
-  fireEvent.keyUp(document.activeElement || document.body, {
-    key: 'Backspace',
-    code: 'Backspace',
-    charCode: 8,
-  });
-};
+import { hitEnter, hitBackspace, hitDelete } from '../../__tests__/helpers';
 
 describe('game', () => {
   describe('word', () => {

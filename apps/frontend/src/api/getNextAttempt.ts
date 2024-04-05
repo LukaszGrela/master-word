@@ -6,6 +6,24 @@ import { createGameState } from './utils';
 type TForcedGame = Required<Omit<TGameSession, 'highest'>> &
   Pick<TGameSession, 'highest'>;
 
+export const inflateGameState = (
+  gameSession: TGameSession,
+): TForcedGame | null => {
+  if (!gameSession.game) return null;
+  const attempts = gameSession.game.max_attempts;
+  const emptyGameState = createGameState(
+    attempts,
+    gameSession.game.word_length,
+  );
+  const state = (gameSession.game.state as TPartialGameState)
+    .concat(emptyGameState)
+    .slice(0, attempts);
+
+  gameSession.game.state = state as TGameStep[];
+
+  return gameSession as TForcedGame;
+};
+
 export const getNextAttempt = async (params: {
   guess: string;
   session: string;
@@ -20,15 +38,9 @@ export const getNextAttempt = async (params: {
 
   if (response.ok) {
     // inflate the game state
-    if (data.game) {
-      const attempts = data.game.max_attempts;
-      const emptyGameState = createGameState(attempts, data.game.word_length);
-      const state = (data.game.state as TPartialGameState)
-        .concat(emptyGameState)
-        .slice(0, attempts);
-
-      data.game.state = state as TGameStep[];
-      return Promise.resolve(data as TForcedGame);
+    const inflated = inflateGameState(data);
+    if (inflated) {
+      return Promise.resolve(inflated);
     }
   }
 
