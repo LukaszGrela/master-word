@@ -29,6 +29,8 @@ export type TScore = {
   score: number;
   timeMs: number;
   attempts: number;
+  language: string;
+  length: number;
 };
 
 export type TGameRecord = {

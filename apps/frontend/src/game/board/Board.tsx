@@ -19,7 +19,11 @@ const Board: React.FC<IBoard> = ({
   };
 
   return (
-    <div className={classNames('board', className)} style={style}>
+    <div
+      data-testid="board"
+      className={classNames('board', className)}
+      style={style}
+    >
       {children}
     </div>
   );

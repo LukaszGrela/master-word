@@ -1,0 +1,19 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`game > HighScoreLabel > Renders with context 1`] = `
+<div>
+  <span
+    class="highscore-label"
+  >
+    New Highscore
+  </span>
+</div>
+`;
+
+exports[`game > HighScoreLabel > Renders with no props 1`] = `
+<div>
+  <span
+    class="highscore-label"
+  />
+</div>
+`;

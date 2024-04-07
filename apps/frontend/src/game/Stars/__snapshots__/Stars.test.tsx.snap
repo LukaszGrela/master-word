@@ -1,0 +1,337 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`game > Stars > Renders score 0 1`] = `
+<div>
+  <div
+    class="stars"
+  >
+    <svg
+      class="grade-icon size-medium zero"
+      height="24"
+      viewBox="0 -960 960 960"
+      width="24"
+      xmlns="http://www.w3.org/2000/svg"
+    >
+      <path
+        d="m354-247 126-76 126 77-33-144 111-96-146-13-58-136-58 135-146 13 111 97-33 143ZM233-80l65-281L80-550l288-25 112-265 112 265 288 25-218 189 65 281-247-149L233-80Zm247-350Z"
+      />
+    </svg>
+    <svg
+      class="grade-icon size-large zero"
+      height="24"
+      viewBox="0 -960 960 960"
+      width="24"
+      xmlns="http://www.w3.org/2000/svg"
+    >
+      <path
+        d="m354-247 126-76 126 77-33-144 111-96-146-13-58-136-58 135-146 13 111 97-33 143ZM233-80l65-281L80-550l288-25 112-265 112 265 288 25-218 189 65 281-247-149L233-80Zm247-350Z"
+      />
+    </svg>
+    <svg
+      class="grade-icon size-medium zero"
+      height="24"
+      viewBox="0 -960 960 960"
+      width="24"
+      xmlns="http://www.w3.org/2000/svg"
+    >
+      <path
+        d="m354-247 126-76 126 77-33-144 111-96-146-13-58-136-58 135-146 13 111 97-33 143ZM233-80l65-281L80-550l288-25 112-265 112 265 288 25-218 189 65 281-247-149L233-80Zm247-350Z"
+      />
+    </svg>
+  </div>
+</div>
+`;
+
+exports[`game > Stars > Renders score 0.75 1`] = `
+<div>
+  <div
+    class="stars"
+  >
+    <svg
+      class="grade-icon gold size-medium half"
+      height="24"
+      viewBox="0 -960 960 960"
+      width="24"
+      xmlns="http://www.w3.org/2000/svg"
+    >
+      <path
+        d="m480-323 126 77-33-144 111-96-146-13-58-136v312ZM233-80l65-281L80-550l288-25 112-265 112 265 288 25-218 189 65 281-247-149L233-80Z"
+      />
+    </svg>
+    <svg
+      class="grade-icon size-large zero"
+      height="24"
+      viewBox="0 -960 960 960"
+      width="24"
+      xmlns="http://www.w3.org/2000/svg"
+    >
+      <path
+        d="m354-247 126-76 126 77-33-144 111-96-146-13-58-136-58 135-146 13 111 97-33 143ZM233-80l65-281L80-550l288-25 112-265 112 265 288 25-218 189 65 281-247-149L233-80Zm247-350Z"
+      />
+    </svg>
+    <svg
+      class="grade-icon size-medium zero"
+      height="24"
+      viewBox="0 -960 960 960"
+      width="24"
+      xmlns="http://www.w3.org/2000/svg"
+    >
+      <path
+        d="m354-247 126-76 126 77-33-144 111-96-146-13-58-136-58 135-146 13 111 97-33 143ZM233-80l65-281L80-550l288-25 112-265 112 265 288 25-218 189 65 281-247-149L233-80Zm247-350Z"
+      />
+    </svg>
+  </div>
+</div>
+`;
+
+exports[`game > Stars > Renders score 1 1`] = `
+<div>
+  <div
+    class="stars"
+  >
+    <svg
+      class="grade-icon gold size-medium full"
+      height="24"
+      viewBox="0 -960 960 960"
+      width="24"
+      xmlns="http://www.w3.org/2000/svg"
+    >
+      <path
+        d="m233-80 65-281L80-550l288-25 112-265 112 265 288 25-218 189 65 281-247-149L233-80Z"
+      />
+    </svg>
+    <svg
+      class="grade-icon size-large zero"
+      height="24"
+      viewBox="0 -960 960 960"
+      width="24"
+      xmlns="http://www.w3.org/2000/svg"
+    >
+      <path
+        d="m354-247 126-76 126 77-33-144 111-96-146-13-58-136-58 135-146 13 111 97-33 143ZM233-80l65-281L80-550l288-25 112-265 112 265 288 25-218 189 65 281-247-149L233-80Zm247-350Z"
+      />
+    </svg>
+    <svg
+      class="grade-icon size-medium zero"
+      height="24"
+      viewBox="0 -960 960 960"
+      width="24"
+      xmlns="http://www.w3.org/2000/svg"
+    >
+      <path
+        d="m354-247 126-76 126 77-33-144 111-96-146-13-58-136-58 135-146 13 111 97-33 143ZM233-80l65-281L80-550l288-25 112-265 112 265 288 25-218 189 65 281-247-149L233-80Zm247-350Z"
+      />
+    </svg>
+  </div>
+</div>
+`;
+
+exports[`game > Stars > Renders score 1.25 1`] = `
+<div>
+  <div
+    class="stars"
+  >
+    <svg
+      class="grade-icon gold size-medium full"
+      height="24"
+      viewBox="0 -960 960 960"
+      width="24"
+      xmlns="http://www.w3.org/2000/svg"
+    >
+      <path
+        d="m233-80 65-281L80-550l288-25 112-265 112 265 288 25-218 189 65 281-247-149L233-80Z"
+      />
+    </svg>
+    <svg
+      class="grade-icon gold size-large half"
+      height="24"
+      viewBox="0 -960 960 960"
+      width="24"
+      xmlns="http://www.w3.org/2000/svg"
+    >
+      <path
+        d="m480-323 126 77-33-144 111-96-146-13-58-136v312ZM233-80l65-281L80-550l288-25 112-265 112 265 288 25-218 189 65 281-247-149L233-80Z"
+      />
+    </svg>
+    <svg
+      class="grade-icon size-medium zero"
+      height="24"
+      viewBox="0 -960 960 960"
+      width="24"
+      xmlns="http://www.w3.org/2000/svg"
+    >
+      <path
+        d="m354-247 126-76 126 77-33-144 111-96-146-13-58-136-58 135-146 13 111 97-33 143ZM233-80l65-281L80-550l288-25 112-265 112 265 288 25-218 189 65 281-247-149L233-80Zm247-350Z"
+      />
+    </svg>
+  </div>
+</div>
+`;
+
+exports[`game > Stars > Renders score 2 1`] = `
+<div>
+  <div
+    class="stars"
+  >
+    <svg
+      class="grade-icon gold size-medium full"
+      height="24"
+      viewBox="0 -960 960 960"
+      width="24"
+      xmlns="http://www.w3.org/2000/svg"
+    >
+      <path
+        d="m233-80 65-281L80-550l288-25 112-265 112 265 288 25-218 189 65 281-247-149L233-80Z"
+      />
+    </svg>
+    <svg
+      class="grade-icon gold size-large full"
+      height="24"
+      viewBox="0 -960 960 960"
+      width="24"
+      xmlns="http://www.w3.org/2000/svg"
+    >
+      <path
+        d="m233-80 65-281L80-550l288-25 112-265 112 265 288 25-218 189 65 281-247-149L233-80Z"
+      />
+    </svg>
+    <svg
+      class="grade-icon size-medium zero"
+      height="24"
+      viewBox="0 -960 960 960"
+      width="24"
+      xmlns="http://www.w3.org/2000/svg"
+    >
+      <path
+        d="m354-247 126-76 126 77-33-144 111-96-146-13-58-136-58 135-146 13 111 97-33 143ZM233-80l65-281L80-550l288-25 112-265 112 265 288 25-218 189 65 281-247-149L233-80Zm247-350Z"
+      />
+    </svg>
+  </div>
+</div>
+`;
+
+exports[`game > Stars > Renders score 2.5 1`] = `
+<div>
+  <div
+    class="stars"
+  >
+    <svg
+      class="grade-icon gold size-medium full"
+      height="24"
+      viewBox="0 -960 960 960"
+      width="24"
+      xmlns="http://www.w3.org/2000/svg"
+    >
+      <path
+        d="m233-80 65-281L80-550l288-25 112-265 112 265 288 25-218 189 65 281-247-149L233-80Z"
+      />
+    </svg>
+    <svg
+      class="grade-icon gold size-large full"
+      height="24"
+      viewBox="0 -960 960 960"
+      width="24"
+      xmlns="http://www.w3.org/2000/svg"
+    >
+      <path
+        d="m233-80 65-281L80-550l288-25 112-265 112 265 288 25-218 189 65 281-247-149L233-80Z"
+      />
+    </svg>
+    <svg
+      class="grade-icon gold size-medium half"
+      height="24"
+      viewBox="0 -960 960 960"
+      width="24"
+      xmlns="http://www.w3.org/2000/svg"
+    >
+      <path
+        d="m480-323 126 77-33-144 111-96-146-13-58-136v312ZM233-80l65-281L80-550l288-25 112-265 112 265 288 25-218 189 65 281-247-149L233-80Z"
+      />
+    </svg>
+  </div>
+</div>
+`;
+
+exports[`game > Stars > Renders score 3 1`] = `
+<div>
+  <div
+    class="stars"
+  >
+    <svg
+      class="grade-icon gold size-medium full"
+      height="24"
+      viewBox="0 -960 960 960"
+      width="24"
+      xmlns="http://www.w3.org/2000/svg"
+    >
+      <path
+        d="m233-80 65-281L80-550l288-25 112-265 112 265 288 25-218 189 65 281-247-149L233-80Z"
+      />
+    </svg>
+    <svg
+      class="grade-icon gold size-large full"
+      height="24"
+      viewBox="0 -960 960 960"
+      width="24"
+      xmlns="http://www.w3.org/2000/svg"
+    >
+      <path
+        d="m233-80 65-281L80-550l288-25 112-265 112 265 288 25-218 189 65 281-247-149L233-80Z"
+      />
+    </svg>
+    <svg
+      class="grade-icon gold size-medium full"
+      height="24"
+      viewBox="0 -960 960 960"
+      width="24"
+      xmlns="http://www.w3.org/2000/svg"
+    >
+      <path
+        d="m233-80 65-281L80-550l288-25 112-265 112 265 288 25-218 189 65 281-247-149L233-80Z"
+      />
+    </svg>
+  </div>
+</div>
+`;
+
+exports[`game > Stars > Renders score 42 1`] = `
+<div>
+  <div
+    class="stars"
+  >
+    <svg
+      class="grade-icon gold size-medium full"
+      height="24"
+      viewBox="0 -960 960 960"
+      width="24"
+      xmlns="http://www.w3.org/2000/svg"
+    >
+      <path
+        d="m233-80 65-281L80-550l288-25 112-265 112 265 288 25-218 189 65 281-247-149L233-80Z"
+      />
+    </svg>
+    <svg
+      class="grade-icon gold size-large full"
+      height="24"
+      viewBox="0 -960 960 960"
+      width="24"
+      xmlns="http://www.w3.org/2000/svg"
+    >
+      <path
+        d="m233-80 65-281L80-550l288-25 112-265 112 265 288 25-218 189 65 281-247-149L233-80Z"
+      />
+    </svg>
+    <svg
+      class="grade-icon gold size-medium full"
+      height="24"
+      viewBox="0 -960 960 960"
+      width="24"
+      xmlns="http://www.w3.org/2000/svg"
+    >
+      <path
+        d="m233-80 65-281L80-550l288-25 112-265 112 265 288 25-218 189 65 281-247-149L233-80Z"
+      />
+    </svg>
+  </div>
+</div>
+`;

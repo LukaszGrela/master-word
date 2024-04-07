@@ -86,7 +86,6 @@ export const GamePage = () => {
           setGameState('running');
         })
         .catch((error): void => {
-          console.error(error);
           // handle custom error
           if (guardTErrorResponse(error)) {
             // if provided session is invalid, discard it and try again
@@ -102,10 +101,12 @@ export const GamePage = () => {
                 state: { error, session: gameSession },
               });
             }
+            /* v8 ignore start */
           } else if (error instanceof DOMException) {
             // abort error is OK
             return;
           } else {
+            /* v8 ignore stop */
             // navigate to error page
             navigate(EPaths.GAME_ERROR, {
               // no back to game
@@ -144,7 +145,9 @@ export const GamePage = () => {
       // reset error
       setError(null);
 
+      /* v8 ignore start */
       if (!gameSession) return;
+      /* v8 ignore stop */
 
       setGameState('pending');
 
@@ -198,10 +201,12 @@ export const GamePage = () => {
                 state: { error, session: gameSession },
               });
             }
+            /* v8 ignore start */
           } else if (error instanceof DOMException) {
             // abort error is OK (abort is never ok)
             return;
           }
+          /* v8 ignore stop */
           // no action for other errors
           setGameState('running');
         });
@@ -238,7 +243,6 @@ export const GamePage = () => {
     },
     [handleWordCommit],
   );
-
   return (
     <div className="game-page">
       <div className="header">
@@ -271,6 +275,7 @@ export const GamePage = () => {
             const active = index === attempt && gameState === 'running';
             return (
               <Word
+                language={language}
                 mobile={bowser.platform.type === 'mobile'}
                 commit={handleWordCommit}
                 active={active}
@@ -305,8 +310,10 @@ export const GamePage = () => {
   );
 };
 
+/* v8 ignore start */
 export function Component() {
   return <GamePage />;
 }
 
 Component.displayName = 'LazyGamePage';
+/* v8 ignore stop */

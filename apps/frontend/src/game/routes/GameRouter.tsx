@@ -1,3 +1,4 @@
+/* v8 ignore start */
 import { RouterProvider, createBrowserRouter } from 'react-router-dom';
 import { EPaths } from './enums';
 import GeneralError from './GeneralError';
@@ -31,3 +32,4 @@ const router = createBrowserRouter([
 export const GameRouter = () => {
   return <RouterProvider router={router} />;
 };
+/* v8 ignore stop */

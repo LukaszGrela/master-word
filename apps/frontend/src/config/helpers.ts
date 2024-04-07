@@ -7,7 +7,6 @@ import { ATTEMPTS, LANGUAGE, WORD_LENGTH } from '../game';
  * @param config Current Configuration
  */
 export function updateLocalStorageConfig(config: IConfig) {
-  console.log('config', config);
   const storage = AppStorage.getInstance();
   // game language
   const configLang =

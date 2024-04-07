@@ -1,0 +1,69 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`game > routes > GeneralError > renders general error 1`] = `
+<div>
+  <div
+    id="error-page"
+  >
+    <h1>
+      Ożesz kurczaczki!
+    </h1>
+    <p>
+      Przepraszamy, nieoczekiwany błąd jak piorun z nieba spadł i zepsuł zabawę...
+    </p>
+    <p>
+      <i>
+        Boom
+      </i>
+    </p>
+    <p>
+      <button
+        class="primary"
+      >
+        Zamknij
+      </button>
+    </p>
+    <div
+      class="language-selector translation"
+    >
+      <span
+        class="hidden sr"
+      >
+        Wybierz język interfejsu
+      </span>
+      <button
+        class="translation-btn selected"
+        title="Polski"
+      >
+        <span
+          class="flag"
+        >
+          <img
+            alt=""
+            loading="lazy"
+            src="https://flagcdn.com/w20/pl.png"
+            srcset="https://flagcdn.com/w40/pl.png 2x"
+            width="20"
+          />
+        </span>
+      </button>
+      <button
+        class="translation-btn"
+        title="Angielski"
+      >
+        <span
+          class="flag"
+        >
+          <img
+            alt=""
+            loading="lazy"
+            src="https://flagcdn.com/w20/us.png"
+            srcset="https://flagcdn.com/w40/us.png 2x"
+            width="20"
+          />
+        </span>
+      </button>
+    </div>
+  </div>
+</div>
+`;

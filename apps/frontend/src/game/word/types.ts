@@ -24,4 +24,6 @@ export interface IProps {
 
   // guessed word validation
   validated?: TValidationChar[];
+
+  language?: string;
 }

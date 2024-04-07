@@ -1,12 +1,14 @@
 import { IConfigEntry } from '@repo/backend-types/db';
 import { apiConfig } from './endpoints';
 
-export const getConfig = async (params: {
+export const getConfig = async ({
+  signal,
+}: {
   signal?: AbortSignal | null | undefined;
 }) => {
   const response = await fetch(apiConfig(), {
     method: 'GET',
-    signal: params.signal,
+    signal,
   });
 
   const data = JSON.parse(await response.text()) as IConfigEntry[];

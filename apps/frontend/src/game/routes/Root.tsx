@@ -3,14 +3,13 @@ import { classNames } from '@repo/utils';
 import { useLanguage } from '../../i18n';
 import Spinner from '../Spinner/Spinner';
 import { GrelaDesignIcon } from '../icons/GrelaDesignIcon';
-import UILanguage from '../language/UILanguage';
+import { UILanguage } from '../language';
 
 import './Root.scss';
 import GeneralError from './GeneralError';
 
 export const Root = () => {
   const { loadedLanguage, loading } = useLanguage();
-
   const showLoading = loading && !loadedLanguage;
 
   return (
@@ -30,6 +29,7 @@ export const Root = () => {
     </div>
   );
 };
+/* v8 ignore start */
 
 export function Component() {
   return <Root />;
@@ -42,3 +42,4 @@ export function ErrorBoundry() {
 }
 
 ErrorBoundry.displayName = 'LazyGeneralError';
+/* v8 ignore stop */

@@ -1,0 +1,192 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`game > routes > components > HomePage > renders 1`] = `
+<div>
+  <div
+    class="page home"
+  >
+    <div
+      class="title"
+    >
+      <h1>
+        Mistrz Słowa
+      </h1>
+      <h4>
+        Odgadnij słowo które mam na myśli...
+      </h4>
+    </div>
+    <p
+      class="description"
+    >
+      Masz 8 prób aby odgadnąć 5-literowe słowo, zrób to w jak najmniejszej ilości prób i w jak najkrótszym czasie. Czas odliczany jest od wysłania pierwszej propozycji słowa. Przed rozpoczęciem gry możesz zmienić język odgadywanego słowa.
+    </p>
+    <div
+      class="game-language"
+    >
+      <p
+        class="language-info"
+      >
+        Wybierz język słowa do odgadnięcia
+      </p>
+      <div
+        class="language-selector translation"
+      >
+        <span
+          class="hidden sr"
+        >
+          Wybierz język interfejsu
+        </span>
+        <button
+          class="translation-btn selected"
+          title="Słowo polskie"
+        >
+          <span
+            class="label"
+          >
+            Słowo
+          </span>
+          <span
+            class="flag"
+          >
+            <img
+              alt=""
+              loading="lazy"
+              src="https://flagcdn.com/w20/pl.png"
+              srcset="https://flagcdn.com/w40/pl.png 2x"
+              width="20"
+            />
+          </span>
+        </button>
+        <button
+          class="translation-btn"
+          title="Słowo angielskie"
+        >
+          <span
+            class="label"
+          >
+            Słowo
+          </span>
+          <span
+            class="flag"
+          >
+            <img
+              alt=""
+              loading="lazy"
+              src="https://flagcdn.com/w20/us.png"
+              srcset="https://flagcdn.com/w40/us.png 2x"
+              width="20"
+            />
+          </span>
+        </button>
+      </div>
+    </div>
+    <div
+      class="button-row"
+    >
+      <button
+        class="primary"
+      >
+        Start
+      </button>
+    </div>
+  </div>
+</div>
+`;
+
+exports[`game > routes > components > HomePage > renders with stored session 1`] = `
+<div>
+  <div
+    class="page home"
+  >
+    <div
+      class="title"
+    >
+      <h1>
+        Mistrz Słowa
+      </h1>
+      <h4>
+        Odgadnij słowo które mam na myśli...
+      </h4>
+    </div>
+    <p
+      class="description"
+    >
+      Masz 8 prób aby odgadnąć 5-literowe słowo, zrób to w jak najmniejszej ilości prób i w jak najkrótszym czasie. Czas odliczany jest od wysłania pierwszej propozycji słowa. Przed rozpoczęciem gry możesz zmienić język odgadywanego słowa.
+    </p>
+    <div
+      class="game-language"
+    >
+      <p
+        class="language-info"
+      >
+        Wybierz język słowa do odgadnięcia
+      </p>
+      <div
+        class="language-selector translation"
+      >
+        <span
+          class="hidden sr"
+        >
+          Wybierz język interfejsu
+        </span>
+        <button
+          class="translation-btn selected"
+          title="Słowo polskie"
+        >
+          <span
+            class="label"
+          >
+            Słowo
+          </span>
+          <span
+            class="flag"
+          >
+            <img
+              alt=""
+              loading="lazy"
+              src="https://flagcdn.com/w20/pl.png"
+              srcset="https://flagcdn.com/w40/pl.png 2x"
+              width="20"
+            />
+          </span>
+        </button>
+        <button
+          class="translation-btn"
+          title="Słowo angielskie"
+        >
+          <span
+            class="label"
+          >
+            Słowo
+          </span>
+          <span
+            class="flag"
+          >
+            <img
+              alt=""
+              loading="lazy"
+              src="https://flagcdn.com/w20/us.png"
+              srcset="https://flagcdn.com/w40/us.png 2x"
+              width="20"
+            />
+          </span>
+        </button>
+      </div>
+    </div>
+    <div
+      class="button-row"
+    >
+      <button
+        class="primary"
+      >
+        Kontynuuj grę
+      </button>
+      <button
+        class="secondary"
+      >
+        Start
+      </button>
+    </div>
+  </div>
+</div>
+`;

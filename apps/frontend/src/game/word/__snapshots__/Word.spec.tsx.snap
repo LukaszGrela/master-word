@@ -1,0 +1,1026 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`game > word > Word > Renders 1`] = `
+<div>
+  <div
+    class="letter first"
+    data-testid="letter-id-0"
+  >
+    <span
+      class="flag"
+    >
+      <span
+        class="flag-wrapper"
+      >
+        <img
+          alt=""
+          loading="lazy"
+          src="https://flagcdn.com/w20/pl.png"
+          srcset="https://flagcdn.com/w40/pl.png 2x"
+          width="20"
+        />
+      </span>
+    </span>
+    <span
+      class="icon"
+    >
+      <svg
+        class="edit-icon"
+        height="48"
+        viewBox="0 -960 960 960"
+        width="48"
+        xmlns="http://www.w3.org/2000/svg"
+      >
+        <path
+          d="M167-120q-21 5-36.5-10.5T120-167l40-191 198 198-191 40Zm191-40L160-358l473-473q17-17 42-17t42 17l114 114q17 17 17 42t-17 42L358-160Zm317-628L233-346l113 113 442-442-113-113Z"
+        />
+      </svg>
+    </span>
+    <span
+      class="container"
+    >
+       
+    </span>
+  </div>
+  <div
+    class="letter"
+    data-testid="letter-id-1"
+  >
+    <span
+      class="flag"
+    >
+      <span
+        class="flag-wrapper"
+      >
+        <img
+          alt=""
+          loading="lazy"
+          src="https://flagcdn.com/w20/pl.png"
+          srcset="https://flagcdn.com/w40/pl.png 2x"
+          width="20"
+        />
+      </span>
+    </span>
+    <span
+      class="icon"
+    >
+      <svg
+        class="edit-icon"
+        height="48"
+        viewBox="0 -960 960 960"
+        width="48"
+        xmlns="http://www.w3.org/2000/svg"
+      >
+        <path
+          d="M167-120q-21 5-36.5-10.5T120-167l40-191 198 198-191 40Zm191-40L160-358l473-473q17-17 42-17t42 17l114 114q17 17 17 42t-17 42L358-160Zm317-628L233-346l113 113 442-442-113-113Z"
+        />
+      </svg>
+    </span>
+    <span
+      class="container"
+    >
+       
+    </span>
+  </div>
+  <div
+    class="letter"
+    data-testid="letter-id-2"
+  >
+    <span
+      class="flag"
+    >
+      <span
+        class="flag-wrapper"
+      >
+        <img
+          alt=""
+          loading="lazy"
+          src="https://flagcdn.com/w20/pl.png"
+          srcset="https://flagcdn.com/w40/pl.png 2x"
+          width="20"
+        />
+      </span>
+    </span>
+    <span
+      class="icon"
+    >
+      <svg
+        class="edit-icon"
+        height="48"
+        viewBox="0 -960 960 960"
+        width="48"
+        xmlns="http://www.w3.org/2000/svg"
+      >
+        <path
+          d="M167-120q-21 5-36.5-10.5T120-167l40-191 198 198-191 40Zm191-40L160-358l473-473q17-17 42-17t42 17l114 114q17 17 17 42t-17 42L358-160Zm317-628L233-346l113 113 442-442-113-113Z"
+        />
+      </svg>
+    </span>
+    <span
+      class="container"
+    >
+       
+    </span>
+  </div>
+  <div
+    class="letter"
+    data-testid="letter-id-3"
+  >
+    <span
+      class="flag"
+    >
+      <span
+        class="flag-wrapper"
+      >
+        <img
+          alt=""
+          loading="lazy"
+          src="https://flagcdn.com/w20/pl.png"
+          srcset="https://flagcdn.com/w40/pl.png 2x"
+          width="20"
+        />
+      </span>
+    </span>
+    <span
+      class="icon"
+    >
+      <svg
+        class="edit-icon"
+        height="48"
+        viewBox="0 -960 960 960"
+        width="48"
+        xmlns="http://www.w3.org/2000/svg"
+      >
+        <path
+          d="M167-120q-21 5-36.5-10.5T120-167l40-191 198 198-191 40Zm191-40L160-358l473-473q17-17 42-17t42 17l114 114q17 17 17 42t-17 42L358-160Zm317-628L233-346l113 113 442-442-113-113Z"
+        />
+      </svg>
+    </span>
+    <span
+      class="container"
+    >
+       
+    </span>
+  </div>
+  <div
+    class="letter last"
+    data-testid="letter-id-4"
+  >
+    <span
+      class="flag"
+    >
+      <span
+        class="flag-wrapper"
+      >
+        <img
+          alt=""
+          loading="lazy"
+          src="https://flagcdn.com/w20/pl.png"
+          srcset="https://flagcdn.com/w40/pl.png 2x"
+          width="20"
+        />
+      </span>
+    </span>
+    <span
+      class="icon"
+    >
+      <svg
+        class="edit-icon"
+        height="48"
+        viewBox="0 -960 960 960"
+        width="48"
+        xmlns="http://www.w3.org/2000/svg"
+      >
+        <path
+          d="M167-120q-21 5-36.5-10.5T120-167l40-191 198 198-191 40Zm191-40L160-358l473-473q17-17 42-17t42 17l114 114q17 17 17 42t-17 42L358-160Zm317-628L233-346l113 113 442-442-113-113Z"
+        />
+      </svg>
+    </span>
+    <span
+      class="container"
+    >
+       
+    </span>
+  </div>
+</div>
+`;
+
+exports[`game > word > Word > Renders active 1`] = `
+<div>
+  <div
+    class="letter active first"
+    data-testid="letter-id-0"
+  >
+    <span
+      class="flag"
+    >
+      <span
+        class="flag-wrapper"
+      >
+        <img
+          alt=""
+          loading="lazy"
+          src="https://flagcdn.com/w20/pl.png"
+          srcset="https://flagcdn.com/w40/pl.png 2x"
+          width="20"
+        />
+      </span>
+    </span>
+    <span
+      class="icon"
+    >
+      <svg
+        class="edit-icon"
+        height="48"
+        viewBox="0 -960 960 960"
+        width="48"
+        xmlns="http://www.w3.org/2000/svg"
+      >
+        <path
+          d="M167-120q-21 5-36.5-10.5T120-167l40-191 198 198-191 40Zm191-40L160-358l473-473q17-17 42-17t42 17l114 114q17 17 17 42t-17 42L358-160Zm317-628L233-346l113 113 442-442-113-113Z"
+        />
+      </svg>
+    </span>
+    <span
+      class="container"
+    >
+       
+    </span>
+  </div>
+  <div
+    class="letter active"
+    data-testid="letter-id-1"
+  >
+    <span
+      class="flag"
+    >
+      <span
+        class="flag-wrapper"
+      >
+        <img
+          alt=""
+          loading="lazy"
+          src="https://flagcdn.com/w20/pl.png"
+          srcset="https://flagcdn.com/w40/pl.png 2x"
+          width="20"
+        />
+      </span>
+    </span>
+    <span
+      class="icon"
+    >
+      <svg
+        class="edit-icon"
+        height="48"
+        viewBox="0 -960 960 960"
+        width="48"
+        xmlns="http://www.w3.org/2000/svg"
+      >
+        <path
+          d="M167-120q-21 5-36.5-10.5T120-167l40-191 198 198-191 40Zm191-40L160-358l473-473q17-17 42-17t42 17l114 114q17 17 17 42t-17 42L358-160Zm317-628L233-346l113 113 442-442-113-113Z"
+        />
+      </svg>
+    </span>
+    <span
+      class="container"
+    >
+       
+    </span>
+  </div>
+  <div
+    class="letter active"
+    data-testid="letter-id-2"
+  >
+    <span
+      class="flag"
+    >
+      <span
+        class="flag-wrapper"
+      >
+        <img
+          alt=""
+          loading="lazy"
+          src="https://flagcdn.com/w20/pl.png"
+          srcset="https://flagcdn.com/w40/pl.png 2x"
+          width="20"
+        />
+      </span>
+    </span>
+    <span
+      class="icon"
+    >
+      <svg
+        class="edit-icon"
+        height="48"
+        viewBox="0 -960 960 960"
+        width="48"
+        xmlns="http://www.w3.org/2000/svg"
+      >
+        <path
+          d="M167-120q-21 5-36.5-10.5T120-167l40-191 198 198-191 40Zm191-40L160-358l473-473q17-17 42-17t42 17l114 114q17 17 17 42t-17 42L358-160Zm317-628L233-346l113 113 442-442-113-113Z"
+        />
+      </svg>
+    </span>
+    <span
+      class="container"
+    >
+       
+    </span>
+  </div>
+  <div
+    class="letter active"
+    data-testid="letter-id-3"
+  >
+    <span
+      class="flag"
+    >
+      <span
+        class="flag-wrapper"
+      >
+        <img
+          alt=""
+          loading="lazy"
+          src="https://flagcdn.com/w20/pl.png"
+          srcset="https://flagcdn.com/w40/pl.png 2x"
+          width="20"
+        />
+      </span>
+    </span>
+    <span
+      class="icon"
+    >
+      <svg
+        class="edit-icon"
+        height="48"
+        viewBox="0 -960 960 960"
+        width="48"
+        xmlns="http://www.w3.org/2000/svg"
+      >
+        <path
+          d="M167-120q-21 5-36.5-10.5T120-167l40-191 198 198-191 40Zm191-40L160-358l473-473q17-17 42-17t42 17l114 114q17 17 17 42t-17 42L358-160Zm317-628L233-346l113 113 442-442-113-113Z"
+        />
+      </svg>
+    </span>
+    <span
+      class="container"
+    >
+       
+    </span>
+  </div>
+  <div
+    class="letter active last"
+    data-testid="letter-id-4"
+  >
+    <span
+      class="flag"
+    >
+      <span
+        class="flag-wrapper"
+      >
+        <img
+          alt=""
+          loading="lazy"
+          src="https://flagcdn.com/w20/pl.png"
+          srcset="https://flagcdn.com/w40/pl.png 2x"
+          width="20"
+        />
+      </span>
+    </span>
+    <span
+      class="icon"
+    >
+      <svg
+        class="edit-icon"
+        height="48"
+        viewBox="0 -960 960 960"
+        width="48"
+        xmlns="http://www.w3.org/2000/svg"
+      >
+        <path
+          d="M167-120q-21 5-36.5-10.5T120-167l40-191 198 198-191 40Zm191-40L160-358l473-473q17-17 42-17t42 17l114 114q17 17 17 42t-17 42L358-160Zm317-628L233-346l113 113 442-442-113-113Z"
+        />
+      </svg>
+    </span>
+    <span
+      class="container"
+    >
+       
+    </span>
+  </div>
+</div>
+`;
+
+exports[`game > word > Word > Renders active mobile 1`] = `
+<div>
+  <div
+    class="letter active show-icon first"
+    data-testid="letter-id-0"
+  >
+    <span
+      class="flag"
+    >
+      <span
+        class="flag-wrapper"
+      >
+        <img
+          alt=""
+          loading="lazy"
+          src="https://flagcdn.com/w20/pl.png"
+          srcset="https://flagcdn.com/w40/pl.png 2x"
+          width="20"
+        />
+      </span>
+    </span>
+    <span
+      class="icon"
+    >
+      <svg
+        class="edit-icon"
+        height="48"
+        viewBox="0 -960 960 960"
+        width="48"
+        xmlns="http://www.w3.org/2000/svg"
+      >
+        <path
+          d="M167-120q-21 5-36.5-10.5T120-167l40-191 198 198-191 40Zm191-40L160-358l473-473q17-17 42-17t42 17l114 114q17 17 17 42t-17 42L358-160Zm317-628L233-346l113 113 442-442-113-113Z"
+        />
+      </svg>
+    </span>
+    <span
+      class="container"
+    >
+       
+    </span>
+  </div>
+  <div
+    class="letter active"
+    data-testid="letter-id-1"
+  >
+    <span
+      class="flag"
+    >
+      <span
+        class="flag-wrapper"
+      >
+        <img
+          alt=""
+          loading="lazy"
+          src="https://flagcdn.com/w20/pl.png"
+          srcset="https://flagcdn.com/w40/pl.png 2x"
+          width="20"
+        />
+      </span>
+    </span>
+    <span
+      class="icon"
+    >
+      <svg
+        class="edit-icon"
+        height="48"
+        viewBox="0 -960 960 960"
+        width="48"
+        xmlns="http://www.w3.org/2000/svg"
+      >
+        <path
+          d="M167-120q-21 5-36.5-10.5T120-167l40-191 198 198-191 40Zm191-40L160-358l473-473q17-17 42-17t42 17l114 114q17 17 17 42t-17 42L358-160Zm317-628L233-346l113 113 442-442-113-113Z"
+        />
+      </svg>
+    </span>
+    <span
+      class="container"
+    >
+       
+    </span>
+  </div>
+  <div
+    class="letter active"
+    data-testid="letter-id-2"
+  >
+    <span
+      class="flag"
+    >
+      <span
+        class="flag-wrapper"
+      >
+        <img
+          alt=""
+          loading="lazy"
+          src="https://flagcdn.com/w20/pl.png"
+          srcset="https://flagcdn.com/w40/pl.png 2x"
+          width="20"
+        />
+      </span>
+    </span>
+    <span
+      class="icon"
+    >
+      <svg
+        class="edit-icon"
+        height="48"
+        viewBox="0 -960 960 960"
+        width="48"
+        xmlns="http://www.w3.org/2000/svg"
+      >
+        <path
+          d="M167-120q-21 5-36.5-10.5T120-167l40-191 198 198-191 40Zm191-40L160-358l473-473q17-17 42-17t42 17l114 114q17 17 17 42t-17 42L358-160Zm317-628L233-346l113 113 442-442-113-113Z"
+        />
+      </svg>
+    </span>
+    <span
+      class="container"
+    >
+       
+    </span>
+  </div>
+  <div
+    class="letter active"
+    data-testid="letter-id-3"
+  >
+    <span
+      class="flag"
+    >
+      <span
+        class="flag-wrapper"
+      >
+        <img
+          alt=""
+          loading="lazy"
+          src="https://flagcdn.com/w20/pl.png"
+          srcset="https://flagcdn.com/w40/pl.png 2x"
+          width="20"
+        />
+      </span>
+    </span>
+    <span
+      class="icon"
+    >
+      <svg
+        class="edit-icon"
+        height="48"
+        viewBox="0 -960 960 960"
+        width="48"
+        xmlns="http://www.w3.org/2000/svg"
+      >
+        <path
+          d="M167-120q-21 5-36.5-10.5T120-167l40-191 198 198-191 40Zm191-40L160-358l473-473q17-17 42-17t42 17l114 114q17 17 17 42t-17 42L358-160Zm317-628L233-346l113 113 442-442-113-113Z"
+        />
+      </svg>
+    </span>
+    <span
+      class="container"
+    >
+       
+    </span>
+  </div>
+  <div
+    class="letter active last"
+    data-testid="letter-id-4"
+  >
+    <span
+      class="flag"
+    >
+      <span
+        class="flag-wrapper"
+      >
+        <img
+          alt=""
+          loading="lazy"
+          src="https://flagcdn.com/w20/pl.png"
+          srcset="https://flagcdn.com/w40/pl.png 2x"
+          width="20"
+        />
+      </span>
+    </span>
+    <span
+      class="icon"
+    >
+      <svg
+        class="edit-icon"
+        height="48"
+        viewBox="0 -960 960 960"
+        width="48"
+        xmlns="http://www.w3.org/2000/svg"
+      >
+        <path
+          d="M167-120q-21 5-36.5-10.5T120-167l40-191 198 198-191 40Zm191-40L160-358l473-473q17-17 42-17t42 17l114 114q17 17 17 42t-17 42L358-160Zm317-628L233-346l113 113 442-442-113-113Z"
+        />
+      </svg>
+    </span>
+    <span
+      class="container"
+    >
+       
+    </span>
+  </div>
+</div>
+`;
+
+exports[`game > word > Word > Renders inactive 1`] = `
+<div>
+  <div
+    class="letter correct first"
+    data-testid="letter-id-0"
+  >
+    <span
+      class="flag"
+    >
+      <span
+        class="flag-wrapper"
+      >
+        <img
+          alt=""
+          loading="lazy"
+          src="https://flagcdn.com/w20/pl.png"
+          srcset="https://flagcdn.com/w40/pl.png 2x"
+          width="20"
+        />
+      </span>
+    </span>
+    <span
+      class="icon"
+    >
+      <svg
+        class="edit-icon"
+        height="48"
+        viewBox="0 -960 960 960"
+        width="48"
+        xmlns="http://www.w3.org/2000/svg"
+      >
+        <path
+          d="M167-120q-21 5-36.5-10.5T120-167l40-191 198 198-191 40Zm191-40L160-358l473-473q17-17 42-17t42 17l114 114q17 17 17 42t-17 42L358-160Zm317-628L233-346l113 113 442-442-113-113Z"
+        />
+      </svg>
+    </span>
+    <span
+      class="container"
+    >
+      W
+    </span>
+  </div>
+  <div
+    class="letter misplaced"
+    data-testid="letter-id-1"
+  >
+    <span
+      class="flag"
+    >
+      <span
+        class="flag-wrapper"
+      >
+        <img
+          alt=""
+          loading="lazy"
+          src="https://flagcdn.com/w20/pl.png"
+          srcset="https://flagcdn.com/w40/pl.png 2x"
+          width="20"
+        />
+      </span>
+    </span>
+    <span
+      class="icon"
+    >
+      <svg
+        class="edit-icon"
+        height="48"
+        viewBox="0 -960 960 960"
+        width="48"
+        xmlns="http://www.w3.org/2000/svg"
+      >
+        <path
+          d="M167-120q-21 5-36.5-10.5T120-167l40-191 198 198-191 40Zm191-40L160-358l473-473q17-17 42-17t42 17l114 114q17 17 17 42t-17 42L358-160Zm317-628L233-346l113 113 442-442-113-113Z"
+        />
+      </svg>
+    </span>
+    <span
+      class="container"
+    >
+      R
+    </span>
+  </div>
+  <div
+    class="letter incorrect"
+    data-testid="letter-id-2"
+  >
+    <span
+      class="flag"
+    >
+      <span
+        class="flag-wrapper"
+      >
+        <img
+          alt=""
+          loading="lazy"
+          src="https://flagcdn.com/w20/pl.png"
+          srcset="https://flagcdn.com/w40/pl.png 2x"
+          width="20"
+        />
+      </span>
+    </span>
+    <span
+      class="icon"
+    >
+      <svg
+        class="edit-icon"
+        height="48"
+        viewBox="0 -960 960 960"
+        width="48"
+        xmlns="http://www.w3.org/2000/svg"
+      >
+        <path
+          d="M167-120q-21 5-36.5-10.5T120-167l40-191 198 198-191 40Zm191-40L160-358l473-473q17-17 42-17t42 17l114 114q17 17 17 42t-17 42L358-160Zm317-628L233-346l113 113 442-442-113-113Z"
+        />
+      </svg>
+    </span>
+    <span
+      class="container"
+    >
+      O
+    </span>
+  </div>
+  <div
+    class="letter incorrect"
+    data-testid="letter-id-3"
+  >
+    <span
+      class="flag"
+    >
+      <span
+        class="flag-wrapper"
+      >
+        <img
+          alt=""
+          loading="lazy"
+          src="https://flagcdn.com/w20/pl.png"
+          srcset="https://flagcdn.com/w40/pl.png 2x"
+          width="20"
+        />
+      </span>
+    </span>
+    <span
+      class="icon"
+    >
+      <svg
+        class="edit-icon"
+        height="48"
+        viewBox="0 -960 960 960"
+        width="48"
+        xmlns="http://www.w3.org/2000/svg"
+      >
+        <path
+          d="M167-120q-21 5-36.5-10.5T120-167l40-191 198 198-191 40Zm191-40L160-358l473-473q17-17 42-17t42 17l114 114q17 17 17 42t-17 42L358-160Zm317-628L233-346l113 113 442-442-113-113Z"
+        />
+      </svg>
+    </span>
+    <span
+      class="container"
+    >
+      N
+    </span>
+  </div>
+  <div
+    class="letter incorrect last"
+    data-testid="letter-id-4"
+  >
+    <span
+      class="flag"
+    >
+      <span
+        class="flag-wrapper"
+      >
+        <img
+          alt=""
+          loading="lazy"
+          src="https://flagcdn.com/w20/pl.png"
+          srcset="https://flagcdn.com/w40/pl.png 2x"
+          width="20"
+        />
+      </span>
+    </span>
+    <span
+      class="icon"
+    >
+      <svg
+        class="edit-icon"
+        height="48"
+        viewBox="0 -960 960 960"
+        width="48"
+        xmlns="http://www.w3.org/2000/svg"
+      >
+        <path
+          d="M167-120q-21 5-36.5-10.5T120-167l40-191 198 198-191 40Zm191-40L160-358l473-473q17-17 42-17t42 17l114 114q17 17 17 42t-17 42L358-160Zm317-628L233-346l113 113 442-442-113-113Z"
+        />
+      </svg>
+    </span>
+    <span
+      class="container"
+    >
+      G
+    </span>
+  </div>
+</div>
+`;
+
+exports[`game > word > Word > Renders invalid 1`] = `
+<div>
+  <div
+    class="letter active wrong first"
+    data-testid="letter-id-0"
+  >
+    <span
+      class="flag"
+    >
+      <span
+        class="flag-wrapper"
+      >
+        <img
+          alt=""
+          loading="lazy"
+          src="https://flagcdn.com/w20/pl.png"
+          srcset="https://flagcdn.com/w40/pl.png 2x"
+          width="20"
+        />
+      </span>
+    </span>
+    <span
+      class="icon"
+    >
+      <svg
+        class="edit-icon"
+        height="48"
+        viewBox="0 -960 960 960"
+        width="48"
+        xmlns="http://www.w3.org/2000/svg"
+      >
+        <path
+          d="M167-120q-21 5-36.5-10.5T120-167l40-191 198 198-191 40Zm191-40L160-358l473-473q17-17 42-17t42 17l114 114q17 17 17 42t-17 42L358-160Zm317-628L233-346l113 113 442-442-113-113Z"
+        />
+      </svg>
+    </span>
+    <span
+      class="container"
+    >
+       
+    </span>
+  </div>
+  <div
+    class="letter active wrong"
+    data-testid="letter-id-1"
+  >
+    <span
+      class="flag"
+    >
+      <span
+        class="flag-wrapper"
+      >
+        <img
+          alt=""
+          loading="lazy"
+          src="https://flagcdn.com/w20/pl.png"
+          srcset="https://flagcdn.com/w40/pl.png 2x"
+          width="20"
+        />
+      </span>
+    </span>
+    <span
+      class="icon"
+    >
+      <svg
+        class="edit-icon"
+        height="48"
+        viewBox="0 -960 960 960"
+        width="48"
+        xmlns="http://www.w3.org/2000/svg"
+      >
+        <path
+          d="M167-120q-21 5-36.5-10.5T120-167l40-191 198 198-191 40Zm191-40L160-358l473-473q17-17 42-17t42 17l114 114q17 17 17 42t-17 42L358-160Zm317-628L233-346l113 113 442-442-113-113Z"
+        />
+      </svg>
+    </span>
+    <span
+      class="container"
+    >
+       
+    </span>
+  </div>
+  <div
+    class="letter active wrong"
+    data-testid="letter-id-2"
+  >
+    <span
+      class="flag"
+    >
+      <span
+        class="flag-wrapper"
+      >
+        <img
+          alt=""
+          loading="lazy"
+          src="https://flagcdn.com/w20/pl.png"
+          srcset="https://flagcdn.com/w40/pl.png 2x"
+          width="20"
+        />
+      </span>
+    </span>
+    <span
+      class="icon"
+    >
+      <svg
+        class="edit-icon"
+        height="48"
+        viewBox="0 -960 960 960"
+        width="48"
+        xmlns="http://www.w3.org/2000/svg"
+      >
+        <path
+          d="M167-120q-21 5-36.5-10.5T120-167l40-191 198 198-191 40Zm191-40L160-358l473-473q17-17 42-17t42 17l114 114q17 17 17 42t-17 42L358-160Zm317-628L233-346l113 113 442-442-113-113Z"
+        />
+      </svg>
+    </span>
+    <span
+      class="container"
+    >
+       
+    </span>
+  </div>
+  <div
+    class="letter active wrong"
+    data-testid="letter-id-3"
+  >
+    <span
+      class="flag"
+    >
+      <span
+        class="flag-wrapper"
+      >
+        <img
+          alt=""
+          loading="lazy"
+          src="https://flagcdn.com/w20/pl.png"
+          srcset="https://flagcdn.com/w40/pl.png 2x"
+          width="20"
+        />
+      </span>
+    </span>
+    <span
+      class="icon"
+    >
+      <svg
+        class="edit-icon"
+        height="48"
+        viewBox="0 -960 960 960"
+        width="48"
+        xmlns="http://www.w3.org/2000/svg"
+      >
+        <path
+          d="M167-120q-21 5-36.5-10.5T120-167l40-191 198 198-191 40Zm191-40L160-358l473-473q17-17 42-17t42 17l114 114q17 17 17 42t-17 42L358-160Zm317-628L233-346l113 113 442-442-113-113Z"
+        />
+      </svg>
+    </span>
+    <span
+      class="container"
+    >
+       
+    </span>
+  </div>
+  <div
+    class="letter active wrong last"
+    data-testid="letter-id-4"
+  >
+    <span
+      class="flag"
+    >
+      <span
+        class="flag-wrapper"
+      >
+        <img
+          alt=""
+          loading="lazy"
+          src="https://flagcdn.com/w20/pl.png"
+          srcset="https://flagcdn.com/w40/pl.png 2x"
+          width="20"
+        />
+      </span>
+    </span>
+    <span
+      class="icon"
+    >
+      <svg
+        class="edit-icon"
+        height="48"
+        viewBox="0 -960 960 960"
+        width="48"
+        xmlns="http://www.w3.org/2000/svg"
+      >
+        <path
+          d="M167-120q-21 5-36.5-10.5T120-167l40-191 198 198-191 40Zm191-40L160-358l473-473q17-17 42-17t42 17l114 114q17 17 17 42t-17 42L358-160Zm317-628L233-346l113 113 442-442-113-113Z"
+        />
+      </svg>
+    </span>
+    <span
+      class="container"
+    >
+       
+    </span>
+  </div>
+</div>
+`;

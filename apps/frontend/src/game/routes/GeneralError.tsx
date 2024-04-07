@@ -1,7 +1,7 @@
 import { useNavigate, useRouteError } from 'react-router-dom';
 import { EPaths } from './enums';
 import { useLanguage } from '../../i18n';
-import UILanguage from '../language/UILanguage';
+import { UILanguage } from '../language';
 
 export default function GeneralError() {
   const { getUIText: t } = useLanguage();

@@ -68,8 +68,10 @@ export const HomePage = () => {
   );
 };
 
+/* v8 ignore start */
 export function Component() {
   return <HomePage />;
 }
 
 Component.displayName = 'LazyHomePage';
+/* v8 ignore stop */

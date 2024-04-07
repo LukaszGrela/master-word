@@ -1,0 +1,142 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`game > routes > components > GameErrorPage > renders 1`] = `
+<div>
+  <div
+    class="game-error"
+  >
+    <h1>
+      Ożesz kurczaczki!
+    </h1>
+    <h2>
+      Problem z sesją gry.
+    </h2>
+    <p>
+      Przepraszamy, nieoczekiwany błąd jak piorun z nieba spadł i zepsuł zabawę...
+    </p>
+    <p>
+      <i>
+        Code: 
+        404
+      </i>
+       
+      <i>
+        Error: 
+        Not found
+      </i>
+    </p>
+    <div
+      class="game-language"
+    >
+      <p
+        class="language-info"
+      >
+        result-language-info
+      </p>
+      <div
+        class="language-selector translation"
+      >
+        <span
+          class="hidden sr"
+        >
+          Wybierz język interfejsu
+        </span>
+        <button
+          class="translation-btn selected"
+          title="Słowo polskie"
+        >
+          <span
+            class="label"
+          >
+            word-language-selector-btn-label-pl
+          </span>
+          <span
+            class="flag"
+          >
+            <img
+              alt=""
+              loading="lazy"
+              src="https://flagcdn.com/w20/pl.png"
+              srcset="https://flagcdn.com/w40/pl.png 2x"
+              width="20"
+            />
+          </span>
+        </button>
+        <button
+          class="translation-btn"
+          title="Słowo angielskie"
+        >
+          <span
+            class="label"
+          >
+            word-language-selector-btn-label-en
+          </span>
+          <span
+            class="flag"
+          >
+            <img
+              alt=""
+              loading="lazy"
+              src="https://flagcdn.com/w20/us.png"
+              srcset="https://flagcdn.com/w40/us.png 2x"
+              width="20"
+            />
+          </span>
+        </button>
+      </div>
+    </div>
+    <div
+      class="button-row"
+    >
+      <button
+        class="secondary"
+      >
+        Zamknij
+      </button>
+      <button
+        class="primary"
+      >
+        Odgadnij następne słowo
+      </button>
+    </div>
+  </div>
+</div>
+`;
+
+exports[`game > routes > components > GameErrorPage > renders without game session 1`] = `
+<div>
+  <div
+    class="game-error"
+  >
+    <h1>
+      Ożesz kurczaczki!
+    </h1>
+    <h2>
+      Problem z sesją gry.
+    </h2>
+    <p>
+      Przepraszamy, nieoczekiwany błąd jak piorun z nieba spadł i zepsuł zabawę...
+    </p>
+    <p>
+      <i>
+        Code: 
+        404
+      </i>
+       
+      <i>
+        Error: 
+        Not found
+      </i>
+    </p>
+    <div
+      class="button-row"
+    >
+      <button
+        class="secondary"
+      >
+        Zamknij
+      </button>
+    </div>
+  </div>
+</div>
+`;

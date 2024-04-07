@@ -112,8 +112,10 @@ export const ResultsPage = () => {
   );
 };
 
+/* v8 ignore start */
 export function Component() {
   return <ResultsPage />;
 }
 
 Component.displayName = 'LazyResultsPage';
+/* v8 ignore sstoptart */

@@ -1,0 +1,25 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`game > board > Board > Renders with all props 1`] = `
+<div>
+  <div
+    class="board test"
+    data-testid="board"
+    style="grid-template-columns: repeat(2, 1fr); grid-template-rows: repeat(2, 1fr);"
+  >
+    <p>
+      Cell
+    </p>
+  </div>
+</div>
+`;
+
+exports[`game > board > Board > Renders with required props 1`] = `
+<div>
+  <div
+    class="board"
+    data-testid="board"
+    style="grid-template-columns: repeat(2, 1fr); grid-template-rows: repeat(2, 1fr);"
+  />
+</div>
+`;

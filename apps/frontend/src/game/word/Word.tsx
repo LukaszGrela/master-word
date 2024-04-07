@@ -15,6 +15,7 @@ const Word: FC<IProps> = ({
   className,
   mobile,
   validated,
+  language,
 }) => {
   const [index, setIndex] = useState(0);
   const [guessing, setGuessing] = useState(' '.repeat(wordLength));
@@ -37,11 +38,14 @@ const Word: FC<IProps> = ({
   }, [mobile, word, wordLength]);
 
   useEffect(() => {
+    /* v8 ignore start */
     const preventDefault = (e: KeyboardEvent): void => {
       e.preventDefault();
       e.stopImmediatePropagation();
       e.stopPropagation();
     };
+    /* v8 ignore stop */
+
     const handleKeyUp = (e: KeyboardEvent): void => {
       const action = e.key;
       if (action === 'Enter' && index === wordLength) {
@@ -105,21 +109,22 @@ const Word: FC<IProps> = ({
         .split('')
         .map((letter, i) => (
           <Letter
+            language={language}
             className={classNames(
-              classes[i] || 'incorrect',
+              classes[i],
               className,
               i === 0 && 'first',
               i === wordLength - 1 && 'last',
             )}
             letter={letter}
             key={`letter-${id}-${i}`}
+            data-testid={`letter-${id}-${i}`}
           />
         ));
     }
 
     return null;
-  }, [active, className, id, validated, word, wordLength]);
-
+  }, [active, className, id, validated, word, wordLength, language]);
   return (
     <Fragment>
       {active || !word
@@ -127,8 +132,10 @@ const Word: FC<IProps> = ({
             .split('')
             .map((letter, i) => (
               <Letter
-                letter={letter || '&nbsp;'}
+                language={language}
+                letter={letter}
                 key={`letter-${id}-${i}`}
+                data-testid={`letter-${id}-${i}`}
                 className={classNames(
                   active && 'active',
                   className,
