@@ -175,8 +175,6 @@ export const GamePage = () => {
           }
         })
         .catch((error) => {
-          console.error('getNextAttempt.ERROR', error);
-
           // session error is a showstopper here
           if (guardTErrorResponse(error)) {
             // if provided session is invalid, discard it and try again
