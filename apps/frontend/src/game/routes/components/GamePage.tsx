@@ -86,7 +86,6 @@ export const GamePage = () => {
           setGameState('running');
         })
         .catch((error): void => {
-          console.error('getInitSync.ERROR', error);
           // handle custom error
           if (guardTErrorResponse(error)) {
             // if provided session is invalid, discard it and try again
