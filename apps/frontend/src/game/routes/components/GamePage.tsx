@@ -217,7 +217,6 @@ export const GamePage = () => {
   const [showInputModal, setShowInputModal] = useState(false);
   useEffect(() => {
     const tapHandler = (e: MouseEvent) => {
-      console.log('tapHandler', (e.target as HTMLElement).classList);
       if ((e.target as HTMLElement).classList.contains('board')) {
         setShowInputModal(true);
       }
