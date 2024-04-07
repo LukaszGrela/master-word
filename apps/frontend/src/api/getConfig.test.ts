@@ -1,12 +1,8 @@
 import { IConfigEntry } from '@repo/backend-types/db';
 import { describe, it, expect, beforeEach, vi, afterEach } from 'vitest';
 import { getConfig } from './getConfig';
+import { createFetchResponse } from '../__tests__/helpers';
 
-const createFetchResponse = (ok: boolean, response: unknown) => ({
-  ok,
-  json: () => Promise.resolve(response),
-  text: () => Promise.resolve(JSON.stringify(response)),
-});
 const originalFetch = global.fetch;
 
 describe('api', () => {
