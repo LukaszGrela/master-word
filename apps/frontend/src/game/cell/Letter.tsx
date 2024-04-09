@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { memo } from 'react';
 import { classNames } from '@repo/utils';
 import { getFlag } from '@repo/shared-ui';
 import { ILetter } from './types';
@@ -6,7 +6,7 @@ import { EditIcon } from '../icons/EditIcon';
 import { LANGUAGE } from '..';
 import './Letter.scss';
 
-const Letter: React.FC<ILetter> = ({
+export const Letter: React.FC<ILetter> = ({
   className,
   letter,
   language = LANGUAGE,
@@ -27,4 +27,6 @@ const Letter: React.FC<ILetter> = ({
   );
 };
 
-export default Letter;
+const MemoizedLetter = memo(Letter);
+
+export default MemoizedLetter;
