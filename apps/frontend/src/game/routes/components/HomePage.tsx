@@ -5,6 +5,8 @@ import { EPaths } from '../enums';
 import { useLanguage } from '../../../i18n';
 import { GameLanguage } from '../../language';
 import { useConfig } from '../../../config';
+import { TGamePageLocationState } from '../../types';
+import { ATTEMPTS, WORD_LENGTH } from '../../constants';
 import './HomePage.scss';
 
 export const HomePage = () => {
@@ -17,12 +19,19 @@ export const HomePage = () => {
 
   const handleAction = useCallback(
     (action: 'start-new' | 'continue' | 'archived-games') => () => {
+      const locationState: TGamePageLocationState = {
+        language: storage.getItem(EStorageKeys.GAME_LANGUAGE),
+        maxAttempts: +(storage.getItem(EStorageKeys.GAME_ATTEMPTS) || ATTEMPTS),
+        wordLength: +(
+          storage.getItem(EStorageKeys.GAME_WORD_LENGTH) || WORD_LENGTH
+        ),
+      };
       if (action === 'start-new') {
         storage.removeItem(EStorageKeys.GAME_SESSION);
-        navigate(EPaths.GAME);
+        navigate(EPaths.GAME, { state: locationState });
       }
       if (action === 'continue') {
-        navigate(EPaths.GAME, { state: session });
+        navigate(EPaths.GAME, { state: { ...locationState, session } });
       }
     },
     [navigate, session, storage],
