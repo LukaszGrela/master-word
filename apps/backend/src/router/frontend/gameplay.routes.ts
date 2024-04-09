@@ -83,6 +83,7 @@ const initNewSession = async (
   next: NextFunction,
 ) => {
   const { session, language = 'pl', ...rest } = req.query as TInitQuery;
+  // TODO: word length from query
   const wordLength = WORD_LENGTH;
   const maxAttempts = Number(rest.maxAttempts || MAX_ATTEMPTS);
 
@@ -220,8 +221,8 @@ const assureNextAttemptAllowed = async (
 
   if (!gameSession) {
     res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({
-      code: ErrorCodes.SESSION_NO_GAME_ERROR,
-      error: 'Game for that session does not exist.',
+      code: ErrorCodes.SESSION_ERROR,
+      error: 'Invalid session id',
     });
     return;
   }
@@ -261,8 +262,8 @@ const nextAttempt = async (req: Request, res: Response, next: NextFunction) => {
     const gameSession = await findSession(session);
     if (!gameSession) {
       res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({
-        code: ErrorCodes.SESSION_NO_GAME_ERROR,
-        error: 'Game for that session does not exist.',
+        code: ErrorCodes.SESSION_ERROR,
+        error: 'Invalid session id',
       });
       return;
     }
@@ -328,8 +329,8 @@ const checkFinished = async (req: Request, res: Response) => {
     const gameSession = await findSession(session);
     if (!gameSession) {
       res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({
-        code: ErrorCodes.SESSION_NO_GAME_ERROR,
-        error: 'Game for that session does not exist.',
+        code: ErrorCodes.SESSION_ERROR,
+        error: 'Invalid session id',
       });
       return;
     }
