@@ -4,6 +4,7 @@ export const apiInit = (
   language: string,
   session?: string,
   maxAttempts?: number,
+  wordLength?: number,
 ): string => {
   const urlParams = new URLSearchParams({
     language,
@@ -13,6 +14,9 @@ export const apiInit = (
   }
   if (maxAttempts !== undefined) {
     urlParams.append('maxAttempts', `${maxAttempts}`);
+  }
+  if (wordLength !== undefined) {
+    urlParams.append('wordLength', `${wordLength}`);
   }
 
   const query = `?${urlParams.toString()}`;
