@@ -165,7 +165,11 @@ describe('game', () => {
 
           await waitFor(() => {
             expect(router.state.location.pathname).toEqual('/game');
-            expect(router.state.location.state).toBeNull();
+            expect(router.state.location.state).toMatchObject({
+              language: 'pl',
+              maxAttempts: 6,
+              wordLength: 5,
+            });
           });
         });
         it('renders with stored session', () => {
@@ -275,7 +279,12 @@ describe('game', () => {
 
           await waitFor(() => {
             expect(router.state.location.pathname).toEqual('/game');
-            expect(router.state.location.state).toEqual('session');
+            expect(router.state.location.state).toEqual({
+              language: 'pl',
+              maxAttempts: 6,
+              session: 'session',
+              wordLength: 5,
+            });
           });
         });
       });

@@ -54,11 +54,9 @@ export const GameProvider: FC<{ children: React.ReactNode }> = ({
             setGameData((draft) => {
               draft.session = gameSession.session;
               draft.game = gameSession.game;
-              if (gameSession.highest) {
-                draft.highest = gameSession.highest;
-              } else {
-                draft.highest = undefined;
-              }
+              // on init highest is not provided
+              draft.highest = undefined;
+
               if (gameSession.game) {
                 draft.wordLength = gameSession.game.word_length;
                 draft.maxAttempts = gameSession.game.max_attempts;
@@ -89,7 +87,8 @@ export const GameProvider: FC<{ children: React.ReactNode }> = ({
       if (
         gameData.session !== SESSION_NOT_SET &&
         guessBusy.current === false &&
-        initBusy.current === false
+        initBusy.current === false &&
+        gameData.game
       ) {
         guessBusy.current = true;
         setError(undefined);
@@ -101,25 +100,23 @@ export const GameProvider: FC<{ children: React.ReactNode }> = ({
         })
           .then((gameState) => {
             setGameData((draft) => {
-              if (!draft.game) {
+              // here we must have existing draft.game
+              const game = draft.game!;
+              if (gameState.game.finished) {
+                draft.highest = gameState.highest;
                 draft.game = gameState.game;
               } else {
-                if (gameState.game.finished) {
-                  draft.highest = gameState.highest;
-                  draft.game = gameState.game;
-                } else {
-                  const { attempt, state } = gameState.game;
-                  if (attempt === 1) {
-                    draft.game.timestamp_start = gameState.game.timestamp_start;
-                  }
-                  draft.game.attempt = attempt;
-                  const row = draft.game.state.at(attempt - 1);
-                  const sourceRow = state.at(attempt - 1);
-                  if (row && sourceRow) {
-                    // update only current state
-                    row.word = sourceRow.word;
-                    row.validated = sourceRow.validated;
-                  }
+                const { attempt, state } = gameState.game;
+                if (attempt === 1) {
+                  game.timestamp_start = gameState.game.timestamp_start;
+                }
+                game.attempt = attempt;
+                const row = game.state.at(attempt - 1);
+                const sourceRow = state.at(attempt - 1);
+                if (row && sourceRow) {
+                  // update only current state
+                  row.word = sourceRow.word;
+                  row.validated = sourceRow.validated;
                 }
               }
             });

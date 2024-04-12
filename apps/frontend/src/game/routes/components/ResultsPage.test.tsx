@@ -381,7 +381,7 @@ describe('game', () => {
 
           await waitFor(() => {
             expect(router.state.location.pathname).toEqual(EPaths.GAME);
-            expect(router.state.location.state).toBe(gameWon.session);
+            expect(router.state.location.state).toMatchObject({session:gameWon.session});
           });
         }, 10000);
         it('renders lose', async () => {

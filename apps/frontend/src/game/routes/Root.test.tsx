@@ -39,6 +39,8 @@ vi.mock('@repo/utils', async (importOriginal) => {
 
 const originalFetch = global.fetch;
 
+vi.stubEnv('VITE_VERSION','0.9.7')
+
 describe('game', () => {
   describe('routes', () => {
     describe('Root', () => {
