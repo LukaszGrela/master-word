@@ -1,9 +1,9 @@
-import { PartialPick } from '@repo/common-types';
+import { TPartialPick } from '@repo/common-types';
 import { TGameStep } from '@repo/backend-types';
 
 export type TSupportedLanguages = 'pl' | 'en';
 
-export type TPartialGameState = PartialPick<TGameStep, 'word'>[];
+export type TPartialGameState = TPartialPick<TGameStep, 'validated'>[];
 
 export type TErrorResponse = {
   error: string;

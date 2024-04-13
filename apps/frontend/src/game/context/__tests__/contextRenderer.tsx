@@ -9,19 +9,27 @@ import {
 } from '@testing-library/react';
 import { IGameContext } from '../types';
 import { GameContext } from '../GameContext';
+import { createGameState, TPartialGameState } from '../../../api';
 
 const session = 'f332a4d5-78d6-4446-83e2-4bfce4783605';
+const max_attempts = 8;
+const word_length = 5;
+
+const emptyGameState = createGameState(max_attempts, word_length);
+const enrichGameState = (state: unknown) =>
+  (state as TPartialGameState).concat(emptyGameState).slice(0, max_attempts);
+
 const gameInit = {
   session,
   game: {
     language: 'pl',
     timestamp_start: '1712253239075',
-    max_attempts: 8,
+    max_attempts,
     attempt: 0,
-    word_length: 5,
+    word_length,
     guessed: false,
     score: 0,
-    state: [],
+    state: enrichGameState([]),
     finished: false,
   },
 };
@@ -30,18 +38,18 @@ const gameFirstGuess = {
   game: {
     language: 'pl',
     timestamp_start: '1712913491931',
-    max_attempts: 8,
+    max_attempts,
     attempt: 1,
-    word_length: 5,
+    word_length,
     guessed: false,
     score: 0,
-    state: [
+    state: enrichGameState([
       {
         word: ['M', 'A', 'J', 'O', 'R'],
         validated: ['M', 'M', 'X', 'M', 'X'],
         _id: '6618fc549f3c8150bc283272',
       },
-    ],
+    ]),
     finished: false,
     _id: '6618fb0e9f3c8150bc282fb7',
   },
@@ -51,12 +59,12 @@ const gameNext = {
   game: {
     language: 'pl',
     timestamp_start: '1712254045301',
-    max_attempts: 8,
+    max_attempts,
     attempt: 3,
-    word_length: 5,
+    word_length,
     guessed: false,
     score: 0,
-    state: [
+    state: enrichGameState([
       {
         word: ['P', 'E', 'R', 'Ł', 'A'],
         validated: ['X', 'X', 'X', 'X', 'C'],
@@ -69,7 +77,7 @@ const gameNext = {
         word: ['P', 'A', 'Ł', 'K', 'A'],
         validated: ['X', 'C', 'X', 'C', 'C'],
       },
-    ],
+    ]),
     finished: false,
   },
 };
@@ -79,13 +87,13 @@ const gameWon = {
   game: {
     language: 'pl',
     timestamp_start: '1712254045301',
-    max_attempts: 8,
+    max_attempts,
     attempt: 4,
     word: 'JAJKA',
-    word_length: 5,
+    word_length,
     guessed: true,
     score: 2,
-    state: [
+    state: enrichGameState([
       {
         word: ['P', 'E', 'R', 'Ł', 'A'],
         validated: ['X', 'X', 'X', 'X', 'C'],
@@ -102,7 +110,7 @@ const gameWon = {
         word: ['J', 'A', 'J', 'K', 'A'],
         validated: ['C', 'C', 'C', 'C', 'C'],
       },
-    ],
+    ]),
     finished: true,
 
     timestamp_finish: '1712254109572',
@@ -136,13 +144,13 @@ const gameLost = {
   game: {
     language: 'pl',
     timestamp_start: '1712212870373',
-    max_attempts: 8,
+    max_attempts,
     attempt: 8,
     word: 'ŁZAWY',
-    word_length: 5,
+    word_length,
     guessed: false,
     score: 0,
-    state: [
+    state: enrichGameState([
       {
         word: ['B', 'E', 'R', 'T', 'A'],
         validated: ['X', 'X', 'X', 'X', 'M'],
@@ -183,7 +191,7 @@ const gameLost = {
         validated: ['X', 'X', 'C', 'C', 'C'],
         _id: '660e4bc3a79a7dd174b8f626',
       },
-    ],
+    ]),
     finished: true,
     _id: '660e4b82a79a7dd174b8f559',
     timestamp_finish: '1712212931548',
@@ -211,8 +219,10 @@ export const MockContext = (props: {
   context?: Partial<IGameContext>;
   children: React.ReactNode;
 }) => {
-  const value = { ...props.context, ...defaultGameContext } as IGameContext;
-
+  const value = {
+    ...defaultGameContext,
+    ...(props.context || {}),
+  } as IGameContext;
   return (
     <GameContext.Provider value={value}>{props.children}</GameContext.Provider>
   );
@@ -225,8 +235,8 @@ export const contextRenderer = <
 >(
   children: React.ReactNode,
   props: {
-    context?: IGameContext;
-    renderOptions: RenderOptions<Q, Container, BaseElement>;
+    context?: Partial<IGameContext>;
+    renderOptions?: RenderOptions<Q, Container, BaseElement>;
   } = { renderOptions: {} },
 ): RenderResult<Q, Container, BaseElement> => {
   const { context, renderOptions = {} } = props;

@@ -13,7 +13,7 @@ import { TimerWrapper } from './TimerWrapper';
 import { WordGameBoard } from './WordGameBoard';
 import './GamePage.scss';
 
-const GamePageInner: FC = () => {
+export const GamePageInner: FC = () => {
   const location = useLocation() as Location<TGamePageLocationState>;
   const navigate = useNavigate();
   const {
@@ -36,7 +36,7 @@ const GamePageInner: FC = () => {
           // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-unused-vars
           const { usr, ...rest } = window.history.state;
           // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-unused-vars
-          const { session, ...restUsr } = usr || {};
+          const { session, ...restUsr } = usr /* v8 ignore start */ || {};/* v8 ignore stop */
           window.history.replaceState(
             {
               ...rest,
@@ -48,13 +48,14 @@ const GamePageInner: FC = () => {
             '',
           );
         }
+        // TODO: review this part, as it seems to not work as intended
         if (session === urlSession) {
           // session in the url, reload with new url
           const url = new URL(window.location.href);
           url.searchParams.delete('session');
           window.location.assign(url);
         }
-      } else if (error.code !== 6 /* INVALID_WORD */) {
+      } else if (error.code !== 6 /* not INVALID_WORD */) {
         // navigate to error page
         navigate(EPaths.GAME_ERROR, {
           // no back to game

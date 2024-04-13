@@ -1,12 +1,11 @@
 import { FC, useState, useEffect, useCallback, useMemo } from 'react';
-import { createGameState } from '../../../../api/utils';
 import { useLanguage } from '../../../../i18n';
 import { useGameContext } from '../../../context';
 import { InputGuessPanel } from '../../../panel';
 import { TClickAction } from '../../../panel/types';
 
 export const MobileInputGuessPanel: FC = () => {
-  const { loading, game, maxAttempts, wordLength, error, guess } =
+  const { loading, game, wordLength, error, guess } =
     useGameContext();
   const { getUIText: t } = useLanguage();
 
@@ -57,16 +56,12 @@ export const MobileInputGuessPanel: FC = () => {
     }
   }, [enrichedError, error]);
 
-  const gameBoardState = useMemo(() => {
-    return game?.state ?? createGameState(maxAttempts, wordLength);
-  }, [game?.state, maxAttempts, wordLength]);
   const attempt = game?.attempt ?? 0;
-
   return (
-    !game?.finished && (
+    game && !game.finished && (
       <InputGuessPanel
         show={showInputModal}
-        initWord={gameBoardState[attempt].word.join('')}
+        initWord={game.state[attempt].word.join('')}
         maxLength={wordLength}
         onClose={handlePanelAction}
         error={enrichedError}

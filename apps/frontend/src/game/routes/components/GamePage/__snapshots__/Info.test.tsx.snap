@@ -1,0 +1,11 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`game > routes > components > GamePage > Info > renders 1`] = `
+<div>
+  <p
+    class="read-the-docs"
+  >
+    Info paragraph
+  </p>
+</div>
+`;

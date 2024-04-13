@@ -4,11 +4,12 @@ import { createGameState } from '../../../../api/utils';
 import { useGameContext } from '../../../context';
 import Word from '../../../word/Word';
 
-export const WordGameBoard: FC<{ mobile: boolean }> = ({ mobile }) => {
+export const WordGameBoard: FC<{ mobile?: boolean }> = ({ mobile }) => {
   const { loading, game, language, maxAttempts, wordLength, error, guess } =
     useGameContext();
 
   const gameBoardState = useMemo(() => {
+    
     return game?.state ?? createGameState(maxAttempts, wordLength);
   }, [game?.state, maxAttempts, wordLength]);
   const attempt = game?.attempt ?? 0;
