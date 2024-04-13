@@ -115,7 +115,7 @@ describe('game', () => {
     describe('GameProvider', () => {
       let mockFetch = vi.fn();
 
-      const invalidSession = { code: 2, error: 'Invalid session id' };
+      // const invalidSession = { code: 2, error: 'Invalid session id' };
       const invalidWord = { code: 6, error: 'Invalid word' };
 
       beforeEach(() => {

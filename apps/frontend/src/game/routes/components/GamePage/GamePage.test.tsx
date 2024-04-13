@@ -6,7 +6,6 @@ import {
   Queries,
   queries,
   RenderResult,
-  waitFor,
 } from '@testing-library/react';
 import { NavigateOptions, createBrowserRouter } from 'react-router-dom';
 import { defaultLanguageContext } from '../../../../i18n/LanguageContext/__tests__/contextRenderer';

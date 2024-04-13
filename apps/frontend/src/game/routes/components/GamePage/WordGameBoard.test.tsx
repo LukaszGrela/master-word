@@ -1,9 +1,8 @@
-import { describe, expect, it, vi } from 'vitest';
+import { describe, expect, it } from 'vitest';
 import {
   contextRenderer,
   gameResponses,
 } from '../../../context/__tests__/contextRenderer';
-import { MockContext } from '../../../../i18n/LanguageContext/__tests__/contextRenderer';
 import { WordGameBoard } from './WordGameBoard';
 import { TGameRecord } from '@repo/backend-types';
 
