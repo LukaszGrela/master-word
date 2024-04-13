@@ -53,7 +53,9 @@ export const setConfigDefaults = async (
 ) => {
   const ConfigModel = getModelForConnection(connection);
 
-  await ConfigModel.collection.drop();
+  if (ConfigModel.collection.length > 0) {
+    await ConfigModel.collection.drop(); // this will throw 'NamespaceNotFound' when there is no collection to drop
+  }
 
   await ConfigModel.init();
   await ConfigModel.create<IConfigEntry>([
