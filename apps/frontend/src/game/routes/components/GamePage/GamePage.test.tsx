@@ -24,6 +24,7 @@ import {
 import { IGameContext } from '../../../context';
 import { createFetchResponse } from '../../../../__tests__/helpers';
 import { TGamePageLocationState } from '../../../types';
+import { TGameRecord } from '@repo/backend-types';
 
 vi.mock('@repo/utils', async (importOriginal) => {
   // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-explicit-any
@@ -257,6 +258,22 @@ describe('game', () => {
           expect(init).toHaveBeenLastCalledWith('pl', 8, 5, undefined);
         });
 
+        it('renders game mobile', async () => {
+          (getBowserDetails as Mock).mockReturnValue(bowserMobile);
+
+          const { getByText } = await testInit({
+            gameContext: {
+              loading: false,
+              session: gameResponses.gameNext.session,
+              game: gameResponses.gameNext.game as TGameRecord,
+            },
+            navigateOpts: { state: locationState },
+          });
+
+          // mobile info
+          expect(getByText(translationPl['main-mobile-info'])).toBeDefined();
+        });
+
         it('Returns to Home page when no language in state', async () => {
           mockFetch.mockResolvedValue(
             createFetchResponse(true, gameResponses.gameInit),
@@ -326,6 +343,62 @@ describe('game', () => {
 
           // navigate to game error
           expect(getByText('GAME ERROR')).toEqual(expect.anything());
+        });
+
+        it('Navigates to Win result', async () => {
+          const locationStateWithSession = {
+            ...locationState,
+            session: gameResponses.gameWon.session,
+          };
+          const { getByText } = await testInit({
+            gameContext: {
+              loading: false,
+              session: gameResponses.gameWon.session,
+              game: gameResponses.gameWon.game as TGameRecord,
+              highest: gameResponses.gameWon.highest,
+            },
+            navigateOpts: { state: locationStateWithSession },
+          });
+
+
+            // back on home page
+            expect(getByText('RESULTS')).toEqual(expect.anything());
+
+            // state
+            expect(window.history.state.usr).toStrictEqual({
+              session: gameResponses.gameWon.session,
+              game: gameResponses.gameWon.game as TGameRecord,
+              highest: gameResponses.gameWon.highest,
+            });
+          
+        });
+
+        it('Navigates to Lose result', async () => {
+          const locationStateWithSession = {
+            ...locationState,
+            session: gameResponses.gameLost.session,
+          };
+          const { getByText } = await testInit({
+            gameContext: {
+              loading: false,
+              session: gameResponses.gameLost.session,
+              game: gameResponses.gameLost.game as TGameRecord,
+              highest: gameResponses.gameLost.highest,
+            },
+            navigateOpts: { state: locationStateWithSession },
+          });
+
+
+            // back on home page
+            expect(getByText('RESULTS')).toEqual(expect.anything());
+
+            // state
+            expect(window.history.state.usr).toStrictEqual({
+              session: gameResponses.gameLost.session,
+              game: gameResponses.gameLost.game as TGameRecord,
+              highest: gameResponses.gameLost.highest,
+            });
+          
         });
       });
     });

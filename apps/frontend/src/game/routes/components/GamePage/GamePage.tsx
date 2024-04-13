@@ -36,7 +36,8 @@ export const GamePageInner: FC = () => {
           // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-unused-vars
           const { usr, ...rest } = window.history.state;
           // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-unused-vars
-          const { session, ...restUsr } = usr /* v8 ignore start */ || {};/* v8 ignore stop */
+
+          const { session, ...restUsr } = usr /* v8 ignore next */ || {};
           window.history.replaceState(
             {
               ...rest,
@@ -117,6 +118,7 @@ export const GamePageInner: FC = () => {
   );
 };
 
+/* v8 ignore start */
 export const GamePage: FC = () => {
   return (
     <GameProvider>
@@ -125,7 +127,6 @@ export const GamePage: FC = () => {
   );
 };
 
-/* v8 ignore start */
 export function Component() {
   return <GamePage />;
 }
