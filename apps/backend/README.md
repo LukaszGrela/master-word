@@ -98,7 +98,7 @@ Note: Your local mongodb must run for this server to work.
 
 ### Installation of Mongo
 
-Described on the [mongodb website](https://www.mongodb.com/docs/v6.0/tutorial/install-mongodb-on-ubuntu/) (here for ubuntu linux, mongo version 6). There are direactions for other OS's.
+Described on the [mongodb website](https://www.mongodb.com/docs/v6.0/tutorial/install-mongodb-on-ubuntu/) (here for ubuntu linux, mongo version 6). There are directions for other OS's.
 
 #### Scripts for Linux
 
