@@ -25,18 +25,16 @@ const InputGuess: FC<{
   useEffect(() => {
     setDisplayed(show);
     if (show) {
-      setGuess(initWord);
+      if (error?.code === 6 && error?.details) {
+        setGuess(error.details);
+      } else {
+        setGuess(initWord);
+      }
     } else {
       setHidden(false);
       setGuess('');
     }
-  }, [show, initWord]);
-
-  useEffect(() => {
-    if (error?.code === 6 && error?.details) {
-      setGuess(error.details);
-    }
-  }, [error?.code, error?.details]);
+  }, [show, initWord, error?.code, error?.details]);
 
   const handleCommit = useCallback(() => {
     onClose('guess', guess);

@@ -6,11 +6,17 @@ import { createGameState } from './utils';
 export const getInit = async (params: {
   language: string;
   maxAttempts?: number;
+  wordLength?: number;
   session?: string;
   signal?: AbortSignal | null | undefined;
 }) => {
   const response = await fetch(
-    apiInit(params.language, params.session, params.maxAttempts),
+    apiInit(
+      params.language,
+      params.session,
+      params.maxAttempts,
+      params.wordLength,
+    ),
     {
       method: 'GET',
       signal: params.signal,

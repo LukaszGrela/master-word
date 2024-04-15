@@ -1,10 +1,10 @@
-import { FC, useState, useEffect, Fragment, useMemo } from 'react';
+import { FC, useState, useEffect, Fragment, useMemo, memo } from 'react';
 import { TValidationChar } from '@repo/backend-types';
 import { classNames, isLetter } from '@repo/utils';
 import { Letter } from '../cell';
 import { IProps } from './types';
 
-const Word: FC<IProps> = ({
+export const Word: FC<IProps> = ({
   active,
   invalid,
 
@@ -151,4 +151,6 @@ const Word: FC<IProps> = ({
   );
 };
 
-export default Word;
+const MemoizedWord = memo(Word);
+
+export default MemoizedWord;

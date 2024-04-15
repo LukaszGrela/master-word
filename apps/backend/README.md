@@ -86,17 +86,21 @@ To run it locally you need 2 `.env.*` files first `.env.local` that will contain
 APP_CONFIG='{"mongo":{"hostString":"localhost:27017/master-word","user":"master-word-user","db":"master-word"}}'
 ```
 
-Important is `hostString` and `db`, `user` can be skipped. User is used by hosted mongodb e.g. on EvenNode hosting (which also appends `db` name to the `hostingString`).
+Important is `hostString` and `db`, `user` can be skipped. User is used by hosted mongodb e.g. on EvenNode hosting (which also appends `db` name to the `hostingString`). If your local db doesn't use `user` remove it from the config.
 
 Second file called `.env.secret` will contain the password to the mongodb user, it can be skipped if you do not create a user.
+
+```shell script
+MONGO_PASSWORD=
+```
 
 Note: Your local mongodb must run for this server to work.
 
 ### Installation of Mongo
 
-Described on the [mongodb website](https://www.mongodb.com/docs/v6.0/tutorial/install-mongodb-on-ubuntu/) (here for ubuntu linux, mongo version 6)
+Described on the [mongodb website](https://www.mongodb.com/docs/v6.0/tutorial/install-mongodb-on-ubuntu/) (here for ubuntu linux, mongo version 6). There are directions for other OS's.
 
-#### Scripts
+#### Scripts for Linux
 
 Below are scripts to run mongodb instance locally on linux machine
 

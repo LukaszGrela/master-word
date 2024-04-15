@@ -171,7 +171,12 @@ describe('game', () => {
 
           await waitFor(() => {
             expect(router.state.location.pathname).toEqual(EPaths.GAME);
-            expect(router.state.location.state).toBe('session');
+            expect(router.state.location.state).toMatchObject({
+              language: 'pl',
+              maxAttempts: 6,
+              session: 'session',
+              wordLength: 5,
+            });
           });
         });
         it('renders without game session', async () => {

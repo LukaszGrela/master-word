@@ -1,0 +1,25 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`game > routes > components > GamePage > Legend > renders 1`] = `
+<div>
+  <div
+    class="legend"
+  >
+    <span
+      class="incorrect"
+    >
+      Incorrect
+    </span>
+    <span
+      class="misplaced"
+    >
+      Misplaced
+    </span>
+    <span
+      class="correct"
+    >
+      Correct
+    </span>
+  </div>
+</div>
+`;

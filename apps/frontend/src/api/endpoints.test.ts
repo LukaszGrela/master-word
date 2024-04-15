@@ -15,11 +15,12 @@ describe('api', () => {
         expect(result).toMatch(/\/api\/frontend\/init\?language=pl$/gi);
       });
       it('returns init endpoint with all parameters', () => {
-        const result = apiInit('pl', 'session', 8);
+        const result = apiInit('pl', 'session', 8, 5);
 
         expect(result).toMatch(/\/api\/frontend\/init\?language=pl/gi);
         expect(result).toMatch(/&session=session/gi);
         expect(result).toMatch(/&maxAttempts=8/gi);
+        expect(result).toMatch(/&wordLength=5/gi);
       });
     });
     describe('apiNextAttempt', () => {

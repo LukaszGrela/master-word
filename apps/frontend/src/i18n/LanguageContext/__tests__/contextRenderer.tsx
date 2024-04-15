@@ -17,10 +17,10 @@ const defaultLanguageContext: ILanguageContext = {
 };
 
 const MockContext = (props: {
-  context?: ILanguageContext;
+  context?: Partial<ILanguageContext>;
   children: React.ReactNode;
 }) => {
-  const value = props.context || defaultLanguageContext;
+  const value = { ...defaultLanguageContext, ...(props.context || {}) };
   return (
     <LanguageContext.Provider value={value}>
       {props.children}

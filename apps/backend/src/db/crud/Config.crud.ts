@@ -53,7 +53,13 @@ export const setConfigDefaults = async (
 ) => {
   const ConfigModel = getModelForConnection(connection);
 
-  await ConfigModel.collection.drop();
+  try {
+    await ConfigModel.collection.drop(); // this will throw 'NamespaceNotFound' when there is no collection to drop
+  } catch(error) {
+    if((error as Error).name!=='MongoServerError') {
+      throw error
+    }
+  }
 
   await ConfigModel.init();
   await ConfigModel.create<IConfigEntry>([

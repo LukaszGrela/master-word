@@ -10,6 +10,9 @@ import { GameLanguage } from '../../language';
 import { useCallback } from 'react';
 import { EPaths } from '../enums';
 import { TErrorResponse } from '../../../api';
+import { TGamePageLocationState } from '../../types';
+import { AppStorage, EStorageKeys } from '@repo/utils';
+import { ATTEMPTS, WORD_LENGTH } from '../../constants';
 
 export const GameErrorPage = () => {
   const { getUIText: t } = useLanguage();
@@ -33,9 +36,21 @@ export const GameErrorPage = () => {
         navigate(EPaths.ROOT, { replace: true });
       }
       if (action === 'again') {
+        const storage = AppStorage.getInstance();
+
+        const locationState: TGamePageLocationState = {
+          language: storage.getItem(EStorageKeys.GAME_LANGUAGE),
+          maxAttempts: +(
+            storage.getItem(EStorageKeys.GAME_ATTEMPTS) || ATTEMPTS
+          ),
+          wordLength: +(
+            storage.getItem(EStorageKeys.GAME_WORD_LENGTH) || WORD_LENGTH
+          ),
+          session: gameSession?.session,
+        };
         navigate(EPaths.GAME, {
           replace: true,
-          state: gameSession?.session,
+          state: locationState,
         });
       }
     },

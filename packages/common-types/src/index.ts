@@ -11,8 +11,20 @@ export interface IDictionary<T = unknown> {
 export type TStrictRequired<T, E = null | undefined> = {
   [P in keyof T]-?: Exclude<T[P], E>;
 };
-export type PartialPick<T, K extends keyof T> = Partial<Omit<T, K>> &
-  Pick<T, K>;
+
+/**
+ * Makes partial selected as `K` fields.
+ * Note: rest is not changed
+ */
+export type TPartialPick<T, K extends keyof T> = Partial<Pick<T, K>> &
+  Omit<T, K>;
+
+/**
+ * Makes required selected as `K` fields.
+ * Note: rest is not changed
+ */
+export type TRequiredPick<T, K extends keyof T> = Required<Pick<T, K>> &
+  Omit<T, K>;
 
 export type TOptionData<T = string> = {
   label: string;

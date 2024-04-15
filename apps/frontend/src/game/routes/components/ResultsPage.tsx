@@ -1,3 +1,4 @@
+import { useCallback } from 'react';
 import { Location, useLocation, useNavigate } from 'react-router-dom';
 import {
   TGameRecord,
@@ -7,10 +8,11 @@ import {
 import { displayTime, EStorageKeys, AppStorage } from '@repo/utils';
 import { useLanguage } from '../../../i18n';
 import { EPaths, getResultsPath } from '../enums';
-import { useCallback } from 'react';
 import { GameLanguage } from '../../language';
 import Stars from '../../Stars';
 import { HighScoreLabel } from '../../HighScoreLabel';
+import { TGamePageLocationState } from '../../types';
+import { ATTEMPTS, WORD_LENGTH } from '../../constants';
 
 import './ResultsPage.scss';
 
@@ -64,9 +66,19 @@ export const ResultsPage = () => {
         navigate(EPaths.ROOT, { replace: true });
       }
       if (action === 'again') {
+        const locationState: TGamePageLocationState = {
+          language: storage.getItem(EStorageKeys.GAME_LANGUAGE),
+          maxAttempts: +(
+            storage.getItem(EStorageKeys.GAME_ATTEMPTS) || ATTEMPTS
+          ),
+          wordLength: +(
+            storage.getItem(EStorageKeys.GAME_WORD_LENGTH) || WORD_LENGTH
+          ),
+          session: gameSession.session,
+        };
         navigate(EPaths.GAME, {
           replace: true,
-          state: gameSession.session,
+          state: locationState,
         });
       }
     },

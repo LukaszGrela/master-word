@@ -1,0 +1,5 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`game > routes > components > GamePage > MobileInputGuessPanel > renders null when game finished 1`] = `<div />`;
+
+exports[`game > routes > components > GamePage > MobileInputGuessPanel > renders null when no game 1`] = `<div />`;

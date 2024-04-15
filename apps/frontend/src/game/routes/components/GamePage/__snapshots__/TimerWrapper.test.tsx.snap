@@ -1,0 +1,11 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`game > routes > components > GamePage > TimerWrapper > renders 1`] = `
+<div>
+  <span
+    class="timer"
+  >
+    00:00
+  </span>
+</div>
+`;

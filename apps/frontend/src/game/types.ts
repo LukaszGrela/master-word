@@ -25,3 +25,10 @@ export type TGameState =
   | 'lose'
   | 'win'
   | 'error';
+
+export type TGamePageLocationState = {
+  session?: string;
+  language?: string | null;
+  maxAttempts: number;
+  wordLength: number;
+};
