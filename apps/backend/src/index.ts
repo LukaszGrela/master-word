@@ -7,6 +7,7 @@ import {
   frontendConfigRoutes,
   frontendGameRoutes,
 } from './router';
+import { ensureLoggedIn } from './router/helpers';
 import dotenv from 'dotenv';
 import mongoose from 'mongoose';
 import connect from './db/connect';
@@ -28,6 +29,14 @@ dotenv.config({
   const PORT = process.env.PORT || 3001;
 
   const masterWordApp = express();
+
+  // Do not advertise the framework.
+  masterWordApp.disable('x-powered-by');
+
+  // Use the simple query parser so query values are always strings. The
+  // default `extended` parser turns `?key[$ne]=x` into an object, which could
+  // be passed straight into a MongoDB filter as an operator.
+  masterWordApp.set('query parser', 'simple');
 
   masterWordApp.use(express.json());
 
@@ -52,6 +61,9 @@ dotenv.config({
   masterWordApp.use('/api', gameRoutes);
   masterWordApp.use('/api/frontend', frontendConfigRoutes);
   masterWordApp.use('/api/frontend', frontendGameRoutes);
+  // Every backend/admin route is protected as a whole, so a newly added route
+  // cannot be exposed by forgetting a per-route guard.
+  masterWordApp.use('/api/backend', ensureLoggedIn());
   masterWordApp.use('/api/backend', backendConfigRoutes);
   masterWordApp.use('/api/backend', backendDictionaryRoutes);
   const server = masterWordApp.listen(PORT, async () => {

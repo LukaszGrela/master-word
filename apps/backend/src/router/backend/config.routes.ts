@@ -5,7 +5,7 @@ import {
   setConfigDefaults,
   setConfigValue,
 } from '../../db/crud/Config.crud';
-import { ensureLoggedIn } from '../helpers';
+import { asString, ensureLoggedIn } from '../helpers';
 import {
   dictionaryDevConnection,
   ensureDictionaryDevConnection,
@@ -17,6 +17,11 @@ import {
 
 const router = Router();
 
+const respondBadRequest = (res: Response, error: unknown): void => {
+  console.error(error);
+  res.status(StatusCodes.BAD_REQUEST).json({ error: 'Invalid request' });
+};
+
 router.get(
   '/configuration',
 
@@ -25,33 +30,42 @@ router.get(
 
   async (req: Request, res: Response) => {
     // parameters
-    const { appId } = req.query as unknown as { appId?: string | string[] };
+    const appId = asString(req.query.appId);
 
     try {
       const connection = dictionaryDevConnection();
       const config = await getConfiguration(appId, connection);
       res.status(StatusCodes.OK).json(config);
     } catch (error) {
-      console.log(error);
-      res.status(StatusCodes.BAD_REQUEST).json(error);
+      respondBadRequest(res, error);
     }
   },
 );
 
-router.get(
+// Destructive: drops and recreates the Config collection. Must never be a GET
+// (which is prefetchable/CSRF-able) and requires explicit confirmation.
+router.post(
   '/configuration/reset',
 
   ensureDictionaryDevConnection(),
   ensureLoggedIn(),
 
   async (req: Request, res: Response) => {
+    const { confirm } = (req.body ?? {}) as { confirm?: unknown };
+    if (confirm !== true) {
+      res.status(StatusCodes.BAD_REQUEST).json({
+        error:
+          'Refusing to reset configuration without explicit confirmation.',
+      });
+      return;
+    }
+
     try {
       const connection = dictionaryDevConnection();
       const config = await setConfigDefaults(connection);
       res.status(StatusCodes.OK).json(config);
     } catch (error) {
-      console.log(error);
-      res.status(StatusCodes.BAD_REQUEST).json(error);
+      respondBadRequest(res, error);
     }
   },
 );
@@ -79,8 +93,7 @@ router.post(
 
       res.status(StatusCodes.OK).json(result);
     } catch (error) {
-      console.log(error);
-      res.status(StatusCodes.BAD_REQUEST).json(error);
+      respondBadRequest(res, error);
     }
   },
 );
@@ -131,8 +144,7 @@ router.post(
 
       res.status(StatusCodes.OK).json(result);
     } catch (error) {
-      console.log(error);
-      res.status(StatusCodes.BAD_REQUEST).json(error);
+      respondBadRequest(res, error);
     }
   },
 );
