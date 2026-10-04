@@ -1,5 +1,5 @@
 import { Router, Request, Response } from 'express';
-import { asString, ensureLoggedIn } from '../../helpers';
+import { asString, ensureLoggedIn, respondBadRequest } from '../../helpers';
 import {
   TAddManyWordsRequestBody,
   TAddWordRequestBody,
@@ -36,9 +36,10 @@ router.post(
     } catch (error) {
       if (error instanceof Error) {
         if (error.message.indexOf('addWord:') === 0) {
-          res
-            .status(StatusCodes.BAD_REQUEST)
-            .json({ name: 'Error', message: error.message });
+          respondBadRequest(res, error);
+          // res
+          //   .status(StatusCodes.BAD_REQUEST)
+          //   .json({ name: 'Error', message: error.message });
           return;
         }
       }
@@ -61,9 +62,11 @@ router.post(
       typeof language !== 'string' ||
       typeof length !== 'number'
     ) {
-      res.status(StatusCodes.BAD_REQUEST).json({
-        message: 'Invalid body: expected string word, string language, number length',
+      respondBadRequest(res, {
+        message:
+          'Invalid body: expected string word, string language, number length',
       });
+
       return;
     }
     try {
@@ -148,7 +151,7 @@ router.post(
       return;
     }
     if (!words || words.length === 0) {
-      res.status(StatusCodes.BAD_REQUEST).json({
+      respondBadRequest(res, {
         name: 'Error',
         message: "Body param 'words' must contain at least one entry.",
       });
@@ -236,7 +239,7 @@ router.post(
       return;
     }
     if (!words || words.length === 0) {
-      res.status(StatusCodes.BAD_REQUEST).json({
+      respondBadRequest(res, {
         name: 'Error',
         message: "Body param 'words' must contain at least one entry.",
       });
@@ -293,9 +296,8 @@ router.post(
     } catch (error) {
       if (error instanceof Error) {
         if (error.message.indexOf('addManyWords:') === 0) {
-          res
-            .status(StatusCodes.BAD_REQUEST)
-            .json({ name: 'Error', message: error.message });
+          respondBadRequest(res, { name: 'Error', message: error.message });
+
           return;
         }
       }

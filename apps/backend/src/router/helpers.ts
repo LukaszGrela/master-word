@@ -140,8 +140,9 @@ const getAdminToken = (): string | undefined => {
 };
 
 const safeTokenEquals = (provided: string, expected: string): boolean => {
-  const providedBuffer = Buffer.from(provided);
-  const expectedBuffer = Buffer.from(expected);
+const providedBuffer = Uint8Array.from(Buffer.from(provided, 'utf8'));
+const expectedBuffer = Uint8Array.from(Buffer.from(expected, 'utf8'));
+
   if (providedBuffer.length !== expectedBuffer.length) {
     return false;
   }
@@ -291,4 +292,11 @@ export const isWordCorrect = async (
       };
     }
   }
+};
+
+export const respondBadRequest = (res: Response, error: unknown): void => {
+  console.error(error);
+  res
+    .status(StatusCodes.BAD_REQUEST)
+    .json({ name: 'Error', message: 'Invalid request' });
 };
