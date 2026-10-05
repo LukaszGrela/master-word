@@ -1,14 +1,89 @@
 # Node JS backend
 
-Game server for Master Word App.
+Game server for the Master Word App.
 
-**Note** English dictionary is handled by the Frontend Masters API https://words.dev-apis.com/ (the `/word-of-the-day` and `/validate-word` endpoints).
+**Note** English dictionary is handled by the Frontend Masters API
+<https://words.dev-apis.com/> (the `/word-of-the-day` and `/validate-word`
+endpoints).
+
+## Tech
+
+NodeJS + Express + MongoDB + Mongoose + Mocha
+
+## Prerequisites
+
+- Node.js `>=18` (the monorepo pins Node `20.5.1` and npm `9.8.0` via
+  [Volta](http://volta.sh/)).
+- Dependencies installed from the repository root with `npm install`.
+- A running MongoDB instance (see [MongoDB, Mongoose](#mongodb-mongoose)).
 
 ## Run locally
 
-The local dev server is set to use port `3001`
+The backend reads environment variables from `.env.local`, `.env.secret` and
+`.env` (in that order) in this folder. See
+[Environment variables](#environment-variables) for the full list. Create at
+least `apps/backend/.env.local` and, if your database user has a password,
+`apps/backend/.env.secret`. Do not commit them.
 
-Note: Look at the [MongoDB section](#mongodb-mongoose) for further config
+Start the server from the repository root:
+
+```sh
+npm run dev --workspace=backend
+```
+
+Or from this folder:
+
+```sh
+npm run dev
+```
+
+`npm run dev` runs `nodemon src/index.ts` with `NODE_ENV=development`, which
+also turns on Mongoose debug logging.
+
+The local dev server listens on port `3001` by default
+(http://localhost:3001). Override it with the `PORT` environment variable. The
+server accepts CORS requests from the deployed frontend/admin domains and from
+`http://localhost:5273` / `http://localhost:5274`.
+
+Note: the API is mounted under `/api`, so the frontend expects
+`http://localhost:3001/api/frontend` and the admin expects
+`http://localhost:3001/api`.
+
+### Scripts
+
+| Script               | Description                                              |
+| -------------------- | -------------------------------------------------------- |
+| `npm run dev`        | Run the server with nodemon (`NODE_ENV=development`)     |
+| `npm run build`      | Bundle `src/index.ts` into `dist/` with esbuild          |
+| `npm run build-tsc`  | Alternative build with `tsc` (`NODE_ENV=production`)     |
+| `npm run type-check` | Run `tsc --noEmit`                                       |
+| `npm run test`       | Run the Mocha suite (`NODE_ENV=test`)                    |
+| `npm run coverage`   | Run tests through nyc                                    |
+| `npm run lint`       | Run ESLint                                               |
+| `npm run clean`      | Remove `dist/`                                           |
+
+## Environment variables
+
+| Variable                     | Required        | Description                                                                                              |
+| ---------------------------- | --------------- | -------------------------------------------------------------------------------------------------------- |
+| `APP_CONFIG`                 | yes             | JSON string with the MongoDB connection, e.g. `{"mongo":{"hostString":"localhost:27017/master-word","user":"master-word-user","db":"master-word"}}` |
+| `MONGO_PASSWORD`             | if `mongo.user` | Password for `mongo.user`, URL-encoded when building the connection string                                |
+| `MONGO_BACKEND_DEV_PASSWORD` | for dev connection | Password for the `master-word-backend-dev` MongoDB user used by the dictionary dev connection          |
+| `ADMIN_API_TOKEN`            | yes in production | Bearer token required by every `/api/backend/*` route. If unset, those routes fail closed with `401`   |
+| `PORT`                       | no              | Port to listen on, defaults to `3001`                                                                     |
+| `NODE_ENV`                   | no              | `development` enables Mongoose debug logging; `test` adjusts the dev DB connection                        |
+
+`mongo.user` and `MONGO_PASSWORD` can be omitted for a local MongoDB without
+authentication. Hosted providers (for example EvenNode) may append the database
+name to the `hostString`.
+
+### Admin API authentication
+
+All `/api/backend/*` routes are wrapped by `ensureLoggedIn()`
+(`src/router/helpers.ts`). In production the request must carry the
+`ADMIN_API_TOKEN`; if the token is missing the server responds `401` rather than
+allowing the request. Generate a strong random value and keep it out of version
+control.
 
 ## Gameplay Endpoints
 
@@ -37,9 +112,12 @@ Note: Look at the [MongoDB section](#mongodb-mongoose) for further config
 
 ## Admin endpoints
 
+All routes below require the `ADMIN_API_TOKEN` (see
+[Admin API authentication](#admin-api-authentication)).
+
 - `GET` - `api/backend/configuration` - get configuration object matching optional `appId` param
   - URL Query `appId` - app identifier single or list, optional.
-- `GET` - `api/backend/configuration/reset` - resets the configuration collection to use default values
+- `POST` - `api/backend/configuration/reset` - resets the configuration collection to use default values
 - `POST` - `api/backend/configuration/set/:configKey` - set new value to the configuration object
   - `:configKey` - configuration key to update
   - JSON Body:
@@ -78,23 +156,29 @@ Note: Look at the [MongoDB section](#mongodb-mongoose) for further config
 
 ## MongoDB, Mongoose
 
-The backend is using the MongoDB to store game information. Mongoose is used as a "mongodb Object Modeling for NodeJS".
+The backend uses MongoDB to store game information. Mongoose is used as a
+"MongoDB object modeling for NodeJS".
 
-To run it locally you need 2 `.env.*` files first `.env.local` that will contain connection details (JSON stringified).
+To run it locally you need the `.env.local` file first, which contains the
+connection details (JSON string):
 
 ```shell script
 APP_CONFIG='{"mongo":{"hostString":"localhost:27017/master-word","user":"master-word-user","db":"master-word"}}'
 ```
 
-Important is `hostString` and `db`, `user` can be skipped. User is used by hosted mongodb e.g. on EvenNode hosting (which also appends `db` name to the `hostingString`). If your local db doesn't use `user` remove it from the config.
+Important is `hostString` and `db`; `user` can be skipped. `user` is used by
+hosted MongoDB, e.g. on EvenNode hosting (which also appends the `db` name to
+the `hostString`). If your local db doesn't use `user`, remove it from the
+config.
 
-Second file called `.env.secret` will contain the password to the mongodb user, it can be skipped if you do not create a user.
+A second file called `.env.secret` will contain the password to the MongoDB
+user. It can be skipped if you do not create a user:
 
 ```shell script
 MONGO_PASSWORD=
 ```
 
-Note: Your local mongodb must run for this server to work.
+Note: your local MongoDB must run for this server to work.
 
 ### Installation of Mongo
 
@@ -102,7 +186,7 @@ Described on the [mongodb website](https://www.mongodb.com/docs/v6.0/tutorial/in
 
 #### Scripts for Linux
 
-Below are scripts to run mongodb instance locally on linux machine
+Below are scripts to run a MongoDB instance locally on a Linux machine.
 
 ##### Run mongo instance (locally)
 
@@ -219,6 +303,39 @@ const run = async () => {
 run();
 ```
 
+## Production
+
+1. Set the production environment variables on the host:
+   - `APP_CONFIG` — MongoDB connection JSON (the EvenNode host string already
+     includes the database name),
+   - `MONGO_PASSWORD` — password for the MongoDB user,
+   - `MONGO_BACKEND_DEV_PASSWORD` — password for the dictionary dev user,
+   - `ADMIN_API_TOKEN` — required; without it the `/api/backend/*` routes return
+     `401`,
+   - `PORT` — optional, defaults to `3001`,
+   - `NODE_ENV=production`.
+
+2. Build the deployable bundle from the repository root:
+
+   ```sh
+   npm run build --workspace=backend
+   ```
+
+   The build runs `esbuild` to bundle `src/index.ts` into `dist/index.js`,
+   externalising `express`, `cors`, `mongoose`, `uuid`, `dotenv` and
+   `http-status-codes`. The `postbuild` step (`scripts/deploy-package-json.js`)
+   writes a trimmed `dist/package.json` for the deployed bundle.
+
+3. Upload `dist/` to the Node host and start it, e.g. `node dist/index.js`.
+   Ensure the externalised runtime dependencies are installed in the deployment
+   target (or build on the host so `node_modules` is present).
+
+> Note: the concrete hosting provider, domain and MongoDB plan are operational
+> details and are not fully encoded in this repository. The steps above describe
+> what the checked-in configuration expects.
+
 ## Turborepo
 
-This module could not bundle (transpile) code from internal packages (e.g. @repo/utils) so the `tsc` build was replaced with `esbuild` that bundled all the code, it is fine so far. It needs a review though as it feels dirty.
+This module could not bundle (transpile) code from internal packages (e.g.
+`@repo/utils`), so the `tsc` build was replaced with `esbuild`, which bundles
+all the code. It is fine so far but needs a review as it feels dirty.

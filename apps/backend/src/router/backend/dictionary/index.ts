@@ -1,10 +1,9 @@
 import { Router, Request, Response } from 'express';
-import { ensureLoggedIn } from '../../helpers';
+import { asString, ensureLoggedIn, respondBadRequest } from '../../helpers';
 import {
   TAddManyWordsRequestBody,
   TAddWordRequestBody,
   TApproveRejectRequestBody,
-  TDictionaryStatsQuery,
   TTableData,
 } from '@repo/backend-types/dictionary';
 import { StatusCodes } from 'http-status-codes';
@@ -37,9 +36,10 @@ router.post(
     } catch (error) {
       if (error instanceof Error) {
         if (error.message.indexOf('addWord:') === 0) {
-          res
-            .status(StatusCodes.BAD_REQUEST)
-            .json({ name: 'Error', message: error.message });
+          respondBadRequest(res, error);
+          // res
+          //   .status(StatusCodes.BAD_REQUEST)
+          //   .json({ name: 'Error', message: error.message });
           return;
         }
       }
@@ -56,8 +56,21 @@ router.post(
   '/logger/unknown-word',
   ensureDictionaryDevConnection(), // assure default connection
   async (req: Request, res: Response) => {
+    const { word, language, length } = (req.body ?? {}) as TAddWordRequestBody;
+    if (
+      typeof word !== 'string' ||
+      typeof language !== 'string' ||
+      typeof length !== 'number'
+    ) {
+      respondBadRequest(res, {
+        message:
+          'Invalid body: expected string word, string language, number length',
+      });
+
+      return;
+    }
     try {
-      await logUnknownWord(req.body as TAddWordRequestBody);
+      await logUnknownWord({ word, language, length });
     } catch (error) {
       res
         .status(StatusCodes.INTERNAL_SERVER_ERROR)
@@ -138,7 +151,7 @@ router.post(
       return;
     }
     if (!words || words.length === 0) {
-      res.status(StatusCodes.BAD_REQUEST).json({
+      respondBadRequest(res, {
         name: 'Error',
         message: "Body param 'words' must contain at least one entry.",
       });
@@ -226,7 +239,7 @@ router.post(
       return;
     }
     if (!words || words.length === 0) {
-      res.status(StatusCodes.BAD_REQUEST).json({
+      respondBadRequest(res, {
         name: 'Error',
         message: "Body param 'words' must contain at least one entry.",
       });
@@ -283,9 +296,8 @@ router.post(
     } catch (error) {
       if (error instanceof Error) {
         if (error.message.indexOf('addManyWords:') === 0) {
-          res
-            .status(StatusCodes.BAD_REQUEST)
-            .json({ name: 'Error', message: error.message });
+          respondBadRequest(res, { name: 'Error', message: error.message });
+
           return;
         }
       }
@@ -301,11 +313,16 @@ router.get(
   ensureDictionaryDevConnection(),
   ensureLoggedIn(),
   async (req: Request, res: Response) => {
-    const { language = 'pl', length = 5 } = req.query as TDictionaryStatsQuery;
+    const language = asString(req.query.language) ?? 'pl';
+    const requestedLength = Number(asString(req.query.length));
+    const length =
+      Number.isFinite(requestedLength) && requestedLength > 0
+        ? Math.floor(requestedLength)
+        : 5;
     try {
       const connection = dictionaryDevConnection();
       if (connection) {
-        const list = await countWords(language, Number(length));
+        const list = await countWords(language, length);
 
         res.status(StatusCodes.OK).json(list);
       } else {
@@ -325,12 +342,16 @@ router.get(
   ensureDictionaryDevConnection(),
   ensureLoggedIn(),
   async (req: Request, res: Response) => {
-    const { length = 5 } = req.query as { length?: number };
+    const requestedLength = Number(asString(req.query.length));
+    const length =
+      Number.isFinite(requestedLength) && requestedLength > 0
+        ? Math.floor(requestedLength)
+        : 5;
 
     try {
       const connection = dictionaryDevConnection();
       if (connection) {
-        const list = await getLanguages(Number(length));
+        const list = await getLanguages(length);
 
         res.status(StatusCodes.OK).json(list);
       } else {

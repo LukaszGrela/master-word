@@ -1,4 +1,4 @@
-import { describe, it } from 'node:test';
+import { afterEach, describe, it } from 'node:test';
 import assert from 'node:assert';
 import sinon from 'sinon';
 import {
@@ -126,22 +126,79 @@ describe('router/helpers', () => {
   });
 
   describe('isAuthorised', () => {
-    it('returns true for authenticated request', () => {
-      assert.equal(isAuthorised({} as Request, {} as Response), true);
+    const reqWithHeader = (header?: string): Request =>
+      ({ header: () => header } as unknown as Request);
+
+    afterEach(() => {
+      delete process.env.ADMIN_API_TOKEN;
     });
-    it.todo('returns false for unauthorised user');
+
+    it('denies every request when no admin token is configured (fail closed)', () => {
+      delete process.env.ADMIN_API_TOKEN;
+      assert.equal(isAuthorised(reqWithHeader('Bearer anything')), false);
+    });
+    it('denies a request without an authorization header', () => {
+      process.env.ADMIN_API_TOKEN = 'secret-token';
+      assert.equal(isAuthorised(reqWithHeader(undefined)), false);
+    });
+    it('denies a non-bearer authorization scheme', () => {
+      process.env.ADMIN_API_TOKEN = 'secret-token';
+      assert.equal(isAuthorised(reqWithHeader('Basic secret-token')), false);
+    });
+    it('denies a non-matching bearer token', () => {
+      process.env.ADMIN_API_TOKEN = 'secret-token';
+      assert.equal(isAuthorised(reqWithHeader('Bearer wrong-token')), false);
+    });
+    it('authorises a matching bearer token', () => {
+      process.env.ADMIN_API_TOKEN = 'secret-token';
+      assert.equal(isAuthorised(reqWithHeader('Bearer secret-token')), true);
+    });
   });
 
   describe('ensureLoggedIn', () => {
-    it('calls next for authorised user', () => {
+    afterEach(() => {
+      delete process.env.ADMIN_API_TOKEN;
+    });
+
+    it('calls next for an authorised request', () => {
+      process.env.ADMIN_API_TOKEN = 'secret-token';
       const handler = ensureLoggedIn();
       let called = false;
-      handler({} as Request, {} as Response, () => {
-        called = true;
-      });
+      handler(
+        { header: () => 'Bearer secret-token' } as unknown as Request,
+        {} as Response,
+        () => {
+          called = true;
+        },
+      );
 
       assert.equal(called, true);
     });
-    it.todo('prevents unauthorised user request');
+
+    it('responds 401 and does not call next for an unauthorised request', () => {
+      const handler = ensureLoggedIn();
+      let status = 0;
+      let called = false;
+      const res = {
+        status(code: number) {
+          status = code;
+          return this;
+        },
+        json() {
+          return this;
+        },
+      } as unknown as Response;
+
+      handler(
+        { header: () => undefined } as unknown as Request,
+        res,
+        () => {
+          called = true;
+        },
+      );
+
+      assert.equal(called, false);
+      assert.equal(status, 401);
+    });
   });
 });

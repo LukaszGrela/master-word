@@ -1,9 +1,18 @@
 import { Request, Response, RequestHandler } from 'express';
+import { timingSafeEqual } from 'node:crypto';
+import { StatusCodes } from 'http-status-codes';
 import { TGameRecord, TValidationChar } from '@repo/backend-types';
 import { MAX_ATTEMPTS, WORD_LENGTH } from '../constants';
 import { TIsCorrectWordResponse, TRandomWordResponse } from './types';
 import { ErrorCodes } from '@repo/backend-types/enums';
 import { getRandomWord, wordExists } from '../db/crud/Dictionary.crud';
+
+/**
+ * Coerce an untrusted value (query/body) to a string, rejecting arrays and
+ * objects. Prevents `?key[$ne]=x` style values reaching MongoDB filters.
+ */
+export const asString = (value: unknown): string | undefined =>
+  typeof value === 'string' ? value : undefined;
 
 export const resetGameSession = (
   language: string,
@@ -121,26 +130,59 @@ export const calculateScore = (
 };
 const isDevelopment = process.env.NODE_ENV === 'development';
 
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
-export const isAuthorised = (req: Request, res: Response): boolean => {
-  /* passport related
-  if(!req.isAuthenticated()) {
+/**
+ * Returns the configured admin bearer token, or `undefined` when the
+ * deployment has not provided one.
+ */
+const getAdminToken = (): string | undefined => {
+  const token = process.env.ADMIN_API_TOKEN;
+  return token && token.trim().length > 0 ? token : undefined;
+};
+
+const safeTokenEquals = (provided: string, expected: string): boolean => {
+const providedBuffer = Uint8Array.from(Buffer.from(provided, 'utf8'));
+const expectedBuffer = Uint8Array.from(Buffer.from(expected, 'utf8'));
+
+  if (providedBuffer.length !== expectedBuffer.length) {
     return false;
   }
-  */
+  return timingSafeEqual(providedBuffer, expectedBuffer);
+};
 
-  if (isDevelopment) {
-    console.warn('TODO: implement authorisation');
+/**
+ * Authorisation is fail-closed: a request is authorised only when the
+ * deployment sets `ADMIN_API_TOKEN` and the request carries a matching
+ * `Authorization: Bearer <token>` header. Without a configured token every
+ * protected route is denied, so a missing configuration cannot silently open
+ * the admin surface.
+ */
+export const isAuthorised = (req: Request): boolean => {
+  const expected = getAdminToken();
+  if (!expected) {
+    if (isDevelopment) {
+      console.warn(
+        'ADMIN_API_TOKEN is not set - all admin routes are denied (fail closed).',
+      );
+    }
+    return false;
   }
-  return true;
+
+  const header = req.header('authorization') ?? '';
+  const [scheme, token] = header.split(' ');
+  if (!token || scheme?.toLowerCase() !== 'bearer') {
+    return false;
+  }
+
+  return safeTokenEquals(token, expected);
 };
 
 export function ensureLoggedIn(): RequestHandler {
   return function ensureAuthenticatedRequestHandler(req, res, next): void {
-    /* istanbul ignore else */
-    if (isAuthorised(req, res)) {
+    if (isAuthorised(req)) {
       next();
-    } /* else - the failure is handled by isAuthorised itself */
+      return;
+    }
+    res.status(StatusCodes.UNAUTHORIZED).json({ error: 'Unauthorised' });
   };
 }
 
@@ -250,4 +292,11 @@ export const isWordCorrect = async (
       };
     }
   }
+};
+
+export const respondBadRequest = (res: Response, error: unknown): void => {
+  console.error(error);
+  res
+    .status(StatusCodes.BAD_REQUEST)
+    .json({ name: 'Error', message: 'Invalid request' });
 };

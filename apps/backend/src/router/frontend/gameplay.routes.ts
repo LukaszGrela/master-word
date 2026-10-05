@@ -3,8 +3,8 @@ import { StatusCodes } from 'http-status-codes';
 import { v4 as uuid } from 'uuid';
 import { ErrorCodes } from '@repo/backend-types/enums';
 import { getConfiguration } from '../../db/crud/Config.crud';
-import { TInitQuery, TNextAttemptQuery } from '../types';
 import {
+  asString,
   calculateScore,
   isWordCorrect,
   randomWord,
@@ -33,7 +33,7 @@ const canInitSession = async (
   res: Response,
   next: NextFunction,
 ) => {
-  const { language = 'pl' } = req.query as TInitQuery;
+  const language = asString(req.query.language) ?? 'pl';
   const config = await getConfiguration('frontend');
   const enabledLanguagesConfig = config.find(
     ({ key }) => key === 'enabledLanguages',
@@ -82,10 +82,17 @@ const initNewSession = async (
   res: Response,
   next: NextFunction,
 ) => {
-  const { session, language = 'pl', ...rest } = req.query as TInitQuery;
+  const session = asString(req.query.session);
+  const language = asString(req.query.language) ?? 'pl';
   // TODO: word length from query
   const wordLength = WORD_LENGTH;
-  const maxAttempts = Number(rest.maxAttempts || MAX_ATTEMPTS);
+  // Clamp the caller-supplied attempts to the supported range instead of
+  // trusting an arbitrary number from the query string.
+  const requestedMaxAttempts = Number(asString(req.query.maxAttempts));
+  const maxAttempts =
+    Number.isFinite(requestedMaxAttempts) && requestedMaxAttempts > 0
+      ? Math.min(Math.floor(requestedMaxAttempts), MAX_ATTEMPTS)
+      : MAX_ATTEMPTS;
 
   if (!session) {
     // no session, start from scratch
@@ -144,7 +151,7 @@ const initNewSession = async (
  * Starts new game or continues the old, not finished one.
  */
 const initNewGame = async (req: IMasterWordRequest, res: Response) => {
-  const { session } = req.query as TInitQuery;
+  const session = asString(req.query.session);
 
   const sessionId = session || req.masterWord?.session;
   if (sessionId) {
@@ -197,7 +204,8 @@ const assureNextAttemptAllowed = async (
   res: Response,
   next: NextFunction,
 ) => {
-  const { session, guess } = req.query as TNextAttemptQuery;
+  const session = asString(req.query.session);
+  const guess = asString(req.query.guess);
 
   if (!session) {
     // shows over
@@ -256,7 +264,16 @@ const assureNextAttemptAllowed = async (
 };
 
 const nextAttempt = async (req: Request, res: Response, next: NextFunction) => {
-  const { session, guess } = req.query as Required<TNextAttemptQuery>;
+  const session = asString(req.query.session);
+  const guess = asString(req.query.guess);
+
+  if (!session || !guess) {
+    res.status(StatusCodes.BAD_REQUEST).json({
+      code: ErrorCodes.PARAMS_ERROR,
+      error: 'Missing "session" or "guess" parameter',
+    });
+    return;
+  }
 
   try {
     const gameSession = await findSession(session);
@@ -323,7 +340,16 @@ const nextAttempt = async (req: Request, res: Response, next: NextFunction) => {
   next();
 };
 const checkFinished = async (req: Request, res: Response) => {
-  const { session, guess } = req.query as Required<TNextAttemptQuery>;
+  const session = asString(req.query.session);
+  const guess = asString(req.query.guess);
+
+  if (!session || !guess) {
+    res.status(StatusCodes.BAD_REQUEST).json({
+      code: ErrorCodes.PARAMS_ERROR,
+      error: 'Missing "session" or "guess" parameter',
+    });
+    return;
+  }
 
   try {
     const gameSession = await findSession(session);
