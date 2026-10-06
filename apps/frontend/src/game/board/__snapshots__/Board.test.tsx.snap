@@ -5,7 +5,7 @@ exports[`game > board > Board > Renders with all props 1`] = `
   <div
     class="board test"
     data-testid="board"
-    style="grid-template-columns: repeat(2, 1fr); grid-template-rows: repeat(2, 1fr);"
+    style="grid-template-columns: repeat(2, 1fr); grid-template-rows: repeat(2, 1fr); width: calc(calc(1 * var(--gd-board-gap)) + calc(2 * var(--gd-board-size)));"
   >
     <p>
       Cell
@@ -19,7 +19,7 @@ exports[`game > board > Board > Renders with required props 1`] = `
   <div
     class="board"
     data-testid="board"
-    style="grid-template-columns: repeat(2, 1fr); grid-template-rows: repeat(2, 1fr);"
+    style="grid-template-columns: repeat(2, 1fr); grid-template-rows: repeat(2, 1fr); width: calc(calc(1 * var(--gd-board-gap)) + calc(2 * var(--gd-board-size)));"
   />
 </div>
 `;

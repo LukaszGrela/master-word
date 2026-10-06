@@ -1,4 +1,4 @@
-import { after, afterEach, before, beforeEach } from 'node:test';
+import { after, afterEach, before, beforeEach } from 'mocha';
 import connect from '../db/connect';
 import mongoose from 'mongoose';
 

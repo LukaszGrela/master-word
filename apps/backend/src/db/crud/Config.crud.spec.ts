@@ -1,4 +1,4 @@
-import { beforeEach, describe, it } from 'node:test';
+import { beforeEach, describe, it } from 'mocha';
 import assert from 'node:assert';
 import type { IConfigEntry } from '@repo/backend-types/db';
 import mongoose, { AnyKeys } from 'mongoose';

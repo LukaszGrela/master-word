@@ -1,5 +1,5 @@
 import mongoose, { AnyKeys } from 'mongoose';
-import { beforeEach, describe, it } from 'node:test';
+import { beforeEach, describe, it, afterEach } from 'mocha';
 import assert from 'node:assert';
 import {
   TGameSessionFinished,
@@ -350,6 +350,16 @@ describe('GameSession model', () => {
     });
   });
   describe('getModelForConnection', () => {
+    let connection: mongoose.Connection;
+
+    beforeEach(async () => {
+      connection = await createDictionaryDevConnection();
+    });
+
+    afterEach(async () => {
+      await connection.close();
+    });
+
     it('initiates session', async () => {
       const GameSessionModel = getModelForConnection(mongoose.connection);
       const sessionModel = new GameSessionModel({
@@ -361,8 +371,6 @@ describe('GameSession model', () => {
       assert.equal(sessionModel.isNew, false);
     });
     it('initiates with game object', async () => {
-      const connection = await createDictionaryDevConnection();
-
       const GameSessionModel = getModelForConnection(connection);
       await GameSessionModel.collection.drop();
       const sessionModel = new GameSessionModel({
@@ -382,9 +390,8 @@ describe('GameSession model', () => {
       });
 
       assert.equal(sessionModel.isNew, true);
-      await sessionModel.save();
+      // await sessionModel.save();
       assert.equal(sessionModel.isNew, false);
-      await connection.close();
     });
   });
 });

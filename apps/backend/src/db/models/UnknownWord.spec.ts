@@ -1,4 +1,4 @@
-import { describe, it } from 'node:test';
+import { describe, it } from 'mocha';
 import { UnknownWord } from './UnknownWord';
 import sinon from 'sinon';
 import assert from 'node:assert';
