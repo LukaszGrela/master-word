@@ -2,7 +2,7 @@ import { after, afterEach, before, beforeEach } from 'mocha';
 import connect from '../db/connect';
 import mongoose from 'mongoose';
 
-const config = {
+const testConfig = {
   mongo: {
     db: 'test',
     hostString: 'localhost:27017/test',
@@ -10,7 +10,7 @@ const config = {
 };
 
 before(async () => {
-  await connect(config);
+  await connect(testConfig);
 
   mongoose.connection
     .once('open', () => 'Made test connection!')
@@ -36,7 +36,7 @@ function rebuildIndexes() {
 beforeEach(async () => {
   if (mongoose.connection.readyState === 0) {
     try {
-      await connect(config);
+      await connect(testConfig);
       await rebuildIndexes();
     } catch (e) {
       throw e;
@@ -54,3 +54,5 @@ after(async () => {
   await clearDB();
   await mongoose.disconnect();
 });
+
+export { testConfig };

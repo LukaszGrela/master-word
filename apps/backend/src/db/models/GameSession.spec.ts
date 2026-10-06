@@ -10,6 +10,7 @@ import {
 } from '@repo/backend-types';
 import { GameSession, getModelForConnection } from './GameSession';
 import { createDictionaryDevConnection } from '../connect';
+import { testConfig } from '../../test/testconfig';
 
 describe('GameSession model', () => {
   beforeEach(async () => {
@@ -353,11 +354,13 @@ describe('GameSession model', () => {
     let connection: mongoose.Connection;
 
     beforeEach(async () => {
-      connection = await createDictionaryDevConnection();
+      connection = await createDictionaryDevConnection(testConfig);
     });
 
     afterEach(async () => {
-      await connection.close();
+      if (connection) {
+        await connection.close();
+      }
     });
 
     it('initiates session', async () => {
@@ -390,7 +393,7 @@ describe('GameSession model', () => {
       });
 
       assert.equal(sessionModel.isNew, true);
-      // await sessionModel.save();
+      await sessionModel.save();
       assert.equal(sessionModel.isNew, false);
     });
   });

@@ -30,7 +30,7 @@ export default function connect(
 // TODO: dictionary dev connection - readWrite dictionary
 // TODO: word logger connection - write - unknown words dictionary
 
-async function createDictionaryDevConnection() {
+async function createDictionaryDevConnection(overrideConfig: TConfig = config) {
   const mongoUsr = 'master-word-backend-dev';
   const usrPass = encodeURIComponent(
     process.env.MONGO_BACKEND_DEV_PASSWORD || '',
@@ -39,7 +39,7 @@ async function createDictionaryDevConnection() {
   const user = process.env.NODE_ENV !== 'test' ? `${mongoUsr}:${usrPass}@` : '';
 
   // Note: EvenNode provides the database name within the hostString
-  const mongoUri = `mongodb://${user}${config.mongo.hostString}`; // "/${config.mongo.db}"
+  const mongoUri = `mongodb://${user}${overrideConfig.mongo.hostString}`; // "/${config.mongo.db}"
 
   const connection = await mongoose
     .createConnection(mongoUri, {
