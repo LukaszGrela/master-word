@@ -2,5 +2,6 @@
   "extension": ["ts"],
   "spec": "src/**/*.spec.ts",
   "node-option": ["import=tsx"],
-  "file": ["src/test/testconfig.ts"]
+  "exit": true,
+  "parallel": true
 }

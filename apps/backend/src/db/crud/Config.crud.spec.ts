@@ -8,11 +8,18 @@ import {
   setConfigDefaults,
   setConfigValue,
 } from '../crud/Config.crud';
+import { testConfig } from '../../test/testconfig';
 
 describe('Config CRUD operations', () => {
   let ids: mongoose.Types.ObjectId[];
-
-  beforeEach(async () => {
+  before(async function () {
+    console.log('readyState before():', mongoose.connection.readyState);
+    await mongoose.connect(`mongodb://${testConfig.mongo.hostString}`);
+    await Config.init();
+  });
+  beforeEach(async function () {
+    console.log('readyState beforeEach():', mongoose.connection.readyState);
+    await mongoose.connection.dropDatabase();
     await Config.init();
     await Config.create<AnyKeys<IConfigEntry>>([
       {
@@ -29,6 +36,13 @@ describe('Config CRUD operations', () => {
     ]);
 
     ids = (await Config.find({}).exec()).map((d) => d._id);
+  });
+  after(async function () {
+    console.log('readyState before after():', mongoose.connection.readyState);
+    if (mongoose.connection.readyState === 1) {
+      await mongoose.connection.dropDatabase();
+    }
+    await mongoose.disconnect();
   });
 
   describe('setConfigDefaults', () => {

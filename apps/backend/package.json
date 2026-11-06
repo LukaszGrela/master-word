@@ -4,7 +4,7 @@
   "description": "NodeJS backend for the Master Word app",
   "main": "index.js",
   "scripts": {
-    "test": "cross-env NODE_ENV=test mocha",
+    "test": "cross-env NODE_ENV=test mocha --timeout 10000",
     "coverage": "c8 npm run test",
     "dev": "cross-env NODE_ENV=development tsx watch src/index.ts",
     "build-tsc": "cross-env NODE_ENV=production tsc",

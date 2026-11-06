@@ -12,13 +12,24 @@ import {
   removeWordById,
 } from '../crud/UnknownWord.crud';
 import mongoose from 'mongoose';
+import { testConfig } from '../../test/testconfig';
 
 describe('UnknownWord CRUD operations', () => {
   const date1 = new Date(1939, 8, 1, 0, 0, 0, 0);
   const date2 = new Date(1939, 8, 17, 0, 0, 0, 0);
   const date3 = new Date(1942, 8, 1, 0, 0, 0, 0);
   let ids: mongoose.Types.ObjectId[];
-  beforeEach(async () => {
+
+  before(async function () {
+    console.log('readyState before():', mongoose.connection.readyState);
+    await mongoose.connect(`mongodb://${testConfig.mongo.hostString}`);
+    await UnknownWord.init();
+
+  });
+  beforeEach(async function () {
+    console.log('readyState beforeEach():', mongoose.connection.readyState);
+    await mongoose.connection.dropDatabase();
+
     await UnknownWord.init();
     await UnknownWord.create([
       {
@@ -74,6 +85,14 @@ describe('UnknownWord CRUD operations', () => {
     ]);
     ids = (await UnknownWord.find({}).sort('date').exec()).map((d) => d._id);
   });
+  after(async function () {
+    console.log('readyState before after():', mongoose.connection.readyState);
+    if (mongoose.connection.readyState === 1) {
+      await mongoose.connection.dropDatabase();
+    }
+    await mongoose.disconnect();
+  });
+
   describe('getAll', () => {
     it('returns list of entries', async () => {
       const list = await getAll(mongoose.connection);

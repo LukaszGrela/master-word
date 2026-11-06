@@ -3,11 +3,26 @@ import { beforeEach, describe, it } from 'mocha';
 import assert from 'node:assert';
 import type { IConfigEntry } from '@repo/backend-types/db';
 import { getModelForConnection, Config } from './Config';
+import { testConfig } from '../../test/testconfig';
 
 describe('Config model', () => {
-  beforeEach(async () => {
-    await Config.init();
-  });
+    before(async function () {
+      console.log('readyState before():', mongoose.connection.readyState);
+      await mongoose.connect(`mongodb://${testConfig.mongo.hostString}`);
+      await Config.init();
+    });
+    beforeEach(async function () {
+      console.log('readyState beforeEach():', mongoose.connection.readyState);
+      await mongoose.connection.dropDatabase();
+      await Config.init();
+    });
+    after(async function () {
+      console.log('readyState before after():', mongoose.connection.readyState);
+      if (mongoose.connection.readyState === 1) {
+        await mongoose.connection.dropDatabase();
+      }
+      await mongoose.disconnect();
+    });
 
   it('fails if key is missing', async () => {
     let error: Error | undefined;
@@ -71,6 +86,7 @@ describe('Config model', () => {
       });
     } catch (e) {
       error = e as Error;
+      console.log("fails to add document with the same key: error", error);
     }
 
     assert.notEqual(error, undefined);

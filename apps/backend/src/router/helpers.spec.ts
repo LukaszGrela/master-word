@@ -11,29 +11,31 @@ import {
 import { Request, Response } from 'express';
 describe('router/helpers', () => {
   describe('resetGameSession', () => {
-    it('Resets the session', () => {
-      const sandbox = sinon.createSandbox();
-      sandbox.useFakeTimers({
+    it('Resets the session', (done) => {
+      const clock = sinon.useFakeTimers({
         now: new Date(1939, 9, 1).getTime(),
         shouldClearNativeTimers: true,
         toFake: ['Date'],
       });
-      const session = resetGameSession('pl', 'test');
-
-      sandbox.restore();
-
-      assert.deepEqual(session, {
-        attempt: 0,
-        finished: false,
-        guessed: false,
-        language: 'pl',
-        max_attempts: 8,
-        state: [],
-        timestamp_start: '-954723600000',
-        word: 'TEST',
-        word_length: 4,
-        score: 0,
-      });
+      try {
+        const session = resetGameSession('pl', 'test');
+        assert.deepEqual(session, {
+          attempt: 0,
+          finished: false,
+          guessed: false,
+          language: 'pl',
+          max_attempts: 8,
+          state: [],
+          timestamp_start: '-954723600000',
+          word: 'TEST',
+          word_length: 4,
+          score: 0,
+        });
+      } catch (error) {
+        done(error as Error);
+      } finally {
+        clock.uninstall();
+      }
     });
   });
 
@@ -127,7 +129,7 @@ describe('router/helpers', () => {
 
   describe('isAuthorised', () => {
     const reqWithHeader = (header?: string): Request =>
-      ({ header: () => header } as unknown as Request);
+      ({ header: () => header }) as unknown as Request;
 
     afterEach(() => {
       delete process.env.ADMIN_API_TOKEN;
@@ -189,13 +191,9 @@ describe('router/helpers', () => {
         },
       } as unknown as Response;
 
-      handler(
-        { header: () => undefined } as unknown as Request,
-        res,
-        () => {
-          called = true;
-        },
-      );
+      handler({ header: () => undefined } as unknown as Request, res, () => {
+        called = true;
+      });
 
       assert.equal(called, false);
       assert.equal(status, 401);
