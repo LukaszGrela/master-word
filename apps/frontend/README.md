@@ -22,7 +22,7 @@ React + TypeScript + Vite + Vitest + SASS
 From the repository root:
 
 ```sh
-npm run dev --workspace=frontend
+npm run dev -- --filter=frontend
 ```
 
 Or from this folder:
@@ -67,7 +67,7 @@ Build and deploy:
 
 ```sh
 # from the repository root
-npm run build --workspace=frontend
+npm run build -- --filter=frontend
 ```
 
 Upload the contents of `apps/frontend/dist/` to the static web root. The
