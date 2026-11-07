@@ -1,4 +1,4 @@
-import { Mock, afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
+import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 import { defaultLanguageContext } from '../../../i18n/LanguageContext/__tests__/contextRenderer';
 import { GameErrorPage } from './GameErrorPage';
 import { AppStorage, IStorage, hasOwn } from '@repo/utils';
@@ -37,8 +37,6 @@ vi.mock('@repo/utils', async (importOriginal) => {
   };
 });
 
-const originalFetch = global.fetch;
-
 describe('game', () => {
   describe('routes', () => {
     describe('components', () => {
@@ -62,9 +60,7 @@ describe('game', () => {
           mockFetch = vi.fn();
           storage = AppStorage.getInstance();
 
-          (
-            storage.getItem as Mock<[key: string], string | null>
-          ).mockImplementation((key) => {
+          vi.spyOn(storage, 'getItem').mockImplementation((key) => {
             if (key === 'ui-language') {
               return 'pl';
             }
@@ -74,11 +70,11 @@ describe('game', () => {
             return null;
           });
 
-          global.fetch = mockFetch;
+          vi.stubGlobal('fetch', mockFetch);
         });
         afterEach(() => {
           vi.clearAllMocks();
-          global.fetch = originalFetch;
+          vi.unstubAllGlobals();
         });
         it('renders', async () => {
           const router = createMemoryRouter([

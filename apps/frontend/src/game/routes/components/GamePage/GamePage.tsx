@@ -33,11 +33,12 @@ export const GamePageInner: FC = () => {
         // clear session
         const urlSession = location.state?.session;
         if (location.state && urlSession === session) {
-          // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-unused-vars
+          // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
           const { usr, ...rest } = window.history.state;
-          // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-unused-vars
 
-          const { session, ...restUsr } = usr /* v8 ignore next */ || {};
+          // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-unused-vars
+          const { session: _notUsedUsrSession, ...restUsr } =
+            usr /* v8 ignore next */ || {};
           window.history.replaceState(
             {
               ...rest,
@@ -58,7 +59,7 @@ export const GamePageInner: FC = () => {
         }
       } else if (error.code !== 6 /* not INVALID_WORD */) {
         // navigate to error page
-        navigate(EPaths.GAME_ERROR, {
+        void navigate(EPaths.GAME_ERROR, {
           // no back to game
           replace: true,
           state: { error, session: { session, game } },
@@ -70,7 +71,7 @@ export const GamePageInner: FC = () => {
   useEffect(() => {
     if (!language) {
       // go back to home page
-      navigate(EPaths.ROOT);
+      void navigate(EPaths.ROOT);
     } else {
       // init game
       init(language, maxAttempts, wordLength, locationSession);
@@ -80,7 +81,7 @@ export const GamePageInner: FC = () => {
   useEffect(() => {
     if (game && game.finished) {
       // navigate to result page
-      navigate(getResultsPath(game.guessed ? 'win' : 'lose'), {
+      void navigate(getResultsPath(game.guessed ? 'win' : 'lose'), {
         // no back to game
         replace: true,
         state: {

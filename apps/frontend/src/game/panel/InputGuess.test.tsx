@@ -185,14 +185,14 @@ describe('game', () => {
         });
 
         // callback called
-        expect(onClose).toBeCalledTimes(1);
+        expect(onClose).toHaveBeenCalledTimes(1);
         expect(onClose).toHaveBeenLastCalledWith('guess', 'GUESS');
 
         // close modal
         fireEvent.click(closeBtn);
 
         // callback called
-        expect(onClose).toBeCalledTimes(2);
+        expect(onClose).toHaveBeenCalledTimes(2);
         expect(onClose).toHaveBeenLastCalledWith('guess', 'GUESS');
 
         // close modal

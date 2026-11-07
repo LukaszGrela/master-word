@@ -1,4 +1,4 @@
-import { Mock, afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
+import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 import { defaultLanguageContext } from '../../../i18n/LanguageContext/__tests__/contextRenderer';
 import { ResultsPage } from './ResultsPage';
 import { AppStorage, EStorageKeys, IStorage, hasOwn } from '@repo/utils';
@@ -8,6 +8,7 @@ import { createMemoryRouter } from 'react-router-dom';
 import { EPaths, getResultsPath } from '../enums';
 import { renderMockRouter } from '../__tests__/helpers';
 import { fireEvent, waitFor } from '@testing-library/react';
+import { createFetchMock } from '../../../__tests__/helpers';
 
 vi.mock('@repo/utils', async (importOriginal) => {
   // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-explicit-any
@@ -37,8 +38,6 @@ vi.mock('@repo/utils', async (importOriginal) => {
     AppStorage: AppStorageMock,
   };
 });
-
-const originalFetch = global.fetch;
 
 describe('game', () => {
   describe('routes', () => {
@@ -183,15 +182,13 @@ describe('game', () => {
           'highscore-label': 'Nowy Rekord',
           'result-save-session-button': 'Kontynuuj później',
         };
-        let mockFetch = vi.fn();
+        let mockFetch = createFetchMock();
         let storage: IStorage = AppStorage.getInstance();
         beforeEach(() => {
-          mockFetch = vi.fn();
+          mockFetch = createFetchMock();
           storage = AppStorage.getInstance();
 
-          (
-            storage.getItem as Mock<[key: string], string | null>
-          ).mockImplementation((key) => {
+          vi.spyOn(storage, 'getItem').mockImplementation((key) => {
             if (key === 'ui-language') {
               return 'pl';
             }
@@ -201,11 +198,11 @@ describe('game', () => {
             return null;
           });
 
-          global.fetch = mockFetch;
+          vi.stubGlobal('fetch', mockFetch);
         });
         afterEach(() => {
           vi.clearAllMocks();
-          global.fetch = originalFetch;
+          vi.unstubAllGlobals();
         });
         it('renders win', async () => {
           const router = createMemoryRouter([

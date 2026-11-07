@@ -1,4 +1,4 @@
-import { Mock, afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
+import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 import { fireEvent, waitFor } from '@testing-library/react';
 import {
   contextRenderer,
@@ -87,17 +87,15 @@ describe('game', () => {
         expect(container).toMatchSnapshot();
       });
       it('Renders with context - game language en', async () => {
-        (
-          storage.getItem as Mock<[key: string], string | null>
-        ).mockImplementation((key) => {
+        vi.spyOn(storage, 'getItem').mockImplementation((key) => {
           if (key === 'word-language') {
             return 'en';
           }
           return null;
         });
-        const mockSetItem = (
-          storage.setItem as Mock<[key: string, value: string], void>
-        ).mockImplementation(() => {});
+        const mockSetItem = vi
+          .spyOn(storage, 'setItem')
+          .mockImplementation(() => {});
 
         const { container, getByTitle } = contextRenderer(
           <MockConfigContext

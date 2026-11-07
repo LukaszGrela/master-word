@@ -1,19 +1,17 @@
 import { IConfigEntry } from '@repo/backend-types/db';
 import { describe, it, expect, beforeEach, vi, afterEach } from 'vitest';
 import { getConfig } from './getConfig';
-import { createFetchResponse } from '../__tests__/helpers';
-
-const originalFetch = global.fetch;
+import { createFetchMock, createFetchResponse } from '../__tests__/helpers';
 
 describe('api', () => {
   describe('getConfig', () => {
-    const mockFetch = vi.fn();
+    const mockFetch = createFetchMock();
     beforeEach(() => {
-      global.fetch = mockFetch;
+      vi.stubGlobal('fetch', mockFetch);
     });
     afterEach(() => {
       vi.clearAllMocks();
-      global.fetch = originalFetch;
+      vi.unstubAllGlobals();
     });
     it('resolves', async () => {
       const data: IConfigEntry = {
@@ -25,7 +23,7 @@ describe('api', () => {
 
       const result = await getConfig({});
 
-      expect(fetch).toHaveBeenCalledWith(
+      expect(mockFetch).toHaveBeenCalledWith(
         expect.stringMatching('/api/frontend/config'),
         {
           method: 'GET',

@@ -1,4 +1,4 @@
-import { Mock, afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
+import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 
 import { AppStorage, IStorage } from '@repo/utils';
 import { LanguageProvider, useLanguage } from '..';
@@ -10,8 +10,7 @@ vi.mock('@repo/utils', async (importOriginal) => {
   // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-explicit-any
   const original = await importOriginal<any>();
 
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  const AppStorageMock = vi.fn<any, IStorage>();
+  const AppStorageMock = vi.fn();
   const proto = AppStorageMock.prototype as IStorage;
 
   proto.getItem = vi.fn();
@@ -35,7 +34,8 @@ vi.mock('@repo/utils', async (importOriginal) => {
   };
 });
 
-const originalFetch = global.fetch;
+type TFetchResponse = ReturnType<typeof createFetchResponse>;
+type TFetch = (...args: Parameters<typeof fetch>) => Promise<TFetchResponse>;
 
 type TMockedConsumerProps = {
   loadingCallback: (flag: boolean) => void;
@@ -73,16 +73,16 @@ const LanguageContextConsumer = (props: TMockedConsumerProps) => {
 
 describe('i18n', () => {
   describe('LanguageContext', () => {
-    let mockFetch = vi.fn();
+    let mockFetch = vi.fn<TFetch>();
     let storage: IStorage = AppStorage.getInstance();
     beforeEach(() => {
-      mockFetch = vi.fn();
+      mockFetch = vi.fn<TFetch>();
       storage = AppStorage.getInstance();
-      global.fetch = mockFetch;
+      vi.stubGlobal('fetch', mockFetch);
     });
     afterEach(() => {
       vi.clearAllMocks();
-      global.fetch = originalFetch;
+      vi.unstubAllGlobals();
     });
     describe('LanguageProvider', () => {
       it('loads initial copy default language', async () => {
@@ -109,7 +109,7 @@ describe('i18n', () => {
 
         expect(getByText('dummy-copy')).toBeDefined();
 
-        expect(loadingCallback).toBeCalledTimes(1);
+        expect(loadingCallback).toHaveBeenCalledTimes(1);
         expect(loadingCallback).toHaveBeenLastCalledWith(true);
 
         expect(fetch).toHaveBeenCalledWith(
@@ -121,7 +121,7 @@ describe('i18n', () => {
         );
 
         await waitFor(() => {
-          expect(loadingCallback).toBeCalledTimes(2);
+          expect(loadingCallback).toHaveBeenCalledTimes(2);
           expect(loadingCallback).toHaveBeenLastCalledWith(false);
         });
 
@@ -137,9 +137,7 @@ describe('i18n', () => {
 
         mockFetch.mockResolvedValue(createFetchResponse(true, translation));
 
-        (
-          storage.getItem as Mock<[key: string], string | null>
-        ).mockImplementation((key) => {
+        vi.spyOn(storage, 'getItem').mockImplementation((key) => {
           if (key === 'ui-language') {
             return 'en';
           }
@@ -162,10 +160,10 @@ describe('i18n', () => {
 
         expect(getByText('dummy-copy')).toBeDefined();
 
-        expect(loadingCallback).toBeCalledTimes(1);
+        expect(loadingCallback).toHaveBeenCalledTimes(1);
         expect(loadingCallback).toHaveBeenLastCalledWith(true);
 
-        expect(fetch).toHaveBeenCalledWith(
+        expect(mockFetch).toHaveBeenCalledWith(
           expect.stringMatching(/\/i18n\/en\.json$/gi),
           {
             method: 'GET',
@@ -174,7 +172,7 @@ describe('i18n', () => {
         );
 
         await waitFor(() => {
-          expect(loadingCallback).toBeCalledTimes(2);
+          expect(loadingCallback).toHaveBeenCalledTimes(2);
           expect(loadingCallback).toHaveBeenLastCalledWith(false);
         });
 
@@ -190,9 +188,7 @@ describe('i18n', () => {
 
         mockFetch.mockResolvedValue(createFetchResponse(true, translation));
 
-        (
-          storage.getItem as Mock<[key: string], string | null>
-        ).mockImplementation((key) => {
+        vi.spyOn(storage, 'getItem').mockImplementation((key) => {
           if (key === 'ui-language') {
             return 'en';
           }
@@ -217,7 +213,7 @@ describe('i18n', () => {
 
         expect(getByText('dummy-copy')).toBeDefined();
 
-        expect(loadingCallback).toBeCalledTimes(1);
+        expect(loadingCallback).toHaveBeenCalledTimes(1);
         expect(loadingCallback).toHaveBeenLastCalledWith(true);
 
         expect(fetch).toHaveBeenCalledWith(
@@ -229,7 +225,7 @@ describe('i18n', () => {
         );
 
         await waitFor(() => {
-          expect(loadingCallback).toBeCalledTimes(2);
+          expect(loadingCallback).toHaveBeenCalledTimes(2);
           expect(loadingCallback).toHaveBeenLastCalledWith(false);
         });
 
@@ -251,7 +247,7 @@ describe('i18n', () => {
         );
 
         await waitFor(() => {
-          expect(loadingCallback).toBeCalledTimes(4);
+          expect(loadingCallback).toHaveBeenCalledTimes(4);
         });
 
         expect(getByText(frTranslation['dummy-copy'])).toBeDefined();
@@ -264,9 +260,7 @@ describe('i18n', () => {
           createFetchResponse(false, { code: 404, message: 'Not found' }),
         );
 
-        (
-          storage.getItem as Mock<[key: string], string | null>
-        ).mockImplementation((key) => {
+        vi.spyOn(storage, 'getItem').mockImplementation((key) => {
           if (key === 'ui-language') {
             return 'en';
           }
@@ -289,7 +283,7 @@ describe('i18n', () => {
           </LanguageProvider>,
         );
 
-        expect(loadingCallback).toBeCalledTimes(1);
+        expect(loadingCallback).toHaveBeenCalledTimes(1);
         expect(loadingCallback).toHaveBeenLastCalledWith(true);
 
         expect(fetch).toHaveBeenCalledWith(
@@ -301,7 +295,7 @@ describe('i18n', () => {
         );
 
         await waitFor(() => {
-          expect(loadingCallback).toBeCalledTimes(2);
+          expect(loadingCallback).toHaveBeenCalledTimes(2);
           expect(loadingCallback).toHaveBeenLastCalledWith(false);
         });
 
@@ -316,8 +310,8 @@ describe('i18n', () => {
         );
 
         await waitFor(() => {
-          expect(loadingCallback).toBeCalledTimes(4);
-          expect(loadLanguageCallback).toBeCalled();
+          expect(loadingCallback).toHaveBeenCalledTimes(4);
+          expect(loadLanguageCallback).toHaveBeenCalled();
         });
 
         // copy not updated

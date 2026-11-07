@@ -6,23 +6,24 @@ import {
 } from '../../../context/__tests__/contextRenderer';
 import { IGameContext } from '../../../context';
 import { TimerWrapper } from './TimerWrapper';
-import { createFetchResponse } from '../../../../__tests__/helpers';
+import {
+  createFetchMock,
+  createFetchResponse,
+} from '../../../../__tests__/helpers';
 import { TGameRecord } from '@repo/backend-types';
-
-const originalFetch = global.fetch;
 
 describe('game', () => {
   describe('routes', () => {
     describe('components', () => {
       describe('GamePage', () => {
         describe('TimerWrapper', () => {
-          let mockFetch = vi.fn();
+          let mockFetch = createFetchMock();
 
           beforeEach(() => {
             vi.useFakeTimers();
             vi.setSystemTime(new Date(1979, 5, 13));
-            mockFetch = vi.fn();
-            global.fetch = mockFetch;
+            mockFetch = createFetchMock();
+            vi.stubGlobal('fetch', mockFetch);
 
             // MOCK FETCH FIRST
             mockFetch.mockResolvedValue(
@@ -31,7 +32,7 @@ describe('game', () => {
           });
           afterEach(() => {
             vi.clearAllMocks();
-            global.fetch = originalFetch;
+            vi.unstubAllGlobals();
             vi.useRealTimers();
           });
 

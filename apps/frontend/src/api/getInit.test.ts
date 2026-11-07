@@ -1,19 +1,17 @@
 import { describe, it, expect, beforeEach, vi, afterEach } from 'vitest';
 import { TGameRecord, TGameSession } from '@repo/backend-types';
 import { getInit } from './getInit';
-import { createFetchResponse } from '../__tests__/helpers';
-
-const originalFetch = global.fetch;
+import { createFetchMock, createFetchResponse } from '../__tests__/helpers';
 
 describe('api', () => {
   describe('getInit', () => {
-    const mockFetch = vi.fn();
+    const mockFetch = createFetchMock();
     beforeEach(() => {
-      global.fetch = mockFetch;
+      vi.stubGlobal('fetch', mockFetch);
     });
     afterEach(() => {
       vi.clearAllMocks();
-      global.fetch = originalFetch;
+      vi.unstubAllGlobals();
     });
     it('resolves', async () => {
       const data: TGameSession = {
@@ -25,7 +23,7 @@ describe('api', () => {
         language: 'pl',
       });
 
-      expect(fetch).toHaveBeenCalledWith(
+      expect(mockFetch).toHaveBeenCalledWith(
         expect.stringMatching(/\/api\/frontend\/init\?language=pl/gi),
         {
           method: 'GET',
@@ -56,7 +54,7 @@ describe('api', () => {
         language: 'pl',
       });
 
-      expect(fetch).toHaveBeenCalledWith(
+      expect(mockFetch).toHaveBeenCalledWith(
         expect.stringMatching(/\/api\/frontend\/init\?language=pl/gi),
         {
           method: 'GET',

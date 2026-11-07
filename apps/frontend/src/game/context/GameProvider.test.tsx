@@ -4,12 +4,10 @@ import { useCallback, useMemo } from 'react';
 import { TGameRecord, TScore } from '@repo/backend-types';
 import { IDictionary } from '@repo/common-types';
 import { IGameContext } from './types';
-import { createFetchResponse } from '../../__tests__/helpers';
+import { createFetchMock, createFetchResponse } from '../../__tests__/helpers';
 import { gameResponses } from './__tests__/contextRenderer';
 import { fireEvent, render, waitFor } from '@testing-library/react';
 import { GameProvider } from './GameProvider';
-
-const originalFetch = global.fetch;
 
 const DataTestId = {
   CONTEXT_LIST: 'dummy-consumer-context',
@@ -113,14 +111,14 @@ const DummyConsumer = (
 describe('game', () => {
   describe('context', () => {
     describe('GameProvider', () => {
-      let mockFetch = vi.fn();
+      let mockFetch = createFetchMock();
 
       // const invalidSession = { code: 2, error: 'Invalid session id' };
       const invalidWord = { code: 6, error: 'Invalid word' };
 
       beforeEach(() => {
-        mockFetch = vi.fn();
-        global.fetch = mockFetch;
+        mockFetch = createFetchMock();
+        vi.stubGlobal('fetch', mockFetch);
 
         // MOCK FETCH FIRST
         mockFetch.mockResolvedValue(
@@ -129,7 +127,7 @@ describe('game', () => {
       });
       afterEach(() => {
         vi.clearAllMocks();
-        global.fetch = originalFetch;
+        vi.unstubAllGlobals();
       });
 
       it('call init', async () => {
@@ -146,10 +144,10 @@ describe('game', () => {
 
         // trigger
         fireEvent.click(getByTestId(DataTestId.TRIGGER_INIT));
-        expect(fetch).toBeCalledTimes(1);
+        expect(fetch).toHaveBeenCalledTimes(1);
         // no double calls
         fireEvent.click(getByTestId(DataTestId.TRIGGER_INIT));
-        expect(fetch).toBeCalledTimes(1);
+        expect(fetch).toHaveBeenCalledTimes(1);
 
         expect(fetch).toHaveBeenLastCalledWith(
           expect.stringMatching(
@@ -184,7 +182,7 @@ describe('game', () => {
         mockFetch.mockRejectedValue(new Error('Boom'));
         // trigger
         fireEvent.click(getByTestId(DataTestId.TRIGGER_INIT));
-        expect(fetch).toBeCalledTimes(1);
+        expect(fetch).toHaveBeenCalledTimes(1);
 
         expect(fetch).toHaveBeenLastCalledWith(
           expect.stringMatching(
@@ -223,7 +221,7 @@ describe('game', () => {
         // trigger
         fireEvent.click(getByTestId(DataTestId.TRIGGER_INIT));
 
-        expect(fetch).toBeCalledTimes(1);
+        expect(fetch).toHaveBeenCalledTimes(1);
 
         expect(fetch).toHaveBeenLastCalledWith(
           expect.stringMatching(
@@ -246,10 +244,10 @@ describe('game', () => {
 
         // trigger
         fireEvent.click(getByTestId(DataTestId.TRIGGER_GUESS));
-        expect(fetch).toBeCalledTimes(2);
+        expect(fetch).toHaveBeenCalledTimes(2);
         // no double call
         fireEvent.click(getByTestId(DataTestId.TRIGGER_GUESS));
-        expect(fetch).toBeCalledTimes(2);
+        expect(fetch).toHaveBeenCalledTimes(2);
 
         expect(fetch).toHaveBeenLastCalledWith(
           expect.stringMatching(
@@ -277,7 +275,7 @@ describe('game', () => {
 
         // trigger
         fireEvent.click(getByTestId(DataTestId.TRIGGER_GUESS));
-        expect(fetch).toBeCalledTimes(3);
+        expect(fetch).toHaveBeenCalledTimes(3);
 
         expect(fetch).toHaveBeenLastCalledWith(
           expect.stringMatching(
@@ -313,7 +311,7 @@ describe('game', () => {
         // trigger
         fireEvent.click(getByTestId(DataTestId.TRIGGER_INIT));
 
-        expect(fetch).toBeCalledTimes(1);
+        expect(fetch).toHaveBeenCalledTimes(1);
 
         expect(fetch).toHaveBeenLastCalledWith(
           expect.stringMatching(
@@ -335,10 +333,10 @@ describe('game', () => {
 
         // trigger
         fireEvent.click(getByTestId(DataTestId.TRIGGER_GUESS));
-        expect(fetch).toBeCalledTimes(2);
+        expect(fetch).toHaveBeenCalledTimes(2);
         // no double call
         fireEvent.click(getByTestId(DataTestId.TRIGGER_GUESS));
-        expect(fetch).toBeCalledTimes(2);
+        expect(fetch).toHaveBeenCalledTimes(2);
 
         expect(fetch).toHaveBeenLastCalledWith(
           expect.stringMatching(
@@ -379,7 +377,7 @@ describe('game', () => {
 
         // trigger
         fireEvent.click(getByTestId(DataTestId.TRIGGER_INIT));
-        expect(fetch).toBeCalledTimes(1);
+        expect(fetch).toHaveBeenCalledTimes(1);
         expect(fetch).toHaveBeenLastCalledWith(
           expect.stringMatching(
             /\/api\/frontend\/init\?language=fr&maxAttempts=8&wordLength=5$/gi,
@@ -390,7 +388,7 @@ describe('game', () => {
         );
         // guess will not be callable - init in progress
         fireEvent.click(getByTestId(DataTestId.TRIGGER_GUESS));
-        expect(fetch).toBeCalledTimes(1);
+        expect(fetch).toHaveBeenCalledTimes(1);
 
         await waitFor(() => {
           // loading settled
@@ -401,7 +399,7 @@ describe('game', () => {
 
         // trigger
         fireEvent.click(getByTestId(DataTestId.TRIGGER_GUESS));
-        expect(fetch).toBeCalledTimes(2);
+        expect(fetch).toHaveBeenCalledTimes(2);
 
         expect(fetch).toHaveBeenLastCalledWith(
           expect.stringMatching(
