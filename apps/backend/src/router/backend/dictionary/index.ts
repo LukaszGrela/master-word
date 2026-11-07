@@ -71,7 +71,7 @@ router.post(
     }
     try {
       await logUnknownWord({ word, language, length });
-    } catch (error) {
+    } catch {
       res
         .status(StatusCodes.INTERNAL_SERVER_ERROR)
         .json({ message: 'Unknown error' });
@@ -95,7 +95,7 @@ router.get(
       } else {
         throw new Error('No DB Connection error');
       }
-    } catch (error) {
+    } catch {
       res
         .status(StatusCodes.INTERNAL_SERVER_ERROR)
         .json({ message: 'Unknown error' });
@@ -184,7 +184,7 @@ router.post(
               : ''
           }`,
         );
-    } catch (error) {
+    } catch {
       res
         .status(StatusCodes.INTERNAL_SERVER_ERROR)
         .json({ message: 'Unknown error' });
@@ -274,7 +274,7 @@ router.post(
               : ''
           }`,
         );
-    } catch (error) {
+    } catch {
       res
         .status(StatusCodes.INTERNAL_SERVER_ERROR)
         .json({ message: 'Unknown error' });
@@ -357,7 +357,7 @@ router.get(
       } else {
         throw new Error('No DB Connection error');
       }
-    } catch (error) {
+    } catch {
       res
         .status(StatusCodes.INTERNAL_SERVER_ERROR)
         .json({ message: 'Unknown error' });

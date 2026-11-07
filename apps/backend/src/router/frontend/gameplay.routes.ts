@@ -1,6 +1,5 @@
 import { Router, Request, Response, NextFunction } from 'express';
 import { StatusCodes } from 'http-status-codes';
-import { v4 as uuid } from 'uuid';
 import { ErrorCodes } from '@repo/backend-types/enums';
 import { getConfiguration } from '../../db/crud/Config.crud';
 import {
@@ -98,6 +97,7 @@ const initNewSession = async (
     // no session, start from scratch
     try {
       const word = await randomWord(language, wordLength);
+      const { v4: uuid } = await import('uuid');
       const id = uuid();
 
       await createNewGameSession(id, language, word.word, maxAttempts);
@@ -329,7 +329,7 @@ const nextAttempt = async (req: Request, res: Response, next: NextFunction) => {
         return;
       }
     }
-  } catch (error) {
+  } catch {
     res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({
       code: ErrorCodes.GENERAL_ERROR,
       error: 'Error while guessing.',
@@ -472,7 +472,7 @@ const checkFinished = async (req: Request, res: Response) => {
         game,
       });
     }
-  } catch (error) {
+  } catch {
     res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({
       code: ErrorCodes.GENERAL_ERROR,
       error: 'Error while finishing attempt.',

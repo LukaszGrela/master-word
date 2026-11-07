@@ -28,7 +28,7 @@ least `apps/backend/.env.local` and, if your database user has a password,
 Start the server from the repository root:
 
 ```sh
-npm run dev --workspace=backend
+npm run dev -- --filter=backend
 ```
 
 Or from this folder:
@@ -318,7 +318,7 @@ run();
 2. Build the deployable bundle from the repository root:
 
    ```sh
-   npm run build --workspace=backend
+   npm run build -- --filter=backend
    ```
 
    The build runs `esbuild` to bundle `src/index.ts` into `dist/index.js`,
