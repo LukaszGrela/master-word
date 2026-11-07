@@ -8,7 +8,7 @@ const initialState: IConfigState = {
   supportedLength: [],
   supportedLanguages: [],
 };
-const SLICE_NAME = 'config' as const;
+const SLICE_NAME = 'config';
 
 export const configSlice = createSlice({
   initialState,

@@ -20,7 +20,7 @@ React + TypeScript + Vite + Redux Toolkit (RTK Query) + MUI + SASS
 From the repository root:
 
 ```sh
-npm run dev --workspace=admin
+npm run dev -- --filter=admin
 ```
 
 Or from this folder:
@@ -62,7 +62,7 @@ Build and deploy:
 
 ```sh
 # from the repository root
-npm run build --workspace=admin
+npm run build -- --filter=admin
 ```
 
 Upload the contents of `apps/admin/dist/` to its static web root. The
@@ -75,6 +75,8 @@ Upload the contents of `apps/admin/dist/` to its static web root. The
 
 The admin backend API additionally requires the `ADMIN_API_TOKEN` bearer token
 configured on the server. Without it, `/api/backend/*` requests return `401`.
+
+Currently Admin after accessing the admin app will be asked to enter ADMIN_API_TOKEN once confirmed it works, the application will be available.
 
 ## Security
 

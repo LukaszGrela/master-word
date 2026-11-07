@@ -55,7 +55,7 @@ const GameConfigStats: FC = () => {
   );
 
   const handleReview = useCallback(() => {
-    navigate(EPaths.CONFIG);
+    void navigate(EPaths.CONFIG);
   }, [navigate]);
 
   return (

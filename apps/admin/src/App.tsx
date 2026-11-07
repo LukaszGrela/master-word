@@ -5,6 +5,7 @@ import StyledEngineProvider from '@mui/material/StyledEngineProvider';
 import { SnackbarProvider } from 'notistack';
 import { Router } from './routes/Router';
 import { store } from './store';
+import AskForAdminToken from './components/AskForAdminToken/AskForAdminToken';
 
 const App: FC = () => {
   return (
@@ -13,7 +14,9 @@ const App: FC = () => {
         <SnackbarProvider maxSnack={5}>
           <div className="App">
             <CssBaseline />
-            <Router />
+            <AskForAdminToken>
+              <Router />
+            </AskForAdminToken>
           </div>
         </SnackbarProvider>
       </StyledEngineProvider>
