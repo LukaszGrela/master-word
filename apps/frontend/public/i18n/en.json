@@ -17,6 +17,13 @@
   "translation-button-en": "English",
   "translation-button-pl": "Polish",
   "result-language-info": "Select language of the word to guess.",
+    
+  "result-single-language-info": "Words to guess in {language}.",
+  "language-pl": "polish",
+  "language-en": "english",
+  "language-fr": "french",
+  "language-it": "italian",
+
   "start-button": "Start",
   "main-error-invalid-word": "Incorrect word",
   "main-legend-incorrect": "Wrong letter",

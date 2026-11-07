@@ -38,7 +38,16 @@ const GameLanguage: FC = () => {
 
   return (
     <div className="game-language">
-      {languages.length > 0 && (
+      {languages.length === 1 && (
+        <p className="language-info">
+          {t('result-single-language-info', {
+            language: t(`language-${languages[0].value}`, {
+              defaultValue: languages[0].value,
+            }),
+          })}
+        </p>
+      )}
+      {languages.length > 1 && (
         <>
           <p className="language-info">{t('result-language-info')}</p>
           <LanguageSelector
