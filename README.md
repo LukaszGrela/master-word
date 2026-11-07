@@ -106,8 +106,8 @@ Run these from the repository root; Turborepo fans them out to the workspaces.
 To work on a single app you can also run its scripts directly, for example:
 
 ```sh
-npm run dev   --workspace=backend
-npm run build --workspace=frontend
+npm run dev   -- --filter=backend
+npm run build -- --filter=frontend
 ```
 
 ## Production deployment
@@ -129,7 +129,7 @@ on a Node host with MongoDB.
 2. Build from the repository root:
 
    ```sh
-   npm run build --workspace=frontend
+   npm run build -- --filter=frontend
    ```
 
 3. Upload the contents of `apps/frontend/dist/` to the web root. The
@@ -149,7 +149,7 @@ on a Node host with MongoDB.
 2. Build:
 
    ```sh
-   npm run build --workspace=admin
+   npm run build -- --filter=admin
    ```
 
 3. Upload `apps/admin/dist/` to its web root. The admin `public/.htaccess`
@@ -172,7 +172,7 @@ on a Node host with MongoDB.
 2. Build:
 
    ```sh
-   npm run build --workspace=backend
+   npm run build -- --filter=backend
    ```
 
    The backend build uses `esbuild` to bundle `src/index.ts` into `dist/`
