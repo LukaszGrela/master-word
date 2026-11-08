@@ -37,7 +37,7 @@ Or from this folder:
 npm run dev
 ```
 
-`npm run dev` runs `nodemon src/index.ts` with `NODE_ENV=development`, which
+`npm run dev` runs `tsx watch src/index.ts` with `NODE_ENV=development`, which
 also turns on Mongoose debug logging.
 
 The local dev server listens on port `3001` by default
@@ -53,12 +53,12 @@ Note: the API is mounted under `/api`, so the frontend expects
 
 | Script               | Description                                              |
 | -------------------- | -------------------------------------------------------- |
-| `npm run dev`        | Run the server with nodemon (`NODE_ENV=development`)     |
+| `npm run dev`        | Run the server with `tsx watch` (`NODE_ENV=development`) |
 | `npm run build`      | Bundle `src/index.ts` into `dist/` with esbuild          |
 | `npm run build-tsc`  | Alternative build with `tsc` (`NODE_ENV=production`)     |
 | `npm run type-check` | Run `tsc --noEmit`                                       |
 | `npm run test`       | Run the Mocha suite (`NODE_ENV=test`)                    |
-| `npm run coverage`   | Run tests through nyc                                    |
+| `npm run coverage`   | Run tests with coverage via c8, config in `.nycrc`       |
 | `npm run lint`       | Run ESLint                                               |
 | `npm run clean`      | Remove `dist/`                                           |
 
