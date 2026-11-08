@@ -1,4 +1,4 @@
-@import '../../styles/variables';
+@use '../../styles/variables';
 
 .language-selector.translation {
   position: absolute;
@@ -10,20 +10,20 @@
 
   & button {
     padding: 0.25rem;
-    background-color: $language-btn-background;
-    border-color: $language-btn-border;
+    background-color: variables.$language-btn-background;
+    border-color: variables.$language-btn-border;
 
     @media (prefers-color-scheme: dark) {
-      background-color: $language-btn-background-dark;
+      background-color: variables.$language-btn-background-dark;
     }
     &:hover {
-      border-color: $language-btn-border-hover;
+      border-color: variables.$language-btn-border-hover;
     }
     &.selected {
-      background-color: $language-btn-selected-background;
-      border-color: $language-btn-selected-border;
+      background-color: variables.$language-btn-selected-background;
+      border-color: variables.$language-btn-selected-border;
       @media (prefers-color-scheme: dark) {
-        background-color: $language-btn-selected-background-dark;
+        background-color: variables.$language-btn-selected-background-dark;
       }
     }
   }
