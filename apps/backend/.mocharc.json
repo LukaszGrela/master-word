@@ -3,5 +3,5 @@
   "spec": "src/**/*.spec.ts",
   "node-option": ["import=tsx"],
   "exit": true,
-  "parallel": true
+  "parallel": false
 }

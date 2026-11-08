@@ -11,7 +11,7 @@ import {
 import { Request, Response } from 'express';
 describe('router/helpers', () => {
   describe('resetGameSession', () => {
-    it('Resets the session', (done) => {
+    it('Resets the session', () => {
       const clock = sinon.useFakeTimers({
         now: new Date(1939, 9, 1).getTime(),
         shouldClearNativeTimers: true,
@@ -31,8 +31,6 @@ describe('router/helpers', () => {
           word_length: 4,
           score: 0,
         });
-      } catch (error) {
-        done(error as Error);
       } finally {
         clock.uninstall();
       }

@@ -133,7 +133,7 @@ describe('UnknownWord model', () => {
     assert.notEqual(error, undefined);
     assert.match(
       `${error?.message}`,
-      /Path `language` \(`xxx`\) is longer than the maximum allowed length \(2\)\./,
+      /Path `language` \(`xxx`(?:, length 3)?\) is longer than the maximum allowed length \(2\)\./,
     );
   });
   it('requires correct entry in words property - incorrect language min length', async () => {
@@ -163,7 +163,7 @@ describe('UnknownWord model', () => {
     assert.notEqual(error, undefined);
     assert.match(
       `${error?.message}`,
-      /Path `language` \(`x`\) is shorter than the minimum allowed length \(2\)\./,
+      /Path `language` \(`x`(?:, length 1)?\) is shorter than the minimum allowed length \(2\)\./,
     );
   });
   it('requires correct entry in words property - missing length', async () => {
