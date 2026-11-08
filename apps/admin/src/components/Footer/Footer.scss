@@ -1,4 +1,4 @@
-@import '../../styles/variables';
+@use '../../styles/variables';
 
 .footer {
   .gd-logo {
@@ -6,7 +6,7 @@
     width: 1.5625rem;
 
     @media (prefers-color-scheme: dark) {
-      fill: $gd-red-dark;
+      fill: variables.$gd-red-dark;
     }
   }
 }

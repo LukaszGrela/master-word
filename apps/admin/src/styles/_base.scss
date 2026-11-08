@@ -1,8 +1,9 @@
+@use './variables';
 :root {
   color-scheme: light dark;
 }
 
 body {
-  color: $foreground;
-  background-color: $background;
+  color: variables.$foreground;
+  background-color: variables.$background;
 }
