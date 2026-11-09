@@ -1,5 +1,15 @@
 {
   "extends": [
     "//"
-  ]
+  ],
+  "tasks": {
+    "prebuild": {
+      "cache": false
+    },
+    "build": {
+      "dependsOn": [
+        "prebuild"
+      ]
+    }
+  }
 }
