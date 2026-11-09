@@ -9,7 +9,9 @@ type TObjectId = ObjectId | any;
 export const getAll = async (connection: Connection) => {
   const UnknownWordModel = getModelForConnection(connection);
 
-  const list = await UnknownWordModel.find({}).exec();
+  const list = await UnknownWordModel.find({
+    'words.0': { $exists: true },
+  }).exec();
 
   return list;
 };
@@ -60,6 +62,14 @@ export const removeWordById = async (
   if (index !== -1) {
     // remove it
     doc.words.splice(index, 1);
+
+    if (
+      doc.words.length === 0 &&
+      getStartOfDay(doc.date).getTime() !== getStartOfDay().getTime()
+    ) {
+      await doc.deleteOne();
+      return null;
+    }
   }
 
   return doc.save();
