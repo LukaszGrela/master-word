@@ -9,7 +9,7 @@ React + TypeScript + Vite + Redux Toolkit (RTK Query) + MUI + SASS
 
 ## Prerequisites
 
-- Node.js `>=18` (the monorepo pins Node `20.5.1` and npm `9.8.0` via
+- Node.js `>=18` (the monorepo pins Node `22.23.3` and npm `10.9.9` via
   [Volta](http://volta.sh/)).
 - Dependencies installed from the repository root with `npm install`.
 - The backend running (see [../backend/README.md](../backend/README.md)). The
@@ -76,7 +76,7 @@ Upload the contents of `apps/admin/dist/` to its static web root. The
 The admin backend API additionally requires the `ADMIN_API_TOKEN` bearer token
 configured on the server. Without it, `/api/backend/*` requests return `401`.
 
-Currently Admin after accessing the admin app will be asked to enter ADMIN_API_TOKEN once confirmed it works, the application will be available.
+Currently Admin after accessing the admin app will be asked to enter ADMIN_API_TOKEN. Once confirmed it works, the application will be available. Token is stored on admins machine.
 
 ## Security
 

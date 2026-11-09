@@ -11,7 +11,7 @@ React + TypeScript + Vite + Vitest + SASS
 
 ## Prerequisites
 
-- Node.js `>=18` (the monorepo pins Node `20.5.1` and npm `9.8.0` via
+- Node.js `>=18` (the monorepo pins Node `22.23.3` and npm `10.9.9` via
   [Volta](http://volta.sh/)).
 - Dependencies installed from the repository root with `npm install`.
 - The backend running (see [../backend/README.md](../backend/README.md)) for the

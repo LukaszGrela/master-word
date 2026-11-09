@@ -24,10 +24,9 @@ The repository is split into deployable **apps** and shared **packages**.
 
 ## Prerequisites
 
-- [Node.js](https://nodejs.org/) `>=18` (the repository pins Node `20.5.1` and
-  npm `9.8.0` through [Volta](http://volta.sh/)). Installing Volta is the
+- [Node.js](https://nodejs.org/) `>=18` (the monorepo pins Node `22.23.3` and npm `10.9.9` through [Volta](http://volta.sh/)). Installing Volta is the
   easiest way to get the exact versions used for development.
-- npm (ships with Node). The root manifest declares `packageManager: npm@10.2.4`.
+- npm (ships with Node). The root manifest declares `packageManager: npm@10.9.9`.
 - [MongoDB](https://www.mongodb.com/) for the backend (see
   [apps/backend/README.md](apps/backend/README.md#mongodb-mongoose)).
 - [Git](https://git-scm.com/).
@@ -155,7 +154,7 @@ on a Node host with MongoDB.
 3. Upload `apps/admin/dist/` to its web root. The admin `public/.htaccess`
    additionally protects the folder with HTTP Basic auth backed by an
    `.htpasswd` file; see the [admin README](apps/admin/README.md#security) for
-   how to create it.
+   how to create it. As the backend requires `ADMIN_API_TOKEN` in the authorisation header, admin app will ask for it on first load.
 
 ### 3. Backend
 

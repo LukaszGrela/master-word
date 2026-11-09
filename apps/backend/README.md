@@ -12,7 +12,7 @@ NodeJS + Express + MongoDB + Mongoose + Mocha
 
 ## Prerequisites
 
-- Node.js `>=18` (the monorepo pins Node `20.5.1` and npm `9.8.0` via
+- Node.js `>=18` (the monorepo pins Node `22.23.3` and npm `10.9.9` via
   [Volta](http://volta.sh/)).
 - Dependencies installed from the repository root with `npm install`.
 - A running MongoDB instance (see [MongoDB, Mongoose](#mongodb-mongoose)).
@@ -182,7 +182,7 @@ Note: your local MongoDB must run for this server to work.
 
 ### Installation of Mongo
 
-Described on the [mongodb website](https://www.mongodb.com/docs/v6.0/tutorial/install-mongodb-on-ubuntu/) (here for ubuntu linux, mongo version 6). There are directions for other OS's.
+Described on the [mongodb website](https://www.mongodb.com/docs/v8.0/tutorial/install-mongodb-on-ubuntu/) (here for ubuntu linux, mongo version 8). There are directions for other OS's.
 
 #### Scripts for Linux
 
