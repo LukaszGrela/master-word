@@ -95,6 +95,11 @@ describe('UnknownWord CRUD operations', () => {
 
   describe('getAll', () => {
     it('returns list of entries', async () => {
+      await UnknownWord.create({
+        date: new Date(1943, 8, 1),
+        words: [],
+      });
+
       const list = await getAll(mongoose.connection);
 
       assert.equal(list.length, 3);

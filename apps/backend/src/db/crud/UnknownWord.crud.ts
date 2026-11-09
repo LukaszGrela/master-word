@@ -9,7 +9,9 @@ type TObjectId = ObjectId | any;
 export const getAll = async (connection: Connection) => {
   const UnknownWordModel = getModelForConnection(connection);
 
-  const list = await UnknownWordModel.find({}).exec();
+  const list = await UnknownWordModel.find({
+    'words.0': { $exists: true },
+  }).exec();
 
   return list;
 };
