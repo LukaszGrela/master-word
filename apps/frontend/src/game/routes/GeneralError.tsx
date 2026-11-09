@@ -20,7 +20,7 @@ export default function GeneralError() {
         <button
           className="primary"
           onClick={() => {
-            navigate(EPaths.ROOT, { replace: true });
+            void navigate(EPaths.ROOT, { replace: true });
           }}
         >
           {t('general-error-btn-home')}

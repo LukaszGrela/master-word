@@ -1,14 +1,37 @@
-import { describe, it } from 'node:test';
-import { UnknownWord } from './UnknownWord';
+import { describe, it } from 'mocha';
+import { getModelForConnection, UnknownWord } from './UnknownWord';
 import sinon from 'sinon';
 import assert from 'node:assert';
+import mongoose from 'mongoose';
+import { testConfig } from '../../test/testconfig';
 
 describe('UnknownWord model', () => {
+  before(async function () {
+    console.log('readyState before():', mongoose.connection.readyState);
+    await mongoose.connect(`mongodb://${testConfig.mongo.hostString}`);
+    await UnknownWord.init();
+  });
+  beforeEach(async function () {
+    console.log('readyState beforeEach():', mongoose.connection.readyState);
+    await mongoose.connection.dropDatabase();
+
+    await UnknownWord.init();
+  });
+  after(async function () {
+    console.log('readyState before after():', mongoose.connection.readyState);
+    if (mongoose.connection.readyState === 1) {
+      await mongoose.connection.dropDatabase();
+    }
+    await mongoose.disconnect();
+  });
+
   it('creates unknown word entry with required fields', async () => {
-    const stub = sinon.useFakeTimers({
+    const clock = sinon.useFakeTimers({
       now: new Date(1939, 9, 1).getTime(),
+      toFake: ['Date'],
       shouldClearNativeTimers: true,
     });
+
     const entry = new UnknownWord({
       date: new Date() /* '-954723600000' */,
     });
@@ -18,14 +41,16 @@ describe('UnknownWord model', () => {
 
     assert.equal(entry.isNew, false);
 
-    stub.restore();
+    clock.uninstall();
   });
 
   it('creates unknown word entry with all fields', async () => {
-    const stub = sinon.useFakeTimers({
+    const clock = sinon.useFakeTimers({
       now: new Date(1939, 9, 1).getTime(),
+      toFake: ['Date'],
       shouldClearNativeTimers: true,
     });
+
     const entry = new UnknownWord({
       date: new Date() /* '-954723600000' */,
       words: [
@@ -42,7 +67,7 @@ describe('UnknownWord model', () => {
 
     assert.equal(entry.isNew, false);
 
-    stub.restore();
+    clock.uninstall();
   });
 
   it('requires date property', async () => {
@@ -58,8 +83,9 @@ describe('UnknownWord model', () => {
 
   it('requires correct entry in words property - missing language', async () => {
     let error: Error | undefined;
-    const stub = sinon.useFakeTimers({
+    const clock = sinon.useFakeTimers({
       now: new Date(1939, 9, 1).getTime(),
+      toFake: ['Date'],
       shouldClearNativeTimers: true,
     });
     try {
@@ -74,16 +100,18 @@ describe('UnknownWord model', () => {
       });
     } catch (e) {
       error = e as Error;
+    } finally {
+      clock.uninstall();
     }
-    stub.restore();
 
     assert.notEqual(error, undefined);
     assert.match(`${error?.message}`, /Path `language` is required/);
   });
   it('requires correct entry in words property - incorrect language max length', async () => {
     let error: Error | undefined;
-    const stub = sinon.useFakeTimers({
+    const clock = sinon.useFakeTimers({
       now: new Date(1939, 9, 1).getTime(),
+      toFake: ['Date'],
       shouldClearNativeTimers: true,
     });
     try {
@@ -99,19 +127,20 @@ describe('UnknownWord model', () => {
       });
     } catch (e) {
       error = e as Error;
+    } finally {
+      clock.uninstall();
     }
-    stub.restore();
-
     assert.notEqual(error, undefined);
     assert.match(
       `${error?.message}`,
-      /Path `language` \(`xxx`\) is longer than the maximum allowed length \(2\)\./,
+      /Path `language` \(`xxx`(?:, length 3)?\) is longer than the maximum allowed length \(2\)\./,
     );
   });
   it('requires correct entry in words property - incorrect language min length', async () => {
     let error: Error | undefined;
-    const stub = sinon.useFakeTimers({
+    const clock = sinon.useFakeTimers({
       now: new Date(1939, 9, 1).getTime(),
+      toFake: ['Date'],
       shouldClearNativeTimers: true,
     });
     try {
@@ -127,19 +156,21 @@ describe('UnknownWord model', () => {
       });
     } catch (e) {
       error = e as Error;
+    } finally {
+      clock.uninstall();
     }
-    stub.restore();
 
     assert.notEqual(error, undefined);
     assert.match(
       `${error?.message}`,
-      /Path `language` \(`x`\) is shorter than the minimum allowed length \(2\)\./,
+      /Path `language` \(`x`(?:, length 1)?\) is shorter than the minimum allowed length \(2\)\./,
     );
   });
   it('requires correct entry in words property - missing length', async () => {
     let error: Error | undefined;
-    const stub = sinon.useFakeTimers({
+    const clock = sinon.useFakeTimers({
       now: new Date(1939, 9, 1).getTime(),
+      toFake: ['Date'],
       shouldClearNativeTimers: true,
     });
     try {
@@ -154,8 +185,9 @@ describe('UnknownWord model', () => {
       });
     } catch (e) {
       error = e as Error;
+    } finally {
+      clock.uninstall();
     }
-    stub.restore();
 
     assert.notEqual(error, undefined);
     assert.match(`${error?.message}`, /Path `length` is required./);
@@ -163,8 +195,9 @@ describe('UnknownWord model', () => {
 
   it('requires correct entry in words property - missing word', async () => {
     let error: Error | undefined;
-    const stub = sinon.useFakeTimers({
+    const clock = sinon.useFakeTimers({
       now: new Date(1939, 9, 1).getTime(),
+      toFake: ['Date'],
       shouldClearNativeTimers: true,
     });
     try {
@@ -178,16 +211,18 @@ describe('UnknownWord model', () => {
       });
     } catch (e) {
       error = e as Error;
+    } finally {
+      clock.uninstall();
     }
-    stub.restore();
 
     assert.notEqual(error, undefined);
     assert.match(`${error?.message}`, /Path `word` is required/);
   });
   it('requires correct entry in words property - incorrect word', async () => {
     let error: Error | undefined;
-    const stub = sinon.useFakeTimers({
+    const clock = sinon.useFakeTimers({
       now: new Date(1939, 9, 1).getTime(),
+      toFake: ['Date'],
       shouldClearNativeTimers: true,
     });
     try {
@@ -203,8 +238,9 @@ describe('UnknownWord model', () => {
       });
     } catch (e) {
       error = e as Error;
+    } finally {
+      clock.uninstall();
     }
-    stub.restore();
 
     assert.notEqual(error, undefined);
     assert.match(`${error?.message}`, /Path `word` is required/);

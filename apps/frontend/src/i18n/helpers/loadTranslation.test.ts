@@ -2,7 +2,7 @@ import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 import { loadTranslation, replaceSubstituteMap } from './loadTranslation';
 import { createFetchResponse } from '../../__tests__/helpers';
 
-const originalFetch = global.fetch;
+const originalFetch = globalThis.fetch;
 
 describe('i18n', () => {
   describe('helpers', () => {
@@ -13,11 +13,11 @@ describe('i18n', () => {
     let mockFetch = vi.fn();
     beforeEach(() => {
       mockFetch = vi.fn();
-      global.fetch = mockFetch;
+      globalThis.fetch = mockFetch;
     });
     afterEach(() => {
       vi.clearAllMocks();
-      global.fetch = originalFetch;
+      globalThis.fetch = originalFetch;
       consoleMock.mockReset();
     });
 

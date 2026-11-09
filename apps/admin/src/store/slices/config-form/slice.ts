@@ -12,7 +12,7 @@ const initialState: IConfigFormState = {
   forms: {},
 };
 
-const SLICE_NAME = 'config-form' as const;
+const SLICE_NAME = 'config-form';
 
 const applyNewConfig = <Key extends TConfigEntryKey>(
   key: Key,

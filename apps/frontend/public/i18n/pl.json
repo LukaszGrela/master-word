@@ -17,6 +17,13 @@
   "translation-button-en": "Angielski",
   "translation-button-pl": "Polski",
   "result-language-info": "Wybierz język słowa do odgadnięcia",
+
+  "result-single-language-info": "Słowa do odgadnięcia w języku {language}.",
+  "language-pl": "polskim",
+  "language-en": "angielskim",
+  "language-fr": "francuskim",
+  "language-it": "włoskim",
+
   "start-button": "Start",
   "main-error-invalid-word": "Niepoprawne słowo",
   "main-legend-incorrect": "Zła litera",

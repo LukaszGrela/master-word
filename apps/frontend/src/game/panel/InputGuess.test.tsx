@@ -9,6 +9,11 @@ import {
 import InputGuess from './InputGuess';
 import { IDictionary } from '@repo/common-types';
 
+type TOnClose = (
+  action: 'start' | 'close' | 'guess',
+  word?: string,
+) => void;
+
 describe('game', () => {
   describe('panel', () => {
     describe('InputGuess', () => {
@@ -18,10 +23,7 @@ describe('game', () => {
             show
             initWord=""
             maxLength={5}
-            onClose={vi.fn<
-              [action: 'start' | 'close'] | [action: 'guess', word: string],
-              void
-            >()}
+            onClose={vi.fn<TOnClose>()}
           />,
         );
 
@@ -33,10 +35,7 @@ describe('game', () => {
             show
             initWord=""
             maxLength={5}
-            onClose={vi.fn<
-              [action: 'start' | 'close'] | [action: 'guess', word: string],
-              void
-            >()}
+            onClose={vi.fn<TOnClose>()}
           />,
           {
             languageContext: {
@@ -72,10 +71,7 @@ describe('game', () => {
                 show
                 initWord=""
                 maxLength={5}
-                onClose={vi.fn<
-                  [action: 'start' | 'close'] | [action: 'guess', word: string],
-                  void
-                >()}
+                onClose={vi.fn<TOnClose>()}
               />
             </div>,
             {
@@ -130,10 +126,7 @@ describe('game', () => {
         expect(labelBefore).toBeDefined();
       });
       it('Inserts guess', () => {
-        const onClose = vi.fn<
-          [action: 'start' | 'close'] | [action: 'guess', word: string],
-          void
-        >();
+        const onClose = vi.fn<TOnClose>();
 
         const languageContext = {
           ...defaultLanguageContext,
@@ -185,14 +178,14 @@ describe('game', () => {
         });
 
         // callback called
-        expect(onClose).toBeCalledTimes(1);
+        expect(onClose).toHaveBeenCalledTimes(1);
         expect(onClose).toHaveBeenLastCalledWith('guess', 'GUESS');
 
         // close modal
         fireEvent.click(closeBtn);
 
         // callback called
-        expect(onClose).toBeCalledTimes(2);
+        expect(onClose).toHaveBeenCalledTimes(2);
         expect(onClose).toHaveBeenLastCalledWith('guess', 'GUESS');
 
         // close modal
@@ -211,10 +204,7 @@ describe('game', () => {
         expect(queryByText('Done')).toBeNull();
       });
       it('Display error', () => {
-        const onClose = vi.fn<
-          [action: 'start' | 'close'] | [action: 'guess', word: string],
-          void
-        >();
+        const onClose = vi.fn<TOnClose>();
 
         const { container } = contextRenderer(
           <InputGuess

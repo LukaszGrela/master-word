@@ -5,6 +5,7 @@ import { IDictionary } from '@repo/common-types';
 import { updateLocalStorageConfig } from './helpers';
 import { IConfig } from '.';
 import { ATTEMPTS, LANGUAGE, WORD_LENGTH } from '../game';
+import { createFetchMock } from '../__tests__/helpers';
 
 vi.mock('@repo/utils', async (importOriginal) => {
   // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-explicit-any
@@ -12,8 +13,7 @@ vi.mock('@repo/utils', async (importOriginal) => {
 
   let storage: IDictionary<string> = {};
 
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  const AppStorageMock = vi.fn<any, IStorage>();
+  const AppStorageMock = vi.fn<new () => IStorage>();
   const proto = AppStorageMock.prototype as IStorage;
 
   proto.getItem = vi.fn().mockImplementation((key: string): string | null => {
@@ -51,14 +51,12 @@ vi.mock('@repo/utils', async (importOriginal) => {
   };
 });
 
-const originalFetch = global.fetch;
-
 describe('config', () => {
   describe('helpers', () => {
-    let mockFetch = vi.fn();
+    let mockFetch = createFetchMock();
     let storage: IStorage = AppStorage.getInstance();
     beforeEach(() => {
-      mockFetch = vi.fn();
+      mockFetch = createFetchMock();
       storage = AppStorage.getInstance();
       storage.clear();
       storage.setItem(EStorageKeys.UI_LANGUAGE, 'pl');
@@ -66,11 +64,11 @@ describe('config', () => {
       storage.setItem(EStorageKeys.GAME_WORD_LENGTH, '5');
       storage.setItem(EStorageKeys.GAME_ATTEMPTS, '8');
 
-      global.fetch = mockFetch;
+      vi.stubGlobal('fetch', mockFetch);
     });
     afterEach(() => {
       vi.clearAllMocks();
-      global.fetch = originalFetch;
+      vi.unstubAllGlobals();
     });
     describe('updateLocalStorageConfig', () => {
       it('defaults (no config)', () => {
@@ -82,7 +80,7 @@ describe('config', () => {
           enabledLength: [],
         } as IConfig);
 
-        expect(storage.setItem).toBeCalledTimes(4);
+        expect(storage.setItem).toHaveBeenCalledTimes(4);
 
         // game language
         expect(storage.setItem).toHaveBeenCalledWith(
@@ -121,7 +119,7 @@ describe('config', () => {
           enabledLength: [7],
         } as IConfig);
 
-        expect(storage.setItem).toBeCalledTimes(3);
+        expect(storage.setItem).toHaveBeenCalledTimes(3);
 
         // game language
         expect(storage.setItem).toHaveBeenCalledWith(

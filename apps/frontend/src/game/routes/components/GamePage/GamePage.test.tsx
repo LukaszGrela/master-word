@@ -21,7 +21,10 @@ import {
   gameResponses,
 } from '../../../context/__tests__/contextRenderer';
 import { IGameContext } from '../../../context';
-import { createFetchResponse } from '../../../../__tests__/helpers';
+import {
+  createFetchMock,
+  createFetchResponse,
+} from '../../../../__tests__/helpers';
 import { TGamePageLocationState } from '../../../types';
 import { TGameRecord } from '@repo/backend-types';
 
@@ -31,7 +34,6 @@ vi.mock('@repo/utils', async (importOriginal) => {
 
   // let storage: IDictionary<string> = {};
 
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   // const AppStorageMock = vi.fn<any, IStorage>();
   // const proto = AppStorageMock.prototype as IStorage;
 
@@ -70,8 +72,6 @@ vi.mock('@repo/utils', async (importOriginal) => {
     // AppStorage: AppStorageMock,
   };
 });
-
-const originalFetch = global.fetch;
 
 describe('game', () => {
   describe('routes', () => {
@@ -222,17 +222,16 @@ describe('game', () => {
           };
         };
 
-        let mockFetch = vi.fn();
+        let mockFetch = createFetchMock();
         beforeEach(() => {
-          mockFetch = vi.fn();
-
-          global.fetch = mockFetch;
+          mockFetch = createFetchMock();
+          vi.stubGlobal('fetch', mockFetch);
 
           (getBowserDetails as Mock).mockReturnValue(bowserDesktop);
         });
         afterEach(() => {
           vi.clearAllMocks();
-          global.fetch = originalFetch;
+          vi.unstubAllGlobals();
           cleanup();
         });
 
@@ -318,7 +317,9 @@ describe('game', () => {
           });
 
           // session removed
-          expect(window.history.state.usr).toStrictEqual(locationState);
+          expect(
+            (window.history.state as { usr: unknown }).usr,
+          ).toStrictEqual(locationState);
         });
 
         it('Handles other error', async () => {
@@ -364,7 +365,9 @@ describe('game', () => {
             expect(getByText('RESULTS')).toEqual(expect.anything());
 
             // state
-            expect(window.history.state.usr).toStrictEqual({
+            expect(
+              (window.history.state as { usr: unknown }).usr,
+            ).toStrictEqual({
               session: gameResponses.gameWon.session,
               game: gameResponses.gameWon.game as TGameRecord,
               highest: gameResponses.gameWon.highest,
@@ -392,7 +395,9 @@ describe('game', () => {
             expect(getByText('RESULTS')).toEqual(expect.anything());
 
             // state
-            expect(window.history.state.usr).toStrictEqual({
+            expect(
+              (window.history.state as { usr: unknown }).usr,
+            ).toStrictEqual({
               session: gameResponses.gameLost.session,
               game: gameResponses.gameLost.game as TGameRecord,
               highest: gameResponses.gameLost.highest,

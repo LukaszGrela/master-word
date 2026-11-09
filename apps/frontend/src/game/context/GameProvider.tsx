@@ -111,8 +111,8 @@ export const GameProvider: FC<{ children: React.ReactNode }> = ({
                   game.timestamp_start = gameState.game.timestamp_start;
                 }
                 game.attempt = attempt;
-                const row = game.state.at(attempt - 1);
-                const sourceRow = state.at(attempt - 1);
+                const row = game.state[attempt - 1];
+                const sourceRow = state[attempt - 1];
                 if (row && sourceRow) {
                   // update only current state
                   row.word = sourceRow.word;
@@ -139,7 +139,7 @@ export const GameProvider: FC<{ children: React.ReactNode }> = ({
           });
       }
     },
-    [gameData.session, setGameData],
+    [gameData.game, gameData.session, setGameData],
   );
 
   const value = useMemo((): IGameContext => {

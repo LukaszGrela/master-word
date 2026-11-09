@@ -7,7 +7,7 @@ import { Dictionary } from '../models/Dictionary';
 const localeSorter = (language: string) => (a: string, b: string) => {
   try {
     return a.localeCompare(b, language);
-  } catch (e) {
+  } catch {
     /* istanbul ignore next */
     return 0;
   }
@@ -24,19 +24,24 @@ const localeSorter = (language: string) => (a: string, b: string) => {
 export const getAlphabet = async (
   language: string = 'pl',
   length = 5,
+  DictionaryModel: typeof Dictionary = Dictionary,
 ): Promise<string[]> => {
   const alphabet = (
-    await Dictionary.find({ language, length }, { letter: 1 }).exec()
+    await DictionaryModel.find({ language, length }, { letter: 1 }).exec()
   ).map((d) => d.letter) as string[];
 
   return alphabet.sort(localeSorter(language));
 };
 
-export const getRandomWord = async (language: string = 'pl', length = 5) => {
-  const alphabet = await getAlphabet(language, length);
+export const getRandomWord = async (
+  language: string = 'pl',
+  length = 5,
+  DictionaryModel: typeof Dictionary = Dictionary,
+) => {
+  const alphabet = await getAlphabet(language, length, DictionaryModel);
   if (alphabet.length > 0) {
     const randomLetter = alphabet[Math.floor(Math.random() * alphabet.length)];
-    const match = await Dictionary.findOne({
+    const match = await DictionaryModel.findOne({
       letter: randomLetter,
       length,
       language,
@@ -58,8 +63,9 @@ export const wordExists = async (
   word: string,
   language: string = 'pl',
   length = 5,
+  DictionaryModel: typeof Dictionary = Dictionary,
 ) => {
-  const doc = await Dictionary.find({
+  const doc = await DictionaryModel.find({
     words: word,
     language,
     length,
@@ -79,6 +85,7 @@ export const addWord = async (
   word: string,
   language: string = 'pl',
   length = 5,
+  DictionaryModel: typeof Dictionary = Dictionary,
 ) => {
   if (Number(length) === 0) {
     throw new Error('addWord: the length argument must not be 0.');
@@ -93,13 +100,14 @@ export const addWord = async (
       `addWord: the word value must have length as declared by "length" argument (${word.length} != ${length}).`,
     );
   }
-  return addManyWords([word], language, length);
+  return addManyWords([word], language, length, DictionaryModel);
 };
 
 export const addManyWords = async (
   words: string[],
   language: string = 'pl',
   length = 5,
+  DictionaryModel: typeof Dictionary = Dictionary,
 ) => {
   if (Number(length) === 0) {
     throw new Error('addManyWords: the length argument must not be 0.');
@@ -126,7 +134,7 @@ export const addManyWords = async (
     }
   }
 
-  let dictionaryDoc = await Dictionary.findOne({
+  let dictionaryDoc = await DictionaryModel.findOne({
     letter,
     language,
     length,
@@ -134,7 +142,7 @@ export const addManyWords = async (
 
   const wordsToAdd = words.map((word) => word.toLocaleLowerCase());
   if (dictionaryDoc === null) {
-    dictionaryDoc = await Dictionary.create({
+    dictionaryDoc = await DictionaryModel.create({
       letter,
       language,
       length,
@@ -154,8 +162,9 @@ export const addManyWords = async (
 export const countWords = async (
   language: string = 'pl',
   length = 5,
+  DictionaryModel: typeof Dictionary = Dictionary,
 ): Promise<TCountDictionaryResponse[]> => {
-  const result = await Dictionary.aggregate<TCountDictionaryResponse>([
+  const result = await DictionaryModel.aggregate<TCountDictionaryResponse>([
     {
       $match: {
         language,
@@ -205,8 +214,11 @@ export const countWords = async (
   return result;
 };
 
-export const getLanguages = async (length = 5) => {
-  const result = await Dictionary.aggregate<TLanguagesList>([
+export const getLanguages = async (
+  length = 5,
+  DictionaryModel: typeof Dictionary = Dictionary,
+) => {
+  const result = await DictionaryModel.aggregate<TLanguagesList>([
     {
       $match: {
         length: Number(length),
@@ -232,6 +244,7 @@ export const deleteWord = async (
   word: string,
   language: string = 'pl',
   length = 5,
+  DictionaryModel: typeof Dictionary = Dictionary,
 ) => {
   if (Number(length) === 0) {
     throw new Error('deleteWord: the length argument must not be 0.');
@@ -250,7 +263,7 @@ export const deleteWord = async (
   const wordToRemove = word.toLocaleLowerCase();
   const letter = word.charAt(0).toLocaleLowerCase();
 
-  const dictionaryDoc = await Dictionary.findOne({
+  const dictionaryDoc = await DictionaryModel.findOne({
     letter,
     language,
     length: Number(length),
@@ -272,6 +285,7 @@ export const updateWord = async (
   newWord: string,
   language: string = 'pl',
   length = 5,
+  DictionaryModel: typeof Dictionary = Dictionary,
 ) => {
   if (Number(length) === 0) {
     throw new Error('updateWord: the length argument must not be 0.');
@@ -306,7 +320,7 @@ export const updateWord = async (
   }
 
   if (newWord.toLocaleLowerCase() !== oldWord.toLocaleLowerCase()) {
-    await deleteWord(oldWord, language, Number(length));
-    await addWord(newWord, language, Number(length));
+    await deleteWord(oldWord, language, Number(length), DictionaryModel);
+    await addWord(newWord, language, Number(length), DictionaryModel);
   }
 };

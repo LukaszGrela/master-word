@@ -12,7 +12,7 @@ NodeJS + Express + MongoDB + Mongoose + Mocha
 
 ## Prerequisites
 
-- Node.js `>=18` (the monorepo pins Node `20.5.1` and npm `9.8.0` via
+- Node.js `>=18` (the monorepo pins Node `22.23.3` and npm `10.9.9` via
   [Volta](http://volta.sh/)).
 - Dependencies installed from the repository root with `npm install`.
 - A running MongoDB instance (see [MongoDB, Mongoose](#mongodb-mongoose)).
@@ -28,7 +28,7 @@ least `apps/backend/.env.local` and, if your database user has a password,
 Start the server from the repository root:
 
 ```sh
-npm run dev --workspace=backend
+npm run dev -- --filter=backend
 ```
 
 Or from this folder:
@@ -37,7 +37,7 @@ Or from this folder:
 npm run dev
 ```
 
-`npm run dev` runs `nodemon src/index.ts` with `NODE_ENV=development`, which
+`npm run dev` runs `tsx watch src/index.ts` with `NODE_ENV=development`, which
 also turns on Mongoose debug logging.
 
 The local dev server listens on port `3001` by default
@@ -53,12 +53,12 @@ Note: the API is mounted under `/api`, so the frontend expects
 
 | Script               | Description                                              |
 | -------------------- | -------------------------------------------------------- |
-| `npm run dev`        | Run the server with nodemon (`NODE_ENV=development`)     |
+| `npm run dev`        | Run the server with `tsx watch` (`NODE_ENV=development`) |
 | `npm run build`      | Bundle `src/index.ts` into `dist/` with esbuild          |
 | `npm run build-tsc`  | Alternative build with `tsc` (`NODE_ENV=production`)     |
 | `npm run type-check` | Run `tsc --noEmit`                                       |
 | `npm run test`       | Run the Mocha suite (`NODE_ENV=test`)                    |
-| `npm run coverage`   | Run tests through nyc                                    |
+| `npm run coverage`   | Run tests with coverage via c8, config in `.nycrc`       |
 | `npm run lint`       | Run ESLint                                               |
 | `npm run clean`      | Remove `dist/`                                           |
 
@@ -182,7 +182,7 @@ Note: your local MongoDB must run for this server to work.
 
 ### Installation of Mongo
 
-Described on the [mongodb website](https://www.mongodb.com/docs/v6.0/tutorial/install-mongodb-on-ubuntu/) (here for ubuntu linux, mongo version 6). There are directions for other OS's.
+Described on the [mongodb website](https://www.mongodb.com/docs/v8.0/tutorial/install-mongodb-on-ubuntu/) (here for ubuntu linux, mongo version 8). There are directions for other OS's.
 
 #### Scripts for Linux
 
@@ -318,7 +318,7 @@ run();
 2. Build the deployable bundle from the repository root:
 
    ```sh
-   npm run build --workspace=backend
+   npm run build -- --filter=backend
    ```
 
    The build runs `esbuild` to bundle `src/index.ts` into `dist/index.js`,

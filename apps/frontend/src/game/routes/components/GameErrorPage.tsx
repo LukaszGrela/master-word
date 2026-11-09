@@ -33,7 +33,7 @@ export const GameErrorPage = () => {
   const handleAction = useCallback(
     (action: 'again' | 'quit') => () => {
       if (action === 'quit') {
-        navigate(EPaths.ROOT, { replace: true });
+        void navigate(EPaths.ROOT, { replace: true });
       }
       if (action === 'again') {
         const storage = AppStorage.getInstance();
@@ -48,7 +48,7 @@ export const GameErrorPage = () => {
           ),
           session: gameSession?.session,
         };
-        navigate(EPaths.GAME, {
+        void navigate(EPaths.GAME, {
           replace: true,
           state: locationState,
         });

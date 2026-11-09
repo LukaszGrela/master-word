@@ -1,5 +1,5 @@
-import mongoose, { AnyKeys } from 'mongoose';
-import { beforeEach, describe, it } from 'node:test';
+import mongoose from 'mongoose';
+import { beforeEach, describe, it, afterEach } from 'mocha';
 import assert from 'node:assert';
 import {
   TGameSessionFinished,
@@ -9,12 +9,27 @@ import {
   TScore,
 } from '@repo/backend-types';
 import { GameSession, getModelForConnection } from './GameSession';
-import { createDictionaryDevConnection } from '../connect';
+import { testConfig } from '../../test/testconfig';
 
 describe('GameSession model', () => {
-  beforeEach(async () => {
+  before(async function () {
+    console.log('readyState before():', mongoose.connection.readyState);
+    await mongoose.connect(`mongodb://${testConfig.mongo.hostString}`);
     await GameSession.init();
   });
+  beforeEach(async function () {
+    console.log('readyState beforeEach():', mongoose.connection.readyState);
+    await mongoose.connection.dropDatabase();
+    await GameSession.init();
+  });
+  after(async function () {
+    console.log('readyState before after():', mongoose.connection.readyState);
+    if (mongoose.connection.readyState === 1) {
+      await mongoose.connection.dropDatabase();
+    }
+    await mongoose.disconnect();
+  });
+
   describe('failures', () => {
     it('missing session', async () => {
       let error: Error | undefined;
@@ -361,9 +376,7 @@ describe('GameSession model', () => {
       assert.equal(sessionModel.isNew, false);
     });
     it('initiates with game object', async () => {
-      const connection = await createDictionaryDevConnection();
-
-      const GameSessionModel = getModelForConnection(connection);
+      const GameSessionModel = getModelForConnection(mongoose.connection);
       await GameSessionModel.collection.drop();
       const sessionModel = new GameSessionModel({
         session: 'ed28b702-5205-43bc-97a4-39a09a647f20',
@@ -384,7 +397,6 @@ describe('GameSession model', () => {
       assert.equal(sessionModel.isNew, true);
       await sessionModel.save();
       assert.equal(sessionModel.isNew, false);
-      await connection.close();
     });
   });
 });

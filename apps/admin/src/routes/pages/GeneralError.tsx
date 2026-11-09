@@ -9,7 +9,7 @@ import ArrowLeftIcon from '@mui/icons-material/ArrowLeft';
 
 export default function GeneralError() {
   const error = useRouteError() as { statusText?: string; message?: string };
-  console.error(error);
+  console.error('[GeneralError]', error);
 
   return (
     <div id="error-page">

@@ -8,7 +8,7 @@ exports[`game > routes > components > GamePage > WordGameBoard > renders finishe
     <div
       class="board pl"
       data-testid="board"
-      style="grid-template-columns: repeat(5, 1fr); grid-template-rows: repeat(8, 1fr);"
+      style="grid-template-columns: repeat(5, 1fr); grid-template-rows: repeat(8, 1fr); width: calc(calc(4 * var(--gd-board-gap)) + calc(5 * var(--gd-board-size)));"
     >
       <div
         class="letter incorrect inactive first"
@@ -1623,7 +1623,7 @@ exports[`game > routes > components > GamePage > WordGameBoard > renders guess a
     <div
       class="board pl"
       data-testid="board"
-      style="grid-template-columns: repeat(5, 1fr); grid-template-rows: repeat(8, 1fr);"
+      style="grid-template-columns: repeat(5, 1fr); grid-template-rows: repeat(8, 1fr); width: calc(calc(4 * var(--gd-board-gap)) + calc(5 * var(--gd-board-size)));"
     >
       <div
         class="letter incorrect inactive first"
@@ -3238,7 +3238,7 @@ exports[`game > routes > components > GamePage > WordGameBoard > renders guess a
     <div
       class="board pl"
       data-testid="board"
-      style="grid-template-columns: repeat(5, 1fr); grid-template-rows: repeat(8, 1fr);"
+      style="grid-template-columns: repeat(5, 1fr); grid-template-rows: repeat(8, 1fr); width: calc(calc(4 * var(--gd-board-gap)) + calc(5 * var(--gd-board-size)));"
     >
       <div
         class="letter incorrect inactive first"
@@ -4853,7 +4853,7 @@ exports[`game > routes > components > GamePage > WordGameBoard > renders init ga
     <div
       class="board pl"
       data-testid="board"
-      style="grid-template-columns: repeat(5, 1fr); grid-template-rows: repeat(8, 1fr);"
+      style="grid-template-columns: repeat(5, 1fr); grid-template-rows: repeat(8, 1fr); width: calc(calc(4 * var(--gd-board-gap)) + calc(5 * var(--gd-board-size)));"
     >
       <div
         class="letter active first"
@@ -6468,7 +6468,7 @@ exports[`game > routes > components > GamePage > WordGameBoard > renders init ga
     <div
       class="board pl"
       data-testid="board"
-      style="grid-template-columns: repeat(5, 1fr); grid-template-rows: repeat(8, 1fr);"
+      style="grid-template-columns: repeat(5, 1fr); grid-template-rows: repeat(8, 1fr); width: calc(calc(4 * var(--gd-board-gap)) + calc(5 * var(--gd-board-size)));"
     >
       <div
         class="letter first"

@@ -1,3 +1,5 @@
+@use '../../../styles/variables';
+
 $spinnerSize: 40;
 $spinnerStrokeWidth: 2px;
 
@@ -29,11 +31,11 @@ $spinnerStrokeWidth: 2px;
     }
     circle#bg {
       stroke-width: $spinnerStrokeWidth - 1;
-      stroke: $spinner-background;
+      stroke: variables.$spinner-background;
     }
     circle#fg {
       stroke-width: $spinnerStrokeWidth;
-      stroke: $spinner-foreground;
+      stroke: variables.$spinner-foreground;
       stroke-dasharray: (3.14 * $spinnerSize);
 
       transform-origin: (0.5px * $spinnerSize) (0.5px * $spinnerSize) 0;

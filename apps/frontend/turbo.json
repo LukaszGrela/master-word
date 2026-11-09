@@ -2,11 +2,7 @@
   "extends": [
     "//"
   ],
-  "globalEnv": [
-    "VITE_VERSION",
-    "VITE_API_ENDPOINT"
-  ],
-  "pipeline": {
+  "tasks": {
     "build": {
       "dependsOn": [
         "@repo/utils#build"

@@ -2,22 +2,11 @@
   "extends": "@repo/config-typescript/tsconfig.base.json",
   "compilerOptions": {
     "outDir": "dist",
-    "lib": [
-      "esnext"
-    ],
+    "lib": ["esnext"],
     "module": "Node16",
     "moduleResolution": "Node16",
-    "typeRoots": [
-      "./node_modules/@types",
-      "./node_modules/@repo/backend-types"
-    ]
+    "typeRoots": ["./node_modules/@types", "./node_modules/@repo/backend-types"]
   },
-  "include": [
-    "src/**/*"
-  ],
-  "exclude": [
-    "src/test/**/*",
-    "src/**/*.spec.ts",
-    "scripts/**/*"
-  ]
+  "include": ["src/**/*"],
+  "exclude": ["src/test/**/*", "src/**/*.spec.ts", "scripts/**/*"]
 }

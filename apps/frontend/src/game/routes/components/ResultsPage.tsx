@@ -59,11 +59,11 @@ export const ResultsPage = () => {
     (action: 'again' | 'quit' | 'save-session') => () => {
       if (action === 'save-session') {
         storage.setItem(EStorageKeys.GAME_SESSION, gameSession.session);
-        navigate(EPaths.ROOT, { replace: true });
+        void navigate(EPaths.ROOT, { replace: true });
       }
       if (action === 'quit') {
         storage.removeItem(EStorageKeys.GAME_SESSION);
-        navigate(EPaths.ROOT, { replace: true });
+        void navigate(EPaths.ROOT, { replace: true });
       }
       if (action === 'again') {
         const locationState: TGamePageLocationState = {
@@ -76,7 +76,7 @@ export const ResultsPage = () => {
           ),
           session: gameSession.session,
         };
-        navigate(EPaths.GAME, {
+        void navigate(EPaths.GAME, {
           replace: true,
           state: locationState,
         });

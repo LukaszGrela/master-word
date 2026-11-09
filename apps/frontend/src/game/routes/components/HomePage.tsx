@@ -28,10 +28,10 @@ export const HomePage = () => {
       };
       if (action === 'start-new') {
         storage.removeItem(EStorageKeys.GAME_SESSION);
-        navigate(EPaths.GAME, { state: locationState });
+        void navigate(EPaths.GAME, { state: locationState });
       }
       if (action === 'continue') {
-        navigate(EPaths.GAME, { state: { ...locationState, session } });
+        void navigate(EPaths.GAME, { state: { ...locationState, session } });
       }
     },
     [navigate, session, storage],

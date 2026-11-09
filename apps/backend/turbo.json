@@ -1,10 +1,5 @@
 {
   "extends": [
     "//"
-  ],
-  "globalEnv": [
-    "APP_CONFIG",
-    "MONGO_PASSWORD",
-    "MONGO_BACKEND_DEV_PASSWORD"
   ]
 }

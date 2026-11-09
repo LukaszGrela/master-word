@@ -1,11 +1,9 @@
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
-import { createFetchResponse } from '../__tests__/helpers';
+import { createFetchMock, createFetchResponse } from '../__tests__/helpers';
 import { fireEvent, render, waitFor } from '@testing-library/react';
 import { ConfigProvider } from './provider';
 import { useConfig } from '.';
 import { useCallback, useMemo } from 'react';
-
-const originalFetch = global.fetch;
 
 const configResponse = [
   {
@@ -77,17 +75,17 @@ const DummyConsumer = () => {
 
 describe('config', () => {
   describe('ConfigProvider', () => {
-    let mockFetch = vi.fn();
+    let mockFetch = createFetchMock();
     beforeEach(() => {
-      mockFetch = vi.fn();
-      global.fetch = mockFetch;
+      mockFetch = createFetchMock();
+      vi.stubGlobal('fetch', mockFetch);
 
       // MOCK FETCH FIRST
       mockFetch.mockResolvedValue(createFetchResponse(true, configResponse));
     });
     afterEach(() => {
       vi.clearAllMocks();
-      global.fetch = originalFetch;
+      vi.unstubAllGlobals();
     });
     it('initial config load', async () => {
       const { getByTestId, queryByText } = render(
@@ -99,8 +97,8 @@ describe('config', () => {
       const loading = queryByText('LOADING');
       expect(loading).toBeNull();
 
-      expect(fetch).toBeCalledTimes(1);
-      expect(fetch).toHaveBeenCalledWith(
+      expect(mockFetch).toHaveBeenCalledTimes(1);
+      expect(mockFetch).toHaveBeenCalledWith(
         expect.stringMatching(/\/api\/frontend\/config$/gi),
         expect.objectContaining({
           method: 'GET',
@@ -122,8 +120,8 @@ describe('config', () => {
       const loading = queryByText('LOADING');
       expect(loading).toBeNull();
 
-      expect(fetch).toBeCalledTimes(1);
-      expect(fetch).toHaveBeenCalledWith(
+      expect(mockFetch).toHaveBeenCalledTimes(1);
+      expect(mockFetch).toHaveBeenCalledWith(
         expect.stringMatching(/\/api\/frontend\/config$/gi),
         expect.objectContaining({
           method: 'GET',
@@ -153,8 +151,8 @@ describe('config', () => {
       // call refresh
       fireEvent.click(getByText('REFRESH'));
 
-      expect(fetch).toBeCalledTimes(2);
-      expect(fetch).toHaveBeenCalledWith(
+      expect(mockFetch).toHaveBeenCalledTimes(2);
+      expect(mockFetch).toHaveBeenCalledWith(
         expect.stringMatching(/\/api\/frontend\/config$/gi),
         expect.objectContaining({
           method: 'GET',
@@ -183,8 +181,8 @@ describe('config', () => {
       const loading = queryByText('LOADING');
       expect(loading).toBeNull();
 
-      expect(fetch).toBeCalledTimes(1);
-      expect(fetch).toHaveBeenCalledWith(
+      expect(mockFetch).toHaveBeenCalledTimes(1);
+      expect(mockFetch).toHaveBeenCalledWith(
         expect.stringMatching(/\/api\/frontend\/config$/gi),
         expect.objectContaining({
           method: 'GET',
@@ -202,8 +200,8 @@ describe('config', () => {
       // call refresh
       fireEvent.click(getByText('REFRESH'));
 
-      expect(fetch).toBeCalledTimes(2);
-      expect(fetch).toHaveBeenCalledWith(
+      expect(mockFetch).toHaveBeenCalledTimes(2);
+      expect(mockFetch).toHaveBeenCalledWith(
         expect.stringMatching(/\/api\/frontend\/config$/gi),
         expect.objectContaining({
           method: 'GET',
@@ -230,8 +228,8 @@ describe('config', () => {
       const loading = queryByText('LOADING');
       expect(loading).toBeNull();
 
-      expect(fetch).toBeCalledTimes(1);
-      expect(fetch).toHaveBeenCalledWith(
+      expect(mockFetch).toHaveBeenCalledTimes(1);
+      expect(mockFetch).toHaveBeenCalledWith(
         expect.stringMatching(/\/api\/frontend\/config$/gi),
         expect.objectContaining({
           method: 'GET',
@@ -264,8 +262,8 @@ describe('config', () => {
       mockFetch.mockResolvedValue(createFetchResponse(true, configResponse));
       fireEvent.click(getByText('REFRESH')); // should abort previous
 
-      expect(fetch).toBeCalledTimes(3); // aborted or not, counts as called
-      expect(fetch).toHaveBeenCalledWith(
+      expect(mockFetch).toHaveBeenCalledTimes(3); // aborted or not, counts as called
+      expect(mockFetch).toHaveBeenCalledWith(
         expect.stringMatching(/\/api\/frontend\/config$/gi),
         expect.objectContaining({
           method: 'GET',

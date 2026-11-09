@@ -1,10 +1,17 @@
 import { fireEvent } from '@testing-library/react';
+import { vi } from 'vitest';
 
 export const createFetchResponse = (ok: boolean, response: unknown) => ({
   ok,
   json: () => Promise.resolve(response),
   text: () => Promise.resolve(JSON.stringify(response)),
 });
+
+type TMockFetch = (
+  ...args: Parameters<typeof fetch>
+) => Promise<ReturnType<typeof createFetchResponse>>;
+
+export const createFetchMock = () => vi.fn<TMockFetch>();
 
 export const hitEnter = () => {
   fireEvent.keyUp(document.activeElement || document.body, {

@@ -24,7 +24,7 @@ const UnknownWords: FC = () => {
   }, 0);
 
   const handleReview = useCallback(() => {
-    navigate(EPaths.UNKOWN_WORDS);
+    void navigate(EPaths.UNKOWN_WORDS);
   }, [navigate]);
 
   return (

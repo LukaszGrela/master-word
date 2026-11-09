@@ -44,7 +44,7 @@ export const Header: React.FC<IProps> = ({ title, menu }) => {
       }
 
       if (value === EMenuItemTypes.LINK && link) {
-        navigate(link);
+        void navigate(link);
       }
       handleCloseUserMenu();
     },

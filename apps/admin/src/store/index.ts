@@ -3,12 +3,14 @@ import { setupListeners } from '@reduxjs/toolkit/query/react';
 import { apiReducer, reducerPath, middleware } from './slices/api';
 import config from './slices/config';
 import configForm from './slices/config-form';
+import user from './slices/user';
 
 export const store = configureStore({
   reducer: {
     [reducerPath]: apiReducer,
     config,
     configForm,
+    user
   },
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware().concat(middleware),
