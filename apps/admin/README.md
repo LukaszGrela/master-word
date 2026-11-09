@@ -76,7 +76,7 @@ Upload the contents of `apps/admin/dist/` to its static web root. The
 The admin backend API additionally requires the `ADMIN_API_TOKEN` bearer token
 configured on the server. Without it, `/api/backend/*` requests return `401`.
 
-Currently Admin after accessing the admin app will be asked to enter ADMIN_API_TOKEN. Once confirmed it works, the application will be available. Token is stored on admins machine.
+Currently admin user after accessing the Admin app will be asked to enter ADMIN_API_TOKEN. Once confirmed it works, the application will be available. Token is stored on admins machine.
 
 ## Security
 
