@@ -13,8 +13,7 @@ vi.mock('@repo/utils', async (importOriginal) => {
 
   let storage: IDictionary<string> = {};
 
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  const AppStorageMock = vi.fn<any, IStorage>();
+  const AppStorageMock = vi.fn<new () => IStorage>();
   const proto = AppStorageMock.prototype as IStorage;
 
   proto.getItem = vi.fn().mockImplementation((key: string): string | null => {
