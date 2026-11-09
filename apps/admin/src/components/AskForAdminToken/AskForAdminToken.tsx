@@ -8,6 +8,7 @@ import {
 } from './utils';
 import { setAuthorized } from '../../store/slices/user';
 import { useAppDispatch, useAppSelector } from '../../store/hooks';
+import { Footer } from '../Footer';
 
 type TUiState =
   | { kind: 'idle' }
@@ -80,6 +81,10 @@ export const AskForAdminToken = ({ children }: TProps) => {
 
   useEffect(() => {
     if (import.meta.env.VITE_PROXY_BACKEND_ORIGIN) {
+      console.warn(
+        '[AskForAdmin] proxy backend origin is set, skip authorization.',
+        import.meta.env.VITE_PROXY_BACKEND_ORIGIN,
+      );
       dispatch(setAuthorized(true));
       return;
     }
@@ -125,28 +130,31 @@ export const AskForAdminToken = ({ children }: TProps) => {
   return (
     <>
       {!stored && (
-        <form onSubmit={handleSubmit} noValidate>
-          <label htmlFor="admin-api-token">Admin API token</label>
-          <input
-            id="admin-api-token"
-            name="admin-api-token"
-            type="password"
-            value={value}
-            onChange={(event) => setValue(event.target.value)}
-            autoComplete="off"
-            spellCheck={false}
-            disabled={busy}
-          />
-          <button type="submit" disabled={busy || !value.trim()}>
-            {busy ? 'Verifying…' : 'Save token'}
-          </button>
+        <>
+          <form onSubmit={handleSubmit} noValidate>
+            <label htmlFor="admin-api-token">Admin API token</label>
+            <input
+              id="admin-api-token"
+              name="admin-api-token"
+              type="password"
+              value={value}
+              onChange={(event) => setValue(event.target.value)}
+              autoComplete="off"
+              spellCheck={false}
+              disabled={busy}
+            />
+            <button type="submit" disabled={busy || !value.trim()}>
+              {busy ? 'Verifying…' : 'Save token'}
+            </button>
 
-          {message && (
-            <p role="alert" aria-live="polite">
-              {message}
-            </p>
-          )}
-        </form>
+            {message && (
+              <p role="alert" aria-live="polite">
+                {message}
+              </p>
+            )}
+          </form>
+          <Footer />
+        </>
       )}
       {stored && isAuthorized && children}
       {stored && !isAuthorized && (
@@ -169,6 +177,8 @@ export const AskForAdminToken = ({ children }: TProps) => {
           <button type="button" disabled={busy} onClick={handleUseAnotherToken}>
             Use a different token
           </button>
+
+          <Footer />
         </div>
       )}
     </>
