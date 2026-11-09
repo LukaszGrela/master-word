@@ -13,6 +13,7 @@ import {
 } from '../crud/UnknownWord.crud';
 import mongoose from 'mongoose';
 import { testConfig } from '../../test/testconfig';
+import { getStartOfDay } from '@repo/utils/getStartOfDay';
 
 describe('UnknownWord CRUD operations', () => {
   const date1 = new Date(1939, 8, 1, 0, 0, 0, 0);
@@ -240,6 +241,48 @@ describe('UnknownWord CRUD operations', () => {
       // docs length not changed
       const remaining = await UnknownWord.find({});
       assert.equal(remaining.length, 3);
+    });
+    it('removes a historical document after its last word is removed', async () => {
+      const id = ids[0].toHexString();
+
+      const firstRemoval = await removeWordById(
+        mongoose.connection,
+        id,
+        'kiszk',
+        'pl',
+      );
+      assert.notEqual(firstRemoval, null);
+      assert.deepEqual(
+        firstRemoval!.words.map(({ word }) => word),
+        ['tomek'],
+      );
+
+      const lastRemoval = await removeWordById(
+        mongoose.connection,
+        id,
+        'tomek',
+        'pl',
+      );
+      assert.equal(lastRemoval, null);
+      assert.equal(await UnknownWord.findById(id).exec(), null);
+    });
+    it("keeps today's document after its last word is removed", async () => {
+      const today = getStartOfDay();
+      const doc = await UnknownWord.create({
+        date: today,
+        words: [{ language: 'pl', word: 'kiszk', length: 5 }],
+      });
+
+      const result = await removeWordById(
+        mongoose.connection,
+        doc._id,
+        'kiszk',
+        'pl',
+      );
+
+      assert.notEqual(result, null);
+      assert.equal(result!.words.length, 0);
+      assert.notEqual(await UnknownWord.findById(doc._id).exec(), null);
     });
   });
 

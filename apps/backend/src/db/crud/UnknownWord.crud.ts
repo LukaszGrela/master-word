@@ -62,6 +62,14 @@ export const removeWordById = async (
   if (index !== -1) {
     // remove it
     doc.words.splice(index, 1);
+
+    if (
+      doc.words.length === 0 &&
+      getStartOfDay(doc.date).getTime() !== getStartOfDay().getTime()
+    ) {
+      await doc.deleteOne();
+      return null;
+    }
   }
 
   return doc.save();
