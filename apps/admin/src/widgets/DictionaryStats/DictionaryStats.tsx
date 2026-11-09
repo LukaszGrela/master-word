@@ -1,4 +1,4 @@
-import { FC, useCallback, useState } from 'react';
+import { FC } from 'react';
 import Typography from '@mui/material/Typography';
 import CardContent from '@mui/material/CardContent';
 import CardHeader from '@mui/material/CardHeader';
@@ -8,12 +8,14 @@ import LinearProgress from '@mui/material/LinearProgress';
 import Stack from '@mui/material/Stack';
 import { useGetDictionaryStatsQuery } from '../../store/slices/api';
 import { LanguageListSelect } from '../../components/LanguageListSelect';
+import { useConfigState } from '../../store/hooks';
 
 const DictionaryStats: FC = () => {
-  const [language, setLanguage] = useState('pl');
+  const { selectedLanguage } = useConfigState();
+
   const { data, isLoading } = useGetDictionaryStatsQuery(
     {
-      language,
+      language: selectedLanguage,
     },
     {
       pollingInterval: 60000,
@@ -21,11 +23,6 @@ const DictionaryStats: FC = () => {
   );
 
   const total = data && data.length > 0 ? data[0].wordCount : 0;
-
-  const handleSelectChange = useCallback((language: string) => {
-    console.log(language);
-    setLanguage(language);
-  }, []);
 
   return (
     <Card
@@ -44,11 +41,7 @@ const DictionaryStats: FC = () => {
         </Typography>
         <Stack spacing={2} direction={'row'} alignItems={'baseline'}>
           <FormControl variant="standard">
-            <LanguageListSelect
-              disabled={isLoading}
-              onChange={handleSelectChange}
-              value={language}
-            />
+            <LanguageListSelect disabled={isLoading} />
           </FormControl>
           <Typography variant="caption">words stored</Typography>
         </Stack>

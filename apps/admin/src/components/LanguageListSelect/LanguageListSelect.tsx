@@ -2,9 +2,10 @@ import { FC, useCallback, useMemo } from 'react';
 import Select, { SelectChangeEvent } from '@mui/material/Select';
 import MenuItem from '@mui/material/MenuItem';
 import { getFlag } from '@repo/shared-ui';
-import { useConfigState } from '../../store/hooks';
+import { useAppDispatch, useConfigState } from '../../store/hooks';
 import { ILanguageSelectorOption } from '../../types';
 import { IProps } from './types';
+import { setLanguage } from '../../store/slices/config';
 
 export const LanguageListSelect: FC<IProps> = ({
   selectStyleProps,
@@ -15,13 +16,11 @@ export const LanguageListSelect: FC<IProps> = ({
 
   const languageList = useMemo(() => {
     return supportedLanguages
-      .map(
-        (language): ILanguageSelectorOption => ({
-          value: language,
-          label: language.toUpperCase(),
-          flag: getFlag(language),
-        }),
-      )
+      .map((language): ILanguageSelectorOption => ({
+        value: language,
+        label: language.toUpperCase(),
+        flag: getFlag(language),
+      }))
       .map((option) => (
         <MenuItem
           key={option.value}
@@ -33,11 +32,16 @@ export const LanguageListSelect: FC<IProps> = ({
       ));
   }, [supportedLanguages]);
 
+  const dispatch = useAppDispatch();
+
   const handleSelectChange = useCallback(
     (e: SelectChangeEvent) => {
-      onChange?.(e.target.value);
+      const language = e.target.value;
+
+      dispatch(setLanguage(language));
+      onChange?.(language);
     },
-    [onChange],
+    [onChange, dispatch],
   );
 
   return (
