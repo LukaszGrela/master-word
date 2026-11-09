@@ -23,7 +23,7 @@ export const baseQuery = fetchBaseQuery({
   },
 });
 
-export const baseQueryWith401Redirect: BaseQueryFn<
+export const baseQueryWith401Check: BaseQueryFn<
   string | FetchArgs,
   unknown,
   FetchBaseQueryError
@@ -39,7 +39,7 @@ export const baseQueryWith401Redirect: BaseQueryFn<
 
 export const adminApi = createApi({
   reducerPath: 'api',
-  baseQuery: baseQueryWith401Redirect,
+  baseQuery: baseQueryWith401Check,
   tagTypes: ['UnknownWords', 'Dictionary', 'Config'],
   endpoints: () => ({}),
 });
