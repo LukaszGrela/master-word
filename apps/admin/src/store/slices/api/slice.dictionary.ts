@@ -3,10 +3,12 @@ import {
   apiDictionaryLanguages,
   apiDictionaryStats,
   apiAddWord,
+  apiAddManyWords,
 } from './endpoints';
 import {
   TDictionaryLanguagesResponse,
   TDictionaryStatsResponse,
+  TPostAddManyWordsParams,
   TPostAddWordParams,
 } from './types';
 
@@ -36,6 +38,14 @@ export const dictionaryApi = adminApi.injectEndpoints({
 
       invalidatesTags: ['Dictionary'],
     }),
+    postAddManyWords: builder.mutation<string, TPostAddManyWordsParams>({
+      query: (params) => ({
+        url: apiAddManyWords(),
+        method: 'POST',
+        body: params,
+      }),
+      invalidatesTags: ['Dictionary'],
+    }),
   }),
   overrideExisting: false,
 });
@@ -46,4 +56,5 @@ export const {
   useGetDictionaryLanguagesQuery,
   useLazyGetDictionaryLanguagesQuery,
   usePostAddWordMutation,
+  usePostAddManyWordsMutation,
 } = dictionaryApi;

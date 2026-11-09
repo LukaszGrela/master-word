@@ -1,6 +1,7 @@
 import { TConfigEntryKey } from '@repo/backend-types/db';
 
 export const apiAddWord = () => `/add-word`;
+export const apiAddManyWords = () => `/add-many-words`;
 export const apiUnknownWords = (): string => `/list`;
 export const apiApproveWords = () => `/approve-words`;
 export const apiRejectWords = () => `/reject-words`;

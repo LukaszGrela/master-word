@@ -1,5 +1,6 @@
 import { IUnknownWordEntry } from '@repo/backend-types/db';
 import {
+  TAddManyWordsRequestBody,
   TCountDictionaryResponse,
   TLanguagesList,
   TTableData,
@@ -11,6 +12,8 @@ export type TPostAddWordParams = {
   length?: number;
   signal?: AbortSignal | null | undefined;
 };
+
+export type TPostAddManyWordsParams = TAddManyWordsRequestBody;
 
 export type TUnknownWordEntry = {
   _id: string;
