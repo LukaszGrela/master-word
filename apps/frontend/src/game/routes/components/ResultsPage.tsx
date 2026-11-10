@@ -87,7 +87,7 @@ export const ResultsPage = () => {
 
   // new high score
   const showHighScore =
-    !highest || !highest[highId]
+    win && (!highest || !highest[highId])
       ? true
       : highest && highest[highId] && score > highest[highId].score;
 

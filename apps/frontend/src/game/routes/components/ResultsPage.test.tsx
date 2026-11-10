@@ -92,6 +92,66 @@ describe('game', () => {
           },
           __v: 2,
         };
+        const gameLost_noHighscore = {
+          _id: '6af34e99b91a683040842175',
+          session: '801ef973-615e-40ed-92ad-c60097d26724',
+          game: {
+            language: 'pl',
+            timestamp_start: '1794330274267',
+            max_attempts: 8,
+            attempt: 8,
+            word: 'ŁZAWY',
+            word_length: 5,
+            guessed: false,
+            score: 0,
+            state: [
+              {
+                word: ['B', 'E', 'R', 'E', 'K'],
+                validated: ['X', 'X', 'X', 'X', 'X'],
+                _id: '6af34ea2b91a68304084217e',
+              },
+              {
+                word: ['M', 'I', 'S', 'K', 'A'],
+                validated: ['X', 'X', 'X', 'X', 'M'],
+                _id: '6af34eaeb91a683040842188',
+              },
+              {
+                word: ['A', 'L', 'B', 'I', 'K'],
+                validated: ['M', 'X', 'X', 'X', 'X'],
+                _id: '6af34ebab91a68304084219a',
+              },
+              {
+                word: ['O', 'S', 'T', 'Ę', 'P'],
+                validated: ['X', 'X', 'X', 'X', 'X'],
+                _id: '6af34ecdb91a6830408421ac',
+              },
+              {
+                word: ['T', 'Y', 'R', 'A', 'N'],
+                validated: ['X', 'M', 'X', 'M', 'X'],
+                _id: '6af34ed9b91a6830408421c3',
+              },
+              {
+                word: ['L', 'I', 'T', 'R', 'Y'],
+                validated: ['X', 'X', 'X', 'X', 'C'],
+                _id: '6af34ef6b91a6830408421e1',
+              },
+              {
+                word: ['G', 'W', 'A', 'R', 'Y'],
+                validated: ['X', 'M', 'C', 'X', 'C'],
+                _id: '6af34f00b91a683040842200',
+              },
+              {
+                word: ['Ć', 'M', 'A', 'W', 'Y'],
+                validated: ['X', 'X', 'C', 'C', 'C'],
+                _id: '6af34f19b91a683040842221',
+              },
+            ],
+            finished: true,
+            _id: '6af34e99b91a683040842176',
+            timestamp_finish: '1794330393420',
+          },
+          __v: 7,
+        };
         const gameLost = {
           _id: '660d501fa79a7dd174b8f527',
           session: '590fe9dd-08f7-4fde-90ba-105c9a2ce00b',
@@ -377,7 +437,9 @@ describe('game', () => {
 
           await waitFor(() => {
             expect(router.state.location.pathname).toEqual(EPaths.GAME);
-            expect(router.state.location.state).toMatchObject({session:gameWon.session});
+            expect(router.state.location.state).toMatchObject({
+              session: gameWon.session,
+            });
           });
         }, 10000);
         it('renders lose', async () => {
@@ -416,6 +478,48 @@ describe('game', () => {
               },
             },
           });
+
+          expect(container).toMatchSnapshot();
+        }, 10000);
+        it('renders lost first game', async () => {
+          const router = createMemoryRouter([
+            {
+              path: EPaths.ROOT,
+              index: true,
+              element: <p>HOME</p>,
+            },
+            {
+              path: EPaths.RESULTS,
+              element: <ResultsPage />,
+            },
+          ]);
+          await router.navigate(getResultsPath('lose'), {
+            state: gameLost_noHighscore,
+          });
+
+          const { container } = renderMockRouter(router, {
+            languageContext: {
+              ...defaultLanguageContext,
+              getUIText: (
+                textId: string,
+                // eslint-disable-next-line @typescript-eslint/no-explicit-any
+                substitutes?: IDictionary<any> | undefined,
+              ): string => {
+                if (hasOwn(translationPl, textId)) {
+                  const copy = translationPl[textId];
+                  if (substitutes) {
+                    return replaceSubstituteMap(copy, substitutes);
+                  }
+                  return copy;
+                }
+
+                return textId;
+              },
+            },
+          });
+
+          // should not contain "highscore-label"
+          expect(container.querySelectorAll('.highscore-label').length).toBe(0);
 
           expect(container).toMatchSnapshot();
         }, 10000);
