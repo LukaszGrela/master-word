@@ -38,11 +38,17 @@ dotenv.config({
   // be passed straight into a MongoDB filter as an operator.
   masterWordApp.set('query parser', 'simple');
 
+  masterWordApp.use((_req, res, next) => {
+    res.setHeader('x-app-version', APP_VERSION);
+    next();
+  });
+
   masterWordApp.use(express.json());
 
   masterWordApp.use(
     cors({
       methods: ['GET', 'POST' /*,'HEAD','PUT','PATCH','DELETE'*/],
+      exposedHeaders: ['x-app-version'],
       origin: [
         'https://master-word.greladesign.co',
         'https://master-word-admin.greladesign.co',
